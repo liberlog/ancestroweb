@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2011/09/03 16:35:58.118.pas,C:\Users\Matthieu\Documents\Projets Borland Studio\Unit1.pas=C:\Users\Matthieu\Documents\Lazarus Delphi\AncestroWeb\Unit1.pas</Transaction>
+    <Transaction>2011/09/03 16:35:58.118.dfm,C:\Users\Matthieu\Documents\Projets Borland Studio\Unit1.dfm=C:\Users\Matthieu\Documents\Lazarus Delphi\AncestroWeb\Unit1.dfm</Transaction>
+    <Transaction>2011/09/03 16:36:40.832.bdsproj,C:\Users\Matthieu\Documents\Projets Borland Studio\Project1.bdsproj=C:\Users\Matthieu\Documents\Lazarus Delphi\AncestroWeb\AncestroWebExe.bdsproj</Transaction>
+    <Transaction>2011/09/03 16:36:51.463.pas,C:\Users\Matthieu\Documents\Lazarus Delphi\AncestroWeb\Unit1.pas=</Transaction>
+    <Transaction>2011/09/03 16:36:51.463.dfm,C:\Users\Matthieu\Documents\Lazarus Delphi\AncestroWeb\Unit1.dfm=</Transaction>
+    <Transaction>2011/09/11 15:53:33.424.pas,C:\Users\Matthieu\Documents\Lazarus Delphi\AncestroWeb\ancestroweb_strings.pas=C:\Users\Matthieu\Documents\Lazarus Delphi\AncestroWeb\ancestroweb_strings_delphi.pas</Transaction>
+  </Transactions>
+</BorlandProject>
