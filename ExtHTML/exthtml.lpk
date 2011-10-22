@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="3">
+    <Name Value="ExtHTML"/>
+    <CompilerOptions>
+      <Version Value="9"/>
+      <SearchPaths>
+        <OtherUnitFiles Value="functions"/>
+        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Files Count="3">
+      <Item1>
+        <Filename Value="functions/functions_html.pas"/>
+        <UnitName Value="functions_html"/>
+      </Item1>
+      <Item2>
+        <Filename Value="functions/functions_html_tree.pas"/>
+        <UnitName Value="functions_html_tree"/>
+      </Item2>
+      <Item3>
+        <Filename Value="functions/unite_html_resources.pas"/>
+        <UnitName Value="unite_html_resources"/>
+      </Item3>
+    </Files>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="2">
+      <Item1>
+        <PackageName Value="lazextcomponents"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item2>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>
