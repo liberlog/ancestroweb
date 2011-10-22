@@ -10,6 +10,9 @@
       <ActiveWindowIndexAtStart Value="0"/>
     </General>
     <VersionInfo>
+      <UseVersionInfo Value="True"/>
+      <MinorVersionNr Value="9"/>
+      <RevisionNr Value="9"/>
       <Language Value=""/>
       <CharSet Value=""/>
       <StringTable ProductVersion=""/>
@@ -385,7 +388,8 @@
         <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="288"/>
-        <CursorPos X="47" Y="304"/>
+        <CursorPos X="104" Y="305"/>
+        <ComponentState Value="1"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -472,6 +476,7 @@
         <TopLine Value="581"/>
         <CursorPos X="1" Y="590"/>
         <UsageCount Value="14"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit43>
       <Unit44>
         <Filename Value="../extended/composants/U_OnFormInfoIni.pas"/>
@@ -480,6 +485,7 @@
         <TopLine Value="510"/>
         <CursorPos X="1" Y="510"/>
         <UsageCount Value="16"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit44>
       <Unit45>
         <Filename Value="../extended/fonctions/fonctions_string.pas"/>
@@ -488,6 +494,7 @@
         <TopLine Value="752"/>
         <CursorPos X="12" Y="754"/>
         <UsageCount Value="22"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit45>
       <Unit46>
         <Filename Value="/usr/share/fpcsrc/2.4.2/rtl/objpas/sysutils/sysstrh.inc"/>
@@ -542,6 +549,7 @@
         <TopLine Value="66"/>
         <CursorPos X="122" Y="150"/>
         <UsageCount Value="55"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit51>
       <Unit52>
         <Filename Value="../XMLFrames/fonctions/fonctions_ObjetsXML.pas"/>
@@ -796,7 +804,6 @@
         <TopLine Value="376"/>
         <CursorPos X="10" Y="399"/>
         <UsageCount Value="1"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit80>
       <Unit81>
         <Filename Value="../Freelogy/Individus/u_form_individu_events_sources.dfm"/>
@@ -979,6 +986,7 @@
         <TopLine Value="2595"/>
         <CursorPos X="1" Y="2605"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit101>
       <Unit102>
         <Filename Value="../../../../lazarus/lcl/interfaces/win32/win32wscontrols.pp"/>
@@ -987,6 +995,7 @@
         <TopLine Value="257"/>
         <CursorPos X="1" Y="267"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit102>
       <Unit103>
         <Filename Value="../extended/lazextcomponents.pas"/>
@@ -995,6 +1004,7 @@
         <TopLine Value="5"/>
         <CursorPos X="12" Y="26"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit103>
       <Unit104>
         <Filename Value="../extended/composants/u_buttons_appli.pas"/>
@@ -1003,6 +1013,7 @@
         <TopLine Value="163"/>
         <CursorPos X="23" Y="173"/>
         <UsageCount Value="12"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit104>
       <Unit105>
         <Filename Value="../extended/composants/u_regfwbuttons.pas"/>
@@ -1011,6 +1022,7 @@
         <TopLine Value="25"/>
         <CursorPos X="42" Y="34"/>
         <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit105>
       <Unit106>
         <Filename Value="../../../../lazarus/fpc/2.4.2/source/packages/fcl-base/src/inifiles.pp"/>
@@ -1019,6 +1031,7 @@
         <TopLine Value="139"/>
         <CursorPos X="3" Y="158"/>
         <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit106>
       <Unit107>
         <Filename Value="../extended/fonctions/fonctions_proprietes.pas"/>
@@ -1027,6 +1040,7 @@
         <TopLine Value="125"/>
         <CursorPos X="3" Y="130"/>
         <UsageCount Value="12"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit107>
       <Unit108>
         <Filename Value="u_dmweb.lfm"/>
@@ -1043,6 +1057,7 @@
         <TopLine Value="1791"/>
         <CursorPos X="3" Y="1808"/>
         <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit109>
     </Units>
     <JumpHistory Count="29" HistoryIndex="28">
