@@ -315,9 +315,9 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 1
             end
             object fne_import: TFileNameEdit
-              Left = 84
+              Left = 85
               Height = 22
-              Top = 4
+              Top = 1
               Width = 241
               OnAcceptFileName = fne_importAcceptFileName
               DialogOptions = [ofFileMustExist]
@@ -327,7 +327,6 @@ object F_AncestroWeb: TF_AncestroWeb
               NumGlyphs = 0
               MaxLength = 0
               TabOrder = 2
-              OnChange = fne_importChange
             end
             object bt_export: TFWSaveAs
               Left = 4

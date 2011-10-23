@@ -182,7 +182,6 @@ type
     procedure FileCopyFailure(Sender: TObject; const ErrorCode: integer;
       var ErrorMessage: string; var ContinueCopy: boolean);
     procedure fne_importAcceptFileName(Sender: TObject; var Value: String);
-    procedure fne_importChange(Sender: TObject);
     procedure FWEraseImage3Click(Sender: TObject);
     procedure FWEraseImage2Click(Sender: TObject);
     procedure FWEraseImageClick(Sender: TObject);
@@ -359,10 +358,6 @@ begin
    end;
 end;
 
-procedure TF_AncestroWeb.fne_importChange(Sender: TObject);
-begin
-
-end;
 
 
 procedure TF_AncestroWeb.FWEraseImage3Click(Sender: TObject);
