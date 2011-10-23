@@ -182,6 +182,7 @@ type
     procedure FileCopyFailure(Sender: TObject; const ErrorCode: integer;
       var ErrorMessage: string; var ContinueCopy: boolean);
     procedure fne_importAcceptFileName(Sender: TObject; var Value: String);
+    procedure fne_importChange(Sender: TObject);
     procedure FWEraseImage3Click(Sender: TObject);
     procedure FWEraseImage2Click(Sender: TObject);
     procedure FWEraseImageClick(Sender: TObject);
@@ -347,11 +348,18 @@ begin
      try
        FIniFile := TIniFile.Create(ls_FileImport);
        DoAfterInit;
+       FIniFile.Free;
+       FIniFile := nil;
      Except
        On E:Exception do
          ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenFile ) +#13#10+e.Message);
      end;
    end;
+end;
+
+procedure TF_AncestroWeb.fne_importChange(Sender: TObject);
+begin
+
 end;
 
 
@@ -513,6 +521,7 @@ end;
 
 procedure TF_AncestroWeb.bt_exportClick(Sender: TObject);
 begin
+  f_GetMemIniFile();
   if fb_iniWriteFile(FIniFile,True)
    Then
      try

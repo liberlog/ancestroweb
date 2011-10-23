@@ -61,9 +61,9 @@ object F_AncestroWeb: TF_AncestroWeb
     Height = 370
     Top = 0
     Width = 640
-    ActivePage = ts_Files
+    ActivePage = ts_Gen
     Align = alClient
-    TabIndex = 2
+    TabIndex = 0
     TabOrder = 1
     object ts_Gen: TTabSheet
       Caption = 'Générer'
@@ -327,6 +327,7 @@ object F_AncestroWeb: TF_AncestroWeb
               NumGlyphs = 0
               MaxLength = 0
               TabOrder = 2
+              OnChange = fne_importChange
             end
             object bt_export: TFWSaveAs
               Left = 4
@@ -1182,6 +1183,7 @@ object F_AncestroWeb: TF_AncestroWeb
     end
   end
   object OnFormInfoIni: TOnFormInfoIni
+    AutoLoad = False
     SauvePosObjects = True
     SauveEditObjets = [feTEdit, feTCheck, feTComboValue, feTDirectoryEdit, feTFileNameEdit, feTMemo, feTPageControl, feTRadio, feTSpinEdit]
     Freeini = False
