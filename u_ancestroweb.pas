@@ -350,6 +350,8 @@ begin
        DoAfterInit;
        FIniFile.Free;
        FIniFile := nil;
+       f_GetMemIniFile();
+       OnFormInfoIni.p_ExecuteEcriture(Self);
      Except
        On E:Exception do
          ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenFile ) +#13#10+e.Message);
