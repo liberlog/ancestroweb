@@ -287,6 +287,7 @@ uses  fonctions_init,
   fonctions_string,
   fonctions_languages,
   fonctions_images,
+  fonctions_system,
   fonctions_file;
 
 {$IFNDEF FPC}
@@ -591,24 +592,27 @@ begin
   p_IncPrgressBar;
   FileCopy.Destination := de_ExportWeb.Text;
   ls_Destination := FileCopy.Destination+ DirectorySeparator;
-  if DirectoryExists ( ls_Destination ) then
-    try
-      fb_EraseDir(ls_Destination, False);
-      fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_CSS, True);
-      fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_IMAGES, True);
-      fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_LISTS , True);
-      fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_MAILER, True);
-      fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_SCRIPTS, True);
-      fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_ARCHIVE, True);
-      fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_FILES, True);
-      fb_EraseDir(ls_Destination+ CST_SUBDIR_HTML_TREE, True);
-    except
-      on E: Exception do
-      begin
-        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_ExportErrorErase ) + ls_Destination + #13#10 + E.Message);
-        Abort;
-      end;
-    end;
+  if DirectoryExists ( ls_Destination ) Then
+    if ( MessageDlg(gs_ANCESTROWEB_Delete, gs_ANCESTROWEB_ExportDelete, mtWarning, mbYesNo, 0 ) = mrYes ) then
+      try
+        fb_EraseDir(ls_Destination, False);
+        fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_CSS, True);
+        fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_IMAGES, True);
+        fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_LISTS , True);
+        fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_MAILER, True);
+        fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_SCRIPTS, True);
+        fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_ARCHIVE, True);
+        fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_FILES, True);
+        fb_EraseDir(ls_Destination+ CST_SUBDIR_HTML_TREE, True);
+      except
+        on E: Exception do
+        begin
+          ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_ExportErrorErase ) + ls_Destination + #13#10 + E.Message);
+          Abort;
+        end;
+      end
+    Else
+     Abort;
   p_IncPrgressBar;
   if (cb_Themes.Items.Count = 0) then
   begin
@@ -1731,8 +1735,13 @@ begin
   Save_Cursor := Screen.Cursor;
   Screen.Cursor := crHourGlass; { Affiche le curseur en forme de sablier }
 
-  DoOpenBase(sBase);
-  DoAfterInit;
+  try
+    DoOpenBase(sBase);
+
+  finally
+    DoAfterInit;
+  end;
+
 
   Screen.Cursor := Save_Cursor; { Revient toujours à normal }
 end;
@@ -1788,15 +1797,12 @@ end;
 
 procedure TF_AncestroWeb.DoAfterInit;
 begin
-  if fBasePath = '' then
-    fBasePath := GetUserDir+DirectorySeparator+CST_AncestroWeb;
+  fBasePath := GetUserDir+CST_AncestroWeb;
   FileCopy.Destination := fBasePath + DirectorySeparator + CST_SUBDIR_EXPORT ;
   fne_Import.Text := fBasePath + DirectorySeparator + CST_SUBDIR_SAVE ;
   fne_Export.Text := fBasePath + DirectorySeparator + CST_SUBDIR_SAVE ;
 
-  de_ExportWeb.Text := FileCopy.Destination;
-
-
+  de_ExportWeb.Text := fBasePath+DirectorySeparator+CST_SUBDIR_EXPORT;
 
   Caption := fs_getCorrectString ( CST_AncestroWeb_WithLicense + ' : ' + gs_AnceSTROWEB_FORM_CAPTION ) +
     '-' + fNomIndi + ', ' + fPrenomIndi;

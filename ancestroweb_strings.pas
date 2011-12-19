@@ -18,6 +18,10 @@ resourcestring
   gs_ANCESTROWEB_TITRE = 'AncestroWeb : Générer un Site Web Généalogique';
   gs_ANCESTROWEB_ExportMoreThan5Chars =
     'Le chemin d''exportation web doit faire plus de 5 caractères.';
+  gs_ANCESTROWEB_Delete =
+    'Effacement';
+  gs_ANCESTROWEB_ExportDelete =
+    'Confirmez-vous l''effacement du chemin d''exportation @ARG.';
   gs_ANCESTROWEB_ExportErrorCreate = 'Erreur à la copie de ';
   gs_ANCESTROWEB_ExportErrorErase = 'Erreur à l''effacement de ';
   gs_ANCESTROWEB_ErrorCreateSOSA = 'Erreur : Effectuez une numérotation SOSA.';

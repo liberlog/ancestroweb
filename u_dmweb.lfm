@@ -10,8 +10,6 @@ object DMWeb: TDMWeb
     Active = False
     DefaultDatabase = ibd_BASE
     DefaultAction = TACommitRetaining
-    left = 128
-    top = 8
   end
   object ibd_BASE: TIBDatabase
     Connected = False
@@ -25,8 +23,6 @@ object DMWeb: TDMWeb
     DefaultTransaction = IBT_BASE
     IdleTimer = 0
     TraceFlags = []
-    left = 32
-    top = 8
   end
   object IBQDLL: TIBQuery
     Database = ibd_BASE
@@ -38,8 +34,6 @@ object DMWeb: TDMWeb
       'SELECT * FROM PROC_GESTION_DLL'
     )
     Params = <>
-    left = 32
-    top = 72
   end
   object IBQUpdateDLL: TIBQuery
     Database = ibd_BASE
@@ -57,14 +51,6 @@ object DMWeb: TDMWeb
         Name = 'RETOUR'
         ParamType = ptUnknown
       end>
-    left = 128
-    top = 80
-    ParamData = <    
-      item
-        DataType = ftUnknown
-        Name = 'RETOUR'
-        ParamType = ptUnknown
-      end>
   end
   object IBQSources_Record: TIBQuery
     Database = ibd_BASE
@@ -76,19 +62,6 @@ object DMWeb: TDMWeb
       'select * from SOURCES_RECORD WHERE DATA_ID = :Ikey  and TYPE_TABLE = :sTable'
     )
     Params = <    
-      item
-        DataType = ftUnknown
-        Name = 'Ikey'
-        ParamType = ptUnknown
-      end    
-      item
-        DataType = ftUnknown
-        Name = 'sTable'
-        ParamType = ptUnknown
-      end>
-    left = 152
-    top = 136
-    ParamData = <    
       item
         DataType = ftUnknown
         Name = 'Ikey'
@@ -154,24 +127,6 @@ object DMWeb: TDMWeb
         Name = 'I_PARQUI'
         ParamType = ptUnknown
       end>
-    left = 152
-    top = 264
-    ParamData = <    
-      item
-        DataType = ftInteger
-        Name = 'I_CLEF'
-        ParamType = ptUnknown
-      end    
-      item
-        DataType = ftInteger
-        Name = 'I_NIVEAU'
-        ParamType = ptUnknown
-      end    
-      item
-        DataType = ftInteger
-        Name = 'I_PARQUI'
-        ParamType = ptUnknown
-      end>
   end
   object IBQ_TreeByNames: TIBQuery
     Database = ibd_BASE
@@ -195,24 +150,6 @@ object DMWeb: TDMWeb
       'ORDER BY NOM,PRENOM,ANNEE_NAISSANCE DESC,ANNEE_DECES DESC'
     )
     Params = <    
-      item
-        DataType = ftInteger
-        Name = 'I_CLEF'
-        ParamType = ptUnknown
-      end    
-      item
-        DataType = ftInteger
-        Name = 'I_NIVEAU'
-        ParamType = ptUnknown
-      end    
-      item
-        DataType = ftInteger
-        Name = 'I_PARQUI'
-        ParamType = ptUnknown
-      end>
-    left = 24
-    top = 264
-    ParamData = <    
       item
         DataType = ftInteger
         Name = 'I_CLEF'
@@ -283,24 +220,6 @@ object DMWeb: TDMWeb
         Name = 'I_PARQUI'
         ParamType = ptUnknown
       end>
-    left = 32
-    top = 200
-    ParamData = <    
-      item
-        DataType = ftInteger
-        Name = 'I_CLEF'
-        ParamType = ptUnknown
-      end    
-      item
-        DataType = ftInteger
-        Name = 'I_NIVEAU'
-        ParamType = ptUnknown
-      end    
-      item
-        DataType = ftInteger
-        Name = 'I_PARQUI'
-        ParamType = ptUnknown
-      end>
   end
   object IBQ_Medias: TIBQuery
     Database = ibd_BASE
@@ -345,29 +264,6 @@ object DMWeb: TDMWeb
         Name = 'MULTI_IMAGE_RTF'
         ParamType = ptUnknown
       end>
-    left = 152
-    top = 200
-    ParamData = <    
-      item
-        DataType = ftUnknown
-        Name = 'CLE_FICHE'
-        ParamType = ptUnknown
-      end    
-      item
-        DataType = ftUnknown
-        Name = 'MP_IDENTITE'
-        ParamType = ptUnknown
-      end    
-      item
-        DataType = ftUnknown
-        Name = 'MP_TABLE'
-        ParamType = ptUnknown
-      end    
-      item
-        DataType = ftUnknown
-        Name = 'MULTI_IMAGE_RTF'
-        ParamType = ptUnknown
-      end>
   end
   object IBQ_ConjointSources: TIBQuery
     Database = ibd_BASE
@@ -384,14 +280,6 @@ object DMWeb: TDMWeb
       'ORDER BY MP_MEDIA'
     )
     Params = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_CLEF_UNION'
-        ParamType = ptUnknown
-      end>
-    left = 208
-    top = 328
-    ParamData = <    
       item
         DataType = ftUnknown
         Name = 'I_CLEF_UNION'
@@ -428,14 +316,6 @@ object DMWeb: TDMWeb
         Name = 'I_CLEF'
         ParamType = ptUnknown
       end>
-    left = 236
-    top = 248
-    ParamData = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_CLEF'
-        ParamType = ptUnknown
-      end>
   end
   object IBQ_Compte: TIBQuery
     Database = ibd_BASE
@@ -448,14 +328,6 @@ object DMWeb: TDMWeb
       ''
     )
     Params = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_DOSSIER'
-        ParamType = ptUnknown
-      end>
-    left = 236
-    top = 24
-    ParamData = <    
       item
         DataType = ftUnknown
         Name = 'I_DOSSIER'
@@ -475,14 +347,6 @@ object DMWeb: TDMWeb
       'ORDER BY NOM'
     )
     Params = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_DOSSIER'
-        ParamType = ptUnknown
-      end>
-    left = 304
-    top = 88
-    ParamData = <    
       item
         DataType = ftUnknown
         Name = 'I_DOSSIER'
@@ -519,24 +383,6 @@ object DMWeb: TDMWeb
         Name = 'I_PARQUI'
         ParamType = ptUnknown
       end>
-    left = 304
-    top = 144
-    ParamData = <    
-      item
-        DataType = ftInteger
-        Name = 'I_CLEF'
-        ParamType = ptUnknown
-      end    
-      item
-        DataType = ftInteger
-        Name = 'I_NIVEAU'
-        ParamType = ptUnknown
-      end    
-      item
-        DataType = ftInteger
-        Name = 'I_PARQUI'
-        ParamType = ptUnknown
-      end>
   end
   object IBQ_Fiche: TIBQuery
     Database = ibd_BASE
@@ -552,14 +398,6 @@ object DMWeb: TDMWeb
       ''
     )
     Params = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_CLEF'
-        ParamType = ptUnknown
-      end>
-    left = 376
-    top = 224
-    ParamData = <    
       item
         DataType = ftUnknown
         Name = 'I_CLEF'
@@ -581,14 +419,6 @@ object DMWeb: TDMWeb
         Name = 'I_CLEF'
         ParamType = ptUnknown
       end>
-    left = 32
-    top = 136
-    ParamData = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_CLEF'
-        ParamType = ptUnknown
-      end>
   end
   object IBQ_AscExists: TIBQuery
     Database = ibd_BASE
@@ -600,7 +430,5 @@ object DMWeb: TDMWeb
       'select * from RDB$PROCEDURES where rdb$Procedure_name = ''PROC_TQ_ASCENDANCE'''
     )
     Params = <>
-    left = 472
-    top = 224
   end
 end

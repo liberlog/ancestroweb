@@ -16,7 +16,7 @@ object F_AncestroWeb: TF_AncestroWeb
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poScreenCenter
-  LCLVersion = '0.9.30.2RC1'
+  LCLVersion = '0.9.30'
   object spSkinPanel1: TPanel
     Left = 0
     Height = 30
@@ -47,6 +47,8 @@ object F_AncestroWeb: TF_AncestroWeb
       Top = 6
       Caption = 'Fermer'
       TabOrder = 2
+      Font.Color = 2171169
+      ParentFont = False
     end
     object lb_Comments: TLabel
       Left = 384
@@ -67,26 +69,26 @@ object F_AncestroWeb: TF_AncestroWeb
     TabOrder = 1
     object ts_Gen: TTabSheet
       Caption = 'Générer'
-      ClientHeight = 337
+      ClientHeight = 336
       ClientWidth = 636
       object Panel1: TPanel
         Left = 0
-        Height = 337
+        Height = 336
         Top = 0
         Width = 636
         Align = alClient
         BevelOuter = bvNone
-        ClientHeight = 337
+        ClientHeight = 336
         ClientWidth = 636
         TabOrder = 0
         object Panel3: TPanel
           Left = 0
-          Height = 337
+          Height = 336
           Top = 0
           Width = 275
           Align = alLeft
           BevelOuter = bvNone
-          ClientHeight = 337
+          ClientHeight = 336
           ClientWidth = 275
           TabOrder = 0
           object de_ExportWeb: TDirectoryEdit
@@ -145,6 +147,8 @@ object F_AncestroWeb: TF_AncestroWeb
             Width = 20
             Caption = 'Supprimer'
             TabOrder = 3
+            Font.Color = 2171169
+            ParentFont = False
             OnClick = FWEraseImage2Click
           end
           object Label9: TLabel
@@ -191,33 +195,33 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object Splitter1: TSplitter
           Left = 275
-          Height = 337
+          Height = 336
           Top = 0
           Width = 5
         end
         object Panel4: TPanel
           Left = 280
-          Height = 337
+          Height = 336
           Top = 0
           Width = 356
           Align = alClient
           BevelOuter = bvNone
-          ClientHeight = 337
+          ClientHeight = 336
           ClientWidth = 356
           TabOrder = 2
           object Panel5: TPanel
             Left = 0
-            Height = 251
+            Height = 250
             Top = 0
             Width = 356
             Align = alClient
             BevelOuter = bvNone
-            ClientHeight = 251
+            ClientHeight = 250
             ClientWidth = 356
             TabOrder = 0
             object DBGrid1: TDBGrid
               Left = 0
-              Height = 208
+              Height = 207
               Top = 43
               Width = 356
               Align = alClient
@@ -287,7 +291,7 @@ object F_AncestroWeb: TF_AncestroWeb
           object Panel6: TPanel
             Left = 0
             Height = 81
-            Top = 256
+            Top = 255
             Width = 356
             Align = alBottom
             BevelOuter = bvNone
@@ -295,17 +299,20 @@ object F_AncestroWeb: TF_AncestroWeb
             ClientWidth = 356
             TabOrder = 1
             object bt_gen: TFWSaveAs
-              Left = 268
+              Left = 262
               Top = 52
+              Width = 79
               Caption = 'Générer'
               TabOrder = 0
+              Font.Color = 2171169
+              ParentFont = False
               OnClick = bt_genClick
             end
             object fne_Export: TFileNameEdit
-              Left = 85
+              Left = 94
               Height = 22
               Top = 28
-              Width = 240
+              Width = 231
               DialogOptions = [ofCreatePrompt]
               FilterIndex = 0
               HideDirectories = False
@@ -315,10 +322,10 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 1
             end
             object fne_import: TFileNameEdit
-              Left = 85
+              Left = 94
               Height = 22
               Top = 1
-              Width = 241
+              Width = 232
               OnAcceptFileName = fne_importAcceptFileName
               DialogOptions = [ofFileMustExist]
               FilterIndex = 0
@@ -331,8 +338,11 @@ object F_AncestroWeb: TF_AncestroWeb
             object bt_export: TFWSaveAs
               Left = 4
               Top = 28
+              Width = 82
               Caption = 'Exporter'
               TabOrder = 3
+              Font.Color = 2171169
+              ParentFont = False
               OnClick = bt_exportClick
             end
             object Label43: TLabel
@@ -348,7 +358,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Cursor = crVSplit
             Left = 0
             Height = 5
-            Top = 251
+            Top = 250
             Width = 356
             Align = alBottom
             ResizeAnchor = akBottom
@@ -358,17 +368,17 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Home: TTabSheet
       Caption = 'Accueil'
-      ClientHeight = 337
+      ClientHeight = 336
       ClientWidth = 636
       object Panel8: TPanel
         Left = 0
-        Height = 331
+        Height = 336
         Top = 0
-        Width = 634
+        Width = 636
         Align = alClient
         BevelOuter = bvNone
-        ClientHeight = 331
-        ClientWidth = 634
+        ClientHeight = 336
+        ClientWidth = 636
         TabOrder = 0
         object Label2: TLabel
           Left = 6
@@ -380,7 +390,7 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ed_Author: TEdit
           Left = 62
-          Height = 24
+          Height = 22
           Top = 3
           Width = 224
           TabOrder = 0
@@ -435,7 +445,7 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ImageEdit1: TFileNameEdit
           Left = 62
-          Height = 24
+          Height = 22
           Top = 139
           Width = 96
           OnAcceptFileName = ImageEdit1AcceptFileName
@@ -451,7 +461,7 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ImageEdit2: TFileNameEdit
           Left = 214
-          Height = 24
+          Height = 22
           Top = 138
           Width = 152
           OnAcceptFileName = ImageEdit2AcceptFileName
@@ -466,7 +476,7 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ImageEdit3: TFileNameEdit
           Left = 422
-          Height = 24
+          Height = 22
           Top = 139
           Width = 152
           OnAcceptFileName = ImageEdit3AcceptFileName
@@ -485,6 +495,8 @@ object F_AncestroWeb: TF_AncestroWeb
           Width = 20
           Caption = 'Supprimer'
           TabOrder = 5
+          Font.Color = 2171169
+          ParentFont = False
           OnClick = FWEraseImageClick
         end
         object FWEraseImage2: TFWErase
@@ -493,6 +505,8 @@ object F_AncestroWeb: TF_AncestroWeb
           Width = 20
           Caption = 'Supprimer'
           TabOrder = 6
+          Font.Color = 2171169
+          ParentFont = False
           OnClick = FWEraseImage2Click
         end
         object FWEraseImage3: TFWErase
@@ -501,11 +515,13 @@ object F_AncestroWeb: TF_AncestroWeb
           Width = 20
           Caption = 'Supprimer'
           TabOrder = 7
+          Font.Color = 2171169
+          ParentFont = False
           OnClick = FWEraseImage3Click
         end
         object ed_IndexName: TEdit
           Left = 406
-          Height = 24
+          Height = 22
           Top = 3
           Width = 224
           TabOrder = 8
@@ -523,16 +539,16 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Files: TTabSheet
       Caption = 'Fiches'
-      ClientHeight = 337
+      ClientHeight = 336
       ClientWidth = 636
       object Panel10: TPanel
         Left = 0
-        Height = 331
+        Height = 336
         Top = 0
-        Width = 634
+        Width = 636
         Align = alClient
-        ClientHeight = 331
-        ClientWidth = 634
+        ClientHeight = 336
+        ClientWidth = 636
         TabOrder = 0
         object Label13: TLabel
           Left = 246
@@ -544,7 +560,7 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ed_FileBeginName: TEdit
           Left = 406
-          Height = 24
+          Height = 22
           Top = 3
           Width = 224
           TabOrder = 0
@@ -573,13 +589,11 @@ object F_AncestroWeb: TF_AncestroWeb
           Width = 161
           Caption = 'Joindre les images'
           TabOrder = 2
-          Checked = True
-          State = cbChecked
           UseDockManager = False
         end
         object ed_ListsBeginName: TEdit
           Left = 406
-          Height = 24
+          Height = 22
           Top = 27
           Width = 224
           TabOrder = 3
@@ -600,15 +614,13 @@ object F_AncestroWeb: TF_AncestroWeb
           Width = 223
           Caption = 'Statistiques sur les individus'
           TabOrder = 4
-          Checked = True
-          State = cbChecked
           UseDockManager = False
         end
       end
     end
     object ts_tree: TTabSheet
       Caption = 'Arbre'
-      ClientHeight = 337
+      ClientHeight = 336
       ClientWidth = 636
       object Panel2: TPanel
         Left = 0
@@ -667,7 +679,7 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Names: TTabSheet
       Caption = 'Patronymes'
-      ClientHeight = 337
+      ClientHeight = 336
       ClientWidth = 636
       object Panel12: TPanel
         Left = 0
@@ -725,7 +737,7 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Referring: TTabSheet
       Caption = 'Recherche'
-      ClientHeight = 337
+      ClientHeight = 336
       ClientWidth = 636
       object Panel11: TPanel
         Left = 0
@@ -845,7 +857,7 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Contact: TTabSheet
       Caption = 'Contact'
-      ClientHeight = 337
+      ClientHeight = 336
       ClientWidth = 636
       object Panel9: TPanel
         Left = 0
@@ -1079,7 +1091,7 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_about: TTabSheet
       Caption = 'À propos'
-      ClientHeight = 337
+      ClientHeight = 336
       ClientWidth = 636
       object pa_About: TScrollBox
         Left = 0
