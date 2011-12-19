@@ -593,7 +593,7 @@ begin
   FileCopy.Destination := de_ExportWeb.Text;
   ls_Destination := FileCopy.Destination+ DirectorySeparator;
   if DirectoryExists ( ls_Destination ) Then
-    if ( MessageDlg(gs_ANCESTROWEB_Delete, gs_ANCESTROWEB_ExportDelete, mtWarning, mbYesNo, 0 ) = mrYes ) then
+    if ( MessageDlg(gs_ANCESTROWEB_ExportDelete, mtWarning, mbYesNo, 0 ) = mrYes ) then
       try
         fb_EraseDir(ls_Destination, False);
         fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_CSS, True);
