@@ -19,6 +19,7 @@ uses Dialogs,
   classes;
 procedure InitStartDll(value: Pchar);
 function InitTitreDll: Pchar;
+function RetourDll: PInteger;
 
 
 implementation
@@ -33,6 +34,11 @@ uses U_AncestroWeb,
 function InitTitreDll: pchar;
 begin
   result := PChar( fs_getCorrectString ( gs_ANCESTROWEB_TITRE ));
+end;
+
+function RetourDll: PInteger;
+begin
+  Result := PInteger(-10);
 end;
 
 procedure InitStartDll(value: Pchar);
@@ -53,4 +59,4 @@ begin
   aFMain.Free;
 end;
 end.
-
+

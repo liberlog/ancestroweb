@@ -30,7 +30,8 @@ uses
 
 exports
   InitTitreDll,
-  InitStartDll;
+  InitStartDll,
+  RetourDll;
 
 begin
-end.
+end.
