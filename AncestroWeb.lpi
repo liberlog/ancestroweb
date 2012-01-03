@@ -191,10 +191,11 @@
       <Unit12>
         <Filename Value="ancestroweb_strings.pas"/>
         <UnitName Value="AncestroWeb_strings"/>
-        <EditorIndex Value="9"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="44"/>
-        <CursorPos X="1" Y="73"/>
+        <TopLine Value="1"/>
+        <CursorPos X="126" Y="12"/>
         <UsageCount Value="12"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -210,7 +211,7 @@
       <Unit14>
         <Filename Value="AncestroWebExe.lpr"/>
         <UnitName Value="demo"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
         <TopLine Value="13"/>
         <CursorPos X="1" Y="25"/>
@@ -237,18 +238,15 @@
       <Unit17>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
         <UnitName Value="functions_html"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="161"/>
-        <CursorPos X="16" Y="180"/>
+        <CursorPos X="117" Y="167"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit17>
       <Unit18>
         <Filename Value="../ExtCopy/composants/u_extractfile.pas"/>
         <UnitName Value="u_extractfile"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="19"/>
         <CursorPos X="4" Y="35"/>
@@ -259,18 +257,16 @@
       <Unit19>
         <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
         <UnitName Value="u_extabscopy"/>
-        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="12"/>
         <CursorPos X="23" Y="72"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit19>
       <Unit20>
         <Filename Value="../ExtCopy/fonctions/fonctions_file.pas"/>
         <UnitName Value="fonctions_file"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="4"/>
@@ -281,18 +277,16 @@
       <Unit21>
         <Filename Value="../ExtCopy/fonctions/unit_messagescopy.pas"/>
         <UnitName Value="unit_messagescopy"/>
-        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="9"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit21>
       <Unit22>
         <Filename Value="../ExtCopy/composants/u_traducefile.pas"/>
         <UnitName Value="u_traducefile"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="459"/>
         <CursorPos X="82" Y="459"/>
@@ -303,136 +297,54 @@
       <Unit23>
         <Filename Value="../ExtCopy/composants/U_ExtFileCopy.pas"/>
         <UnitName Value="U_ExtFileCopy"/>
-        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="38"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit23>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="10" HistoryIndex="9">
       <Position1>
-        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position1>
-      <Position2>
-        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
-        <Caret Line="4" Column="1" TopLine="1"/>
-      </Position2>
-      <Position3>
-        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
-        <Caret Line="10" Column="1" TopLine="1"/>
-      </Position3>
-      <Position4>
-        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
-        <Caret Line="154" Column="1" TopLine="120"/>
-      </Position4>
-      <Position5>
-        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
-        <Caret Line="28" Column="1" TopLine="25"/>
-      </Position5>
-      <Position6>
-        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
-        <Caret Line="29" Column="1" TopLine="10"/>
-      </Position6>
-      <Position7>
-        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position7>
-      <Position8>
-        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
-        <Caret Line="30" Column="3" TopLine="1"/>
-      </Position8>
-      <Position9>
-        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
-        <Caret Line="18" Column="53" TopLine="1"/>
-      </Position9>
-      <Position10>
-        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position10>
-      <Position11>
-        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
-        <Caret Line="34" Column="1" TopLine="16"/>
-      </Position11>
-      <Position12>
-        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
-        <Caret Line="107" Column="30" TopLine="96"/>
-      </Position12>
-      <Position13>
-        <Filename Value="../ExtCopy/fonctions/unit_messagescopy.pas"/>
-        <Caret Line="11" Column="16" TopLine="2"/>
-      </Position13>
-      <Position14>
         <Filename Value="../ExtCopy/composants/u_traducefile.pas"/>
         <Caret Line="31" Column="64" TopLine="31"/>
-      </Position14>
-      <Position15>
+      </Position1>
+      <Position2>
         <Filename Value="../ExtCopy/composants/u_traducefile.pas"/>
         <Caret Line="464" Column="44" TopLine="460"/>
-      </Position15>
-      <Position16>
-        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
-        <Caret Line="32" Column="21" TopLine="10"/>
-      </Position16>
-      <Position17>
-        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
-        <Caret Line="97" Column="25" TopLine="81"/>
-      </Position17>
-      <Position18>
-        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
-        <Caret Line="28" Column="1" TopLine="9"/>
-      </Position18>
-      <Position19>
+      </Position2>
+      <Position3>
         <Filename Value="../ExtCopy/composants/u_traducefile.pas"/>
         <Caret Line="19" Column="1" TopLine="9"/>
-      </Position19>
-      <Position20>
+      </Position3>
+      <Position4>
         <Filename Value="../ExtCopy/composants/u_traducefile.pas"/>
         <Caret Line="380" Column="1" TopLine="361"/>
-      </Position20>
-      <Position21>
-        <Filename Value="../ExtCopy/composants/U_ExtFileCopy.pas"/>
-        <Caret Line="41" Column="21" TopLine="31"/>
-      </Position21>
-      <Position22>
-        <Filename Value="../ExtCopy/composants/U_ExtFileCopy.pas"/>
-        <Caret Line="104" Column="36" TopLine="76"/>
-      </Position22>
-      <Position23>
-        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
-        <Caret Line="71" Column="1" TopLine="52"/>
-      </Position23>
-      <Position24>
+      </Position4>
+      <Position5>
         <Filename Value="../ExtCopy/composants/u_traducefile.pas"/>
         <Caret Line="469" Column="1" TopLine="432"/>
-      </Position24>
-      <Position25>
+      </Position5>
+      <Position6>
         <Filename Value="../ExtCopy/composants/u_traducefile.pas"/>
         <Caret Line="459" Column="82" TopLine="440"/>
-      </Position25>
-      <Position26>
+      </Position6>
+      <Position7>
         <Filename Value="../ExtCopy/composants/u_extractfile.pas"/>
         <Caret Line="117" Column="55" TopLine="90"/>
-      </Position26>
-      <Position27>
+      </Position7>
+      <Position8>
         <Filename Value="../ExtCopy/composants/u_extractfile.pas"/>
         <Caret Line="91" Column="23" TopLine="67"/>
-      </Position27>
-      <Position28>
+      </Position8>
+      <Position9>
         <Filename Value="../ExtCopy/composants/u_extractfile.pas"/>
         <Caret Line="90" Column="75" TopLine="67"/>
-      </Position28>
-      <Position29>
+      </Position9>
+      <Position10>
         <Filename Value="../ExtCopy/composants/u_extractfile.pas"/>
         <Caret Line="25" Column="1" TopLine="1"/>
-      </Position29>
-      <Position30>
-        <Filename Value="../ExtCopy/composants/U_ExtFileCopy.pas"/>
-        <Caret Line="108" Column="212" TopLine="104"/>
-      </Position30>
+      </Position10>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

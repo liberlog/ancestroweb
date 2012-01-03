@@ -21,7 +21,7 @@ resourcestring
   gs_ANCESTROWEB_Delete =
     'Effacement';
   gs_ANCESTROWEB_ExportDelete =
-    'Confirmez-vous l''effacement du chemin d''exportation @ARG.';
+    'Confirmez-vous l''effacement du chemin d''exportation'+#13#10+'@ARG.';
   gs_ANCESTROWEB_ExportErrorCreate = 'Erreur à la copie de ';
   gs_ANCESTROWEB_ExportErrorErase = 'Erreur à l''effacement de ';
   gs_ANCESTROWEB_ErrorCreateSOSA = 'Erreur : Effectuez une numérotation SOSA.';
