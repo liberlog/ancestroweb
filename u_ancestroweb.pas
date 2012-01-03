@@ -588,12 +588,15 @@ end;
 procedure TF_AncestroWeb.p_CopyStructure;
 var
   ls_Destination: string;
+  lt_arg : array [0..0] of string;
 begin
   p_IncPrgressBar;
   FileCopy.Destination := de_ExportWeb.Text;
   ls_Destination := FileCopy.Destination+ DirectorySeparator;
   if DirectoryExists ( ls_Destination ) Then
-    if ( MessageDlg(gs_ANCESTROWEB_ExportDelete, mtWarning, mbYesNo, 0 ) = mrYes ) then
+   Begin
+    lt_arg [0] := ls_Destination;
+    if ( MessageDlg(fs_RemplaceMsg(gs_ANCESTROWEB_ExportDelete, lt_arg), mtWarning, mbYesNo, 0 ) = mrYes ) then
       try
         fb_EraseDir(ls_Destination, False);
         fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_CSS, True);
@@ -613,6 +616,7 @@ begin
       end
     Else
      Abort;
+    End;
   p_IncPrgressBar;
   if (cb_Themes.Items.Count = 0) then
   begin

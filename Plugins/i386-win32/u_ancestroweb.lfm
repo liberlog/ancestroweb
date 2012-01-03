@@ -1,0 +1,1258 @@
+object F_AncestroWeb: TF_AncestroWeb
+  Left = 184
+  Height = 400
+  Top = 100
+  Width = 640
+  BorderIcons = []
+  Caption = 'AncestroWeb : Générer un Site Web Généalogique Statique'
+  ClientHeight = 400
+  ClientWidth = 640
+  Color = clBtnFace
+  DefaultMonitor = dmPrimary
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  Position = poScreenCenter
+  LCLVersion = '0.9.30'
+  object spSkinPanel1: TPanel
+    Left = 0
+    Height = 30
+    Top = 370
+    Width = 640
+    Align = alBottom
+    ClientHeight = 30
+    ClientWidth = 640
+    TabOrder = 0
+    object pb_ProgressInd: TProgressBar
+      Left = 144
+      Height = 28
+      Top = 1
+      Width = 231
+      Align = alLeft
+      TabOrder = 0
+    end
+    object pb_ProgressAll: TProgressBar
+      Left = 1
+      Height = 28
+      Top = 1
+      Width = 143
+      Align = alLeft
+      TabOrder = 1
+    end
+    object FWClose1: TFWClose
+      Left = 552
+      Top = 6
+      Caption = 'Fermer'
+      TabOrder = 2
+      Font.Color = 2171169
+      ParentFont = False
+    end
+    object lb_Comments: TLabel
+      Left = 384
+      Height = 1
+      Top = 6
+      Width = 1
+      ParentColor = False
+    end
+  end
+  object PageControl1: TPageControl
+    Left = 0
+    Height = 370
+    Top = 0
+    Width = 640
+    ActivePage = ts_Gen
+    Align = alClient
+    TabIndex = 0
+    TabOrder = 1
+    object ts_Gen: TTabSheet
+      Caption = 'Générer'
+      ClientHeight = 336
+      ClientWidth = 636
+      object Panel1: TPanel
+        Left = 0
+        Height = 336
+        Top = 0
+        Width = 636
+        Align = alClient
+        BevelOuter = bvNone
+        ClientHeight = 336
+        ClientWidth = 636
+        TabOrder = 0
+        object Panel3: TPanel
+          Left = 0
+          Height = 336
+          Top = 0
+          Width = 275
+          Align = alLeft
+          BevelOuter = bvNone
+          ClientHeight = 336
+          ClientWidth = 275
+          TabOrder = 0
+          object de_ExportWeb: TDirectoryEdit
+            Left = 6
+            Height = 22
+            Top = 27
+            Width = 240
+            OnAcceptDirectory = de_ExportWebAcceptDirectory
+            ShowHidden = False
+            ButtonWidth = 23
+            NumGlyphs = 0
+            MaxLength = 0
+            TabOrder = 0
+          end
+          object Label1: TLabel
+            Left = 6
+            Height = 15
+            Top = 8
+            Width = 263
+            Caption = 'Répertoire du site web généalogique à créer :'
+            ParentColor = False
+          end
+          object Label7: TLabel
+            Left = 11
+            Height = 15
+            Top = 58
+            Width = 48
+            Caption = 'Thème :'
+            ParentColor = False
+          end
+          object cb_Themes: TComboBox
+            Left = 70
+            Height = 25
+            Top = 51
+            Width = 199
+            ItemHeight = 0
+            TabOrder = 1
+            Text = 'default'
+          end
+          object GedcomEdit: TFileNameEdit
+            Left = 70
+            Height = 22
+            Top = 106
+            Width = 152
+            DialogOptions = []
+            FilterIndex = 0
+            HideDirectories = False
+            ButtonWidth = 23
+            NumGlyphs = 0
+            MaxLength = 0
+            TabOrder = 2
+          end
+          object FWEraseGedcom: TFWErase
+            Left = 249
+            Top = 106
+            Width = 20
+            Caption = 'Supprimer'
+            TabOrder = 3
+            Font.Color = 2171169
+            ParentFont = False
+            OnClick = FWEraseImage2Click
+          end
+          object Label9: TLabel
+            Left = 11
+            Height = 15
+            Top = 112
+            Width = 59
+            Caption = 'GEDCOM :'
+            ParentColor = False
+          end
+          object me_Bottom: TMemo
+            Left = 6
+            Height = 74
+            Top = 147
+            Width = 262
+            ScrollBars = ssAutoBoth
+            TabOrder = 4
+          end
+          object Label6: TLabel
+            Left = 10
+            Height = 15
+            Top = 132
+            Width = 142
+            Caption = 'En bas de chaque page :'
+            ParentColor = False
+          end
+          object cb_Files: TComboBox
+            Left = 70
+            Height = 25
+            Top = 79
+            Width = 199
+            ItemHeight = 0
+            TabOrder = 5
+            Text = 'default'
+          end
+          object Label44: TLabel
+            Left = 12
+            Height = 15
+            Top = 84
+            Width = 54
+            Caption = 'Sources :'
+            ParentColor = False
+          end
+        end
+        object Splitter1: TSplitter
+          Left = 275
+          Height = 336
+          Top = 0
+          Width = 5
+        end
+        object Panel4: TPanel
+          Left = 280
+          Height = 336
+          Top = 0
+          Width = 356
+          Align = alClient
+          BevelOuter = bvNone
+          ClientHeight = 336
+          ClientWidth = 356
+          TabOrder = 2
+          object Panel5: TPanel
+            Left = 0
+            Height = 250
+            Top = 0
+            Width = 356
+            Align = alClient
+            BevelOuter = bvNone
+            ClientHeight = 250
+            ClientWidth = 356
+            TabOrder = 0
+            object DBGrid1: TDBGrid
+              Left = 0
+              Height = 207
+              Top = 43
+              Width = 356
+              Align = alClient
+              Color = clWindow
+              Columns = <              
+                item
+                  Title.Caption = 'Nom'
+                  Width = 70
+                  FieldName = 'NOM'
+                end              
+                item
+                  Title.Caption = 'Prénom'
+                  Width = 195
+                  FieldName = 'PRENOM'
+                end              
+                item
+                  Title.Caption = 'Né(e)'
+                  Width = 40
+                  FieldName = 'ANNEE_NAISSANCE'
+                end              
+                item
+                  Title.Caption = 'Décès'
+                  Width = 40
+                  FieldName = 'ANNEE_DECES'
+                end>
+              DataSource = ds_Individu
+              ReadOnly = True
+              TabOrder = 0
+              TitleFont.Color = clWindowText
+              TitleFont.Height = -11
+              TitleFont.Name = 'MS Sans Serif'
+              OnCellClick = DBGrid1CellClick
+            end
+            object Panel7: TPanel
+              Left = 0
+              Height = 43
+              Top = 0
+              Width = 356
+              Align = alTop
+              BevelOuter = bvNone
+              ClientHeight = 43
+              ClientWidth = 356
+              TabOrder = 1
+              object ch_ancestors: TJvXPCheckbox
+                Left = 7
+                Height = 17
+                Top = 27
+                Width = 159
+                Caption = 'Ascendance'
+                TabOrder = 0
+                Checked = True
+                State = cbChecked
+                UseDockManager = False
+              end
+              object ch_Filtered: TJvXPCheckbox
+                Left = 7
+                Height = 17
+                Top = 3
+                Width = 344
+                Caption = 'Filtrer par l''individu :'
+                TabOrder = 1
+                UseDockManager = False
+                OnClick = ch_FilteredClick
+              end
+            end
+          end
+          object Panel6: TPanel
+            Left = 0
+            Height = 81
+            Top = 255
+            Width = 356
+            Align = alBottom
+            BevelOuter = bvNone
+            ClientHeight = 81
+            ClientWidth = 356
+            TabOrder = 1
+            object bt_gen: TFWSaveAs
+              Left = 262
+              Top = 52
+              Width = 79
+              Caption = 'Générer'
+              TabOrder = 0
+              Font.Color = 2171169
+              ParentFont = False
+              OnClick = bt_genClick
+            end
+            object fne_Export: TFileNameEdit
+              Left = 94
+              Height = 22
+              Top = 28
+              Width = 231
+              DialogOptions = [ofCreatePrompt]
+              FilterIndex = 0
+              HideDirectories = False
+              ButtonWidth = 23
+              NumGlyphs = 0
+              MaxLength = 0
+              TabOrder = 1
+            end
+            object fne_import: TFileNameEdit
+              Left = 94
+              Height = 22
+              Top = 1
+              Width = 232
+              OnAcceptFileName = fne_importAcceptFileName
+              DialogOptions = [ofFileMustExist]
+              FilterIndex = 0
+              HideDirectories = False
+              ButtonWidth = 23
+              NumGlyphs = 0
+              MaxLength = 0
+              TabOrder = 2
+            end
+            object bt_export: TFWSaveAs
+              Left = 4
+              Top = 28
+              Width = 82
+              Caption = 'Exporter'
+              TabOrder = 3
+              Font.Color = 2171169
+              ParentFont = False
+              OnClick = bt_exportClick
+            end
+            object Label43: TLabel
+              Left = 6
+              Height = 15
+              Top = 5
+              Width = 58
+              Caption = 'Importer :'
+              ParentColor = False
+            end
+          end
+          object Splitter2: TSplitter
+            Cursor = crVSplit
+            Left = 0
+            Height = 5
+            Top = 250
+            Width = 356
+            Align = alBottom
+            ResizeAnchor = akBottom
+          end
+        end
+      end
+    end
+    object ts_Home: TTabSheet
+      Caption = 'Accueil'
+      ClientHeight = 336
+      ClientWidth = 636
+      object Panel8: TPanel
+        Left = 0
+        Height = 336
+        Top = 0
+        Width = 636
+        Align = alClient
+        BevelOuter = bvNone
+        ClientHeight = 336
+        ClientWidth = 636
+        TabOrder = 0
+        object Label2: TLabel
+          Left = 6
+          Height = 15
+          Top = 7
+          Width = 47
+          Caption = 'Auteur :'
+          ParentColor = False
+        end
+        object ed_Author: TEdit
+          Left = 62
+          Height = 22
+          Top = 3
+          Width = 224
+          TabOrder = 0
+        end
+        object me_Description: TMemo
+          Left = 6
+          Height = 74
+          Top = 43
+          Width = 622
+          ScrollBars = ssAutoBoth
+          TabOrder = 1
+        end
+        object Label3: TLabel
+          Left = 6
+          Height = 15
+          Top = 27
+          Width = 72
+          Caption = 'Description :'
+          ParentColor = False
+        end
+        object ExtImage1: TExtImage
+          Left = 6
+          Height = 170
+          Top = 163
+          Width = 200
+          Center = True
+          Proportional = True
+        end
+        object ExtImage2: TExtImage
+          Left = 214
+          Height = 170
+          Top = 163
+          Width = 200
+          Center = True
+          Proportional = True
+        end
+        object ExtImage3: TExtImage
+          Left = 422
+          Height = 170
+          Top = 163
+          Width = 200
+          Center = True
+          Proportional = True
+        end
+        object lb_Images: TLabel
+          Left = 6
+          Height = 15
+          Top = 147
+          Width = 50
+          Caption = 'Images :'
+          ParentColor = False
+        end
+        object ImageEdit1: TFileNameEdit
+          Left = 62
+          Height = 22
+          Top = 139
+          Width = 96
+          OnAcceptFileName = ImageEdit1AcceptFileName
+          DialogOptions = []
+          Filter = '*'
+          FilterIndex = 0
+          HideDirectories = False
+          ButtonWidth = 23
+          NumGlyphs = 0
+          MaxLength = 0
+          TabOrder = 2
+          OnChange = ImageEdit1Change
+        end
+        object ImageEdit2: TFileNameEdit
+          Left = 214
+          Height = 22
+          Top = 138
+          Width = 152
+          OnAcceptFileName = ImageEdit2AcceptFileName
+          DialogOptions = []
+          FilterIndex = 0
+          HideDirectories = False
+          ButtonWidth = 23
+          NumGlyphs = 0
+          MaxLength = 0
+          TabOrder = 3
+          OnChange = ImageEdit2Change
+        end
+        object ImageEdit3: TFileNameEdit
+          Left = 422
+          Height = 22
+          Top = 139
+          Width = 152
+          OnAcceptFileName = ImageEdit3AcceptFileName
+          DialogOptions = []
+          FilterIndex = 0
+          HideDirectories = False
+          ButtonWidth = 23
+          NumGlyphs = 0
+          MaxLength = 0
+          TabOrder = 4
+          OnChange = ImageEdit3Change
+        end
+        object FWEraseImage: TFWErase
+          Left = 186
+          Top = 139
+          Width = 20
+          Caption = 'Supprimer'
+          TabOrder = 5
+          Font.Color = 2171169
+          ParentFont = False
+          OnClick = FWEraseImageClick
+        end
+        object FWEraseImage2: TFWErase
+          Left = 394
+          Top = 139
+          Width = 20
+          Caption = 'Supprimer'
+          TabOrder = 6
+          Font.Color = 2171169
+          ParentFont = False
+          OnClick = FWEraseImage2Click
+        end
+        object FWEraseImage3: TFWErase
+          Left = 602
+          Top = 138
+          Width = 20
+          Caption = 'Supprimer'
+          TabOrder = 7
+          Font.Color = 2171169
+          ParentFont = False
+          OnClick = FWEraseImage3Click
+        end
+        object ed_IndexName: TEdit
+          Left = 406
+          Height = 22
+          Top = 3
+          Width = 224
+          TabOrder = 8
+          Text = 'Index'
+        end
+        object Label10: TLabel
+          Left = 302
+          Height = 15
+          Top = 7
+          Width = 92
+          Caption = 'Nom du fichier :'
+          ParentColor = False
+        end
+      end
+    end
+    object ts_Files: TTabSheet
+      Caption = 'Fiches'
+      ClientHeight = 336
+      ClientWidth = 636
+      object Panel10: TPanel
+        Left = 0
+        Height = 336
+        Top = 0
+        Width = 636
+        Align = alClient
+        ClientHeight = 336
+        ClientWidth = 636
+        TabOrder = 0
+        object Label13: TLabel
+          Left = 246
+          Height = 15
+          Top = 8
+          Width = 158
+          Caption = 'Nom du début des fichiers :'
+          ParentColor = False
+        end
+        object ed_FileBeginName: TEdit
+          Left = 406
+          Height = 22
+          Top = 3
+          Width = 224
+          TabOrder = 0
+          Text = 'Files'
+        end
+        object me_FilesHead: TMemo
+          Left = 6
+          Height = 74
+          Top = 51
+          Width = 622
+          ScrollBars = ssAutoBoth
+          TabOrder = 1
+        end
+        object Label14: TLabel
+          Left = 6
+          Height = 15
+          Top = 31
+          Width = 72
+          Caption = 'Description :'
+          ParentColor = False
+        end
+        object ch_Images: TJvXPCheckbox
+          Left = 6
+          Height = 17
+          Top = 131
+          Width = 161
+          Caption = 'Joindre les images'
+          TabOrder = 2
+          UseDockManager = False
+        end
+        object ed_ListsBeginName: TEdit
+          Left = 406
+          Height = 22
+          Top = 27
+          Width = 224
+          TabOrder = 3
+          Text = 'List'
+        end
+        object Label31: TLabel
+          Left = 213
+          Height = 15
+          Top = 31
+          Width = 191
+          Caption = 'Nom du début des fichiers listes :'
+          ParentColor = False
+        end
+        object ch_Comptage: TJvXPCheckbox
+          Left = 6
+          Height = 17
+          Top = 156
+          Width = 223
+          Caption = 'Statistiques sur les individus'
+          TabOrder = 4
+          UseDockManager = False
+        end
+      end
+    end
+    object ts_tree: TTabSheet
+      Caption = 'Arbre'
+      ClientHeight = 336
+      ClientWidth = 636
+      object Panel2: TPanel
+        Left = 0
+        Height = 331
+        Top = 0
+        Width = 634
+        Align = alClient
+        BevelOuter = bvNone
+        ClientHeight = 331
+        ClientWidth = 634
+        TabOrder = 0
+        object ch_genTree: TJvXPCheckbox
+          Left = 6
+          Height = 17
+          Top = 8
+          Width = 161
+          Caption = 'Générer l''arbre'
+          TabOrder = 0
+          Checked = True
+          State = cbChecked
+          UseDockManager = False
+        end
+        object me_HeadTree: TMemo
+          Left = 6
+          Height = 74
+          Top = 43
+          Width = 622
+          ScrollBars = ssAutoVertical
+          TabOrder = 1
+        end
+        object Label8: TLabel
+          Left = 6
+          Height = 15
+          Top = 27
+          Width = 45
+          Caption = 'Entête :'
+          ParentColor = False
+        end
+        object Label11: TLabel
+          Left = 302
+          Height = 15
+          Top = 7
+          Width = 92
+          Caption = 'Nom du fichier :'
+          ParentColor = False
+        end
+        object ed_TreeName: TEdit
+          Left = 406
+          Height = 24
+          Top = 3
+          Width = 224
+          TabOrder = 2
+          Text = 'Tree'
+        end
+      end
+    end
+    object ts_Names: TTabSheet
+      Caption = 'Patronymes'
+      ClientHeight = 336
+      ClientWidth = 636
+      object Panel12: TPanel
+        Left = 0
+        Height = 331
+        Top = 0
+        Width = 634
+        Align = alClient
+        ClientHeight = 331
+        ClientWidth = 634
+        TabOrder = 0
+        object ch_genNames: TJvXPCheckbox
+          Left = 6
+          Height = 17
+          Top = 8
+          Width = 161
+          Caption = 'Générer les patronymes'
+          TabOrder = 0
+          Checked = True
+          State = cbChecked
+          UseDockManager = False
+        end
+        object Label29: TLabel
+          Left = 254
+          Height = 15
+          Top = 7
+          Width = 146
+          Caption = 'Nom du début du fichier :'
+          ParentColor = False
+        end
+        object ed_NamesFileName: TEdit
+          Left = 406
+          Height = 24
+          Top = 3
+          Width = 224
+          TabOrder = 1
+          Text = 'Names'
+        end
+        object me_NamesHead: TMemo
+          Left = 6
+          Height = 74
+          Top = 43
+          Width = 622
+          ScrollBars = ssAutoBoth
+          TabOrder = 2
+        end
+        object Label30: TLabel
+          Left = 6
+          Height = 15
+          Top = 27
+          Width = 72
+          Caption = 'Description :'
+          ParentColor = False
+        end
+      end
+    end
+    object ts_Referring: TTabSheet
+      Caption = 'Recherche'
+      ClientHeight = 336
+      ClientWidth = 636
+      object Panel11: TPanel
+        Left = 0
+        Height = 339
+        Top = 0
+        Width = 636
+        Align = alClient
+        BevelOuter = bvNone
+        ClientHeight = 339
+        ClientWidth = 636
+        TabOrder = 0
+        object ch_genSearch: TJvXPCheckbox
+          Left = 6
+          Height = 17
+          Top = 27
+          Width = 161
+          Caption = 'Générer la recherche'
+          TabOrder = 0
+          UseDockManager = False
+        end
+        object Label15: TLabel
+          Left = 6
+          Height = 15
+          Top = 3
+          Width = 608
+          Caption = 'Cette fiche génère une recherche, qui fontionne 1 mois après avoir inscrit votre site sur un site référencé.'
+          ParentColor = False
+        end
+        object Label16: TLabel
+          Left = 300
+          Height = 15
+          Top = 29
+          Width = 92
+          Caption = 'Nom du fichier :'
+          ParentColor = False
+        end
+        object ed_SearchName: TEdit
+          Left = 404
+          Height = 24
+          Top = 25
+          Width = 224
+          TabOrder = 1
+          Text = 'Recherche'
+        end
+        object me_searchHead: TMemo
+          Left = 6
+          Height = 74
+          Top = 67
+          Width = 622
+          ScrollBars = ssAutoVertical
+          TabOrder = 2
+        end
+        object Label17: TLabel
+          Left = 6
+          Height = 15
+          Top = 51
+          Width = 45
+          Caption = 'Entête :'
+          ParentColor = False
+        end
+        object ed_SearchSite: TEdit
+          Left = 382
+          Height = 24
+          Top = 147
+          Width = 248
+          TabOrder = 3
+        end
+        object Label18: TLabel
+          Left = 6
+          Height = 15
+          Top = 151
+          Width = 371
+          Caption = 'Domaine de votre site web (compte et fin d''adresse hébergeur) :'
+          ParentColor = False
+        end
+        object ed_SearchTool: TEdit
+          Left = 382
+          Height = 24
+          Top = 175
+          Width = 248
+          TabOrder = 4
+          Text = 'http://www.google.fr/search'
+        end
+        object Label32: TLabel
+          Left = 270
+          Height = 15
+          Top = 179
+          Width = 109
+          Caption = 'Site de recherche :'
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          ParentColor = False
+          ParentFont = False
+        end
+        object ed_SearchQuery: TEdit
+          Left = 142
+          Height = 24
+          Top = 175
+          Width = 112
+          TabOrder = 5
+          Text = 'q'
+        end
+        object Label33: TLabel
+          Left = 6
+          Height = 15
+          Top = 179
+          Width = 131
+          Caption = 'Identifiant de requête :'
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          ParentColor = False
+          ParentFont = False
+        end
+      end
+    end
+    object ts_Contact: TTabSheet
+      Caption = 'Contact'
+      ClientHeight = 336
+      ClientWidth = 636
+      object Panel9: TPanel
+        Left = 0
+        Height = 344
+        Top = 0
+        Width = 632
+        Align = alClient
+        BevelOuter = bvNone
+        ClientHeight = 344
+        ClientWidth = 632
+        TabOrder = 0
+        object Label4: TLabel
+          Left = 6
+          Height = 14
+          Top = 3
+          Width = 388
+          Caption = 'Cette fiche utilise le langage PHP, afin de cacher votre mail des publicités du web.'
+          ParentColor = False
+        end
+        object me_ContactHead: TMemo
+          Left = 6
+          Height = 74
+          Top = 67
+          Width = 622
+          ScrollBars = ssAutoVertical
+          TabOrder = 0
+        end
+        object Label5: TLabel
+          Left = 6
+          Height = 14
+          Top = 51
+          Width = 38
+          Caption = 'Entête :'
+          ParentColor = False
+        end
+        object ch_genContact: TJvXPCheckbox
+          Left = 6
+          Height = 17
+          Top = 27
+          Width = 233
+          Caption = 'Générer la fiche de contact'
+          TabOrder = 1
+          Checked = True
+          State = cbChecked
+          UseDockManager = False
+        end
+        object ed_ContactName: TEdit
+          Left = 404
+          Height = 21
+          Top = 25
+          Width = 224
+          TabOrder = 2
+          Text = 'Contact'
+        end
+        object Label12: TLabel
+          Left = 300
+          Height = 14
+          Top = 29
+          Width = 75
+          Caption = 'Nom du fichier :'
+          ParentColor = False
+        end
+        object cb_ContactSecurity: TComboBox
+          Left = 420
+          Height = 23
+          Top = 171
+          Width = 208
+          ItemHeight = 0
+          ItemIndex = 0
+          Items.Strings = (
+            'ssl'
+          )
+          TabOrder = 3
+          Text = 'ssl'
+        end
+        object Label34: TLabel
+          Left = 324
+          Height = 14
+          Top = 179
+          Width = 60
+          Caption = 'Sa sécurité :'
+          ParentColor = False
+        end
+        object ed_ContactMail: TEdit
+          Left = 102
+          Height = 21
+          Top = 147
+          Width = 208
+          TabOrder = 4
+        end
+        object Label35: TLabel
+          Left = 6
+          Height = 14
+          Top = 151
+          Width = 26
+          Caption = 'Mail :'
+          ParentColor = False
+        end
+        object ed_ContactHost: TEdit
+          Left = 102
+          Height = 21
+          Top = 174
+          Width = 208
+          TabOrder = 5
+          Text = 'localhost'
+        end
+        object Label36: TLabel
+          Left = 6
+          Height = 14
+          Top = 178
+          Width = 68
+          Caption = 'Serveur hôte :'
+          ParentColor = False
+        end
+        object ed_ContactUser: TEdit
+          Left = 102
+          Height = 21
+          Top = 243
+          Width = 208
+          TabOrder = 6
+        end
+        object Label37: TLabel
+          Left = 6
+          Height = 14
+          Top = 247
+          Width = 53
+          Caption = 'Utilisateur :'
+          ParentColor = False
+        end
+        object ed_ContactPassword: TEdit
+          Left = 420
+          Height = 21
+          Top = 243
+          Width = 208
+          EchoMode = emPassword
+          PasswordChar = '*'
+          TabOrder = 7
+        end
+        object Label38: TLabel
+          Left = 324
+          Height = 14
+          Top = 247
+          Width = 71
+          Caption = 'Mot de passe :'
+          ParentColor = False
+        end
+        object ch_ContactIdentify: TJvXPCheckbox
+          Left = 6
+          Height = 17
+          Top = 227
+          Width = 233
+          Caption = 'S''identifier sur ce serveur :'
+          TabOrder = 8
+          Checked = True
+          State = cbChecked
+          UseDockManager = False
+        end
+        object Label39: TLabel
+          Left = 326
+          Height = 14
+          Top = 275
+          Width = 80
+          Caption = 'Mot de passe 2 :'
+          ParentColor = False
+        end
+        object ed_ContactPassword2: TEdit
+          Left = 420
+          Height = 21
+          Top = 271
+          Width = 208
+          EchoMode = emPassword
+          PasswordChar = '*'
+          TabOrder = 9
+        end
+        object Label40: TLabel
+          Left = 6
+          Height = 14
+          Top = 206
+          Width = 79
+          Caption = 'Port du serveur :'
+          ParentColor = False
+        end
+        object se_ContactPort: TSpinEdit
+          Left = 102
+          Height = 21
+          Top = 203
+          Width = 90
+          MaxValue = 65536
+          TabOrder = 10
+          Value = 1
+        end
+        object ed_ContactAuthor: TEdit
+          Left = 420
+          Height = 21
+          Top = 147
+          Width = 208
+          TabOrder = 11
+        end
+        object Label41: TLabel
+          Left = 324
+          Height = 14
+          Top = 151
+          Width = 38
+          Caption = 'Auteur :'
+          ParentColor = False
+        end
+        object cb_ContactTool: TComboBox
+          Left = 420
+          Height = 23
+          Top = 200
+          Width = 208
+          ItemHeight = 0
+          ItemIndex = 0
+          Items.Strings = (
+            'qmail'
+            'sendmail'
+            'mail'
+          )
+          TabOrder = 12
+          Text = 'qmail'
+        end
+        object Label42: TLabel
+          Left = 324
+          Height = 14
+          Top = 207
+          Width = 69
+          Caption = 'Outil de mails :'
+          ParentColor = False
+        end
+      end
+    end
+    object ts_about: TTabSheet
+      Caption = 'À propos'
+      ClientHeight = 336
+      ClientWidth = 636
+      object pa_About: TScrollBox
+        Left = 0
+        Height = 339
+        Top = 0
+        Width = 636
+        Align = alClient
+        ClientHeight = 335
+        ClientWidth = 632
+        TabOrder = 0
+        object Label19: TLabel
+          Left = 17
+          Height = 15
+          Top = 35
+          Width = 523
+          Caption = 'Le plugin AncestroWeb GPL permet de créer un site Web sur Ancestrologie et Freelogy GPL.'
+          ParentColor = False
+        end
+        object Label20: TLabel
+          Left = 17
+          Height = 15
+          Top = 53
+          Width = 499
+          Caption = 'La licences GPL est libre et permet à Matthieu GIROUX, l''auteur, de donner son logiciel.'
+          ParentColor = False
+        end
+        object Label21: TLabel
+          Left = 17
+          Height = 15
+          Top = 69
+          Width = 592
+          Caption = 'Une licence libre vous permet de participer au projet, mais elle demande de donner votre participation.'
+          ParentColor = False
+        end
+        object Label22: TLabel
+          Left = 17
+          Height = 24
+          Top = 3
+          Width = 240
+          Caption = 'AncestroWeb et Freelogy'
+          Font.Color = clWindowText
+          Font.Height = -19
+          Font.Name = 'MS Sans Serif'
+          ParentColor = False
+          ParentFont = False
+        end
+        object Label23: TLabel
+          Left = 18
+          Height = 24
+          Top = 91
+          Width = 170
+          Caption = 'Site Web Statique'
+          Font.Color = clWindowText
+          Font.Height = -19
+          Font.Name = 'MS Sans Serif'
+          ParentColor = False
+          ParentFont = False
+        end
+        object Label24: TLabel
+          Left = 18
+          Height = 15
+          Top = 123
+          Width = 609
+          Caption = 'Créer un site web statique vous permet de gagner en rapidité sur les serveurs web gratuits sans publicité.'
+          ParentColor = False
+        end
+        object Label25: TLabel
+          Left = 18
+          Height = 15
+          Top = 141
+          Width = 572
+          Caption = 'Par contre un site web statique nécessite l''utilsation régulière d''un client FTP gratuit comme Filezilla.'
+          ParentColor = False
+        end
+        object Label26: TLabel
+          Left = 17
+          Height = 15
+          Top = 170
+          Width = 597
+          Caption = 'Des hébergeurs gratuits comme Free et son abonnement téléphone gratuit, vous permettent de diffuser.'
+          ParentColor = False
+        end
+        object Label27: TLabel
+          Left = 17
+          Height = 15
+          Top = 184
+          Width = 600
+          Caption = 'Pour diffuser le site web n''est pas suffisant. Téléchargez vos documents à diffuser dans une zone privée.'
+          ParentColor = False
+        end
+        object Label28: TLabel
+          Left = 18
+          Height = 15
+          Top = 154
+          Width = 522
+          Caption = 'Comme votre site web est à 2 endroits, il est sauvegardé. Cela permet d''être indépendant.'
+          ParentColor = False
+        end
+      end
+    end
+  end
+  object OnFormInfoIni: TOnFormInfoIni
+    AutoLoad = False
+    SauvePosObjects = True
+    SauveEditObjets = [feTEdit, feTCheck, feTComboValue, feTDirectoryEdit, feTFileNameEdit, feTMemo, feTPageControl, feTRadio, feTSpinEdit]
+    Freeini = False
+    left = 544
+    top = 40
+  end
+  object IBQ_Individu: TIBQuery
+    BufferChunks = 1000
+    CachedUpdates = False
+    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    SQL.Strings = (
+      'select  CLE_FICHE,NUM_SOSA,CLE_PERE,CLE_MERE,NOM,PRENOM,SEXE,ANNEE_NAISSANCE,ANNEE_DECES from INDIVIDU WHERE KLE_DOSSIER=:KLE_DOSSIER '
+      'ORDER BY NOM,PRENOM,ANNEE_NAISSANCE DESC,ANNEE_DECES DESC'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'KLE_DOSSIER'
+        ParamType = ptUnknown
+      end>
+    left = 572
+    top = 256
+    ParamData = <    
+      item
+        DataType = ftInteger
+        Name = 'KLE_DOSSIER'
+        ParamType = ptUnknown
+      end>
+  end
+  object ds_Individu: TDatasource
+    DataSet = IBQ_Individu
+    left = 472
+    top = 256
+  end
+  object FileCopy: TExtFileCopy
+    Errors = 0
+    OnFailure = FileCopyFailure
+    Mask = '*'
+    FileOptions = [cpCreateDestination]
+    DoEraseDir = FileCopyDoEraseDir
+    left = 476
+    top = 104
+  end
+  object TraduceImage: TTraduceFile
+    Errors = 0
+    OnFailure = TraduceImageFailure
+    TraduceOptions = [cpDestinationIsFile, cpCreateDestination]
+    ResizeWidth = 200
+    left = 576
+    top = 104
+  end
+  object FileIniCopy: TExtFileCopy
+    Errors = 0
+    OnFailure = FileCopyFailure
+    Mask = '*'
+    FileOptions = [cpCreateDestination]
+    DoEraseDir = FileCopyDoEraseDir
+    left = 472
+    top = 160
+  end
+end

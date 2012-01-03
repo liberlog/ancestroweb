@@ -38,40 +38,40 @@
         <LaunchingApplication PathPlusParams="/usr/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="6">
+    <RequiredPackages Count="7">
       <Item1>
-        <PackageName Value="JvXPBarLaz"/>
+        <PackageName Value="lazfonctions"/>
       </Item1>
       <Item2>
-        <PackageName Value="ExtHTML"/>
+        <PackageName Value="JvXPBarLaz"/>
       </Item2>
       <Item3>
-        <PackageName Value="ExtCopy"/>
+        <PackageName Value="ExtHTML"/>
       </Item3>
       <Item4>
-        <PackageName Value="FCL"/>
-        <MinVersion Major="1" Valid="True"/>
+        <PackageName Value="ExtCopy"/>
       </Item4>
       <Item5>
-        <PackageName Value="LCL"/>
+        <PackageName Value="FCL"/>
         <MinVersion Major="1" Valid="True"/>
       </Item5>
       <Item6>
-        <PackageName Value="ibexpress"/>
+        <PackageName Value="LCL"/>
+        <MinVersion Major="1" Valid="True"/>
       </Item6>
+      <Item7>
+        <PackageName Value="ibexpress"/>
+      </Item7>
     </RequiredPackages>
-    <Units Count="17">
+    <Units Count="24">
       <Unit0>
         <Filename Value="AncestroWeb.dpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AncestroWeb"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="16" Y="33"/>
-        <UsageCount Value="22"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="23"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit0>
       <Unit1>
@@ -82,7 +82,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="12"/>
         <CursorPos X="1" Y="23"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="23"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit1>
@@ -152,7 +152,6 @@
         <TopLine Value="1"/>
         <CursorPos X="6" Y="1"/>
         <UsageCount Value="10"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit8>
       <Unit9>
         <Filename Value="../xmlframes/fonctions/fonctions_ObjetsXML.pas"/>
@@ -170,12 +169,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="U_AncestroWeb"/>
-        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="320"/>
         <CursorPos X="41" Y="348"/>
-        <UsageCount Value="22"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="23"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit10>
       <Unit11>
@@ -187,18 +184,18 @@
         <WindowIndex Value="0"/>
         <TopLine Value="31"/>
         <CursorPos X="22" Y="40"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="23"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit11>
       <Unit12>
         <Filename Value="ancestroweb_strings.pas"/>
         <UnitName Value="AncestroWeb_strings"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="9"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="59"/>
+        <TopLine Value="44"/>
         <CursorPos X="1" Y="73"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="12"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit12>
@@ -213,11 +210,11 @@
       <Unit14>
         <Filename Value="AncestroWebExe.lpr"/>
         <UnitName Value="demo"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="10"/>
         <WindowIndex Value="0"/>
         <TopLine Value="13"/>
         <CursorPos X="1" Y="25"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="12"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit14>
@@ -228,7 +225,6 @@
         <TopLine Value="727"/>
         <CursorPos X="23" Y="728"/>
         <UsageCount Value="11"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit15>
       <Unit16>
         <Filename Value="../extended/composants/U_OnFormInfoIni.pas"/>
@@ -237,124 +233,213 @@
         <TopLine Value="318"/>
         <CursorPos X="3" Y="327"/>
         <UsageCount Value="10"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit16>
+      <Unit17>
+        <Filename Value="ExtHTML/functions/functions_html.pas"/>
+        <UnitName Value="functions_html"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="161"/>
+        <CursorPos X="16" Y="180"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="../ExtCopy/composants/u_extractfile.pas"/>
+        <UnitName Value="u_extractfile"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="19"/>
+        <CursorPos X="4" Y="35"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
+        <UnitName Value="u_extabscopy"/>
+        <EditorIndex Value="4"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="12"/>
+        <CursorPos X="23" Y="72"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="../ExtCopy/fonctions/fonctions_file.pas"/>
+        <UnitName Value="fonctions_file"/>
+        <EditorIndex Value="8"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="4"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="../ExtCopy/fonctions/unit_messagescopy.pas"/>
+        <UnitName Value="unit_messagescopy"/>
+        <EditorIndex Value="5"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="9"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="../ExtCopy/composants/u_traducefile.pas"/>
+        <UnitName Value="u_traducefile"/>
+        <EditorIndex Value="6"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="459"/>
+        <CursorPos X="82" Y="459"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="../ExtCopy/composants/U_ExtFileCopy.pas"/>
+        <UnitName Value="U_ExtFileCopy"/>
+        <EditorIndex Value="7"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="38"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit23>
     </Units>
-    <JumpHistory Count="27" HistoryIndex="26">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1772" Column="103" TopLine="1757"/>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position1>
       <Position2>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1774" Column="68" TopLine="1759"/>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
+        <Caret Line="4" Column="1" TopLine="1"/>
       </Position2>
       <Position3>
-        <Filename Value="DefObjet.pas"/>
-        <Caret Line="32" Column="11" TopLine="32"/>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
+        <Caret Line="10" Column="1" TopLine="1"/>
       </Position3>
       <Position4>
-        <Filename Value="DefObjet.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
+        <Caret Line="154" Column="1" TopLine="120"/>
       </Position4>
       <Position5>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="9" Column="38" TopLine="1"/>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
+        <Caret Line="28" Column="1" TopLine="25"/>
       </Position5>
       <Position6>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="313" Column="27" TopLine="313"/>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
+        <Caret Line="29" Column="1" TopLine="10"/>
       </Position6>
       <Position7>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="261" Column="37" TopLine="247"/>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position7>
       <Position8>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="328" Column="45" TopLine="319"/>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
+        <Caret Line="30" Column="3" TopLine="1"/>
       </Position8>
       <Position9>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="325" Column="53" TopLine="319"/>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
+        <Caret Line="18" Column="53" TopLine="1"/>
       </Position9>
       <Position10>
-        <Filename Value="u_dmweb.pas"/>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
         <Caret Line="1" Column="1" TopLine="1"/>
       </Position10>
       <Position11>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="257" Column="21" TopLine="242"/>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
+        <Caret Line="34" Column="1" TopLine="16"/>
       </Position11>
       <Position12>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="259" Column="21" TopLine="244"/>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
+        <Caret Line="107" Column="30" TopLine="96"/>
       </Position12>
       <Position13>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="261" Column="20" TopLine="246"/>
+        <Filename Value="../ExtCopy/fonctions/unit_messagescopy.pas"/>
+        <Caret Line="11" Column="16" TopLine="2"/>
       </Position13>
       <Position14>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="276" Column="59" TopLine="275"/>
+        <Filename Value="../ExtCopy/composants/u_traducefile.pas"/>
+        <Caret Line="31" Column="64" TopLine="31"/>
       </Position14>
       <Position15>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="106" Column="1" TopLine="106"/>
+        <Filename Value="../ExtCopy/composants/u_traducefile.pas"/>
+        <Caret Line="464" Column="44" TopLine="460"/>
       </Position15>
       <Position16>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="257" Column="21" TopLine="242"/>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
+        <Caret Line="32" Column="21" TopLine="10"/>
       </Position16>
       <Position17>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="259" Column="21" TopLine="244"/>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
+        <Caret Line="97" Column="25" TopLine="81"/>
       </Position17>
       <Position18>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="261" Column="33" TopLine="246"/>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
+        <Caret Line="28" Column="1" TopLine="9"/>
       </Position18>
       <Position19>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="../ExtCopy/composants/u_traducefile.pas"/>
+        <Caret Line="19" Column="1" TopLine="9"/>
       </Position19>
       <Position20>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="257" Column="21" TopLine="242"/>
+        <Filename Value="../ExtCopy/composants/u_traducefile.pas"/>
+        <Caret Line="380" Column="1" TopLine="361"/>
       </Position20>
       <Position21>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="259" Column="21" TopLine="244"/>
+        <Filename Value="../ExtCopy/composants/U_ExtFileCopy.pas"/>
+        <Caret Line="41" Column="21" TopLine="31"/>
       </Position21>
       <Position22>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="261" Column="33" TopLine="246"/>
+        <Filename Value="../ExtCopy/composants/U_ExtFileCopy.pas"/>
+        <Caret Line="104" Column="36" TopLine="76"/>
       </Position22>
       <Position23>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1852" Column="69" TopLine="1837"/>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
+        <Caret Line="71" Column="1" TopLine="52"/>
       </Position23>
       <Position24>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="328" Column="22" TopLine="319"/>
+        <Filename Value="../ExtCopy/composants/u_traducefile.pas"/>
+        <Caret Line="469" Column="1" TopLine="432"/>
       </Position24>
       <Position25>
-        <Filename Value="AncestroWeb.dpr"/>
-        <Caret Line="19" Column="58" TopLine="12"/>
+        <Filename Value="../ExtCopy/composants/u_traducefile.pas"/>
+        <Caret Line="459" Column="82" TopLine="440"/>
       </Position25>
       <Position26>
-        <Filename Value="DefObjet.pas"/>
-        <Caret Line="28" Column="64" TopLine="12"/>
+        <Filename Value="../ExtCopy/composants/u_extractfile.pas"/>
+        <Caret Line="117" Column="55" TopLine="90"/>
       </Position26>
       <Position27>
-        <Filename Value="DefObjet.pas"/>
-        <Caret Line="45" Column="2" TopLine="32"/>
+        <Filename Value="../ExtCopy/composants/u_extractfile.pas"/>
+        <Caret Line="91" Column="23" TopLine="67"/>
       </Position27>
+      <Position28>
+        <Filename Value="../ExtCopy/composants/u_extractfile.pas"/>
+        <Caret Line="90" Column="75" TopLine="67"/>
+      </Position28>
+      <Position29>
+        <Filename Value="../ExtCopy/composants/u_extractfile.pas"/>
+        <Caret Line="25" Column="1" TopLine="1"/>
+      </Position29>
+      <Position30>
+        <Filename Value="../ExtCopy/composants/U_ExtFileCopy.pas"/>
+        <Caret Line="108" Column="212" TopLine="104"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="9"/>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
+      <UnitOutputDirectory Value="Plugins/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>
       <SyntaxOptions>
