@@ -33,11 +33,11 @@ A partir de la vous pouvez faire toutes vos requetes sur la base
 interface
 
 uses
-  SysUtils, Classes, DB, IBDatabase,
+  SysUtils, Classes, IBDatabase,
 {$IFNDEF FPC}
   fonctions_system, IBScript,
 {$ENDIF}
-  IBCustomDataSet, IBQuery, Dialogs, Forms, functions_html, IBSQL;
+  IBQuery, Dialogs, Forms, functions_html;
 
 var gt_TabSheets : TaHTMLULTabSheet;
     gi_FilesPerPage : Integer = 15 ;
@@ -255,7 +255,7 @@ implementation
 {$ELSE}
   {$R *.lfm}
 {$ENDIF}
-uses Inifiles,
+uses
 {$IFNDEF FPC}
      AncestroWeb_strings,
 {$ELSE}
@@ -276,16 +276,9 @@ procedure TDMWeb.doOpenDatabase(const sBase: string);
 {--------------------------------------------------------------------------------------------------------
 COnnection a la base
 --------------------------------------------------------------------------------------------------------}
-{$IFDEF FPC}
-var
-  FIniFile: TIniFile;
-{$ENDIF}
 
 begin
 
-{$IFDEF FPC}
-  FIniFile :=
-{$ENDIF}
   f_GetMemIniFile();
 
   if fDatabase then

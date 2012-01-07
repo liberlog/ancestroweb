@@ -29,8 +29,8 @@ uses
   U_DMWeb, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, StdCtrls, DB,
   IBQuery, DBCtrls, ExtCtrls, Buttons, ComCtrls, DBGrids,
   functions_html, JvXPCheckCtrls, Spin, U_OnFormInfoIni,
-  U_ExtImage, u_buttons_appli, U_ExtFileCopy, u_extabscopy, u_traducefile,
-  JvXPButtons, IBCustomDataSet, Grids, JvXPCore;
+  U_ExtImage, u_buttons_appli, U_ExtFileCopy, u_traducefile,
+  JvXPButtons;
 
 type
 
@@ -281,13 +281,13 @@ uses  fonctions_init,
   IniFiles,
 {$IFNDEF FPC}
   AncestroWeb_strings_delphi,
+  fonctions_system,
 {$ELSE}
   AncestroWeb_strings,
 {$ENDIF}
   fonctions_string,
   fonctions_languages,
   fonctions_images,
-  fonctions_system,
   fonctions_file;
 
 {$IFNDEF FPC}
@@ -674,8 +674,7 @@ function TF_AncestroWeb.fi_CreateHTMLTree(const IBQ_Tree: TIBQuery;
 var
   li_LocalLevel, li_LocalPreLevel: integer;
   ls_Tempo, ls_Barres, ls_NodeLink, ls_NameSurname, ls_Image: string;
-  li_SOSA: double;
-  li_Counter, li_pos: longint;
+  li_Counter : longint;
 
   function fs_getText: string;
   begin
@@ -1119,8 +1118,7 @@ end;
 procedure TF_AncestroWeb.p_genHtmlNames (const IBQ_FilesFiltered: TIBQuery);
 var
   lstl_HTMLAFolder: TStringList;
-  ls_NewName, ls_Name, ls_NameBegin, ls_NameEnd, ls_destination: string;
-  li_i, li_CleFiche: longint;
+  ls_NewName, ls_Name, ls_destination: string;
 begin
   p_CreateKeyWords;
   ls_name := '';
@@ -1787,6 +1785,7 @@ begin
            try
              IBS_Temp.ExecuteScript;
              IBT_BASE.CommitRetaining;
+             gb_updateBase := True;
            Except
              IBT_BASE.RollbackRetaining;
            End;

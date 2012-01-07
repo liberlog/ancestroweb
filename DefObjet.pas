@@ -21,6 +21,7 @@ procedure InitStartDll(value: Pchar);
 function InitTitreDll: Pchar;
 function RetourDll: PInteger;
 
+var gb_updateBase : Boolean = False ;
 
 implementation
 uses U_AncestroWeb,
@@ -38,7 +39,9 @@ end;
 
 function RetourDll: PInteger;
 begin
-  Result := PInteger(-10);
+  if gb_updateBase
+  Then Result := PInteger(-10)
+  Else Result := PInteger(0);
 end;
 
 procedure InitStartDll(value: Pchar);
