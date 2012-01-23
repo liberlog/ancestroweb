@@ -206,7 +206,6 @@ type
                             const ai_Type: integer;
                             const ab_Identite: Boolean = False;
                             const ach_table : Char = MEDIAS_TABLE_ARCHIV): Boolean;
-    function fb_OpenSoft(const as_Soft: String): Boolean;
     function fi_ImageEditCount(const as_FileName: string): integer;
     function fs_AddImage(const as_ImageFile: string): string;
     function fs_AddImageTable(const as_HtmlImage: string; const as_alt: string=''
@@ -273,6 +272,7 @@ var
   gs_LinkGedcom: string;
   gt_SheetsLetters: TAHTMLULTabSheet;
 
+function fs_FindKey(const as_Soft : String; const as_IniKey : String = 'PathAppli'):String;
 
 implementation
 
@@ -1816,7 +1816,7 @@ begin
 end;
 
 
-function TF_AncestroWeb.fb_OpenSoft(const as_Soft : String):Boolean;
+function fs_FindKey(const as_Soft : String; const as_IniKey : String = 'PathAppli'):String;
 {$IFDEF WIN32}
 var
   fKeyRegistry: string;
@@ -1825,16 +1825,13 @@ begin
 
   fKeyRegistry := '\SOFTWARE\'+as_Soft;
 
-  Result := False;
+  Result := '';
 
   with TRegIniFile.create do try
     RootKey := HKEY_CURRENT_USER;
     if OpenKey(fKeyRegistry, False) then
      begin
-      Result := True;
-      if gs_Root = '' then begin
-        gs_Root := ReadString('Path', 'PathAppli', '');
-      end;
+      Result := ReadString('Path', as_IniKey, '');
     end;
   finally
     Free;
@@ -1844,23 +1841,16 @@ Begin
 
   f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
 
-  if gs_Root = '' then
-  begin
-    {$IFDEF FPC}
-    gs_Root := f_IniReadSectionStr('Path', 'PathAppli', '') + DirectorySeparator;
-    {$ENDIF}
-  end;
+ {$IFDEF FPC}
+ Result := f_IniReadSectionStr('Path', as_IniKey, '');
+ {$ENDIF}
 {$ENDIF}
 end;
 
 procedure TF_AncestroWeb.FormCreate(Sender: TObject);
 Begin
-{$IFDEF WIN32}
-  if not fb_OpenSoft(CST_MANIA) Then
-    fb_OpenSoft(CST_LOGIE);
-{$ELSE}
-  fb_OpenSoft(CST_MANIA);
-{$ENDIF}
+
+  gs_root := fs_FindKey(gs_Soft);
   if Length(gs_Root) <= 1
     then gs_Root:= ExtractFileDir(Application.ExeName)+DirectorySeparator;
   AppendStr(gs_Root,'Plugins'+DirectorySeparator+'AncestroWeb'+DirectorySeparator);

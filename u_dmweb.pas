@@ -42,6 +42,7 @@ uses
 var gt_TabSheets : TaHTMLULTabSheet;
     gi_FilesPerPage : Integer = 15 ;
     gi_FilesPerList : Integer = 60 ;
+    gs_Soft         : String ;
 
 
 const IBQDLLNOM='NOM';

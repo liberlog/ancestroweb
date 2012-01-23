@@ -31,34 +31,13 @@ uses
 
 var
   fbddpath:String;
-{$IFDEF WINDOWS}
-  fKeyRegistry: string;
-
-begin
-
-  fKeyRegistry := '\SOFTWARE\'+CST_MANIA;
-
-  with TRegIniFile.create do try
-    RootKey := HKEY_CURRENT_USER;
-    if OpenKey(fKeyRegistry, False) then begin
-        fbddpath := ReadString('Path', 'PathFileNameBdd', '');
-      end;
-  finally
-    Free;
-  end;
-  {$ELSE}
-Begin
-  {$ENDIF}
+BEGIN
   Application.Initialize;
- // gs_Root := ExtractFileDir(Application.ExeName)+DirectorySeparator+'Plugins/AncestroWeb/';
-  //Application.CreateForm(TF_AncestroWeb, F_AncestroWeb);
-  if fbddpath = '' Then
-  {$IFDEF  LINUX}
-    fbddpath := '/var/lib/firebird/2.5/data/Base.FDB';
-  {$ELSE}
-    fbddpath := ExtractFileDir(Application.ExeName)+DirectorySeparator+'Base.FDB';
-  {$ENDIF}
-  InitStartDll(PChar(fbddpath));
-//  Application.Run;
+  Application.CreateForm(TDMWeb,DMWeb);
+  gs_Soft := CST_LOGIE;
+  Application.CreateForm(TF_AncestroWeb,F_AncestroWeb);
+  F_AncestroWeb.DoInit(fs_FindKey(gs_Soft, 'PathFileNameBdd'));
+  F_AncestroWeb.Show;
+  Application.Run;
 end.
 
