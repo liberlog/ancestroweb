@@ -16,7 +16,7 @@ object F_AncestroWeb: TF_AncestroWeb
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poScreenCenter
-  LCLVersion = '0.9.30.2RC1'
+  LCLVersion = '0.9.30.2'
   object spSkinPanel1: TPanel
     Left = 0
     Height = 30
@@ -121,7 +121,7 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object cb_Themes: TComboBox
             Left = 70
-            Height = 21
+            Height = 23
             Top = 51
             Width = 199
             ItemHeight = 13
@@ -177,7 +177,7 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object cb_Files: TComboBox
             Left = 70
-            Height = 21
+            Height = 23
             Top = 79
             Width = 199
             ItemHeight = 13

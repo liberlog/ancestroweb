@@ -33,10 +33,16 @@ var
 BEGIN
   Application.Initialize;
   Application.CreateForm(TDMWeb,DMWeb);
-  gs_Soft := CST_LOGIE;
-  gs_Root:=ExtractFileDir(Application.ExeName);
+  gs_Soft := CST_MANIA;
+  fbddpath:= fs_FindKey(gs_Soft, 'PathFileNameBdd');
+  if fbddpath = '' Then
+    Begin
+      gs_Soft := CST_LOGIE;
+      fbddpath := fs_FindKey(gs_Soft, 'PathFileNameBdd');
+    end;
+  gs_Root:=ExtractFileDir(Application.ExeName)+DirectorySeparator;
   Application.CreateForm(TF_AncestroWeb,F_AncestroWeb);
-  F_AncestroWeb.DoInit(fs_FindKey(gs_Soft, 'PathFileNameBdd'));
+  F_AncestroWeb.DoInit(fbddpath);
   F_AncestroWeb.Show;
   Application.Run;
 end.

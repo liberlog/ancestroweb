@@ -1850,9 +1850,13 @@ end;
 procedure TF_AncestroWeb.FormCreate(Sender: TObject);
 Begin
 
-  gs_root := fs_FindKey(gs_Soft);
   if Length(gs_Root) <= 1
-    then gs_Root:= ExtractFileDir(Application.ExeName)+DirectorySeparator+'Plugins'+DirectorySeparator;
+    Then
+     Begin
+      gs_root := fs_FindKey(gs_Soft);
+      if Length(gs_Root) <= 1
+        then gs_Root:= ExtractFileDir(Application.ExeName)+DirectorySeparator+'Plugins'+DirectorySeparator;
+     end;
   AppendStr(gs_Root,'AncestroWeb'+DirectorySeparator);
   OnFormInfoIni.AutoLoad := False;
   f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);

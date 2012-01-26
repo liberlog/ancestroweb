@@ -20,8 +20,7 @@
     </i18n>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
-      <MinorVersionNr Value="9"/>
-      <RevisionNr Value="9"/>
+      <MajorVersionNr Value="1"/>
       <StringTable ProductVersion=""/>
     </VersionInfo>
     <BuildModes Count="1" Active="Default">
@@ -63,7 +62,7 @@
         <PackageName Value="ibexpress"/>
       </Item7>
     </RequiredPackages>
-    <Units Count="31">
+    <Units Count="30">
       <Unit0>
         <Filename Value="AncestroWeb.dpr"/>
         <IsPartOfProject Value="True"/>
@@ -177,6 +176,7 @@
         <CursorPos X="36" Y="784"/>
         <UsageCount Value="23"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit10>
       <Unit11>
@@ -236,7 +236,6 @@
         <TopLine Value="318"/>
         <CursorPos X="3" Y="327"/>
         <UsageCount Value="10"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit16>
       <Unit17>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
@@ -245,6 +244,7 @@
         <TopLine Value="161"/>
         <CursorPos X="117" Y="167"/>
         <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit17>
       <Unit18>
         <Filename Value="../ExtCopy/composants/u_extractfile.pas"/>
@@ -301,61 +301,55 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit23>
       <Unit24>
-        <Filename Value="../Extended/fonctions/fonctions_languages.pas"/>
-        <UnitName Value="fonctions_languages"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="164"/>
-        <CursorPos X="26" Y="186"/>
-        <UsageCount Value="10"/>
-      </Unit24>
-      <Unit25>
         <Filename Value="../Extended/composants/U_DBListView.pas"/>
         <UnitName Value="U_DBListView"/>
         <WindowIndex Value="0"/>
         <TopLine Value="23"/>
         <CursorPos X="40" Y="32"/>
         <UsageCount Value="10"/>
-      </Unit25>
-      <Unit26>
+      </Unit24>
+      <Unit25>
         <Filename Value="../Extended/composants/u_framework_dbcomponents.pas"/>
         <UnitName Value="u_framework_dbcomponents"/>
         <WindowIndex Value="0"/>
         <TopLine Value="87"/>
         <CursorPos X="42" Y="96"/>
         <UsageCount Value="10"/>
-      </Unit26>
-      <Unit27>
+      </Unit25>
+      <Unit26>
         <Filename Value="../Extended/composants/U_FormMainIni.pas"/>
         <UnitName Value="U_FormMainIni"/>
         <WindowIndex Value="0"/>
         <TopLine Value="304"/>
         <CursorPos X="38" Y="326"/>
         <UsageCount Value="10"/>
-      </Unit27>
-      <Unit28>
+      </Unit26>
+      <Unit27>
         <Filename Value="../Extended/composants/U_ExtDBNavigator.pas"/>
         <UnitName Value="U_ExtDBNavigator"/>
         <WindowIndex Value="0"/>
         <TopLine Value="113"/>
         <CursorPos X="67" Y="135"/>
         <UsageCount Value="10"/>
-      </Unit28>
-      <Unit29>
+      </Unit27>
+      <Unit28>
         <Filename Value="/usr/lib/lazarus/0.9.30/lcl/dbctrls.pp"/>
         <UnitName Value="DbCtrls"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1085"/>
         <CursorPos X="7" Y="1107"/>
         <UsageCount Value="10"/>
-      </Unit29>
-      <Unit30>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit28>
+      <Unit29>
         <Filename Value="/usr/lib/lazarus/0.9.30/lcl/controls.pp"/>
         <UnitName Value="Controls"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1000"/>
         <CursorPos X="15" Y="1022"/>
         <UsageCount Value="10"/>
-      </Unit30>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit29>
     </Units>
     <JumpHistory Count="13" HistoryIndex="12">
       <Position1>
