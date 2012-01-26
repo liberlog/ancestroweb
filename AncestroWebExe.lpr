@@ -24,7 +24,6 @@ uses
   SYSUtils,
   Dialogs,
   Forms, Interfaces,
-  DefObjet in 'DefObjet.pas',
   U_AncestroWeb {FMain},
   U_DMWeb, lazextcomponents, lazfonctions, exthtml,
   extcopy, vampyreimagingpackage, JvXPBarLaz {DM: TDataModule};
@@ -35,6 +34,7 @@ BEGIN
   Application.Initialize;
   Application.CreateForm(TDMWeb,DMWeb);
   gs_Soft := CST_LOGIE;
+  gs_Root:=ExtractFileDir(Application.ExeName);
   Application.CreateForm(TF_AncestroWeb,F_AncestroWeb);
   F_AncestroWeb.DoInit(fs_FindKey(gs_Soft, 'PathFileNameBdd'));
   F_AncestroWeb.Show;

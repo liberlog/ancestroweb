@@ -1852,8 +1852,8 @@ Begin
 
   gs_root := fs_FindKey(gs_Soft);
   if Length(gs_Root) <= 1
-    then gs_Root:= ExtractFileDir(Application.ExeName)+DirectorySeparator;
-  AppendStr(gs_Root,'Plugins'+DirectorySeparator+'AncestroWeb'+DirectorySeparator);
+    then gs_Root:= ExtractFileDir(Application.ExeName)+DirectorySeparator+'Plugins'+DirectorySeparator;
+  AppendStr(gs_Root,'AncestroWeb'+DirectorySeparator);
   OnFormInfoIni.AutoLoad := False;
   f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
 

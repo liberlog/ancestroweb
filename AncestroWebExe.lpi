@@ -64,15 +64,15 @@
         <PackageName Value="LCL"/>
       </Item9>
     </RequiredPackages>
-    <Units Count="140">
+    <Units Count="141">
       <Unit0>
         <Filename Value="AncestroWebExe.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AncestroWebExe"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="6"/>
-        <CursorPos X="1" Y="34"/>
+        <TopLine Value="1"/>
+        <CursorPos X="31" Y="39"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -369,10 +369,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="U_AncestroWeb"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="30" Y="31"/>
+        <TopLine Value="1819"/>
+        <CursorPos X="3" Y="1841"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -387,8 +388,8 @@
         <UnitName Value="U_DMWeb"/>
         <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="25"/>
-        <CursorPos X="5" Y="45"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -400,16 +401,18 @@
         <WindowIndex Value="0"/>
         <TopLine Value="28"/>
         <CursorPos X="17" Y="60"/>
-        <UsageCount Value="57"/>
+        <UsageCount Value="58"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit35>
       <Unit36>
         <Filename Value="../ibx/runtime/IB.pas"/>
         <UnitName Value="IB"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="389"/>
-        <CursorPos X="1" Y="411"/>
+        <TopLine Value="342"/>
+        <CursorPos X="1" Y="364"/>
         <UsageCount Value="65"/>
+        <Loaded Value="True"/>
       </Unit36>
       <Unit37>
         <Filename Value="../ibx/runtime/IBCustomDataSet.pas"/>
@@ -624,7 +627,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="21"/>
-        <UsageCount Value="198"/>
+        <UsageCount Value="199"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit61>
       <Unit62>
@@ -1180,18 +1183,17 @@
       <Unit127>
         <Filename Value="../../Lazarus/composants/jvXP/JvXPCheckCtrls.pas"/>
         <UnitName Value="JvXPCheckCtrls"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="441"/>
-        <CursorPos X="41" Y="457"/>
+        <CursorPos X="66" Y="457"/>
         <UsageCount Value="12"/>
         <Loaded Value="True"/>
       </Unit127>
       <Unit128>
         <Filename Value="../../Lazarus/composants/jvXP/JvXPCoreUtils.pas"/>
         <UnitName Value="JvXPCoreUtils"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
         <TopLine Value="367"/>
         <CursorPos X="1" Y="398"/>
@@ -1201,7 +1203,7 @@
       <Unit129>
         <Filename Value="../../Lazarus/composants/jvXP/JvXPCore.pas"/>
         <UnitName Value="JvXPCore"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="896"/>
         <CursorPos X="1" Y="933"/>
@@ -1225,12 +1227,10 @@
       </Unit131>
       <Unit132>
         <Filename Value="../../../../lazarus/lcl/include/graphic.inc"/>
-        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="244"/>
         <CursorPos X="1" Y="263"/>
         <UsageCount Value="12"/>
-        <Loaded Value="True"/>
       </Unit132>
       <Unit133>
         <Filename Value="../../../../lazarus/lcl/graphics.pp"/>
@@ -1272,7 +1272,7 @@
       <Unit138>
         <Filename Value="../../Lazarus/composants/jvXP/JvXPButtons.pas"/>
         <UnitName Value="JvXPButtons"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
         <TopLine Value="862"/>
         <CursorPos X="29" Y="881"/>
@@ -1282,15 +1282,23 @@
       <Unit139>
         <Filename Value="../../../../lazarus/lcl/graphtype.pp"/>
         <UnitName Value="GraphType"/>
-        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
         <TopLine Value="21"/>
         <CursorPos X="5" Y="42"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit139>
+      <Unit140>
+        <Filename Value="../Extended/composants/u_buttons_appli.pas"/>
+        <UnitName Value="u_buttons_appli"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="583"/>
+        <CursorPos X="20" Y="619"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit140>
     </Units>
-    <JumpHistory Count="21" HistoryIndex="20">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="../../Lazarus/composants/jvXP/JvXPCoreUtils.pas"/>
         <Caret Line="376" Column="43" TopLine="362"/>
@@ -1375,6 +1383,42 @@
         <Filename Value="../../Lazarus/composants/jvXP/JvXPCheckCtrls.pas"/>
         <Caret Line="460" Column="39" TopLine="441"/>
       </Position21>
+      <Position22>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="32" Column="24" TopLine="1"/>
+      </Position22>
+      <Position23>
+        <Filename Value="../Extended/composants/u_buttons_appli.pas"/>
+        <Caret Line="391" Column="30" TopLine="385"/>
+      </Position23>
+      <Position24>
+        <Filename Value="../Extended/composants/u_buttons_appli.pas"/>
+        <Caret Line="455" Column="20" TopLine="427"/>
+      </Position24>
+      <Position25>
+        <Filename Value="../Extended/composants/u_buttons_appli.pas"/>
+        <Caret Line="540" Column="20" TopLine="504"/>
+      </Position25>
+      <Position26>
+        <Filename Value="u_dmweb.pas"/>
+        <Caret Line="35" Column="73" TopLine="24"/>
+      </Position26>
+      <Position27>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="3" Column="33" TopLine="1"/>
+      </Position27>
+      <Position28>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1855" Column="105" TopLine="1820"/>
+      </Position28>
+      <Position29>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1856" Column="22" TopLine="1833"/>
+      </Position29>
+      <Position30>
+        <Filename Value="AncestroWebExe.lpr"/>
+        <Caret Line="39" Column="31" TopLine="1"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
