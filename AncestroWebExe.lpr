@@ -6,44 +6,32 @@ program demo;
   {$R *.res}
 {$ENDIF}
 
-{--------------------------------------------------------------------------------------------------------
-Stucture d un model de dll pour integration dans Ancestrologie
-
-Il vous faut impérativement garder cette structure sauf la fenetre Main  qui
-n est pas obligatoire
-Ainsi que le module DM si vous ne vous servez pas de base de données
---------------------------------------------------------------------------------------------------------}
 uses
-  Classes,
-  {$IFNDEF FPC}
+{$IFNDEF FPC}
   fonctions_system,
-  {$ENDIF}
-  {$IFDEF WIN32}
-    Registry,
-  {$ENDIF}
-  SYSUtils,
-  Dialogs,
-  Forms, Interfaces,
-  U_AncestroWeb {FMain},
-  U_DMWeb, lazextcomponents, lazfonctions, exthtml,
-  extcopy, vampyreimagingpackage, JvXPBarLaz {DM: TDataModule};
+{$ENDIF}
+  Interfaces,Forms,Dialogs,Translations,LCLProc,
+  U_AncestroWeb;
 
+{$IFNDEF FPC}
+Begin
+{$ELSE}
+procedure TranslateLCL;
 var
-  fbddpath:String;
-BEGIN
+PODirectory, Lang, FallbackLang: String;
+begin
+PODirectory:='AncestroWeb\langues\';
+Lang:='';
+FallbackLang:='';
+LCLGetLanguageIDs(Lang,FallbackLang);
+Translations.TranslateUnitResourceStrings('LCLStrConsts',PODirectory+'lclstrconsts.%s.po',Lang,FallbackLang);
+end;
+
+Begin
+  TranslateLCL;
+{$ENDIF}
   Application.Initialize;
-  Application.CreateForm(TDMWeb,DMWeb);
-  gs_Soft := CST_MANIA;
-  fbddpath:= fs_FindKey(gs_Soft, 'PathFileNameBdd');
-  if fbddpath = '' Then
-    Begin
-      gs_Soft := CST_LOGIE;
-      fbddpath := fs_FindKey(gs_Soft, 'PathFileNameBdd');
-    end;
-  gs_Root:=ExtractFileDir(Application.ExeName)+DirectorySeparator;
   Application.CreateForm(TF_AncestroWeb,F_AncestroWeb);
-  F_AncestroWeb.DoInit(fbddpath);
-  F_AncestroWeb.Show;
   Application.Run;
 end.
 

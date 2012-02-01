@@ -1,4 +1,4 @@
-﻿unit U_AncestroWeb;
+unit U_AncestroWeb;
 
 {$IFDEF FPC}
   {$mode Delphi}{$H+}
@@ -18,8 +18,12 @@
 interface
 
 uses
+{$ifdef unix}
+  BaseUnix,
+{$endif}
+
 {$IFNDEF FPC}
-  Mask, Windows, rxToolEdit, JvExControls,
+  Mask,  rxToolEdit, JvExControls,  Windows,
 {$ELSE}
   LCLIntf, LCLType, EditBtn,
 {$ENDIF}
@@ -28,8 +32,8 @@ uses
 {$ENDIF}
   U_DMWeb, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, StdCtrls, DB,
   IBQuery, DBCtrls, ExtCtrls, Buttons, ComCtrls, DBGrids,
-  functions_html, JvXPCheckCtrls, Spin, U_OnFormInfoIni,
-  U_ExtImage, u_buttons_appli, U_ExtFileCopy, u_traducefile,
+  functions_html, JvXPCheckCtrls, Spin, FileUtil, U_OnFormInfoIni,
+  U_ExtImage, u_buttons_appli, U_ExtFileCopy, u_traducefile,u_extabscopy,
   JvXPButtons;
 
 type
@@ -37,6 +41,7 @@ type
   { TF_AncestroWeb }
 
   TF_AncestroWeb = class(TForm)
+    btnSelectBase: TSpeedButton;
     bt_export: TFWSaveAs;
     cb_ContactTool: TComboBox;
     ch_ancestors: TJvXPCheckBox;
@@ -50,9 +55,11 @@ type
     ch_genContact: TJvXPCheckbox;
     cb_ContactSecurity: TComboBox;
     ch_Comptage: TJvXPCheckbox;
+    cbDossier: TComboBox;
     DBGrid1: TDBGrid;
     de_ExportWeb: TDirectoryEdit;
     ds_Individu: TDatasource;
+    edNomBase: TComboBox;
     ed_Author: TEdit;
     ed_ContactMail: TEdit;
     ed_ContactHost: TEdit;
@@ -70,17 +77,12 @@ type
     ed_TreeName: TEdit;
     ed_ContactName: TEdit;
     ed_FileBeginName: TEdit;
-    ExtImage1: TExtImage;
-    ExtImage2: TExtImage;
-    ExtImage3: TExtImage;
-    FileCopy: TExtFileCopy;
-    FileIniCopy: TExtFileCopy;
     fne_Export: TFileNameEdit;
     fne_import: TFileNameEdit;
     FWEraseImage: TFWErase;
     FWEraseImage3: TFWErase;
     FWEraseImage2: TFWErase;
-    FWEraseGedcom: TFWErase;
+    FWEraseGedcom: TJvXPButton;
     ImageEdit1: TFileNameEdit;
     ImageEdit2: TFileNameEdit;
     ImageEdit3: TFileNameEdit;
@@ -123,6 +125,8 @@ type
     Label41: TLabel;
     Label42: TLabel;
     Label43: TLabel;
+    Label45: TLabel;
+    LabelBase: TLabel;
     lb_Comments: TLabel;
     Label2: TLabel;
     Label3: TLabel;
@@ -138,8 +142,8 @@ type
     me_ContactHead: TMemo;
     me_searchHead: TMemo;
     me_HeadTree: TMemo;
-    OnFormInfoIni: TOnFormInfoIni;
-    PageControl1: TPageControl;
+    OpenDialog: TOpenDialog;
+    PCPrincipal: TPageControl;
     Panel1: TPanel;
     Panel10: TPanel;
     Panel11: TPanel;
@@ -163,7 +167,6 @@ type
     ts_about: TTabSheet;
     ts_Referring: TTabSheet;
     ts_Files: TTabSheet;
-    TraduceImage: TTraduceFile;
     ts_Contact: TTabSheet;
     ts_Home: TTabSheet;
     ts_tree: TTabSheet;
@@ -172,12 +175,15 @@ type
     Label6: TLabel;
     cb_Files: TComboBox;
     Label44: TLabel;
+    procedure btnSelectBaseClick(Sender: TObject);
     procedure bt_exportClick(Sender: TObject);
     procedure bt_genClick(Sender: TObject);
+    procedure cbDossierChange(Sender: TObject);
     procedure ch_FilteredClick(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
     procedure de_ExportWebAcceptDirectory(Sender: TObject;{$IFDEF FPC} var Value: string{$ELSE} var Name: string;
     var Action: Boolean{$ENDIF});
+    procedure edNomBaseExit(Sender: TObject);
     procedure FileCopyDoEraseDir(Sender: TObject; var Continue: boolean);
     procedure FileCopyFailure(Sender: TObject; const ErrorCode: integer;
       var ErrorMessage: string; var ContinueCopy: boolean);
@@ -198,8 +204,17 @@ type
       var ErrorMessage: string; var ContinueCopy: boolean);
   private
     { Déclarations privées }
+    TraduceImage: TTraduceFile;
+    FileCopy: TExtFileCopy;
+    FileIniCopy: TExtFileCopy;
+    OnFormInfoIni: TOnFormInfoIni;
+    ExtImage1: TExtImage;
+    ExtImage2: TExtImage;
+    ExtImage3: TExtImage;
+    PremiereOuverture:boolean;
     procedure DoAfterInit;
-    procedure DoOpenBase(sBase: string);
+    function DoOpenBase(sBase: string):boolean;
+    function OuvreDossier(NumDossier:integer):boolean;
     function fb_getMediaFile ( const IBQ_Media : TIBQuery;
                                const as_FilePath: string): Boolean;
     function fb_OpenMedias( const ai_CleFiche: Longint;
@@ -258,6 +273,8 @@ type
     function fb_OpenTree(const AIBQ_Tree: TIBQuery; const ai_Cle: longint;
       const ai_Niveau: integer = 0;const ai_Sexe: integer = 0): boolean;
     procedure p_Setcomments(const as_Comment: String);
+    function ChaineUTF8EnNomVariable(Chaine:String):String;
+    procedure ListerDossiers;
   public
     { Déclarations publiques }
     procedure DoInit(sBase: string);
@@ -272,18 +289,20 @@ var
   gs_LinkGedcom: string;
   gt_SheetsLetters: TAHTMLULTabSheet;
 
-function fs_FindKey(const as_Soft : String; const as_IniKey : String = 'PathAppli'):String;
 
 implementation
 
 uses  fonctions_init,
   functions_html_tree,
-  IniFiles,
+  IniFiles,IBSQL,
 {$IFNDEF FPC}
   AncestroWeb_strings_delphi,
   fonctions_system,
 {$ELSE}
-  AncestroWeb_strings,
+  AncestroWeb_strings,UniqueInstanceRaw,
+{$ENDIF}
+{$IFDEF WIN32}
+  windirs,
 {$ENDIF}
   fonctions_string,
   fonctions_languages,
@@ -299,7 +318,8 @@ uses  fonctions_init,
 
 procedure TF_AncestroWeb.FormDestroy(Sender: TObject);
 begin
-  DMWeb.Free;
+  if Assigned(DMWeb)then
+    DMWeb.Free;
 end;
 
 procedure TF_AncestroWeb.DBGrid1CellClick(Column: TColumn);
@@ -318,6 +338,22 @@ procedure TF_AncestroWeb.de_ExportWebAcceptDirectory(Sender: TObject;
     var Action: Boolean{$ENDIF});
 begin
   gb_EraseExport := False;
+end;
+
+procedure TF_AncestroWeb.edNomBaseExit(Sender: TObject);
+var
+  NumDossier:Integer;
+begin
+  if (edNomBase.Caption<>DMWeb.ibd_BASE.DatabaseName) or (DMWeb.ibd_BASE.Connected=false) then
+    if DoOpenBase(edNomBase.Caption) then
+    begin
+      NumDossier:=StrToInt(trim(copy(cbDossier.Caption,1,2)));
+      if OuvreDossier(NumDossier) then
+      begin
+       fNom_Dossier:=fs_getCorrectString(copy(cbDossier.Caption,5,250));
+       DoAfterInit;
+      end;
+    end;
 end;
 
 procedure TF_AncestroWeb.FileCopyDoEraseDir(Sender: TObject; var Continue: boolean);
@@ -340,26 +376,24 @@ procedure TF_AncestroWeb.fne_importAcceptFileName(Sender: TObject;
 var ls_FileImport : String;
 begin
   ls_FileImport := {$IFDEF FPC}Value{$ELSE}fne_import.Text{$ENDIF};
-  if not DirectoryExists(ls_FileImport)
-  and FileExists(ls_FileImport) Then
-   Begin
-     FIniFile.Free;
-     FIniFile := nil;
-     try
-       FIniFile := TIniFile.Create(ls_FileImport);
-       DoAfterInit;
-       FIniFile.Free;
-       FIniFile := nil;
-       f_GetMemIniFile();
-       OnFormInfoIni.p_ExecuteEcriture(Self);
-     Except
-       On E:Exception do
-         ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenFile ) +#13#10+e.Message);
-     end;
-   end;
+  if not DirectoryExistsUTF8(ls_FileImport) { *Converted from DirectoryExists*  }
+    and FileExistsUTF8(ls_FileImport) { *Converted from FileExists*  } Then
+  Begin
+    FIniFile.Free;
+    FIniFile:=nil;
+    try
+      FIniFile:=TIniFile.Create(ls_FileImport);
+      DoAfterInit;
+      FIniFile.Free;
+      FIniFile:=nil;
+      f_GetMemIniFile();
+      OnFormInfoIni.p_ExecuteEcriture(Self);
+    Except
+      On E:Exception do
+        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenFile ) +#13#10+e.Message);
+    end;
+  end;
 end;
-
-
 
 procedure TF_AncestroWeb.FWEraseImage3Click(Sender: TObject);
 begin
@@ -418,7 +452,7 @@ var
   ls_FileName: string;
 begin
   ls_FileName := (Sender as TFileNameEdit).FileName;
-  if not DirectoryExists(ls_FileName) and FileExists(ls_FileName) then
+  if not DirectoryExistsUTF8(ls_FileName) { *Converted from DirectoryExists*  } and FileExistsUTF8(ls_FileName) { *Converted from FileExists*  } then
     aei_Image.LoadFromFile(ls_FileName)
   else
     aei_Image.Picture.Assign(nil);
@@ -426,7 +460,7 @@ end;
 
 function TF_AncestroWeb.fi_ImageEditCount(const as_FileName: string): integer;
 begin
-  if not DirectoryExists(as_FileName) and FileExists(as_FileName) then
+  if not DirectoryExistsUTF8(as_FileName) { *Converted from DirectoryExists*  } and FileExistsUTF8(as_FileName) { *Converted from FileExists*  } then
     Result := 1
   else
     Result := 0;
@@ -517,6 +551,19 @@ begin
   end;
 end;
 
+procedure TF_AncestroWeb.cbDossierChange(Sender: TObject);
+var
+  NumDossier:integer;
+begin
+  NumDossier:=StrToInt(trim(copy(cbDossier.Caption,1,2)));
+  if NumDossier<>fCleDossier then
+    if OuvreDossier(NumDossier) then
+    begin
+      fNom_Dossier:=fs_getCorrectString(copy(cbDossier.Caption,5,250));
+      DoAfterInit;
+    end;
+end;
+
 procedure TF_AncestroWeb.bt_exportClick(Sender: TObject);
 begin
   f_GetMemIniFile();
@@ -530,6 +577,30 @@ begin
        On E:Exception do
          ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantSaveFile )+#13#10+e.Message);
      end;
+end;
+
+procedure TF_AncestroWeb.btnSelectBaseClick(Sender: TObject);
+begin
+  OpenDialog.FileName:='';
+  //préparation de la boite mOpenDialog
+  if DirectoryExistsUTF8(edNomBase.Text) then
+  begin
+    OpenDialog.InitialDir:=edNomBase.Text;
+  end
+  else
+  begin
+    if DirectoryExistsUTF8(ExtractFilePath(edNomBase.Text)) then
+    begin
+      OpenDialog.InitialDir:=ExtractFilePath(edNomBase.Text);
+      if FileExistsUTF8(edNomBase.Text) then
+        OpenDialog.FileName:=edNomBase.Text;
+    end;
+  end;
+
+  if OpenDialog.Execute then
+  begin
+    edNomBase.Text:=OpenDialog.FileName;
+  end;
 end;
 
 procedure TF_AncestroWeb.ch_FilteredClick(Sender: TObject);
@@ -593,7 +664,7 @@ begin
   p_IncPrgressBar;
   FileCopy.Destination := de_ExportWeb.Text;
   ls_Destination := FileCopy.Destination+ DirectorySeparator;
-  if DirectoryExists ( ls_Destination ) Then
+  if DirectoryExistsUTF8(ls_Destination ) { *Converted from DirectoryExists*  } Then
    Begin
     lt_arg [0] := ls_Destination;
     if ( MessageDlg(fs_RemplaceMsg(gs_ANCESTROWEB_ExportDelete, lt_arg), mtWarning, mbYesNo, 0 ) = mrYes ) then
@@ -850,7 +921,7 @@ begin
 
   gs_HTMLTitle := '';
   if IBQ_Individu.Locate(INDIVIDU_CLE_FICHE, gi_CleFiche, []) then
-  begin
+  begin //AL il serait préférable de laisser le titre à l'initiative de l'utilisateur! Ce n'est pas forcément les noms du père et de la mère de l'individu sélectionner, surtout s'il n'y a pas de filtrage
     li_ClePere := IBQ_Individu.FieldByName(INDIVIDU_CLE_PERE).AsInteger;
     li_CleMere := IBQ_Individu.FieldByName(INDIVIDU_CLE_MERE).AsInteger;
     if IBQ_Individu.Locate(INDIVIDU_CLE_FICHE, li_ClePere, []) then
@@ -882,7 +953,6 @@ begin
       On E: Exception do
         ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + #13#10 + E.Message);
     end;
-
 end;
 
 procedure TF_AncestroWeb.p_genHTMLTree;
@@ -1065,18 +1135,18 @@ Begin
     Begin
       Exit;
     End;
-  if   FileExists( as_FilePath ) Then
+  if   FileExistsUTF8(as_FilePath ) { *Converted from FileExists*  } Then
     Begin
       Result := True;
       Exit;
     end;
   try
     if not IBQ_Media.FieldByName ( MEDIAS_NOM ).IsNull
-    and FileExists(fBasePath+DirectorySeparator+IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString)
+    and FileExistsUTF8(fBasePath+DirectorySeparator+IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString) { *Converted from FileExists*  }
      Then Result := fb_CopyFile(fBasePath+DirectorySeparator+IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString,as_FilePath,False,False)=0
     Else
     if {$IFNDEF FPC}( GetDriveType( Pchar(ExtractFileDrive ( IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString ))) >0 )
-    and{$ENDIF} FileExists( IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString )
+    and{$ENDIF} FileExistsUTF8(IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString ) { *Converted from FileExists*  }
       Then Result := fb_CopyFile(IBQ_Media.FieldByName(MEDIAS_PATH ).AsString,as_FilePath,False,False)=0
       Else Result := fb_ImageFieldToFile(IBQ_Media.FieldByName(MEDIAS_MULTI_MEDIA), as_FilePath);
   Except
@@ -1302,7 +1372,7 @@ begin
   li_i := 1;
   Result := fs_RemplaceEspace(as_FileAltName, '_') + '-' + IntToStr(
     ai_cleFiche) + CST_EXTENSION_JPEG;
-  while FileExists(Result) do
+  while FileExistsUTF8(Result) { *Converted from FileExists*  } do
   Begin
     inc ( li_i );
     Result := fs_RemplaceEspace(as_FileAltName, '_') + '-' + IntToStr(
@@ -1733,133 +1803,220 @@ end;
 procedure TF_AncestroWeb.DoInit(sBase: string);
 var
   Save_Cursor: TCursor;
+  Ok:Boolean;
 begin
   Save_Cursor := Screen.Cursor;
   Screen.Cursor := crHourGlass; { Affiche le curseur en forme de sablier }
-
   try
-    DoOpenBase(sBase);
-
+    if not Assigned(DMWeb) then
+    begin
+      DMWeb := TDMWeb.Create(self);
+    end;
+    Ok:=True;
+    if not DMWeb.IBT_BASE.Active then
+      Ok:=DoOpenBase(sBase);
+    if Ok then
+      Ok:=OuvreDossier(fCleDossier);
+    if Ok then
+      DoAfterInit;
+    PremiereOuverture:=False;
   finally
-    DoAfterInit;
+    Screen.Cursor := Save_Cursor; { Revient toujours à normal }
   end;
-
-
-  Screen.Cursor := Save_Cursor; { Revient toujours à normal }
 end;
 
-procedure TF_AncestroWeb.DoOpenBase(sBase: string);
-var
-  li_i: integer;
+function TF_AncestroWeb.DoOpenBase(sBase: string):boolean;
+var //ouvre la base, liste les dossiers et sélectionne le premier ou celui de la table dll à la première ouverture
+  s:string;
 begin
-  DMWeb := TDMWeb.Create(self);
-  for li_i := 0 to ComponentCount - 1 do
-    if Components[li_i] is TIBQuery then
-      (Components[li_i] as TIBQuery).Database := DMWeb.ibd_BASE;
-  try
-    DMWeb.doOpenDatabase(sBase);
-  except
-    DMWeb.Free;
+  Result:=DMWeb.doOpenDatabase(sBase);
+  if Result then
+  begin
+    ListerDossiers;
+    if PremiereOuverture then
+    begin
+      Result:=DMWeb.LitDllDossier;
+      if Result then
+      begin
+        s:=IntToStr(fCleDossier);
+        if Length(s)<2 then
+          s:=s+' ';
+        cbDossier.Caption:=s+', '+fNom_Dossier;
+      end;
+    end;
   end;
+end;
+
+function TF_AncestroWeb.OuvreDossier(NumDossier:integer):boolean;
+begin
+  Result:=True;
   try
     IBQ_Individu.Close;
-    IBQ_Individu.ParamByName(KLE_DOSSIER).AsInteger := fCleDossier;
+    IBQ_Individu.ParamByName(KLE_DOSSIER).AsInteger:=NumDossier;
     IBQ_Individu.Open;
-    IBQ_Individu.Locate(INDIVIDU_CLE_FICHE, fCleFiche, []);
+    if PremiereOuverture then
+      IBQ_Individu.Locate(INDIVIDU_CLE_FICHE,fCleFiche,[])
+    else
+    begin
+      fCleFiche:=IBQ_Individu.FieldByName(INDIVIDU_CLE_FICHE).AsInteger;
+      fNomIndi:=IBQ_Individu.FieldByName('nom').AsString;
+      fPrenomIndi:=IBQ_Individu.FieldByName('prenom').AsString;
+    end;
+    fCleDossier:=NumDossier;
   except
     On E: Exception do
+    begin
       ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) +
         sDataBaseName + #13#10 + E.Message);
-  end;
-  {$IFNDEF FPC}
-  with DMWeb do
-    try
-      IBQ_AscExists.Open;
-      if IBQ_AscExists.IsEmpty
-      and FileExists (gs_Root + 'script_update.sql') then
-       Begin
-         if not IBT_BASE.Active
-          then IBT_BASE.StartTransaction;
-         IBS_Temp.Script.LoadFromFile( gs_Root + 'script_update.sql');
-         if IBS_Temp.ValidateScript then
-           try
-             IBS_Temp.ExecuteScript;
-             IBT_BASE.CommitRetaining;
-             gb_updateBase := True;
-           Except
-             IBT_BASE.RollbackRetaining;
-           End;
-         ShowMessage ( gs_ANCESTROWEB_Please_Restart );
-         End;
-      IBQ_AscExists.Close;
-    Except
-
+      Result:=False;
     end;
-  {$ENDIF}
+  end;
 end;
 
 procedure TF_AncestroWeb.DoAfterInit;
 begin
-  fBasePath := GetUserDir+CST_AncestroWeb;
+  fNom_Dossier:=ChaineUTF8EnNomVariable(fNom_Dossier);
+  {$IFDEF WIN32}
+  fBasePath := GetWindowsSpecialDir(CSIDL_PERSONAL);
+  de_ExportWeb.RootDir:=GetWindowsSpecialDir(CSIDL_DESKTOPDIRECTORY);
+  {$ELSE}
+  fBasePath := GetUserDir;
+  {$ENDIF}
+  fBasePath:=fBasePath+CST_AncestroWeb+DirectorySeparator+fNom_Dossier;
   FileCopy.Destination := fBasePath + DirectorySeparator + CST_SUBDIR_EXPORT ;
-  fne_Import.Text := fBasePath + DirectorySeparator + CST_SUBDIR_SAVE ;
-  fne_Export.Text := fBasePath + DirectorySeparator + CST_SUBDIR_SAVE ;
-
-  de_ExportWeb.Text := fBasePath+DirectorySeparator+CST_SUBDIR_EXPORT;
-
-  Caption := fs_getCorrectString ( CST_AncestroWeb_WithLicense + ' : ' + gs_AnceSTROWEB_FORM_CAPTION ) +
-    '-' + fNomIndi + ', ' + fPrenomIndi;
-  fRetourDll := fs_getCorrectString ( gs_AnceSTROWEB_FORM_CAPTION );
-  OnFormInfoIni.p_ExecuteLecture(Self);
   fb_CreateDirectoryStructure( FileCopy.Destination );
-  fb_CreateDirectoryStructure( fne_Import.Text );
+  fb_CreateDirectoryStructure( fBasePath + DirectorySeparator + CST_SUBDIR_SAVE );
+  de_ExportWeb.Directory := fBasePath+DirectorySeparator+CST_SUBDIR_EXPORT;
+  fne_Import.FileName := fBasePath + DirectorySeparator + CST_SUBDIR_SAVE ;
+  fne_Export.FileName := fBasePath + DirectorySeparator + CST_SUBDIR_SAVE ;
 end;
 
-
-function fs_FindKey(const as_Soft : String; const as_IniKey : String = 'PathAppli'):String;
-{$IFDEF WIN32}
+procedure TF_AncestroWeb.FormCreate(Sender: TObject);
 var
-  fKeyRegistry: string;
-
+  fbddpath:String;
+{$IFDEF WINDOWS}
+  fKeyRegistry,s: string;
+  i:Integer;
+{$ENDIF}
 begin
+{$IFDEF FPC}//à faire une version Delphi
+  if InstanceRunning(CST_AncestroWeb) then
+  begin
+    ShowMessage('Vous ne devez exécuter qu''une seule session d''AncestroWeb');
+    {$ifdef unix}
+    FpKill(FpGetpid, 9);
+    {$endif}
+    {$ifdef windows}
+    TerminateProcess(GetCurrentProcess, 0);
+    {$endif}
+  end;
+{$ENDIF}
+  PremiereOuverture:=True;
+  TraduceImage:=TTraduceFile.Create(self);
+  //  object TraduceImage: TTraduceFile
+    TraduceImage.Errors := 0;
+    TraduceImage.OnFailure := TraduceImageFailure;
+    TraduceImage.TraduceOptions := [cpDestinationIsFile, cpCreateDestination];
+    TraduceImage.ResizeWidth := 200;
+  //    TraduceImage.left := 576;
+  //    TraduceImage.top := 104;
+  //  end
+  FileCopy:= TExtFileCopy.Create(self);
+  //object FileCopy: TExtFileCopy
+  FileCopy.Errors := 0;
+  FileCopy.OnFailure := FileCopyFailure;
+  FileCopy.Mask := '*';
+  FileCopy.FileOptions := [cpCreateDestination];
+  FileCopy.DoEraseDir := FileCopyDoEraseDir;
+  //  left = 476
+  //  top = 104
+  //end
+  FileIniCopy:= TExtFileCopy.Create(self);
+  //object FileIniCopy: TExtFileCopy
+  FileIniCopy.Errors := 0;
+  FileIniCopy.OnFailure := FileCopyFailure;
+  FileIniCopy.Mask := '*';
+  FileIniCopy.FileOptions := [cpCreateDestination];
+  FileIniCopy.DoEraseDir := FileCopyDoEraseDir;
+  //  left = 472
+  //  top = 160
+  //end
+  OnFormInfoIni:= TOnFormInfoIni.Create(self);
+  //object OnFormInfoIni: TOnFormInfoIni
+  OnFormInfoIni.AutoLoad:=False;
+  OnFormInfoIni.SauvePosObjects:=True;
+  OnFormInfoIni.SauveEditObjets:=[feTEdit,feTCheck,feTComboValue,feTDirectoryEdit
+    ,feTFileNameEdit,feTMemo,feTPageControl,feTRadio,feTSpinEdit]; //la méthode manque de sélectivité
+  OnFormInfoIni.Freeini:=False;
+  //  left = 544
+  //  top = 40
+  //end
+  ExtImage1:= TExtImage.Create(self);
+  //object ExtImage1: TExtImage
+  ExtImage1.Parent:=Panel8;
+  ExtImage1.Left := 6;
+  ExtImage1.Height := 170;
+  ExtImage1.Top := 163;
+  ExtImage1.Width := 200;
+  ExtImage1.Center := True;
+  ExtImage1.Proportional := True;
+  //end
+  ExtImage2:= TExtImage.Create(self);
+  //object ExtImage2: TExtImage
+  ExtImage2.Parent:=Panel8;
+  ExtImage2.Left := 214;
+  ExtImage2.Height := 170;
+  ExtImage2.Top := 163;
+  ExtImage2.Width := 200;
+  ExtImage2.Center := True;
+  ExtImage2.Proportional := True;
+  //end
+  ExtImage3:= TExtImage.Create(self);
+  //object ExtImage3: TExtImage
+  ExtImage3.Parent:=Panel8;
+  ExtImage3.Left := 422;
+  ExtImage3.Height := 170;
+  ExtImage3.Top := 163;
+  ExtImage3.Width := 200;
+  ExtImage3.Center := True;
+  ExtImage3.Proportional := True;
+  //end
+  f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
+  OnFormInfoIni.p_ExecuteLecture(Self);
 
-  fKeyRegistry := '\SOFTWARE\'+as_Soft;
-
-  Result := '';
-
-  with TRegIniFile.create do try
+{$IFDEF WINDOWS}
+  edNomBase.Clear;
+  with TRegistry.create do
+  try
     RootKey := HKEY_CURRENT_USER;
-    if OpenKey(fKeyRegistry, False) then
-     begin
-      Result := ReadString('Path', as_IniKey, '');
+    fKeyRegistry:='\SOFTWARE\'+CST_MANIA+'\Path';
+    if OpenKeyReadOnly(fKeyRegistry) then
+    begin
+      fbddpath:=ReadString('PathFileNameBdd');
+      edNomBase.Text:=fs_getCorrectString(fbddpath);
+      CloseKey;
+    end;
+    fKeyRegistry:='\SOFTWARE\'+CST_MANIA+'\Settings';
+    if OpenKeyReadOnly(fKeyRegistry) then
+    begin
+      for i:=0 to edNomBase.DropDownCount-1 do
+      begin //bizarre, cette boucle ne fonctionne pas avec un TRegIniFile, ou il faudrait fermer la clé entre chaque lecture
+        s:=ReadString('NomBase'+IntToStr(i));
+        if s>'' then
+          edNomBase.Items.Add(fs_getCorrectString(s));
+      end;
     end;
   finally
     Free;
   end;
+  gs_Root:=ExtractFilePath(Application.ExeName); //l'application doit être dans le même répertoire qu'Ancestromania pour utiliser le même gds32.dll
 {$ELSE}
-Begin
-
-  f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
-
- {$IFDEF FPC}
- Result := f_IniReadSectionStr('Path', as_IniKey, '');
- {$ENDIF}
+  gs_Root:=f_IniReadSectionStr('Path','PathAppli','')+DirectorySeparator;
+  if Length(gs_Root)<=1 then
+    gs_Root:=ExtractFilePath(Application.ExeName);
+  fbddpath := '/var/lib/firebird/2.5/data/Base.FDB'; //valable pour tests, mais il faudra trouver autre chose
 {$ENDIF}
-end;
-
-procedure TF_AncestroWeb.FormCreate(Sender: TObject);
-Begin
-
-  if Length(gs_Root) <= 1
-    Then
-     Begin
-      gs_root := fs_FindKey(gs_Soft);
-      if Length(gs_Root) <= 1
-        then gs_Root:= ExtractFileDir(Application.ExeName)+DirectorySeparator+'Plugins'+DirectorySeparator;
-     end;
-  AppendStr(gs_Root,'AncestroWeb'+DirectorySeparator);
-  OnFormInfoIni.AutoLoad := False;
-  f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
+  gs_Root:=gs_Root+CST_AncestroWeb+DirectorySeparator;//pas dans plugins pour l'exe
 
   try
     cb_Themes.Items.Clear;
@@ -1877,8 +2034,10 @@ Begin
   // ici mettre la taille initiale car avec les skins, les fenetres se resize
   Width := 640;
   Height := 400;
+  PCPrincipal.ActivePage:=ts_Gen;
+  Caption := fs_getCorrectString(CST_AncestroWeb_WithLicense+' : '+gs_AnceSTROWEB_FORM_CAPTION);
+  DoInit(fbddpath);
 end;
-
 
 procedure TF_AncestroWeb.TraduceImageFailure(Sender: TObject;
   const ErrorCode: integer; var ErrorMessage: string; var ContinueCopy: boolean);
@@ -1886,7 +2045,55 @@ begin
   ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateImage ) + ErrorMessage);
 end;
 
+function TF_AncestroWeb.ChaineUTF8EnNomVariable(Chaine:String):String;
+var
+  n:integer;
+  c:Char;
+begin
+{$IFDEF FPC}
+  Chaine:=Utf8ToAnsi(Chaine);
+{$ENDIF}
+  Result:=Chaine;
+  for n:=1 to Length(Chaine) do
+  begin
+    c:=Result[n];
+    if not ((c in ['0'..'9'])or(c in ['A'..'z'])) then
+      Result[n]:='_';
+  end;
+end;
 
+Procedure TF_AncestroWeb.ListerDossiers;
+var
+  s:string;
+begin
+  with TIBSQL.Create(self) do
+  begin
+    try
+      Database:=DMWeb.ibd_BASE;
+      ParamCheck:=False;
+      SQL.Text:='select CLE_DOSSIER,NOM_DOSSIER FROM DOSSIER ORDER BY CLE_DOSSIER';
+      ExecQuery;
+      cbDossier.Items.Clear;
+      while not EOF do
+      begin
+        s:=Fields[0].AsString;
+        if Length(s)<2 then
+          s:=s+' ';
+        cbDossier.Items.Add(s+', '+fs_getCorrectString(Fields[1].AsString));
+        if cbDossier.Items.Count=1 then
+        begin
+          fCleDossier:=Fields[0].AsInteger;
+          fNom_Dossier:=fs_getCorrectString(Fields[1].AsString);
+          cbDossier.Caption:=cbDossier.Items[0];
+        end;
+        Next;
+      end;
+      Close;
+    finally
+      Free;
+    end;
+  end;
+end;
 
 end.
 

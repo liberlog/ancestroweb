@@ -35,22 +35,21 @@ interface
 uses
   SysUtils, Classes, IBDatabase,
 {$IFNDEF FPC}
-  fonctions_system, IBScript,
+  fonctions_system,
 {$ENDIF}
   IBQuery, Dialogs, Forms, functions_html;
 
 var gt_TabSheets : TaHTMLULTabSheet;
     gi_FilesPerPage : Integer = 15 ;
     gi_FilesPerList : Integer = 60 ;
-    gs_Soft         : String ;
 
 
 const IBQDLLNOM='NOM';
       IBQDLLPRENOM='PRENOM';
-      IBQDLLDOSSIER='DOSSIER';
+      IBQDLLDOSSIER='dll_DOSSIER';
+      NOM_DOSSIER = 'NOM_DOSSIER';
 
       EQUAL       = '=' ;
-      DOSSIER_BASE = 'DS_BASE_PATH';
 
       CST_AUTHOR = 'LIBERLOG 2011' ;
 
@@ -209,44 +208,30 @@ type
     IBT_BASE: TIBTransaction;
     ibd_BASE: TIBDatabase;
     IBQDLL: TIBQuery;
-    {
-    CLE_FICHE: TIntegerField;
-    IBQDLLNOM: TIBStringField;
-    IBQDLLPRENOM: TIBStringField;
-    IBQDLLDOSSIER: TIntegerField;
-    }
     IBQUpdateDLL: TIBQuery;
-    IBQ_Dossier: TIBQuery;
-    {$IFNDEF FPC}
-    IBS_Temp: TIBScript;
-    {$ENDIF}
-    IBQ_AscExists: TIBQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Déclarations privées }
     s_User_Name, s_PassWord: string;
-    fDatabase: Boolean;
+
   public
+    { Déclarations publiques }
+    function doOpenDatabase(const sBase: string):boolean;
+    function LitDllDossier:boolean;
 
-
-    property Database: Boolean read fDatabase write fDatabase;
-
-    procedure doOpenDatabase(const sBase: string);
   end;
 
 var
   DMWeb: TDMWeb;
-      { Déclarations publiques }
-    sDataBaseName: string;
-
-    fCleFiche: integer;
-    fCleDossier: integer;
-    fNomIndi: string;
-    fPrenomIndi: string;
-    fRetourDll: string;
-    fBasePath: string;
-    gs_Root: string;
+  sDataBaseName: string;
+  fNom_Dossier:string;
+  fCleFiche: integer;
+  fCleDossier: integer;
+  fNomIndi: string;
+  fPrenomIndi: string;
+  fBasePath: string;
+  gs_Root: string;
 
 
 implementation
@@ -258,7 +243,7 @@ implementation
 {$ENDIF}
 uses
 {$IFNDEF FPC}
-     AncestroWeb_strings,
+     AncestroWeb_strings_delphi,
 {$ELSE}
      AncestroWeb_strings,
 {$ENDIF}
@@ -268,94 +253,68 @@ procedure TDMWeb.DataModuleCreate(Sender: TObject);
 begin
   s_User_Name := 'SYSDBA';
   s_PassWord := 'masterkey';
-
-  // Mettez cette variable a False si vous ne voulez pas de bse de donnée reliée a celle d Ancestrologie
-  fDatabase := True;
 end;
 
-procedure TDMWeb.doOpenDatabase(const sBase: string);
-{--------------------------------------------------------------------------------------------------------
-COnnection a la base
---------------------------------------------------------------------------------------------------------}
-
+function TDMWeb.doOpenDatabase(const sBase: string):boolean;
 begin
+  Result:=True;
+  //f_GetMemIniFile();  on verra sous Linux mais IniFile est déjà initialisé dans le FormCreate
+  if IBT_BASE.Active then
+    IBT_BASE.Commit;
+  if ibd_BASE.Connected then
+    ibd_BASE.Close;
+  ibd_BASE.DatabaseName := sBase;
 
-  f_GetMemIniFile();
-
-  if fDatabase then
+  ibd_BASE.Params.Clear;
+  ibd_BASE.Params.Add('user_name='+s_User_Name);
+  ibd_BASE.Params.Add('password='+s_PassWord);
+  {$IFDEF FPC}
+  ibd_BASE.Params.Add('lc_ctype=UTF8');//attention avec champs iso8859_1 "corrompus" dans les bases Ancestro
+  {$ENDIF} //delphi: dépend de la version
+  try
+    ibd_BASE.Open;
+    IBT_Base.StartTransaction;
+    sDataBaseName := sBase;
+  except
+    On E:Exception do
     begin
-      sDataBaseName := sBase;
+      ShowMessage( fs_getCorrectString ( gs_ANCESTROWEB_cantConnect ) + sDataBaseName+#13#10+E.Message);
+      Result:=False;
+    end;
+  end;
+end;
 
-      ibd_BASE.Connected := False;
-      ibd_BASE.DatabaseName := sDataBaseName;
-
-      ibd_BASE.Params.Clear;
-      ibd_BASE.Params.Add('user_name=' + s_User_Name);
-      ibd_BASE.Params.Add('password=' + s_PassWord);
-      {$IFDEF FPC}
-      ibd_BASE.Params.Add('lc_ctype=UTF8');
-      {$ENDIF}
-
-      try
-        ibd_BASE.Connected := True;
-        IBT_Base.Active := True;
-
-        //-- Ici on recupere les infos du dossier et de l individu actif dans Ancestrologie -----------------
-        IBQDLL.Open;
-
-        fCleFiche := IBQDLL.FieldByName(INDIVIDU_CLE_FICHE).AsInteger;
-        fCleFiche := f_IniReadSectionInt(CST_INI_ANCESTROWEB_SECTION,INDIVIDU_CLE_FICHE,fCleFiche);
-        fCleDossier := IBQDLL.FieldByName(IBQDLLDOSSIER).AsInteger;
-        fNomIndi := fs_getCorrectString ( IBQDLL.FieldByName(IBQDLLNOM).AsString );
-        fPrenomIndi := fs_getCorrectString ( IBQDLL.FieldByName(IBQDLLPRENOM).AsString );
-
-        IBQDLL.Close;
-
-        IBQ_Dossier.Close;
-        IBQ_Dossier.ParamByName(I_CLEF).AsInteger := fCleDossier;
-        IBQ_Dossier.Open;
-        fBasePath:= IBQ_Dossier.FieldByName ( DOSSIER_BASE ).AsString;
-        IBQ_Dossier.Close;
-        //---------------------------------------------------------------------------------------------------
-
-        Application.ProcessMessages;
-
-      except
-       On E:Exception do
-         ShowMessage( fs_getCorrectString ( gs_ANCESTROWEB_cantConnect ) + sDataBaseName+#13#10+E.Message);
-      end;
-
-    end
-    else
-      begin
-        fNomIndi := gs_ANCESTROWEB_NoData;
-        fPrenomIndi := '';
-      end;
+function TDMWeb.LitDllDossier:boolean;
+begin
+  Result:=True;
+  try
+    IBQDLL.Open;
+    fCleFiche := IBQDLL.FieldByName(INDIVIDU_CLE_FICHE).AsInteger;
+    fCleDossier := IBQDLL.FieldByName(IBQDLLDOSSIER).AsInteger;
+    fNomIndi := fs_getCorrectString ( IBQDLL.FieldByName(IBQDLLNOM).AsString );
+    fPrenomIndi := fs_getCorrectString ( IBQDLL.FieldByName(IBQDLLPRENOM).AsString );
+    fNom_Dossier:=fs_getCorrectString(IBQDLL.FieldByName(NOM_DOSSIER).AsString);
+    IBQDLL.Close;
+  except
+    On E:Exception do
+    begin
+      ShowMessage( fs_getCorrectString('Erreur lecture table Dll_Dossier')+#13#10+E.Message);
+      Result:=False; //chaine à ajouter dans AncestroWeb_strings
+    end;
+  end;
 end;
 
 procedure TDMWeb.DataModuleDestroy(Sender: TObject);
-{--------------------------------------------------------------------------------------------------------
-On libere la base la base
---------------------------------------------------------------------------------------------------------}
 begin
-  if fDatabase then
-    begin
-      // -- Ici on enregistre l information de retour dans la table GESTION_DLL, une Varchar(220)------------
-      with IBQUpdateDLL do
-        begin
-          Params[0].AsString := fRetourDLL;
-          Open;
-          IBT_BASE.CommitRetaining;
-          close;
-        end;
-
-      IBQUpdateDLL.Free;
-      IBQDLL.Close;
-      IBQDLL.Free;
-      IBT_Base.Free;
-      ibd_BASE.Close;
-      ibd_BASE.Free;
-    end;
+  //enregistrement du retour dans la table GESTION_DLL inutilisé
+  if IBT_BASE.Active then
+  try
+    IBT_Base.Commit
+  except
+    IBT_BASE.Rollback;
+  end;
+  if ibd_BASE.Connected then
+    ibd_BASE.Close;
 end;
 
 end.
