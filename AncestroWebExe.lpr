@@ -32,6 +32,7 @@ Begin
 {$ENDIF}
   Application.Initialize;
   Application.CreateForm(TF_AncestroWeb,F_AncestroWeb);
+  F_AncestroWeb.Show;
   Application.Run;
 end.
 

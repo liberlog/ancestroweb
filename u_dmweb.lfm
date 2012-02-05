@@ -572,4 +572,31 @@ object DMWeb: TDMWeb
         ParamType = ptUnknown
       end>
   end
-end
+  object IBQ_Ages: TIBQuery
+    Database = ibd_BASE
+    Transaction = IBT_BASE
+    BufferChunks = 1000
+    CachedUpdates = False
+    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    SQL.Strings = (
+      'select AGE_AU_DECES,SEXE,COUNT(*) AS COUNTER from INDIVIDU'
+      'WHERE KLE_DOSSIER=:I_DOSSIER '
+      'GROUP BY AGE_AU_DECES, SEXE'
+      'ORDER BY AGE_AU_DECES DESC, SEXE'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'I_DOSSIER'
+        ParamType = ptUnknown
+      end>
+    left = 328
+    top = 200
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'I_DOSSIER'
+        ParamType = ptUnknown
+      end>
+  end
+end

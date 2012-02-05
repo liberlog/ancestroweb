@@ -56,6 +56,7 @@ const IBQDLLNOM='NOM';
       CST_PROGRESS_COUNTER_TITLE    = 1;
       CST_PROGRESS_COUNTER_NAMES    = 1;
       CST_PROGRESS_COUNTER_SEARCH   = 1;
+      CST_PROGRESS_COUNTER_AGES     = 1;
       CST_PROGRESS_COUNTER_TREE     = 4;
       CST_PROGRESS_COUNTER_CONTACT  = 1;
       CST_PROGRESS_COUNTER_HOME     = 1;
@@ -66,22 +67,22 @@ const IBQDLLNOM='NOM';
       CST_AncestroWeb = 'AncestroWeb' ;
       CST_AncestroWeb_WithLicense = CST_AncestroWeb + ' GPL' ;
 
-      INDIVIDU_CLE_FICHE = 'CLE_FICHE' ;
-      INDIVIDU_CLE_PERE='CLE_PERE';
-      INDIVIDU_CLE_MERE='CLE_MERE';
-      INDIVIDU_ANNEE_NAISSANCE='ANNEE_NAISSANCE';
-      INDIVIDU_ANNEE_DECES    ='ANNEE_DECES';
-      INDIVIDU_SOSA       = 'NUM_SOSA' ;
-      INDIVIDU_SEXE       = 'SEXE' ;
-      INDIVIDU_SEXE_MAN   = 1 ;
-      INDIVIDU_SEXE_WOMAN = 2 ;
+      IBQ_CLE_FICHE = 'CLE_FICHE' ;
+      IBQ_CLE_PERE='CLE_PERE';
+      IBQ_CLE_MERE='CLE_MERE';
+      IBQ_ANNEE_NAISSANCE='ANNEE_NAISSANCE';
+      IBQ_ANNEE_DECES    ='ANNEE_DECES';
+      IBQ_SOSA       = 'NUM_SOSA' ;
+      IBQ_SEXE       = 'SEXE' ;
+      IBQ_SEXE_MAN   = 1 ;
+      IBQ_SEXE_WOMAN = 2 ;
 
       FICHE_DATE_NAISSANCE = 'DATE_NAISSANCE';
       FICHE_LIEU_NAISSANCE = 'LIEU_NAISSANCE';
       FICHE_DATE_DECES     = 'DATE_DECES';
       FICHE_LIEU_DECES     = 'LIEU_DECES';
 
-      NAMES_COUNTER = 'COUNTER' ;
+      IBQ_COUNTER = 'COUNTER' ;
 
       UNION_DATE_MARIAGE = 'DATE_MARIAGE' ;
       UNION_CP           = 'EV_FAM_CP' ;
@@ -114,13 +115,12 @@ const IBQDLLNOM='NOM';
 
       CST_INI_ANCESTROWEB_SECTION = 'AncestroWeb' ;
       CST_INI_ANCESTROWEB_Image   = 'Image' ;
-      IBQ_TREE_DATE_NAISSANCE='DATE_NAISSANCE';
-      IBQ_TREE_SEXE='SEXE';
-      IBQ_TREE_DATE_DECES='DATE_DECES';
-      IBQ_TREE_AGE_AU_DECES='AGE_AU_DECES';
-      IBQ_TREE_NIVEAU='TQ_NIVEAU';
-      IBQ_TREE_SOSA  ='tq_sosa';
-      IBQ_TREE_NUM_SOSA  ='num_sosa';
+      IBQ_DATE_NAISSANCE='DATE_NAISSANCE';
+      IBQ_DATE_DECES='DATE_DECES';
+      IBQ_AGE_AU_DECES='AGE_AU_DECES';
+      IBQ_NIVEAU='TQ_NIVEAU';
+      IBQ_TQ_SOSA  ='tq_sosa';
+      IBQ_NUM_SOSA  ='num_sosa';
 
       CST_LOGIE = 'Ancestrologie';
       CST_MANIA = 'Ancestromania';
@@ -155,6 +155,8 @@ const IBQDLLNOM='NOM';
       CST_FILE_LIST         = 'Liste';
       CST_FILE_SUBFILES     = 'SubFiles';
       CST_FILE_SEARCH       = 'Search';
+      CST_FILE_AGES         = 'Ages';
+      CST_FILE_AGES_LINE    = 'AgesLine';
       CST_FILE_NAMES        = 'Names' ;
       CST_FILE_Number       = ' no';
       CST_FILE_UNION        = 'union';
@@ -168,11 +170,25 @@ const IBQDLLNOM='NOM';
       CST_TABLE_TITLE       = 'title';
       CST_TABLE_CENTER      = 'center';
 
+      // Search page word replace
       CST_SEARCH_SEARCH     = 'Search';
       CST_SEARCH_SEARCH_TOOL= 'SearchTool';
       CST_SEARCH_SEARCH_QUER= 'SearchQuery';
       CST_SEARCH_DOMAIN     = 'Domain';
 
+      // Ages lines word replace
+      CST_AGES_LINES       = 'Ages_Lines';
+      CST_AGES_CAPTION_DEAD= 'Caption_Ages_Dead' ;
+      CST_AGES_CAPTION     = 'Caption_Ages' ;
+      CST_AGES_AN_AGE      = 'Age';
+      CST_AGES_MEN_COUNT   = 'Count_Ages_Men';
+      CST_AGES_WOMEN_COUNT = 'Count_Ages_Women';
+      CST_AGES_COUNT       = 'Count_Ages';
+
+      CST_ZERO             = '0';
+
+
+      // contact page word replace
       CST_CONTACT_MAIL     = 'Mail';
       CST_CONTACT_MAILER   = 'Mailer';
       CST_CONTACT_PASSWORD = 'Password';
@@ -186,6 +202,7 @@ const IBQDLLNOM='NOM';
       CST_CONTACT_AUTHOR   = 'Author';
       CST_HTML_CONTACT_IN_LANG     :Array [0..9] of String= ('Name','Surname','MailFrom','MailSubject','Message','Send','Reset','SendMessage','MailSentMessage','Lang');
 
+      // letters' sheet
       CST_FILES_BEGIN_LETTER = 'A';
       CST_FILES_END_LETTER   = 'Z';
 
@@ -201,6 +218,7 @@ type
     IBQ_ConjointSources: TIBQuery;
     IBQ_Conjoint: TIBQuery;
     IBQ_Medias: TIBQuery;
+    IBQ_Ages: TIBQuery;
     IBQ_TreeAsc: TIBQuery;
     IBQ_TreeByNames: TIBQuery;
     IBQ_TreeNames: TIBQuery;
@@ -289,7 +307,7 @@ begin
   Result:=True;
   try
     IBQDLL.Open;
-    fCleFiche := IBQDLL.FieldByName(INDIVIDU_CLE_FICHE).AsInteger;
+    fCleFiche := IBQDLL.FieldByName(IBQ_CLE_FICHE).AsInteger;
     fCleDossier := IBQDLL.FieldByName(IBQDLLDOSSIER).AsInteger;
     fNomIndi := fs_getCorrectString ( IBQDLL.FieldByName(IBQDLLNOM).AsString );
     fPrenomIndi := fs_getCorrectString ( IBQDLL.FieldByName(IBQDLLPRENOM).AsString );

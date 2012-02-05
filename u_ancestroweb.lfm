@@ -1,9 +1,8 @@
 object F_AncestroWeb: TF_AncestroWeb
-  Left = 1122
+  Left = 640
   Height = 400
-  Top = 395
+  Top = 340
   Width = 640
-  ActiveControl = edNomBase
   BorderIcons = []
   Caption = 'AncestroWeb : Générer un Site Web Généalogique Statique'
   ClientHeight = 400
@@ -17,8 +16,7 @@ object F_AncestroWeb: TF_AncestroWeb
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poScreenCenter
-  LCLVersion = '0.9.31'
-  Visible = True
+  LCLVersion = '0.9.30'
   object spSkinPanel1: TPanel
     Left = 0
     Height = 30
@@ -72,31 +70,31 @@ object F_AncestroWeb: TF_AncestroWeb
     TabOrder = 1
     object ts_Gen: TTabSheet
       Caption = 'Générer'
-      ClientHeight = 344
-      ClientWidth = 632
+      ClientHeight = 336
+      ClientWidth = 636
       object Panel1: TPanel
         Left = 0
-        Height = 344
+        Height = 336
         Top = 0
-        Width = 632
+        Width = 636
         Align = alClient
         BevelOuter = bvNone
-        ClientHeight = 344
-        ClientWidth = 632
+        ClientHeight = 336
+        ClientWidth = 636
         TabOrder = 0
         object Panel3: TPanel
           Left = 0
-          Height = 344
+          Height = 336
           Top = 0
           Width = 275
           Align = alLeft
           BevelOuter = bvNone
-          ClientHeight = 344
+          ClientHeight = 336
           ClientWidth = 275
           TabOrder = 0
           object de_ExportWeb: TDirectoryEdit
             Left = 4
-            Height = 21
+            Height = 22
             Top = 110
             Width = 240
             OnAcceptDirectory = de_ExportWebAcceptDirectory
@@ -108,32 +106,32 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object Label1: TLabel
             Left = 4
-            Height = 14
+            Height = 15
             Top = 90
-            Width = 216
+            Width = 263
             Caption = 'Répertoire du site web généalogique à créer :'
             ParentColor = False
           end
           object Label7: TLabel
             Left = 9
-            Height = 14
+            Height = 15
             Top = 155
-            Width = 40
+            Width = 48
             Caption = 'Thème :'
             ParentColor = False
           end
           object cb_Themes: TComboBox
             Left = 68
-            Height = 21
+            Height = 25
             Top = 150
             Width = 199
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 3
             Text = 'default'
           end
           object GedcomEdit: TFileNameEdit
             Left = 68
-            Height = 21
+            Height = 22
             Top = 223
             Width = 152
             DialogOptions = []
@@ -153,46 +151,46 @@ object F_AncestroWeb: TF_AncestroWeb
             Glyph.Data = {
               0E54496D6167696E674269746D617046050000424D4605000000000000360000
               00280000001200000012000000010020000000000010050000130B0000130B00
-              000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9C9797
-              FF000000FF111010FF585758FF6C6C6CFF656565FF656565FF666666FF666666
+              000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF97979C
+              FF000000FF101011FF585758FF6C6C6CFF656565FF656565FF666666FF666666
               FF555555FFA2A2A2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFA39D9DFF022E2EFF90CACAFF494243FF181715FF5B5A5AFF6C6C6DFF656565
+              FF9D9DA3FF2E2E02FFCACA90FF434249FF151718FF5A5A5BFF6D6C6CFF656565
               FF666666FF666666FF686868FF414141FFA5A5A5FFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFEFEFFA5A2A2FF002E2EFF85E7E7FF77BBBBFF7CBDC0FF414D46FF27251C
-              FF616266FF696969FF636363FF636363FF636363FF676767FF373737FFC3C3C3
-              FFFFFFFFFFFFFFFFFFACA8A8FF154141FF74CFCFFF92E0E0FFA6FFFFFF98FFFF
-              FF8FC388FF3C3000FF201D25FF636466FF69696AFF636363FF636363FF636363
-              FF666666FF4E4E4EFFFFFFFFFFB6B1B1FF214B4BFF61B5B5FF90E1E1FFA0FFFF
-              FF97FFFFFF9AFFFFFFA9DCA1FF644510FF1B0B00FF595C4EFFC2C2C6FFCDCDCD
-              FFC5C5C5FFC5C5C5FFC5C5C5FFC6C6C6FFD8D7D7FF1D4343FF58A8A8FF90E6E6
-              FF9FFFFFFF98FFFFFF97FFFFFF99E8CAFFA6B36FFF835E2DFF766714FF474B0C
-              FF999895FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1D1D1DFF5DB9B9
-              FF8FE3E3FF9CFFFFFF99FFFFFF98FFFFFF99EDD4FFA3B46FFF926E31FFA18758
-              FFC8C987FF8E8F32FF242400FF8B8B91FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FF000000FF9DF5F5FF9EFFFFFF99FFFFFF97FFFFFF99F6E7FFA2B771FF927131
-              FF997D4DFFCAC998FFD3D5A7FFCACA88FF898926FF212000FF999CA0FFFFFFFF
-              FFFFFFFFFFFFFFFFFF6E6767FF408181FFB1FFFFFF97FFFFFF96FAF4FFA0B770
-              FF9A7935FF957748FFC6C491FFCFD19EFFCCCC99FFD1D1A4FFCDCE89FF7D7C18
-              FF11150CFFAAACB3FFFFFFFFFFFFFFFFFFFFFFFFFF485050FF68B7B9FFA4FFFF
-              FF9FBB73FFA07C34FF917245FFC1BE8BFFD1D4A1FFCBCB98FFCBCB98FFCBCB98
-              FFD5D7ABFFCCCD84FF290E01FF222516FFC3C3C8FFFFFFFFFFFFFFFFFFE6DFDF
-              FF4C5D5FFF749159FFAA8F40FF8B673DFFBEB884FFD2D6A3FFCCCB98FFCBCB98
-              FFCCCC99FFCBCB98FFD3D7A3FFC4BE90FF7B4D1DFF242300FF8A8A92FFFFFFFF
-              FFFFFFFFFFFFFFFFFFCEC9CBFF483D2BFF614028FFCAC28AFFD2D6A3FFCCCB98
-              FFCBCB98FFCCCC99FFCBCB98FFD2D4A1FFC4C18DFF8B693AFFAC9A4DFF353600
-              FFA8A8AEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBEBEC6FF453E3BFFB5B783
-              FFDEDEA8FFCACA97FFCCCC99FFCBCB98FFD1D3A0FFC3BF8BFF8F6F42FFAF9B54
-              FF5A5B1AFF7D7D76FFEEEEF1FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFBCBDC0FF545443FFB2B27FFFDCDCA5FFCACA97FFD0D29FFFC5C490FF94774C
-              FFB6A05AFF575611FF6E6F67FFEAEAEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFB8B8B8FF5F5F4AFFBCBC87FFDADCA6FFCBCC99
-              FF987E50FFB19853FF575614FF66685EFFE6E6ECFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA4A4A6FF646449
-              FFD3D8A1FF9A8153FFA4884AFF6A671CFF595A49FFE0E0E5FFFFFFFFFFFFFFFF
+              FFFEFEFFFFA2A2A5FF2E2E00FFE7E785FFBBBB77FFC0BD7CFF464D41FF1C2527
+              FF666261FF696969FF636363FF636363FF636363FF676767FF373737FFC3C3C3
+              FFFFFFFFFFFFFFFFFFA8A8ACFF414115FFCFCF74FFE0E092FFFFFFA6FFFFFF98
+              FF88C38FFF00303CFF251D20FF666463FF6A6969FF636363FF636363FF636363
+              FF666666FF4E4E4EFFFFFFFFFFB1B1B6FF4B4B21FFB5B561FFE1E190FFFFFFA0
+              FFFFFF97FFFFFF9AFFA1DCA9FF104564FF000B1BFF4E5C59FFC6C2C2FFCDCDCD
+              FFC5C5C5FFC5C5C5FFC5C5C5FFC6C6C6FFD7D7D8FF43431DFFA8A858FFE6E690
+              FFFFFF9FFFFFFF98FFFFFF97FFCAE899FF6FB3A6FF2D5E83FF146776FF0C4B47
+              FF959899FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1D1D1DFFB9B95D
+              FFE3E38FFFFFFF9CFFFFFF99FFFFFF98FFD4ED99FF6FB4A3FF316E92FF5887A1
+              FF87C9C8FF328F8EFF002424FF918B8BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FF000000FFF5F59DFFFFFF9EFFFFFF99FFFFFF97FFE7F699FF71B7A2FF317192
+              FF4D7D99FF98C9CAFFA7D5D3FF88CACAFF268989FF002021FFA09C99FFFFFFFF
+              FFFFFFFFFFFFFFFFFF67676EFF818140FFFFFFB1FFFFFF97FFF4FA96FF70B7A0
+              FF35799AFF487795FF91C4C6FF9ED1CFFF99CCCCFFA4D1D1FF89CECDFF187C7D
+              FF0C1511FFB3ACAAFFFFFFFFFFFFFFFFFFFFFFFFFF505048FFB9B768FFFFFFA4
+              FF73BB9FFF347CA0FF457291FF8BBEC1FFA1D4D1FF98CBCBFF98CBCBFF98CBCB
+              FFABD7D5FF84CDCCFF010E29FF162522FFC8C3C3FFFFFFFFFFFFFFFFFFDFDFE6
+              FF5F5D4CFF599174FF408FAAFF3D678BFF84B8BEFFA3D6D2FF98CBCCFF98CBCB
+              FF99CCCCFF98CBCBFFA3D7D3FF90BEC4FF1D4D7BFF002324FF928A8AFFFFFFFF
+              FFFFFFFFFFFFFFFFFFCBC9CEFF2B3D48FF284061FF8AC2CAFFA3D6D2FF98CBCC
+              FF98CBCBFF99CCCCFF98CBCBFFA1D4D2FF8DC1C4FF3A698BFF4D9AACFF003635
+              FFAEA8A8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC6BEBEFF3B3E45FF83B7B5
+              FFA8DEDEFF97CACAFF99CCCCFF98CBCBFFA0D3D1FF8BBFC3FF426F8FFF549BAF
+              FF1A5B5AFF767D7DFFF1EEEEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFC0BDBCFF435454FF7FB2B2FFA5DCDCFF97CACAFF9FD2D0FF90C4C5FF4C7794
+              FF5AA0B6FF115657FF676F6EFFEFEAEAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFB8B8B8FF4A5F5FFF87BCBCFFA6DCDAFF99CCCB
+              FF507E98FF5398B1FF145657FF5E6866FFECE6E6FFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA6A4A4FF496464
+              FFA1D8D3FF53819AFF4A88A4FF1C676AFF495A59FFE5E0E0FFFFFFFFFFFFFFFF
               FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFF91959AFF2C1000FFBC964EFF8C8B35FF4C5034FFD4D4D9FFFFFFFF
+              FFFFFFFFFF9A9591FF00102CFF4E96BCFF358B8CFF34504CFFD9D4D4FFFFFFFF
               FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF898A8CFF000000FF2D2E32FFD6D6D8
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8C8A89FF000000FF322E2DFFD8D6D6
               FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
             }
             Font.Color = clWhite
@@ -201,15 +199,15 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object Label9: TLabel
             Left = 9
-            Height = 14
+            Height = 15
             Top = 227
-            Width = 54
+            Width = 59
             Caption = 'GEDCOM :'
             ParentColor = False
           end
           object me_Bottom: TMemo
             Left = 4
-            Height = 69
+            Height = 61
             Top = 268
             Width = 262
             Anchors = [akTop, akLeft, akRight, akBottom]
@@ -218,34 +216,34 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object Label6: TLabel
             Left = 8
-            Height = 14
+            Height = 15
             Top = 251
-            Width = 121
+            Width = 142
             Caption = 'En bas de chaque page :'
             ParentColor = False
           end
           object cb_Files: TComboBox
             Left = 68
-            Height = 21
+            Height = 25
             Top = 188
             Width = 199
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 4
             Text = 'default'
           end
           object Label44: TLabel
             Left = 10
-            Height = 14
+            Height = 15
             Top = 191
-            Width = 46
+            Width = 54
             Caption = 'Sources :'
             ParentColor = False
           end
           object LabelBase: TLabel
             Left = 4
-            Height = 14
+            Height = 18
             Top = 5
-            Width = 99
+            Width = 132
             Caption = 'Base de données:'
             Font.Height = 13
             Font.Name = 'Tahoma'
@@ -261,7 +259,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Anchors = [akTop, akLeft, akRight]
             AutoSize = False
             DropDownCount = 10
-            ItemHeight = 13
+            ItemHeight = 0
             OnExit = edNomBaseExit
             TabOrder = 0
           end
@@ -312,21 +310,21 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object cbDossier: TComboBox
             Left = 60
-            Height = 21
+            Height = 26
             Top = 55
             Width = 206
             AutoComplete = True
             AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
-            ItemHeight = 13
+            ItemHeight = 0
             OnChange = cbDossierChange
             Style = csDropDownList
             TabOrder = 1
           end
           object Label45: TLabel
             Left = 4
-            Height = 14
+            Height = 15
             Top = 59
-            Width = 48
+            Width = 52
             Caption = 'Dossier:'
             Font.Color = clWindowText
             Font.Height = -11
@@ -338,35 +336,35 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object Splitter1: TSplitter
           Left = 275
-          Height = 344
+          Height = 336
           Top = 0
           Width = 1
         end
         object Panel4: TPanel
           Left = 276
-          Height = 344
+          Height = 336
           Top = 0
-          Width = 356
+          Width = 360
           Align = alClient
           BevelOuter = bvNone
-          ClientHeight = 344
-          ClientWidth = 356
+          ClientHeight = 336
+          ClientWidth = 360
           TabOrder = 1
           object Panel5: TPanel
             Left = 0
-            Height = 258
+            Height = 250
             Top = 0
-            Width = 356
+            Width = 360
             Align = alClient
             BevelOuter = bvNone
-            ClientHeight = 258
-            ClientWidth = 356
+            ClientHeight = 250
+            ClientWidth = 360
             TabOrder = 0
             object DBGrid1: TDBGrid
               Left = 0
-              Height = 215
+              Height = 207
               Top = 43
-              Width = 356
+              Width = 360
               Align = alClient
               Color = clWindow
               Columns = <              
@@ -402,11 +400,11 @@ object F_AncestroWeb: TF_AncestroWeb
               Left = 0
               Height = 43
               Top = 0
-              Width = 356
+              Width = 360
               Align = alTop
               BevelOuter = bvNone
               ClientHeight = 43
-              ClientWidth = 356
+              ClientWidth = 360
               TabOrder = 1
               object ch_ancestors: TJvXPCheckbox
                 Left = 5
@@ -432,12 +430,12 @@ object F_AncestroWeb: TF_AncestroWeb
           object Panel6: TPanel
             Left = 0
             Height = 81
-            Top = 263
-            Width = 356
+            Top = 255
+            Width = 360
             Align = alBottom
             BevelOuter = bvNone
             ClientHeight = 81
-            ClientWidth = 356
+            ClientWidth = 360
             TabOrder = 1
             object bt_gen: TFWSaveAs
               Left = 264
@@ -451,7 +449,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object fne_Export: TFileNameEdit
               Left = 92
-              Height = 21
+              Height = 22
               Top = 26
               Width = 231
               DialogOptions = [ofCreatePrompt]
@@ -464,7 +462,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object fne_import: TFileNameEdit
               Left = 92
-              Height = 21
+              Height = 22
               Top = 0
               Width = 232
               OnAcceptFileName = fne_importAcceptFileName
@@ -488,9 +486,9 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object Label43: TLabel
               Left = 4
-              Height = 14
+              Height = 15
               Top = 3
-              Width = 45
+              Width = 58
               Caption = 'Importer :'
               ParentColor = False
             end
@@ -499,8 +497,8 @@ object F_AncestroWeb: TF_AncestroWeb
             Cursor = crVSplit
             Left = 0
             Height = 5
-            Top = 258
-            Width = 356
+            Top = 250
+            Width = 360
             Align = alBottom
             ResizeAnchor = akBottom
           end
@@ -509,29 +507,29 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Home: TTabSheet
       Caption = 'Accueil'
-      ClientHeight = 344
-      ClientWidth = 632
+      ClientHeight = 336
+      ClientWidth = 636
       object Panel8: TPanel
         Left = 0
-        Height = 344
+        Height = 336
         Top = 0
-        Width = 632
+        Width = 636
         Align = alClient
         BevelOuter = bvNone
-        ClientHeight = 344
-        ClientWidth = 632
+        ClientHeight = 336
+        ClientWidth = 636
         TabOrder = 0
         object Label2: TLabel
           Left = 4
-          Height = 14
+          Height = 15
           Top = 5
-          Width = 38
+          Width = 47
           Caption = 'Auteur :'
           ParentColor = False
         end
         object ed_Author: TEdit
           Left = 60
-          Height = 21
+          Height = 22
           Top = 1
           Width = 224
           TabOrder = 0
@@ -546,23 +544,23 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object Label3: TLabel
           Left = 4
-          Height = 14
+          Height = 15
           Top = 25
-          Width = 60
+          Width = 72
           Caption = 'Description :'
           ParentColor = False
         end
         object lb_Images: TLabel
           Left = 4
-          Height = 14
+          Height = 15
           Top = 145
-          Width = 41
+          Width = 50
           Caption = 'Images :'
           ParentColor = False
         end
         object ImageEdit1: TFileNameEdit
           Left = 60
-          Height = 21
+          Height = 22
           Top = 137
           Width = 96
           OnAcceptFileName = ImageEdit1AcceptFileName
@@ -578,7 +576,7 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ImageEdit2: TFileNameEdit
           Left = 212
-          Height = 21
+          Height = 22
           Top = 136
           Width = 152
           OnAcceptFileName = ImageEdit2AcceptFileName
@@ -593,7 +591,7 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ImageEdit3: TFileNameEdit
           Left = 420
-          Height = 21
+          Height = 22
           Top = 137
           Width = 152
           OnAcceptFileName = ImageEdit3AcceptFileName
@@ -638,7 +636,7 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ed_IndexName: TEdit
           Left = 404
-          Height = 21
+          Height = 22
           Top = 1
           Width = 224
           TabOrder = 8
@@ -646,9 +644,9 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object Label10: TLabel
           Left = 300
-          Height = 14
+          Height = 15
           Top = 5
-          Width = 75
+          Width = 92
           Caption = 'Nom du fichier :'
           ParentColor = False
         end
@@ -656,28 +654,28 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Files: TTabSheet
       Caption = 'Fiches'
-      ClientHeight = 344
-      ClientWidth = 632
+      ClientHeight = 336
+      ClientWidth = 636
       object Panel10: TPanel
         Left = 0
-        Height = 344
+        Height = 336
         Top = 0
-        Width = 632
+        Width = 636
         Align = alClient
-        ClientHeight = 344
-        ClientWidth = 632
+        ClientHeight = 336
+        ClientWidth = 636
         TabOrder = 0
         object Label13: TLabel
           Left = 244
-          Height = 14
+          Height = 15
           Top = 6
-          Width = 130
+          Width = 158
           Caption = 'Nom du début des fichiers :'
           ParentColor = False
         end
         object ed_FileBeginName: TEdit
           Left = 404
-          Height = 21
+          Height = 22
           Top = 1
           Width = 224
           TabOrder = 0
@@ -693,9 +691,9 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object Label14: TLabel
           Left = 4
-          Height = 14
+          Height = 15
           Top = 29
-          Width = 60
+          Width = 72
           Caption = 'Description :'
           ParentColor = False
         end
@@ -710,7 +708,7 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ed_ListsBeginName: TEdit
           Left = 404
-          Height = 21
+          Height = 22
           Top = 25
           Width = 224
           TabOrder = 3
@@ -718,9 +716,9 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object Label31: TLabel
           Left = 211
-          Height = 14
+          Height = 15
           Top = 29
-          Width = 156
+          Width = 191
           Caption = 'Nom du début des fichiers listes :'
           ParentColor = False
         end
@@ -737,17 +735,17 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_tree: TTabSheet
       Caption = 'Arbre'
-      ClientHeight = 344
-      ClientWidth = 632
+      ClientHeight = 336
+      ClientWidth = 636
       object Panel2: TPanel
         Left = 0
-        Height = 344
+        Height = 336
         Top = 0
-        Width = 632
+        Width = 636
         Align = alClient
         BevelOuter = bvNone
-        ClientHeight = 344
-        ClientWidth = 632
+        ClientHeight = 336
+        ClientWidth = 636
         TabOrder = 0
         object ch_genTree: TJvXPCheckbox
           Left = 4
@@ -770,23 +768,23 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object Label8: TLabel
           Left = 4
-          Height = 14
+          Height = 15
           Top = 25
-          Width = 38
+          Width = 45
           Caption = 'Entête :'
           ParentColor = False
         end
         object Label11: TLabel
           Left = 300
-          Height = 14
+          Height = 15
           Top = 5
-          Width = 75
+          Width = 92
           Caption = 'Nom du fichier :'
           ParentColor = False
         end
         object ed_TreeName: TEdit
           Left = 404
-          Height = 21
+          Height = 22
           Top = 1
           Width = 224
           TabOrder = 2
@@ -796,8 +794,8 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Names: TTabSheet
       Caption = 'Patronymes'
-      ClientHeight = 344
-      ClientWidth = 632
+      ClientHeight = 336
+      ClientWidth = 636
       object Panel12: TPanel
         Left = 0
         Height = 344
@@ -854,17 +852,17 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Referring: TTabSheet
       Caption = 'Recherche'
-      ClientHeight = 344
-      ClientWidth = 632
+      ClientHeight = 336
+      ClientWidth = 636
       object Panel11: TPanel
         Left = 0
-        Height = 344
+        Height = 336
         Top = 0
-        Width = 632
+        Width = 636
         Align = alClient
         BevelOuter = bvNone
-        ClientHeight = 344
-        ClientWidth = 632
+        ClientHeight = 336
+        ClientWidth = 636
         TabOrder = 0
         object ch_genSearch: TJvXPCheckbox
           Left = 4
@@ -877,23 +875,23 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object Label15: TLabel
           Left = 4
-          Height = 14
+          Height = 15
           Top = 1
-          Width = 493
+          Width = 608
           Caption = 'Cette fiche génère une recherche, qui fontionne 1 mois après avoir inscrit votre site sur un site référencé.'
           ParentColor = False
         end
         object Label16: TLabel
           Left = 298
-          Height = 14
+          Height = 15
           Top = 27
-          Width = 75
+          Width = 92
           Caption = 'Nom du fichier :'
           ParentColor = False
         end
         object ed_SearchName: TEdit
           Left = 402
-          Height = 21
+          Height = 22
           Top = 23
           Width = 224
           TabOrder = 1
@@ -909,30 +907,30 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object Label17: TLabel
           Left = 4
-          Height = 14
+          Height = 15
           Top = 49
-          Width = 38
+          Width = 45
           Caption = 'Entête :'
           ParentColor = False
         end
         object ed_SearchSite: TEdit
           Left = 380
-          Height = 21
+          Height = 22
           Top = 145
           Width = 248
           TabOrder = 3
         end
         object Label18: TLabel
           Left = 4
-          Height = 14
+          Height = 15
           Top = 149
-          Width = 302
+          Width = 371
           Caption = 'Domaine de votre site web (compte et fin d''adresse hébergeur) :'
           ParentColor = False
         end
         object ed_SearchTool: TEdit
           Left = 380
-          Height = 21
+          Height = 22
           Top = 173
           Width = 248
           TabOrder = 4
@@ -940,9 +938,9 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object Label32: TLabel
           Left = 268
-          Height = 14
+          Height = 15
           Top = 177
-          Width = 91
+          Width = 109
           Caption = 'Site de recherche :'
           Font.Color = clWindowText
           Font.Height = -11
@@ -952,7 +950,7 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ed_SearchQuery: TEdit
           Left = 140
-          Height = 21
+          Height = 22
           Top = 173
           Width = 112
           TabOrder = 5
@@ -960,9 +958,9 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object Label33: TLabel
           Left = 4
-          Height = 14
+          Height = 15
           Top = 177
-          Width = 107
+          Width = 131
           Caption = 'Identifiant de requête :'
           Font.Color = clWindowText
           Font.Height = -11
@@ -974,8 +972,8 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Contact: TTabSheet
       Caption = 'Contact'
-      ClientHeight = 344
-      ClientWidth = 632
+      ClientHeight = 336
+      ClientWidth = 636
       object Panel9: TPanel
         Left = 0
         Height = 344
@@ -1042,7 +1040,7 @@ object F_AncestroWeb: TF_AncestroWeb
           Height = 21
           Top = 169
           Width = 208
-          ItemHeight = 13
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'ssl'
@@ -1186,7 +1184,7 @@ object F_AncestroWeb: TF_AncestroWeb
           Height = 21
           Top = 198
           Width = 208
-          ItemHeight = 13
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'qmail'
@@ -1206,17 +1204,75 @@ object F_AncestroWeb: TF_AncestroWeb
         end
       end
     end
+    object ts_Ages: TTabSheet
+      Caption = 'Âges'
+      ClientHeight = 336
+      ClientWidth = 636
+      object Panel13: TPanel
+        Left = 0
+        Height = 336
+        Top = 0
+        Width = 636
+        Align = alClient
+        BevelOuter = bvNone
+        ClientHeight = 336
+        ClientWidth = 636
+        TabOrder = 0
+        object ch_genages: TJvXPCheckbox
+          Left = 4
+          Height = 17
+          Top = 6
+          Width = 234
+          Caption = 'Générer les statistiques sur les âges'
+          TabOrder = 0
+          Checked = True
+          State = cbChecked
+          UseDockManager = False
+          OnClick = ch_genagesClick
+        end
+        object me_HeadAges: TMemo
+          Left = 4
+          Height = 74
+          Top = 41
+          Width = 622
+          ScrollBars = ssAutoVertical
+          TabOrder = 1
+        end
+        object Label46: TLabel
+          Left = 4
+          Height = 15
+          Top = 25
+          Width = 45
+          Caption = 'Entête :'
+          ParentColor = False
+        end
+        object Label47: TLabel
+          Left = 300
+          Height = 15
+          Top = 5
+          Width = 92
+          Caption = 'Nom du fichier :'
+          ParentColor = False
+        end
+        object ed_AgesName: TEdit
+          Left = 404
+          Height = 22
+          Top = 1
+          Width = 224
+          TabOrder = 2
+          Text = 'Ages'
+        end
+      end
+    end
     object ts_about: TTabSheet
       Caption = 'À propos'
-      ClientHeight = 344
-      ClientWidth = 632
+      ClientHeight = 336
+      ClientWidth = 636
       object pa_About: TScrollBox
         Left = 0
         Height = 344
         Top = 0
         Width = 632
-        HorzScrollBar.Page = 632
-        VertScrollBar.Page = 344
         Align = alClient
         ClientHeight = 340
         ClientWidth = 628
@@ -1360,7 +1416,7 @@ object F_AncestroWeb: TF_AncestroWeb
     Filter = 'Bases Firebird/Interbase (*.fdb,*.gdb)|*.fdb;*.gdb|Tous les fichiers (*.*)|*.*'
     FilterIndex = 0
     Options = [ofHideReadOnly, ofNoNetworkButton, ofViewDetail]
-    left = 152
-    top = 24
+    left = 312
+    top = 16
   end
-end
+end

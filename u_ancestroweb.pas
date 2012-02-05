@@ -49,6 +49,7 @@ type
     ch_ContactIdentify: TJvXPCheckbox;
     ch_genNames: TJvXPCheckbox;
     ch_genSearch: TJvXPCheckbox;
+    ch_genages: TJvXPCheckbox;
     ch_Images: TJvXPCheckbox;
     ch_genTree: TJvXPCheckBox;
     cb_Themes: TComboBox;
@@ -77,6 +78,7 @@ type
     ed_TreeName: TEdit;
     ed_ContactName: TEdit;
     ed_FileBeginName: TEdit;
+    ed_AgesName: TEdit;
     fne_Export: TFileNameEdit;
     fne_import: TFileNameEdit;
     FWEraseImage: TFWErase;
@@ -126,6 +128,8 @@ type
     Label42: TLabel;
     Label43: TLabel;
     Label45: TLabel;
+    Label46: TLabel;
+    Label47: TLabel;
     LabelBase: TLabel;
     lb_Comments: TLabel;
     Label2: TLabel;
@@ -138,11 +142,13 @@ type
     lb_Images: TLabel;
     me_Description: TMemo;
     me_FilesHead: TMemo;
+    me_HeadAges: TMemo;
     me_NamesHead: TMemo;
     me_ContactHead: TMemo;
     me_searchHead: TMemo;
     me_HeadTree: TMemo;
     OpenDialog: TOpenDialog;
+    Panel13: TPanel;
     PCPrincipal: TPageControl;
     Panel1: TPanel;
     Panel10: TPanel;
@@ -163,6 +169,7 @@ type
     Splitter1: TSplitter;
     Splitter2: TSplitter;
     spSkinPanel1: TPanel;
+    ts_Ages: TTabSheet;
     ts_Names: TTabSheet;
     ts_about: TTabSheet;
     ts_Referring: TTabSheet;
@@ -180,6 +187,7 @@ type
     procedure bt_genClick(Sender: TObject);
     procedure cbDossierChange(Sender: TObject);
     procedure ch_FilteredClick(Sender: TObject);
+    procedure ch_genagesClick(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
     procedure de_ExportWebAcceptDirectory(Sender: TObject;{$IFDEF FPC} var Value: string{$ELSE} var Name: string;
     var Action: Boolean{$ENDIF});
@@ -249,7 +257,7 @@ type
       const ab_Link: boolean = True;
       const ab_Progress: boolean = True;
       const ab_NotFirst: boolean = False;
-      const as_IdSosa: string = IBQ_TREE_SOSA;
+      const as_IdSosa: string = IBQ_Tq_SOSA;
       const ab_Asc: boolean = True;
       const ai_Limit: longint = 0): longint;
     function fi_CreateSheets: integer;
@@ -257,6 +265,7 @@ type
                                      const IBQ_FilesFiltered: TIBQuery;
                                      const ai_PerPage : Integer;
                                      const as_BeginFile : String);
+    procedure p_genHtmlAges;
     procedure p_genHtmlFiles(const IBQ_FilesFiltered: TIBQuery);
     procedure p_genHtmlList(const IBQ_FilesFiltered: TIBQuery);
     procedure p_genHtmlNames(const IBQ_FilesFiltered: TIBQuery);
@@ -324,13 +333,13 @@ end;
 
 procedure TF_AncestroWeb.DBGrid1CellClick(Column: TColumn);
 begin
-  fCleFiche := IBQ_Individu.FieldByName(INDIVIDU_CLE_FICHE).AsInteger;
+  fCleFiche := IBQ_Individu.FieldByName(IBQ_CLE_FICHE).AsInteger;
   p_iniWriteKey;
 end;
 
 procedure TF_AncestroWeb.p_iniWriteKey;
 begin
-  p_IniWriteSectionInt(CST_INI_ANCESTROWEB_SECTION, INDIVIDU_CLE_FICHE, fCleFiche);
+  p_IniWriteSectionInt(CST_INI_ANCESTROWEB_SECTION, IBQ_CLE_FICHE, fCleFiche);
 end;
 
 procedure TF_AncestroWeb.de_ExportWebAcceptDirectory(Sender: TObject;
@@ -546,7 +555,7 @@ begin
   finally
     gb_Generate := False;
     p_Setcomments (( gs_AnceSTROWEB_Finished ));
-    IBQ_Individu.Locate(INDIVIDU_CLE_FICHE, gi_CleFiche, []);
+    IBQ_Individu.Locate(IBQ_CLE_FICHE, gi_CleFiche, []);
     IBQ_Individu.EnableControls;
   end;
 end;
@@ -608,6 +617,11 @@ begin
   p_iniWriteKey;
 end;
 
+procedure TF_AncestroWeb.ch_genagesClick(Sender: TObject);
+begin
+
+end;
+
 function TF_AncestroWeb.fi_CreateSheets: integer;
 
   procedure p_setCorrectFileName(const aed_NameFile: TEdit;
@@ -640,7 +654,13 @@ begin
   begin
     Inc(Result, CST_PROGRESS_COUNTER_SEARCH);
     p_setCorrectFileName(ed_SearchName, CST_FILE_SEARCH);
-    p_AddTabSheet(gt_TabSheets, ( gs_AnceSTROWEB_Search ), ed_SearchName.Text + CST_EXTENSION_HTML);
+    p_AddTabSheet(gt_TabSheets, ( gs_ANCESTROWEB_Search ), ed_SearchName.Text + CST_EXTENSION_HTML);
+  end;
+  if ch_genages.Checked then
+  begin
+    Inc(Result, CST_PROGRESS_COUNTER_AGES);
+    p_setCorrectFileName(ed_AgesName, CST_FILE_AGES);
+    p_AddTabSheet(gt_TabSheets, ( gs_ANCESTROWEB_Ages ), ed_AgesName.Text + CST_EXTENSION_HTML);
   end;
   Inc(Result, CST_PROGRESS_COUNTER_FILES+CST_PROGRESS_COUNTER_LIST);
   p_setCorrectFileName(ed_FileBeginName, CST_FILE_FILES);
@@ -739,7 +759,7 @@ function TF_AncestroWeb.fi_CreateHTMLTree(const IBQ_Tree: TIBQuery;
   const ab_Link: boolean = True;
   const ab_Progress: boolean = True;
   const ab_NotFirst: boolean = False;
-  const as_IdSosa: string = IBQ_TREE_SOSA;
+  const as_IdSosa: string = IBQ_TQ_SOSA;
   const ab_Asc: boolean = True;
   const ai_Limit: longint = 0): longint;
 var
@@ -750,14 +770,14 @@ var
   function fs_getText: string;
   begin
     Result := '';
-    if not IBQ_Tree.FieldByName(IBQ_TREE_DATE_NAISSANCE).IsNull then
+    if not IBQ_Tree.FieldByName(IBQ_DATE_NAISSANCE).IsNull then
       AppendStr(Result, ( gs_AnceSTROWEB_EXPORT_WEB_BORN ) + IBQ_Tree.FieldByName(
-        IBQ_TREE_DATE_NAISSANCE).AsString);
-    if not IBQ_Tree.FieldByName(IBQ_TREE_DATE_DECES).IsNull then
+        IBQ_DATE_NAISSANCE).AsString);
+    if not IBQ_Tree.FieldByName(IBQ_DATE_DECES).IsNull then
       AppendStr(Result, ( gs_AnceSTROWEB_EXPORT_WEB_DIED ) +
-        IBQ_Tree.FieldByName(IBQ_TREE_DATE_DECES).AsString);
-    if not IBQ_Tree.FieldByName(IBQ_TREE_AGE_AU_DECES).IsNull then
-      AppendStr(Result, ' (' + IBQ_Tree.FieldByName(IBQ_TREE_AGE_AU_DECES).AsString +
+        IBQ_Tree.FieldByName(IBQ_DATE_DECES).AsString);
+    if not IBQ_Tree.FieldByName(IBQ_AGE_AU_DECES).IsNull then
+      AppendStr(Result, ' (' + IBQ_Tree.FieldByName(IBQ_AGE_AU_DECES).AsString +
         ( gs_AnceSTROWEB_Years ) + ')');
     p_addKeyWord(IBQ_Tree.FieldByName(IBQDLLNOM).AsString, '-');
     p_addKeyWord(IBQ_Tree.FieldByName(IBQDLLPRENOM).AsString);
@@ -804,7 +824,7 @@ var
        Then
         Begin
           li_LocalPreLevel := li_LocalLevel;
-          li_LocalLevel := abs(IBQ_Tree.FieldByName(IBQ_TREE_NIVEAU).AsInteger);
+          li_LocalLevel := abs(IBQ_Tree.FieldByName(IBQ_NIVEAU).AsInteger);
           if not ab_Asc then
             Dec(li_LocalLevel);
           if ab_NotFirst then
@@ -823,7 +843,7 @@ var
           // Création du début de Division
           p_setLevel(astl_HTMLTree, ls_NodeLink, ab_IsFirst or ab_IsSecond and ab_NotFirst, li_LocalLevel, li_LocalPreLevel, ab_Link);
 
-          li_Sexe := IBQ_Tree.FieldByName(IBQ_TREE_SEXE).AsInteger;
+          li_Sexe := IBQ_Tree.FieldByName(IBQ_SEXE).AsInteger;
 
           ls_NameSurname:=fs_getNameAndSurName(IBQ_Tree);
 
@@ -831,8 +851,8 @@ var
           ls_Barres := fs_NewLineImages(ls_Barres, ab_HasNext, li_LocalLevel);
           ls_Tempo := fs_CreateLineImages(ls_Barres, li_LocalLevel);
           case li_sexe of
-            INDIVIDU_SEXE_MAN : ls_Image := fs_Create_Tree_Image('g' + CST_TREE_GIF_EXT) + ls_Image;
-            INDIVIDU_SEXE_WOMAN : ls_Image := fs_Create_Tree_Image('f' + CST_TREE_GIF_EXT) + ls_Image;
+            IBQ_SEXE_MAN : ls_Image := fs_Create_Tree_Image('g' + CST_TREE_GIF_EXT) + ls_Image;
+            IBQ_SEXE_WOMAN : ls_Image := fs_Create_Tree_Image('f' + CST_TREE_GIF_EXT) + ls_Image;
           end;
         end;
       if ab_Asc then
@@ -886,7 +906,7 @@ begin
   gs_HTMLTreeNodeLink := '';
   ls_Barres := '';
   try
-    IBQ_Tree.Locate(INDIVIDU_CLE_FICHE, ai_Clefiche, []);
+    IBQ_Tree.Locate(IBQ_CLE_FICHE, ai_Clefiche, []);
     p_CreateChilds(IBQ_Tree.FieldByName(as_IdSosa).AsFloat,
       IBQ_Tree.FieldByName(as_IdSosa).AsString, False, False, True, False, False);
     p_AddLine ( True, False, True );
@@ -910,8 +930,8 @@ begin
   else
   begin
     gf_Sosa := 1;
-    if IBQ_Individu.Locate(INDIVIDU_SOSA, gf_Sosa, []) then
-      gi_CleFiche := IBQ_Individu.FieldByName(INDIVIDU_CLE_FICHE).AsInteger
+    if IBQ_Individu.Locate(IBQ_SOSA, gf_Sosa, []) then
+      gi_CleFiche := IBQ_Individu.FieldByName(IBQ_CLE_FICHE).AsInteger
     else
     begin
       ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_ErrorCreateSOSA ));
@@ -920,13 +940,13 @@ begin
   end;
 
   gs_HTMLTitle := '';
-  if IBQ_Individu.Locate(INDIVIDU_CLE_FICHE, gi_CleFiche, []) then
+  if IBQ_Individu.Locate(IBQ_CLE_FICHE, gi_CleFiche, []) then
   begin //AL il serait préférable de laisser le titre à l'initiative de l'utilisateur! Ce n'est pas forcément les noms du père et de la mère de l'individu sélectionner, surtout s'il n'y a pas de filtrage
-    li_ClePere := IBQ_Individu.FieldByName(INDIVIDU_CLE_PERE).AsInteger;
-    li_CleMere := IBQ_Individu.FieldByName(INDIVIDU_CLE_MERE).AsInteger;
-    if IBQ_Individu.Locate(INDIVIDU_CLE_FICHE, li_ClePere, []) then
+    li_ClePere := IBQ_Individu.FieldByName(IBQ_CLE_PERE).AsInteger;
+    li_CleMere := IBQ_Individu.FieldByName(IBQ_CLE_MERE).AsInteger;
+    if IBQ_Individu.Locate(IBQ_CLE_FICHE, li_ClePere, []) then
       AppendStr(gs_HTMLTitle, ' ' + IBQ_Individu.FieldByName(IBQDLLNOM).AsString);
-    if IBQ_Individu.Locate(INDIVIDU_CLE_FICHE, li_CleMere, []) then
+    if IBQ_Individu.Locate(IBQ_CLE_FICHE, li_CleMere, []) then
       AppendStr(gs_HTMLTitle, ' & ' + IBQ_Individu.FieldByName(IBQDLLNOM).AsString);
   end;
   gs_HTMLTitle := StringReplace( ( gs_AnceSTROWEB_HTMLTitle ), '@ARG',
@@ -970,7 +990,7 @@ begin
       pb_ProgressInd.Max := DMWeb.IBQ_TreeAsc.RecordCount;
       p_IncPrgressBar;
       if not ch_Filtered.Checked and not
-        DMWeb.IBQ_TreeAsc.Locate(INDIVIDU_CLE_FICHE, gi_CleFiche, []) then
+        DMWeb.IBQ_TreeAsc.Locate(IBQ_CLE_FICHE, gi_CleFiche, []) then
         Exit;
       li_generation := fi_CreateHTMLTree(DMWeb.IBQ_TreeAsc, lstl_HTMLTree, gi_CleFiche);
       lstl_HTMLTree.Insert(0, fs_GetTitleTree ( ( gs_AnceSTROWEB_Ancestry ), li_generation, CST_HTML_H2));
@@ -1097,7 +1117,7 @@ Begin
   Result := False;
   try
     DMWeb.IBQ_Medias.Close;
-    DMWeb.IBQ_Medias.ParamByName(INDIVIDU_CLE_FICHE   ).AsInteger := ai_CleFiche;
+    DMWeb.IBQ_Medias.ParamByName(IBQ_CLE_FICHE   ).AsInteger := ai_CleFiche;
     DMWeb.IBQ_Medias.ParamByName(MEDIAS_TYPE          ).AsInteger := ai_Type ;
     DMWeb.IBQ_Medias.ParamByName(MEDIAS_TABLE         ).AsString  := ach_table ;
     DMWeb.IBQ_Medias.ParamByName(MEDIAS_MP_IDENTITE   ).AsInteger := Integer ( ab_Identite ) ;
@@ -1211,7 +1231,7 @@ begin
         Else lstl_HTMLAFolder.Add ( ' - ' );
       lstl_HTMLAFolder.Add ( CST_HTML_AHREF + CST_SUBDIR_HTML_FILES + CST_HTML_DIR_SEPARATOR
                            + fs_GetSheetLink ( gt_SheetsLetters, ls_NewName[1], ls_NewName ) + '#' + ls_NewName + '">'
-                           + ls_NewName + CST_HTML_A_END +' ('+ IBQ_FilesFiltered.FieldByName( NAMES_COUNTER ).AsString + ')' );
+                           + ls_NewName + CST_HTML_A_END +' ('+ IBQ_FilesFiltered.FieldByName( IBQ_COUNTER ).AsString + ')' );
      end;
     ls_Name := IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString;
     p_addKeyWord(ls_Name, '-');
@@ -1271,11 +1291,11 @@ var
       p_IncPrgressInd;
       p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString, '-');
       p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQDLLPRENOM).AsString);
-      li_CleFiche := IBQ_FilesFiltered.FieldByName(INDIVIDU_CLE_FICHE).AsInteger;
+      li_CleFiche := IBQ_FilesFiltered.FieldByName(IBQ_CLE_FICHE).AsInteger;
       ls_NewName := IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString;
-      case IBQ_FilesFiltered.FieldByName(INDIVIDU_SEXE).AsInteger of
-       INDIVIDU_SEXE_MAN   : ls_Sexe := CST_FILE_MAN;
-       INDIVIDU_SEXE_WOMAN : ls_Sexe := CST_FILE_WOMAN;
+      case IBQ_FilesFiltered.FieldByName(IBQ_SEXE).AsInteger of
+       IBQ_SEXE_MAN   : ls_Sexe := CST_FILE_MAN;
+       IBQ_SEXE_WOMAN : ls_Sexe := CST_FILE_WOMAN;
        else
          ls_Sexe := 'file';
       end;
@@ -1294,8 +1314,8 @@ var
                             CST_HTML_IMAGE_SRC + '../' + CST_SUBDIR_HTML_IMAGES + '/' + ls_Sexe + CST_EXTENSION_GIF + '" />' +
                             CST_HTML_TD_END + CST_HTML_TD_BEGIN + CST_HTML_AHREF + '../' + CST_SUBDIR_HTML_FILES + '/' +
                             fs_GetSheetLink ( gt_SheetsLetters, ls_name[1], ls_Name ) + '#' + fs_RemplaceEspace(ls_name, '_' )+ '">' +ls_name +
-                                 CST_HTML_TD_END + fs_Create_TD(CST_TABLE_CENTER) + IBQ_FilesFiltered.FieldByName(INDIVIDU_ANNEE_NAISSANCE).AsString +
-                            CST_HTML_TD_END + fs_Create_TD(CST_TABLE_CENTER) + ' ' + IBQ_FilesFiltered.FieldByName(INDIVIDU_ANNEE_DECES).AsString+ CST_HTML_TR_END);
+                                 CST_HTML_TD_END + fs_Create_TD(CST_TABLE_CENTER) + IBQ_FilesFiltered.FieldByName(IBQ_ANNEE_NAISSANCE).AsString +
+                            CST_HTML_TD_END + fs_Create_TD(CST_TABLE_CENTER) + ' ' + IBQ_FilesFiltered.FieldByName(IBQ_ANNEE_DECES).AsString+ CST_HTML_TR_END);
       ls_NameEnd := IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString;
       IBQ_FilesFiltered.Next;
       if IBQ_FilesFiltered.EOF then
@@ -1349,9 +1369,9 @@ end;
 function TF_AncestroWeb.fs_getaltPhoto(const IBQ_IndividuFiltered : TIBQuery):String;
 Begin
   Result:=IBQ_IndividuFiltered.FieldByName(
-      INDIVIDU_ANNEE_NAISSANCE).AsString + '-' +
+      IBQ_ANNEE_NAISSANCE).AsString + '-' +
       IBQ_IndividuFiltered.FieldByName(
-      INDIVIDU_ANNEE_DECES).AsString + ' ' +
+      IBQ_ANNEE_DECES).AsString + ' ' +
       IBQ_IndividuFiltered.FieldByName(
       IBQDLLNOM).AsString + ' ' +
       IBQ_IndividuFiltered.FieldByName(
@@ -1412,7 +1432,7 @@ var
     if ch_Images.Checked
     and not DMWeb.IBQ_ConjointSources.IsEmpty Then
       Begin
-        if DMWeb.IBQ_Conjoint.FieldByName(INDIVIDU_SEXE).AsInteger = INDIVIDU_SEXE_WOMAN
+        if DMWeb.IBQ_Conjoint.FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN
         Then ls_FileName := fs_getNameAndSurName (DMWeb.IBQ_Conjoint)+'&'+fs_getNameAndSurName (IBQ_FilesFiltered)
         Else ls_FileName := fs_getNameAndSurName (IBQ_FilesFiltered )+'&'+fs_getNameAndSurName (DMWeb.IBQ_Conjoint);
         ls_FileName := fs_RemplaceEspace(DMWeb.IBQ_Conjoint.FieldByName(UNION_CLEF).AsString + ls_FileName+'-'+as_Date,'_')
@@ -1439,7 +1459,7 @@ var
 
     if not IBQ_FicheInfos.FieldByName(as_date).IsNull Then
       Begin
-        if IBQ_FicheInfos.FieldByName(INDIVIDU_SEXE).AsInteger = INDIVIDU_SEXE_WOMAN
+        if IBQ_FicheInfos.FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN
          Then Result := as_womanon
          Else Result := as_manon   ;
         AppendStr ( Result, IBQ_FicheInfos.FieldByName(as_date).AsString ) ;
@@ -1454,7 +1474,7 @@ var
   Begin
     try
       DMWeb.IBQ_Fiche.Close;
-      DMWeb.IBQ_Fiche.ParamByName(I_CLEF).AsInteger := IBQ_FilesFiltered.FieldByName(INDIVIDU_CLE_FICHE).AsInteger;
+      DMWeb.IBQ_Fiche.ParamByName(I_CLEF).AsInteger := IBQ_FilesFiltered.FieldByName(IBQ_CLE_FICHE).AsInteger;
       DMWeb.IBQ_Fiche.Open;
       DMWeb.IBQ_Conjoint.Close;
       DMWeb.IBQ_Conjoint.ParamByName ( I_CLEF    ).AsInteger:=ai_CleFiche;
@@ -1528,7 +1548,7 @@ var
     begin
       li_generations :=
         fi_CreateHTMLTree(DMWeb.IBQ_TreeDesc, lstl_Tree, ai_CleFiche,
-        False, False, True, IBQ_TREE_NUM_SOSA, False, 7);
+        False, False, True, IBQ_NUM_SOSA, False, 7);
       lstl_Tree.Insert(0, fs_Create_DIV('descent' + CST_FILE_Number + IntToStr(ai_NoInPage), CST_HTML_CLASS_EQUAL) + fs_GetTitleTree (( gs_AnceSTROWEB_Descent ), li_generations ));
       astl_HTMLAFolder.AddStrings(lstl_Tree);
       astl_HTMLAFolder.Add(CST_HTML_DIV_End);
@@ -1572,7 +1592,7 @@ var
       ls_NameSurname := fs_RemplaceEspace ( fs_getNameAndSurName(IBQ_FilesFiltered), '_' );
       p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString, '-');
       p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQDLLPRENOM).AsString);
-      li_CleFiche := IBQ_FilesFiltered.FieldByName(INDIVIDU_CLE_FICHE).AsInteger;
+      li_CleFiche := IBQ_FilesFiltered.FieldByName(IBQ_CLE_FICHE).AsInteger;
       ls_NewName := IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString;
       if (ls_NewName <> ls_Name) Then
        Begin
@@ -1585,9 +1605,9 @@ var
           lstl_HTMLAFolder.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + ls_NewName + '" />');
        end;
       ls_Name := ls_NewName;
-      case IBQ_FilesFiltered.FieldByName(INDIVIDU_SEXE).AsInteger of
-       INDIVIDU_SEXE_MAN   : ls_NewName := CST_FILE_MAN;
-       INDIVIDU_SEXE_WOMAN : ls_NewName := CST_FILE_WOMAN;
+      case IBQ_FilesFiltered.FieldByName(IBQ_SEXE).AsInteger of
+       IBQ_SEXE_MAN   : ls_NewName := CST_FILE_MAN;
+       IBQ_SEXE_WOMAN : ls_NewName := CST_FILE_WOMAN;
        else
          ls_NewName := 'file';
       end;
@@ -1766,6 +1786,90 @@ begin
   p_IncPrgressBar;
 end;
 
+procedure TF_AncestroWeb.p_genHtmlAges;
+var
+  lstl_HTMLAges ,
+  lstl_HTMLLines: TStringList;
+  ls_destination, ls_AfterHead: string;
+  li_Age, li_count : Longint;
+begin
+  p_Setcomments (( gs_ANCESTROWEB_Ages ));
+  pb_ProgressInd.Position := 0;
+  lstl_HTMLAges  := TStringList.Create;
+  lstl_HTMLLines := TStringList.Create;
+  p_LoadStringList ( lstl_HTMLLines, gs_Root, CST_FILE_AGES_LINE );
+  ls_AfterHead := lstl_HTMLAges.Text;
+  p_SelectTabSheet(gt_TabSheets,( gs_ANCESTROWEB_Ages ));
+  p_CreateAHtmlFile(lstl_HTMLAges, CST_FILE_SEARCH, me_HeadAges.Lines.Text,
+        ( gs_AnceSTROWEB_Search ), ( gs_ANCESTROWEB_Ages ), gs_LinkGedcom, '');
+  p_SelectTabSheet(gt_TabSheets,( gs_ANCESTROWEB_Ages ), '', False);
+
+  p_ReplaceLanguageString(lstl_HTMLAges,CST_HTML_HEAD_DESCRIBE, StringReplace(me_HeadAges.Text,#13,'<BR />',[]));
+
+  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_CAPTION    , gs_ANCESTROWEB_Ages_Long,[]);
+  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_AN_AGE     , gs_ANCESTROWEB_AnAge    ,[]);
+  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_COUNT      , gs_ANCESTROWEB_Persons_Count    ,[]);
+  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_MEN_COUNT  , gs_ANCESTROWEB_Men_Count    ,[]);
+  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_WOMEN_COUNT, gs_ANCESTROWEB_Women_Count    ,[]);
+  li_Age := -1;
+  with DMWeb.IBQ_Ages do
+    try
+      Close;
+      ParamByName(I_DOSSIER).Value:=fCleDossier;
+      Open;
+      while not Eof do
+        Begin
+          if FieldByName(IBQ_AGE_AU_DECES).IsNull Then
+            Begin
+             Next;
+             Continue;
+            end;
+          if li_Age <> FieldByName(IBQ_AGE_AU_DECES).AsInteger Then
+            Begin
+              p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_COUNT      , IntToStr(li_count),[]);
+              p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_MEN_COUNT  , CST_ZERO          ,[]);
+              p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_WOMEN_COUNT, CST_ZERO          ,[]);
+              p_ReplaceLanguageString(lstl_HTMLAges,CST_AGES_LINES  ,lstl_HTMLLines.Text+'['+CST_AGES_LINES+']');
+              li_Age:= FieldByName(IBQ_AGE_AU_DECES).AsInteger ;
+              p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_AN_AGE, IntToStr(li_Age)  ,[]);
+              li_count := 0;
+            end;
+          inc ( li_count, FieldByName ( IBQ_COUNTER ).AsInteger );
+          if FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_MAN Then
+           Begin
+             p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_MEN_COUNT  , FieldByName ( IBQ_COUNTER ).AsString,[]);
+           end
+          Else
+           if FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN Then
+             p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_WOMEN_COUNT  , FieldByName ( IBQ_COUNTER ).AsString,[]);
+          Next;
+        end;
+    except
+      On E: Exception do
+      begin
+        ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantOpenData ) + DMWeb.IBQ_Ages.Database.DatabaseName + #13#10 + E.Message);
+        Abort;
+      end;
+    end;
+  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_COUNT      , IntToStr(li_count),[]);
+  DMWeb.IBQ_Ages.Close;
+  p_ReplaceLanguageString(lstl_HTMLAges,CST_AGES_LINES  ,'');
+
+  ls_destination := FileCopy.Destination + DirectorySeparator + ed_AgesName.Text  + CST_EXTENSION_HTML;
+  try
+    lstl_HTMLAges.SaveToFile(ls_destination);
+  except
+    On E: Exception do
+    begin
+      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateContact ) + ls_destination + #13#10 + E.Message);
+      Abort;
+    end;
+  end;
+  lstl_HTMLAges.Free;
+  lstl_HTMLLines.Free;
+  p_IncPrgressBar;
+end;
+
 procedure TF_AncestroWeb.p_CreateAHtmlFile(const astl_Destination: TStringList;
   const as_BeginingFile,
   as_Describe, as_Title, as_LittleTitle: string;
@@ -1855,10 +1959,10 @@ begin
     IBQ_Individu.ParamByName(KLE_DOSSIER).AsInteger:=NumDossier;
     IBQ_Individu.Open;
     if PremiereOuverture then
-      IBQ_Individu.Locate(INDIVIDU_CLE_FICHE,fCleFiche,[])
+      IBQ_Individu.Locate(IBQ_CLE_FICHE,fCleFiche,[])
     else
     begin
-      fCleFiche:=IBQ_Individu.FieldByName(INDIVIDU_CLE_FICHE).AsInteger;
+      fCleFiche:=IBQ_Individu.FieldByName(IBQ_CLE_FICHE).AsInteger;
       fNomIndi:=IBQ_Individu.FieldByName('nom').AsString;
       fPrenomIndi:=IBQ_Individu.FieldByName('prenom').AsString;
     end;
@@ -2014,7 +2118,7 @@ begin
   gs_Root:=f_IniReadSectionStr('Path','PathAppli','')+DirectorySeparator;
   if Length(gs_Root)<=1 then
     gs_Root:=ExtractFilePath(Application.ExeName);
-  fbddpath := '/var/lib/firebird/2.5/data/Base.FDB'; //valable pour tests, mais il faudra trouver autre chose
+  fbddpath := '/var/lib/firebird/2.5/data/Ancestro.fdb'; //valable pour tests, mais il faudra trouver autre chose
 {$ENDIF}
   gs_Root:=gs_Root+CST_AncestroWeb+DirectorySeparator;//pas dans plugins pour l'exe
 

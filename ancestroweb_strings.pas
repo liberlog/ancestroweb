@@ -31,6 +31,7 @@ resourcestring
   gs_ANCESTROWEB_FullTree = 'Arbre';
   gs_ANCESTROWEB_FamilyTree = 'Arbre familial';
   gs_ANCESTROWEB_Search = 'Recherche';
+  gs_ANCESTROWEB_Ages   = 'Âges';
   gs_ANCESTROWEB_Send   = 'Envoyer';
   gs_ANCESTROWEB_Reset  = 'Effacer';
   gs_ANCESTROWEB_Home = 'Accueil';
@@ -53,6 +54,11 @@ resourcestring
   gs_ANCESTROWEB_Generations = ' générations';
   gs_ANCESTROWEB_Ancestry = 'Ascendance';
   gs_ANCESTROWEB_Descent = 'Descendance';
+  gs_ANCESTROWEB_AnAge = 'Âge';
+  gs_ANCESTROWEB_Persons_Count = 'Nombre d''indivdus';
+  gs_ANCESTROWEB_Men_Count = 'Homme(s)';
+  gs_ANCESTROWEB_Women_Count = 'Femme(s)';
+  gs_ANCESTROWEB_Ages_Long  = 'Statistiques de longévités';
   gs_ANCESTROWEB_The_Medias = 'les médias : ';
   gs_ANCESTROWEB_Married_On = 'Mariés le ';
   gs_ANCESTROWEB_Union = 'Union';
