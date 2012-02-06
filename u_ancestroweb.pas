@@ -377,7 +377,7 @@ end;
 procedure TF_AncestroWeb.FileCopyFailure(Sender: TObject;
   const ErrorCode: integer; var ErrorMessage: string; var ContinueCopy: boolean);
 begin
-  ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_ExportErrorCreate ) + FileCopy.Source + #13#10 + ErrorMessage);
+  ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_ExportErrorCreate ) + FileCopy.Source + CST_ENDOFLINE + ErrorMessage);
   Abort;
 end;
 
@@ -406,7 +406,7 @@ begin
       OnFormInfoIni.p_ExecuteEcriture(Self);
     Except
       On E:Exception do
-        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenFile ) +#13#10+e.Message);
+        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenFile ) +CST_ENDOFLINE+e.Message);
     end;
   end;
 end;
@@ -593,7 +593,7 @@ begin
        FileIniCopy.CopySourceToDestination;
      Except
        On E:Exception do
-         ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantSaveFile )+#13#10+e.Message);
+         ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantSaveFile )+CST_ENDOFLINE+e.Message);
      end;
 end;
 
@@ -710,7 +710,7 @@ begin
       except
         on E: Exception do
         begin
-          ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_ExportErrorErase ) + ls_Destination + #13#10 + E.Message);
+          ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_ExportErrorErase ) + ls_Destination + CST_ENDOFLINE + E.Message);
           Abort;
         end;
       end
@@ -919,7 +919,7 @@ begin
     p_AddLine ( True, False, True );
   except
     On E: Exception do
-      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateATree ) + #13#10 + E.Message);
+      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateATree ) + CST_ENDOFLINE + E.Message);
   end;
   if ab_Progress then
     p_IncPrgressBar;
@@ -978,7 +978,7 @@ begin
       Result := not AIBQ_Tree.IsEmpty;
     except
       On E: Exception do
-        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + #13#10 + E.Message);
+        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
     end;
 end;
 
@@ -1006,7 +1006,7 @@ begin
       p_IncPrgressBar;
     except
       On E: Exception do
-        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantUseData ) + sDataBaseName + #13#10 + E.Message);
+        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantUseData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
     end;
   ls_destination := FileCopy.Destination + DirectorySeparator +
     CST_SUBDIR_HTML_TREE + DirectorySeparator + ed_TreeName.Text + CST_EXTENSION_HTML;
@@ -1016,7 +1016,7 @@ begin
   except
     On E: Exception do
     begin
-      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantSaveTree ) + ls_destination + #13#10 + E.Message);
+      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantSaveTree ) + ls_destination + CST_ENDOFLINE + E.Message);
       Abort;
     end;
   end;
@@ -1099,7 +1099,7 @@ begin
   except
     On E: Exception do
     begin
-      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateHome ) + ls_destination + #13#10 + E.Message);
+      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateHome ) + ls_destination + CST_ENDOFLINE + E.Message);
       Abort;
     end;
   end;
@@ -1133,7 +1133,7 @@ Begin
   Except
     on E : Exception do
      Begin
-       ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData + gs_AnceSTROWEB_The_Medias ) +#10+e.Message);
+       ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData + gs_AnceSTROWEB_The_Medias ) +CST_ENDOFLINE+e.Message);
      end;
   end;
 end;
@@ -1253,7 +1253,7 @@ begin
   except
     On E: Exception do
     begin
-      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateHome ) + ls_destination + #13#10 + E.Message);
+      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateHome ) + ls_destination + CST_ENDOFLINE + E.Message);
       Abort;
     end;
   end;
@@ -1347,7 +1347,7 @@ var
     except
       On E: Exception do
       begin
-        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateHome ) + ls_destination + #13#10 + E.Message);
+        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateHome ) + ls_destination + CST_ENDOFLINE + E.Message);
         Abort;
       end;
     end;
@@ -1653,7 +1653,7 @@ var
     except
       On E: Exception do
       begin
-        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateHome ) + ls_destination + #13#10 + E.Message);
+        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateHome ) + ls_destination + CST_ENDOFLINE + E.Message);
         Abort;
       end;
     end;
@@ -1700,7 +1700,7 @@ begin
   except
     On E: Exception do
     begin
-      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateHome ) + ls_destination + #13#10 + E.Message);
+      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateHome ) + ls_destination + CST_ENDOFLINE + E.Message);
       Abort;
     end;
   end;
@@ -1718,7 +1718,8 @@ begin
   lstl_HTMLContact := TStringList.Create;
   lstl_HTMLContactBeforeHTML := TStringList.Create;
   p_LoadStringList(lstl_HTMLContact, gs_Root, CST_FILE_ContactInBody + CST_EXTENSION_PHP);
-  p_ReplaceLanguageString(lstl_HTMLContact,CST_HTML_HEAD_DESCRIBE,StringReplace (me_ContactHead.Lines.Text, #10, CST_HTML_BR, [rfReplaceAll]));
+  p_ReplaceLanguageString(lstl_HTMLContact,CST_HTML_CAPTION,gs_ANCESTROWEB_MailCaption);
+  p_ReplaceLanguageString(lstl_HTMLContact,CST_HTML_HEAD_DESCRIBE,StringReplace (me_ContactHead.Lines.Text, CST_ENDOFLINE, CST_HTML_BR, [rfReplaceAll]));
   p_ReplaceLanguagesStrings ( lstl_HTMLContact, CST_HTML_CONTACT_IN_LANG );
   p_LoadStringList(lstl_HTMLContactBeforeHTML, gs_Root, CST_FILE_ContactBefore + CST_EXTENSION_PHP);
   if cb_ContactSecurity.ItemIndex >= 0 Then
@@ -1746,7 +1747,7 @@ begin
   except
     On E: Exception do
     begin
-      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateContact ) + ls_destination + #13#10 + E.Message);
+      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateContact ) + ls_destination + CST_ENDOFLINE + E.Message);
       Abort;
     end;
   end;
@@ -1767,7 +1768,7 @@ begin
   p_CreateAHtmlFile(lstl_HTMLSearch, CST_FILE_SEARCH, me_searchHead.Lines.Text,
         ( gs_AnceSTROWEB_Search ), gs_AnceSTROWEB_Search, gs_ANCESTROWEB_SearchLong, gs_LinkGedcom, '');
 
-  p_ReplaceLanguageString(lstl_HTMLSearch,CST_HTML_HEAD_DESCRIBE, StringReplace(me_searchHead.Text,#13,'<BR />',[]));
+  p_ReplaceLanguageString(lstl_HTMLSearch,CST_HTML_HEAD_DESCRIBE, StringReplace(me_searchHead.Text,CST_ENDOFLINE,'<BR />',[]));
   p_ReplaceLanguageString(lstl_HTMLSearch,CST_HTML_SEND      , ( gs_AnceSTROWEB_Send  ));
   p_ReplaceLanguageString(lstl_HTMLSearch,CST_HTML_RESET     , ( gs_AnceSTROWEB_Reset ));
   p_ReplaceLanguageString(lstl_HTMLSearch,CST_SEARCH_DOMAIN  ,Trim(ed_SearchSite.Text));
@@ -1782,7 +1783,7 @@ begin
   except
     On E: Exception do
     begin
-      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateContact ) + ls_destination + #13#10 + E.Message);
+      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateContact ) + ls_destination + CST_ENDOFLINE + E.Message);
       Abort;
     end;
   end;
@@ -1813,7 +1814,7 @@ begin
   p_CreateAHtmlFile(lstl_HTMLAges, CST_FILE_AGES, me_HeadAges.Lines.Text,
         ( gs_ANCESTROWEB_Ages ), gs_ANCESTROWEB_Ages, gs_ANCESTROWEB_Ages_Long, gs_LinkGedcom, '');
 
-  p_ReplaceLanguageString(lstl_HTMLAges,CST_HTML_HEAD_DESCRIBE, StringReplace(me_HeadAges.Text,#13,'<BR />',[]));
+  p_ReplaceLanguageString(lstl_HTMLAges,CST_HTML_HEAD_DESCRIBE, StringReplace(me_HeadAges.Text,CST_ENDOFLINE,'<BR />',[]));
 
   p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_AN_AGE     , gs_ANCESTROWEB_AnAge    ,[]);
   p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_COUNT      , gs_ANCESTROWEB_Persons_Count    ,[]);
@@ -1861,7 +1862,7 @@ begin
     except
       On E: Exception do
       begin
-        ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantOpenData ) + DMWeb.IBQ_Ages.Database.DatabaseName + #13#10 + E.Message);
+        ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantOpenData ) + DMWeb.IBQ_Ages.Database.DatabaseName + CST_ENDOFLINE + E.Message);
         Abort;
       end;
     end;
@@ -1879,7 +1880,7 @@ begin
   except
     On E: Exception do
     begin
-      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateContact ) + ls_destination + #13#10 + E.Message);
+      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateContact ) + ls_destination + CST_ENDOFLINE + E.Message);
       Abort;
     end;
   end;
@@ -1989,7 +1990,7 @@ begin
     On E: Exception do
     begin
       ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) +
-        sDataBaseName + #13#10 + E.Message);
+        sDataBaseName + CST_ENDOFLINE + E.Message);
       Result:=False;
     end;
   end;
