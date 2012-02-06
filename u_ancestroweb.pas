@@ -331,8 +331,8 @@ uses  fonctions_init,
 
 procedure TF_AncestroWeb.FormDestroy(Sender: TObject);
 begin
-  if Assigned(DMWeb)then
-    DMWeb.Free;
+  DMWeb.Free;
+  DMWeb := nil;
 end;
 
 procedure TF_AncestroWeb.DBGrid1CellClick(Column: TColumn);

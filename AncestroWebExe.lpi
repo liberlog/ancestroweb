@@ -65,15 +65,16 @@
         <PackageName Value="LCL"/>
       </Item10>
     </RequiredPackages>
-    <Units Count="152">
+    <Units Count="156">
       <Unit0>
         <Filename Value="AncestroWebExe.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="demo"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="20" Y="5"/>
+        <TopLine Value="21"/>
+        <CursorPos X="39" Y="26"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -301,8 +302,8 @@
         <UnitName Value="U_AncestroWeb"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="345"/>
-        <CursorPos X="19" Y="353"/>
+        <TopLine Value="324"/>
+        <CursorPos X="1" Y="336"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -315,7 +316,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="U_DMWeb"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="16"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
@@ -337,7 +338,7 @@
       <Unit28>
         <Filename Value="../ibx/runtime/IB.pas"/>
         <UnitName Value="IB"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
         <TopLine Value="355"/>
         <CursorPos X="45" Y="364"/>
@@ -399,8 +400,7 @@
       <Unit35>
         <Filename Value="../extended/fonctions/fonctions_init.pas"/>
         <UnitName Value="fonctions_init"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="10"/>
         <WindowIndex Value="0"/>
         <TopLine Value="567"/>
         <CursorPos X="1" Y="582"/>
@@ -411,10 +411,12 @@
       <Unit36>
         <Filename Value="../extended/composants/U_OnFormInfoIni.pas"/>
         <UnitName Value="U_OnFormInfoIni"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="510"/>
-        <CursorPos X="1" Y="510"/>
+        <TopLine Value="271"/>
+        <CursorPos X="1" Y="284"/>
         <UsageCount Value="13"/>
+        <Loaded Value="True"/>
       </Unit36>
       <Unit37>
         <Filename Value="../extended/fonctions/fonctions_string.pas"/>
@@ -885,10 +887,12 @@
       </Unit89>
       <Unit90>
         <Filename Value="../../../../lazarus/lcl/include/customform.inc"/>
+        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="2595"/>
-        <CursorPos X="1" Y="2605"/>
-        <UsageCount Value="7"/>
+        <TopLine Value="123"/>
+        <CursorPos X="1" Y="134"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
       </Unit90>
       <Unit91>
         <Filename Value="../../../../lazarus/lcl/interfaces/win32/win32wscontrols.pp"/>
@@ -975,7 +979,7 @@
       <Unit101>
         <Filename Value="../extended/fonctions/fonctions_system.pas"/>
         <UnitName Value="fonctions_system"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="13"/>
         <WindowIndex Value="0"/>
         <TopLine Value="26"/>
         <CursorPos X="1" Y="41"/>
@@ -1201,7 +1205,7 @@
       <Unit129>
         <Filename Value="../extended/forms/U_About.pas"/>
         <UnitName Value="U_About"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="14"/>
         <WindowIndex Value="0"/>
         <TopLine Value="10"/>
         <CursorPos X="22" Y="54"/>
@@ -1227,7 +1231,7 @@
       </Unit131>
       <Unit132>
         <Filename Value="../extended/extends.inc"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="15"/>
         <WindowIndex Value="0"/>
         <TopLine Value="5"/>
         <CursorPos X="4" Y="13"/>
@@ -1375,7 +1379,7 @@
       <Unit149>
         <Filename Value="../../../../lazarus/fpc/2.4.2/source/rtl/unix/sysutils.pp"/>
         <UnitName Value="sysutils"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="11"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1286"/>
         <CursorPos X="22" Y="1289"/>
@@ -1384,7 +1388,7 @@
       </Unit149>
       <Unit150>
         <Filename Value="../../../../lazarus/fpc/2.4.2/source/rtl/objpas/sysutils/osutil.inc"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="12"/>
         <WindowIndex Value="0"/>
         <TopLine Value="114"/>
         <CursorPos X="27" Y="131"/>
@@ -1394,134 +1398,172 @@
       <Unit151>
         <Filename Value="../../../../lazarus/debugger/fpdebug/fpd/fpdcommand.pas"/>
         <UnitName Value="FPDCommand"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="9"/>
         <WindowIndex Value="0"/>
         <TopLine Value="273"/>
         <CursorPos X="79" Y="280"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
       </Unit151>
+      <Unit152>
+        <Filename Value="../../../../lazarus/lcl/lclproc.pas"/>
+        <UnitName Value="LCLProc"/>
+        <EditorIndex Value="7"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1360"/>
+        <CursorPos X="1" Y="1374"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit152>
+      <Unit153>
+        <Filename Value="../../../../lazarus/lcl/include/scrollingwincontrol.inc"/>
+        <EditorIndex Value="6"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="241"/>
+        <CursorPos X="1" Y="256"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit153>
+      <Unit154>
+        <Filename Value="../../../../lazarus/lcl/include/application.inc"/>
+        <EditorIndex Value="4"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1041"/>
+        <CursorPos X="1" Y="1052"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit154>
+      <Unit155>
+        <Filename Value="../../../../lazarus/lcl/forms.pp"/>
+        <UnitName Value="Forms"/>
+        <EditorIndex Value="5"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1698"/>
+        <CursorPos X="1" Y="1707"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit155>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="145" Column="1" TopLine="145"/>
+        <Caret Line="335" Column="1" TopLine="324"/>
       </Position1>
       <Position2>
-        <Filename Value="../extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="597" Column="41" TopLine="594"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="336" Column="1" TopLine="324"/>
       </Position2>
       <Position3>
-        <Filename Value="../extended/fonctions/fonctions_system.pas"/>
-        <Caret Line="109" Column="15" TopLine="109"/>
+        <Filename Value="../extended/composants/U_OnFormInfoIni.pas"/>
+        <Caret Line="280" Column="1" TopLine="271"/>
       </Position3>
       <Position4>
-        <Filename Value="../extended/fonctions/fonctions_system.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="../extended/composants/U_OnFormInfoIni.pas"/>
+        <Caret Line="282" Column="1" TopLine="271"/>
       </Position4>
       <Position5>
-        <Filename Value="../extended/fonctions/fonctions_system.pas"/>
-        <Caret Line="42" Column="1" TopLine="27"/>
+        <Filename Value="../extended/composants/U_OnFormInfoIni.pas"/>
+        <Caret Line="283" Column="1" TopLine="271"/>
       </Position5>
       <Position6>
-        <Filename Value="../../../../lazarus/fpc/2.4.2/source/rtl/objpas/sysutils/osutil.inc"/>
-        <Caret Line="262" Column="22" TopLine="245"/>
+        <Filename Value="../extended/composants/U_OnFormInfoIni.pas"/>
+        <Caret Line="284" Column="1" TopLine="271"/>
       </Position6>
       <Position7>
-        <Filename Value="../../../../lazarus/fpc/2.4.2/source/rtl/objpas/sysutils/osutil.inc"/>
-        <Caret Line="230" Column="7" TopLine="230"/>
+        <Filename Value="../../../../lazarus/lcl/include/customform.inc"/>
+        <Caret Line="919" Column="1" TopLine="910"/>
       </Position7>
       <Position8>
-        <Filename Value="../../../../lazarus/fpc/2.4.2/source/rtl/objpas/sysutils/osutil.inc"/>
-        <Caret Line="1" Column="17" TopLine="1"/>
+        <Filename Value="../../../../lazarus/lcl/include/customform.inc"/>
+        <Caret Line="103" Column="1" TopLine="94"/>
       </Position8>
       <Position9>
-        <Filename Value="../extended/fonctions/fonctions_system.pas"/>
-        <Caret Line="130" Column="8" TopLine="121"/>
+        <Filename Value="../../../../lazarus/lcl/include/customform.inc"/>
+        <Caret Line="117" Column="1" TopLine="108"/>
       </Position9>
       <Position10>
-        <Filename Value="../extended/fonctions/fonctions_system.pas"/>
-        <Caret Line="123" Column="1" TopLine="112"/>
+        <Filename Value="../../../../lazarus/lcl/include/customform.inc"/>
+        <Caret Line="119" Column="1" TopLine="108"/>
       </Position10>
       <Position11>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="2005" Column="8" TopLine="1997"/>
+        <Filename Value="../../../../lazarus/lcl/include/customform.inc"/>
+        <Caret Line="120" Column="1" TopLine="108"/>
       </Position11>
       <Position12>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="2040" Column="15" TopLine="2029"/>
+        <Filename Value="../../../../lazarus/lcl/include/customform.inc"/>
+        <Caret Line="121" Column="1" TopLine="108"/>
       </Position12>
       <Position13>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="310" Column="21" TopLine="307"/>
+        <Filename Value="../../../../lazarus/lcl/include/customform.inc"/>
+        <Caret Line="122" Column="1" TopLine="108"/>
       </Position13>
       <Position14>
-        <Filename Value="../../../../lazarus/debugger/fpdebug/fpd/fpdcommand.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="../../../../lazarus/lcl/include/customform.inc"/>
+        <Caret Line="123" Column="1" TopLine="108"/>
       </Position14>
       <Position15>
-        <Filename Value="../../../../lazarus/debugger/fpdebug/fpd/fpdcommand.pas"/>
-        <Caret Line="288" Column="19" TopLine="279"/>
+        <Filename Value="../../../../lazarus/lcl/include/customform.inc"/>
+        <Caret Line="124" Column="1" TopLine="109"/>
       </Position15>
       <Position16>
-        <Filename Value="../../../../lazarus/debugger/fpdebug/fpd/fpdcommand.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="../../../../lazarus/lcl/include/customform.inc"/>
+        <Caret Line="125" Column="1" TopLine="110"/>
       </Position16>
       <Position17>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="2029" Column="1" TopLine="2029"/>
+        <Filename Value="../../../../lazarus/lcl/include/customform.inc"/>
+        <Caret Line="126" Column="1" TopLine="111"/>
       </Position17>
       <Position18>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="31" Column="10" TopLine="17"/>
+        <Filename Value="../../../../lazarus/lcl/lclproc.pas"/>
+        <Caret Line="1369" Column="1" TopLine="1360"/>
       </Position18>
       <Position19>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="169" Column="31" TopLine="165"/>
+        <Filename Value="../../../../lazarus/lcl/lclproc.pas"/>
+        <Caret Line="1374" Column="1" TopLine="1360"/>
       </Position19>
       <Position20>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="579" Column="3" TopLine="575"/>
+        <Filename Value="../../../../lazarus/lcl/include/customform.inc"/>
+        <Caret Line="128" Column="1" TopLine="113"/>
       </Position20>
       <Position21>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="360" Column="11" TopLine="356"/>
+        <Filename Value="../../../../lazarus/lcl/include/scrollingwincontrol.inc"/>
+        <Caret Line="252" Column="1" TopLine="241"/>
       </Position21>
       <Position22>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="361" Column="18" TopLine="356"/>
+        <Filename Value="../../../../lazarus/lcl/include/scrollingwincontrol.inc"/>
+        <Caret Line="253" Column="1" TopLine="241"/>
       </Position22>
       <Position23>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="362" Column="28" TopLine="356"/>
+        <Filename Value="../../../../lazarus/lcl/include/scrollingwincontrol.inc"/>
+        <Caret Line="254" Column="1" TopLine="241"/>
       </Position23>
       <Position24>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="608" Column="35" TopLine="593"/>
+        <Filename Value="../../../../lazarus/lcl/include/scrollingwincontrol.inc"/>
+        <Caret Line="255" Column="1" TopLine="241"/>
       </Position24>
       <Position25>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="610" Column="37" TopLine="595"/>
+        <Filename Value="../../../../lazarus/lcl/include/scrollingwincontrol.inc"/>
+        <Caret Line="256" Column="1" TopLine="241"/>
       </Position25>
       <Position26>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="614" Column="1" TopLine="599"/>
+        <Filename Value="../../../../lazarus/lcl/include/customform.inc"/>
+        <Caret Line="132" Column="1" TopLine="123"/>
       </Position26>
       <Position27>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="../../../../lazarus/lcl/include/customform.inc"/>
+        <Caret Line="134" Column="1" TopLine="123"/>
       </Position27>
       <Position28>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="66" Column="14" TopLine="51"/>
+        <Filename Value="../../../../lazarus/lcl/include/application.inc"/>
+        <Caret Line="1050" Column="1" TopLine="1041"/>
       </Position28>
       <Position29>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="204" Column="24" TopLine="189"/>
+        <Filename Value="../../../../lazarus/lcl/include/application.inc"/>
+        <Caret Line="1052" Column="1" TopLine="1041"/>
       </Position29>
       <Position30>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="356" Column="35" TopLine="341"/>
+        <Filename Value="../../../../lazarus/lcl/forms.pp"/>
+        <Caret Line="1707" Column="1" TopLine="1698"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>
@@ -1563,7 +1605,7 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="4">
+    <BreakPoints Count="5">
       <Item1>
         <Source Value="/usr/lib/lazarus/0.9.30/lcl/include/customcombobox.inc"/>
         <Line Value="308"/>
@@ -1580,6 +1622,10 @@
         <Source Value="../Extended/composants/U_ExtPictCombo.pas"/>
         <Line Value="270"/>
       </Item4>
+      <Item5>
+        <Source Value="u_ancestroweb.pas"/>
+        <Line Value="334"/>
+      </Item5>
     </BreakPoints>
     <Exceptions Count="4">
       <Item1>
