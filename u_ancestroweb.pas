@@ -79,6 +79,11 @@ type
     ed_ContactName: TEdit;
     ed_FileBeginName: TEdit;
     ed_AgesName: TEdit;
+    ExtImage1: TExtImage;
+    ExtImage2: TExtImage;
+    ExtImage3: TExtImage;
+    FileCopy: TExtFileCopy;
+    FileIniCopy: TExtFileCopy;
     fne_Export: TFileNameEdit;
     fne_import: TFileNameEdit;
     FWEraseImage: TFWErase;
@@ -147,6 +152,7 @@ type
     me_ContactHead: TMemo;
     me_searchHead: TMemo;
     me_HeadTree: TMemo;
+    OnFormInfoIni: TOnFormInfoIni;
     OpenDialog: TOpenDialog;
     Panel13: TPanel;
     PCPrincipal: TPageControl;
@@ -169,6 +175,7 @@ type
     Splitter1: TSplitter;
     Splitter2: TSplitter;
     spSkinPanel1: TPanel;
+    TraduceImage: TTraduceFile;
     ts_Ages: TTabSheet;
     ts_Names: TTabSheet;
     ts_about: TTabSheet;
@@ -195,6 +202,7 @@ type
     procedure FileCopyDoEraseDir(Sender: TObject; var Continue: boolean);
     procedure FileCopyFailure(Sender: TObject; const ErrorCode: integer;
       var ErrorMessage: string; var ContinueCopy: boolean);
+    procedure fne_ExportAcceptFileName(Sender: TObject; var Value: String);
     procedure fne_importAcceptFileName(Sender: TObject; var Value: String);
     procedure FWEraseImage3Click(Sender: TObject);
     procedure FWEraseImage2Click(Sender: TObject);
@@ -212,13 +220,6 @@ type
       var ErrorMessage: string; var ContinueCopy: boolean);
   private
     { Déclarations privées }
-    TraduceImage: TTraduceFile;
-    FileCopy: TExtFileCopy;
-    FileIniCopy: TExtFileCopy;
-    OnFormInfoIni: TOnFormInfoIni;
-    ExtImage1: TExtImage;
-    ExtImage2: TExtImage;
-    ExtImage3: TExtImage;
     PremiereOuverture:boolean;
     procedure DoAfterInit;
     function DoOpenBase(sBase: string):boolean;
@@ -380,6 +381,12 @@ begin
   Abort;
 end;
 
+procedure TF_AncestroWeb.fne_ExportAcceptFileName(Sender: TObject;
+  var Value: String);
+begin
+  bt_exportClick(bt_export);
+end;
+
 procedure TF_AncestroWeb.fne_importAcceptFileName(Sender: TObject;
   var Value: String);
 var ls_FileImport : String;
@@ -395,7 +402,7 @@ begin
       DoAfterInit;
       FIniFile.Free;
       FIniFile:=nil;
-      f_GetMemIniFile();
+      f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
       OnFormInfoIni.p_ExecuteEcriture(Self);
     Except
       On E:Exception do
@@ -527,6 +534,8 @@ begin
 
     if ch_genTree.Checked then
       p_genHTMLTree;
+    if ch_genages.Checked then
+      p_genHtmlAges;
     if ch_genSearch.Checked then
       p_genHtmlSearch;
     if ch_Filtered.Checked
@@ -575,7 +584,7 @@ end;
 
 procedure TF_AncestroWeb.bt_exportClick(Sender: TObject);
 begin
-  f_GetMemIniFile();
+  f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
   if fb_iniWriteFile(FIniFile,True)
    Then
      try
@@ -1793,15 +1802,15 @@ var
   ls_destination, ls_AfterHead: string;
   li_Age, li_count : Longint;
 begin
-  p_Setcomments (( gs_ANCESTROWEB_Ages ));
+  p_Setcomments ( gs_ANCESTROWEB_Ages );
   pb_ProgressInd.Position := 0;
   lstl_HTMLAges  := TStringList.Create;
   lstl_HTMLLines := TStringList.Create;
   p_LoadStringList ( lstl_HTMLLines, gs_Root, CST_FILE_AGES_LINE );
   ls_AfterHead := lstl_HTMLAges.Text;
   p_SelectTabSheet(gt_TabSheets,( gs_ANCESTROWEB_Ages ));
-  p_CreateAHtmlFile(lstl_HTMLAges, CST_FILE_SEARCH, me_HeadAges.Lines.Text,
-        ( gs_AnceSTROWEB_Search ), ( gs_ANCESTROWEB_Ages ), gs_LinkGedcom, '');
+  p_CreateAHtmlFile(lstl_HTMLAges, CST_FILE_AGES, me_HeadAges.Lines.Text,
+        ( gs_ANCESTROWEB_Ages ), ( gs_ANCESTROWEB_Ages ), gs_LinkGedcom, '');
   p_SelectTabSheet(gt_TabSheets,( gs_ANCESTROWEB_Ages ), '', False);
 
   p_ReplaceLanguageString(lstl_HTMLAges,CST_HTML_HEAD_DESCRIBE, StringReplace(me_HeadAges.Text,#13,'<BR />',[]));
@@ -1977,6 +1986,8 @@ begin
   end;
 end;
 
+// procedure TF_AncestroWeb.DoAfterInit
+// initing components and ini
 procedure TF_AncestroWeb.DoAfterInit;
 begin
   fNom_Dossier:=ChaineUTF8EnNomVariable(fNom_Dossier);
@@ -1993,6 +2004,9 @@ begin
   de_ExportWeb.Directory := fBasePath+DirectorySeparator+CST_SUBDIR_EXPORT;
   fne_Import.FileName := fBasePath + DirectorySeparator + CST_SUBDIR_SAVE ;
   fne_Export.FileName := fBasePath + DirectorySeparator + CST_SUBDIR_SAVE ;
+
+  // Reading ini
+  OnFormInfoIni.p_ExecuteLecture(Self);
 end;
 
 procedure TF_AncestroWeb.FormCreate(Sender: TObject);
@@ -2016,77 +2030,8 @@ begin
   end;
 {$ENDIF}
   PremiereOuverture:=True;
-  TraduceImage:=TTraduceFile.Create(self);
-  //  object TraduceImage: TTraduceFile
-    TraduceImage.Errors := 0;
-    TraduceImage.OnFailure := TraduceImageFailure;
-    TraduceImage.TraduceOptions := [cpDestinationIsFile, cpCreateDestination];
-    TraduceImage.ResizeWidth := 200;
-  //    TraduceImage.left := 576;
-  //    TraduceImage.top := 104;
-  //  end
-  FileCopy:= TExtFileCopy.Create(self);
-  //object FileCopy: TExtFileCopy
-  FileCopy.Errors := 0;
-  FileCopy.OnFailure := FileCopyFailure;
-  FileCopy.Mask := '*';
-  FileCopy.FileOptions := [cpCreateDestination];
-  FileCopy.DoEraseDir := FileCopyDoEraseDir;
-  //  left = 476
-  //  top = 104
-  //end
-  FileIniCopy:= TExtFileCopy.Create(self);
-  //object FileIniCopy: TExtFileCopy
-  FileIniCopy.Errors := 0;
-  FileIniCopy.OnFailure := FileCopyFailure;
-  FileIniCopy.Mask := '*';
-  FileIniCopy.FileOptions := [cpCreateDestination];
-  FileIniCopy.DoEraseDir := FileCopyDoEraseDir;
-  //  left = 472
-  //  top = 160
-  //end
-  OnFormInfoIni:= TOnFormInfoIni.Create(self);
-  //object OnFormInfoIni: TOnFormInfoIni
-  OnFormInfoIni.AutoLoad:=False;
-  OnFormInfoIni.SauvePosObjects:=True;
-  OnFormInfoIni.SauveEditObjets:=[feTEdit,feTCheck,feTComboValue,feTDirectoryEdit
-    ,feTFileNameEdit,feTMemo,feTPageControl,feTRadio,feTSpinEdit]; //la méthode manque de sélectivité
-  OnFormInfoIni.Freeini:=False;
-  //  left = 544
-  //  top = 40
-  //end
-  ExtImage1:= TExtImage.Create(self);
-  //object ExtImage1: TExtImage
-  ExtImage1.Parent:=Panel8;
-  ExtImage1.Left := 6;
-  ExtImage1.Height := 170;
-  ExtImage1.Top := 163;
-  ExtImage1.Width := 200;
-  ExtImage1.Center := True;
-  ExtImage1.Proportional := True;
-  //end
-  ExtImage2:= TExtImage.Create(self);
-  //object ExtImage2: TExtImage
-  ExtImage2.Parent:=Panel8;
-  ExtImage2.Left := 214;
-  ExtImage2.Height := 170;
-  ExtImage2.Top := 163;
-  ExtImage2.Width := 200;
-  ExtImage2.Center := True;
-  ExtImage2.Proportional := True;
-  //end
-  ExtImage3:= TExtImage.Create(self);
-  //object ExtImage3: TExtImage
-  ExtImage3.Parent:=Panel8;
-  ExtImage3.Left := 422;
-  ExtImage3.Height := 170;
-  ExtImage3.Top := 163;
-  ExtImage3.Width := 200;
-  ExtImage3.Center := True;
-  ExtImage3.Proportional := True;
-  //end
   f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
-  OnFormInfoIni.p_ExecuteLecture(Self);
+
 
 {$IFDEF WINDOWS}
   edNomBase.Clear;
