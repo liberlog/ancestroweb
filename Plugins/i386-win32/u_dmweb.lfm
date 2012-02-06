@@ -3,19 +3,20 @@ object DMWeb: TDMWeb
   OnDestroy = DataModuleDestroy
   OldCreateOrder = False
   Height = 408
-  HorizontalOffset = 0
-  VerticalOffset = 32
+  HorizontalOffset = 519
+  VerticalOffset = 84
   Width = 572
   object IBT_BASE: TIBTransaction
     Active = False
     DefaultDatabase = ibd_BASE
     DefaultAction = TACommitRetaining
+    left = 104
+    top = 16
   end
   object ibd_BASE: TIBDatabase
     Connected = False
     LoginPrompt = False
     AllowStreamedConnected = False
-    DatabaseName = '/var/lib/firebird/2.5/data/Base.FDB'
     Params.Strings = (
       'user_name=SYSDBA'
       'password=masterkey'
@@ -23,6 +24,8 @@ object DMWeb: TDMWeb
     DefaultTransaction = IBT_BASE
     IdleTimer = 0
     TraceFlags = []
+    left = 40
+    top = 16
   end
   object IBQDLL: TIBQuery
     Database = ibd_BASE
@@ -31,9 +34,18 @@ object DMWeb: TDMWeb
     CachedUpdates = False
     GeneratorField.ApplyOnEvent = gaeOnNewRecord
     SQL.Strings = (
-      'SELECT * FROM PROC_GESTION_DLL'
+      'SELECT g.dll_dossier'
+      ',g.dll_indi as cle_fiche'
+      ',i.nom'
+      ',i.prenom'
+      ',d.nom_dossier'
+      'from gestion_dll g'
+      'inner join individu i on i.cle_fiche=g.dll_indi'
+      'inner join dossier d on d.cle_dossier=g.dll_dossier'
     )
     Params = <>
+    left = 256
+    top = 200
   end
   object IBQUpdateDLL: TIBQuery
     Database = ibd_BASE
@@ -51,6 +63,14 @@ object DMWeb: TDMWeb
         Name = 'RETOUR'
         ParamType = ptUnknown
       end>
+    left = 192
+    top = 200
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'RETOUR'
+        ParamType = ptUnknown
+      end>
   end
   object IBQSources_Record: TIBQuery
     Database = ibd_BASE
@@ -62,6 +82,19 @@ object DMWeb: TDMWeb
       'select * from SOURCES_RECORD WHERE DATA_ID = :Ikey  and TYPE_TABLE = :sTable'
     )
     Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'Ikey'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'sTable'
+        ParamType = ptUnknown
+      end>
+    left = 328
+    top = 136
+    ParamData = <    
       item
         DataType = ftUnknown
         Name = 'Ikey'
@@ -127,6 +160,24 @@ object DMWeb: TDMWeb
         Name = 'I_PARQUI'
         ParamType = ptUnknown
       end>
+    left = 192
+    top = 136
+    ParamData = <    
+      item
+        DataType = ftInteger
+        Name = 'I_CLEF'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftInteger
+        Name = 'I_NIVEAU'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftInteger
+        Name = 'I_PARQUI'
+        ParamType = ptUnknown
+      end>
   end
   object IBQ_TreeByNames: TIBQuery
     Database = ibd_BASE
@@ -150,6 +201,24 @@ object DMWeb: TDMWeb
       'ORDER BY NOM,PRENOM,ANNEE_NAISSANCE DESC,ANNEE_DECES DESC'
     )
     Params = <    
+      item
+        DataType = ftInteger
+        Name = 'I_CLEF'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftInteger
+        Name = 'I_NIVEAU'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftInteger
+        Name = 'I_PARQUI'
+        ParamType = ptUnknown
+      end>
+    left = 256
+    top = 136
+    ParamData = <    
       item
         DataType = ftInteger
         Name = 'I_CLEF'
@@ -220,6 +289,24 @@ object DMWeb: TDMWeb
         Name = 'I_PARQUI'
         ParamType = ptUnknown
       end>
+    left = 192
+    top = 72
+    ParamData = <    
+      item
+        DataType = ftInteger
+        Name = 'I_CLEF'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftInteger
+        Name = 'I_NIVEAU'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftInteger
+        Name = 'I_PARQUI'
+        ParamType = ptUnknown
+      end>
   end
   object IBQ_Medias: TIBQuery
     Database = ibd_BASE
@@ -264,6 +351,29 @@ object DMWeb: TDMWeb
         Name = 'MULTI_IMAGE_RTF'
         ParamType = ptUnknown
       end>
+    left = 256
+    top = 72
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'CLE_FICHE'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'MP_IDENTITE'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'MP_TABLE'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'MULTI_IMAGE_RTF'
+        ParamType = ptUnknown
+      end>
   end
   object IBQ_ConjointSources: TIBQuery
     Database = ibd_BASE
@@ -280,6 +390,14 @@ object DMWeb: TDMWeb
       'ORDER BY MP_MEDIA'
     )
     Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'I_CLEF_UNION'
+        ParamType = ptUnknown
+      end>
+    left = 328
+    top = 72
+    ParamData = <    
       item
         DataType = ftUnknown
         Name = 'I_CLEF_UNION'
@@ -316,6 +434,14 @@ object DMWeb: TDMWeb
         Name = 'I_CLEF'
         ParamType = ptUnknown
       end>
+    left = 192
+    top = 16
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'I_CLEF'
+        ParamType = ptUnknown
+      end>
   end
   object IBQ_Compte: TIBQuery
     Database = ibd_BASE
@@ -328,6 +454,14 @@ object DMWeb: TDMWeb
       ''
     )
     Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'I_DOSSIER'
+        ParamType = ptUnknown
+      end>
+    left = 256
+    top = 16
+    ParamData = <    
       item
         DataType = ftUnknown
         Name = 'I_DOSSIER'
@@ -352,6 +486,14 @@ object DMWeb: TDMWeb
         Name = 'I_DOSSIER'
         ParamType = ptUnknown
       end>
+    left = 328
+    top = 16
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'I_DOSSIER'
+        ParamType = ptUnknown
+      end>
   end
   object IBQ_TreeNames: TIBQuery
     Database = ibd_BASE
@@ -371,17 +513,35 @@ object DMWeb: TDMWeb
       item
         DataType = ftInteger
         Name = 'I_CLEF'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftInteger
         Name = 'I_NIVEAU'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftInteger
         Name = 'I_PARQUI'
-        ParamType = ptUnknown
+        ParamType = ptInput
+      end>
+    left = 400
+    top = 16
+    ParamData = <    
+      item
+        DataType = ftInteger
+        Name = 'I_CLEF'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftInteger
+        Name = 'I_NIVEAU'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftInteger
+        Name = 'I_PARQUI'
+        ParamType = ptInput
       end>
   end
   object IBQ_Fiche: TIBQuery
@@ -403,32 +563,40 @@ object DMWeb: TDMWeb
         Name = 'I_CLEF'
         ParamType = ptUnknown
       end>
-  end
-  object IBQ_Dossier: TIBQuery
-    Database = ibd_BASE
-    Transaction = IBT_BASE
-    BufferChunks = 1000
-    CachedUpdates = False
-    GeneratorField.ApplyOnEvent = gaeOnNewRecord
-    SQL.Strings = (
-      'SELECT * FROM DOSSIER WHERE CLE_DOSSIER=:I_CLEF'
-    )
-    Params = <    
+    left = 400
+    top = 72
+    ParamData = <    
       item
         DataType = ftUnknown
         Name = 'I_CLEF'
         ParamType = ptUnknown
       end>
   end
-  object IBQ_AscExists: TIBQuery
+  object IBQ_Ages: TIBQuery
     Database = ibd_BASE
     Transaction = IBT_BASE
     BufferChunks = 1000
     CachedUpdates = False
     GeneratorField.ApplyOnEvent = gaeOnNewRecord
     SQL.Strings = (
-      'select * from RDB$PROCEDURES where rdb$Procedure_name = ''PROC_TQ_ASCENDANCE'''
+      'select AGE_AU_DECES,SEXE,COUNT(*) AS COUNTER from INDIVIDU'
+      'WHERE KLE_DOSSIER=:I_DOSSIER '
+      'GROUP BY AGE_AU_DECES, SEXE'
+      'ORDER BY AGE_AU_DECES DESC,SEXE'
     )
-    Params = <>
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'I_DOSSIER'
+        ParamType = ptUnknown
+      end>
+    left = 328
+    top = 200
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'I_DOSSIER'
+        ParamType = ptUnknown
+      end>
   end
 end

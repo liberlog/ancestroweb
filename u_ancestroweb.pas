@@ -27,6 +27,9 @@ uses
 {$ELSE}
   LCLIntf, LCLType, EditBtn,
 {$ENDIF}
+{$ifdef windows}
+  Windows,
+{$endif}
 {$IFDEF WIN32}
   Registry,
 {$ENDIF}
@@ -307,12 +310,12 @@ uses  fonctions_init,
   IniFiles,IBSQL,
 {$IFNDEF FPC}
   AncestroWeb_strings_delphi,
-  fonctions_system,
+  fonctions_system, windirs,
 {$ELSE}
   AncestroWeb_strings,UniqueInstanceRaw,
 {$ENDIF}
 {$IFDEF WIN32}
-  windirs,
+//  windirs,
 {$ENDIF}
   fonctions_string,
   fonctions_languages,
@@ -354,7 +357,8 @@ procedure TF_AncestroWeb.edNomBaseExit(Sender: TObject);
 var
   NumDossier:Integer;
 begin
-  if (edNomBase.Caption<>DMWeb.ibd_BASE.DatabaseName) or (DMWeb.ibd_BASE.Connected=false) then
+  if (edNomBase.Caption<>'')
+  and ((edNomBase.Caption<>DMWeb.ibd_BASE.DatabaseName) or (DMWeb.ibd_BASE.Connected=false)) then
     if DoOpenBase(edNomBase.Caption) then
     begin
       NumDossier:=StrToInt(trim(copy(cbDossier.Caption,1,2)));
@@ -2001,8 +2005,8 @@ end;
 procedure TF_AncestroWeb.DoAfterInit;
 begin
   fNom_Dossier:=ChaineUTF8EnNomVariable(fNom_Dossier);
-  {$IFDEF WIN32}
-  fBasePath := GetWindowsSpecialDir(CSIDL_PERSONAL);
+  fBasePath := GetUserDir;
+  {$IFNDEF FPC}
   de_ExportWeb.RootDir:=GetWindowsSpecialDir(CSIDL_DESKTOPDIRECTORY);
   {$ELSE}
   fBasePath := GetUserDir;
