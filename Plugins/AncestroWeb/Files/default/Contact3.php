@@ -1,1 +1,2 @@
 <body>
+<div id="center">

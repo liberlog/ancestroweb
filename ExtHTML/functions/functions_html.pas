@@ -109,6 +109,7 @@ const CST_HTML_DIV                 = 'DIV' ;
       CST_HTML_LANG                = 'Lang';
       CST_HTML_LANGUAGE            = 'Language';
       CST_HTML_NAME                = 'Name';
+      CST_HTML_CAPTION             = 'Caption';
       CST_HTML_RESET               = 'Reset';
       CST_HTML_SEND                = 'Send';
       CST_HTML_MAIL_IN_LANG_FILE   :Array [0..8] of String=  (CST_HTML_LANG,CST_HTML_LANGUAGE,'MailFrom','MailSentMessage','MailSubject','Message',CST_HTML_NAME,CST_HTML_RESET,CST_HTML_SEND);
@@ -158,7 +159,7 @@ procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
                              const astl_Destination : TStrings ;
                              const as_EndPage, as_PathFiles,
                                    as_Describe, as_Keywords,
-                                   as_title, as_IdOfPageMainElement : String ;
+                                   as_title, as_LongTitle, as_IdOfPageMainElement : String ;
                              const as_FileBeforeHead, as_FileAfterHead,
                                    as_FileAfterMenu  , as_FileAfterBody,
                                    as_Subdir ,
@@ -468,7 +469,7 @@ procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
                              const astl_Destination : TStrings ;
                              const as_EndPage, as_PathFiles,
                                    as_Describe, as_Keywords,
-                                   as_title, as_IdOfPageMainElement : String ;
+                                   as_title, as_LongTitle, as_IdOfPageMainElement : String ;
                              const as_FileBeforeHead, as_FileAfterHead,
                                    as_FileAfterMenu  , as_FileAfterBody,
                                    as_Subdir ,
@@ -493,6 +494,7 @@ Begin
   if as_FileAfterMenu <> '' Then
     Begin
       p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileAfterMenu );
+      p_ReplaceLanguageString(lstl_HTML,CST_HTML_CAPTION,as_LongTitle);
       ls_Text3 := lstl_HTML.Text;
     end
    Else ls_Text3 := '' ;

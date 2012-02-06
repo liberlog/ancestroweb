@@ -582,7 +582,7 @@ object DMWeb: TDMWeb
       'select AGE_AU_DECES,SEXE,COUNT(*) AS COUNTER from INDIVIDU'
       'WHERE KLE_DOSSIER=:I_DOSSIER '
       'GROUP BY AGE_AU_DECES, SEXE'
-      'ORDER BY AGE_AU_DECES DESC, SEXE'
+      'ORDER BY AGE_AU_DECES DESC,SEXE'
     )
     Params = <    
       item

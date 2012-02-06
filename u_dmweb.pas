@@ -179,7 +179,6 @@ const IBQDLLNOM='NOM';
       // Ages lines word replace
       CST_AGES_LINES       = 'Ages_Lines';
       CST_AGES_CAPTION_DEAD= 'Caption_Ages_Dead' ;
-      CST_AGES_CAPTION     = 'Caption_Ages' ;
       CST_AGES_AN_AGE      = 'Age';
       CST_AGES_MEN_COUNT   = 'Count_Ages_Men';
       CST_AGES_WOMEN_COUNT = 'Count_Ages_Women';

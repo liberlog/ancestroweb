@@ -244,10 +244,10 @@ type
     function fs_getaltPhoto(const IBQ_IndividuFiltered: TIBQuery): String;
     function fs_getNameAndSurName(const ibq_Query: TIBQuery): String;
     function fs_GetTitleTree(const as_NameOfTree: String;
-                             const ai_generations: Longint;  const as_HTMLTitleType : String = CST_HTML_H3): String;
+                             const ai_generations: Longint): String;
     procedure p_CopyStructure;
     procedure p_CreateAHtmlFile(const astl_Destination: TStringList;
-      const as_BeginingFile, as_Describe, as_Title, as_LittleTitle: string;
+      const as_BeginingFile, as_Describe, as_Title, as_LittleTitle, as_LongTitle: string;
       as_BottomHTML: string;
       const as_Subdir: string = '';
       const as_ExtFile: string = CST_EXTENSION_HTML;
@@ -750,14 +750,12 @@ begin
   pb_ProgressInd.Position := pb_ProgressInd.Position + 1;
   Application.ProcessMessages;
 end;
-function TF_AncestroWeb.fs_GetTitleTree ( const as_NameOfTree : String ; const ai_generations : Longint ;  const as_HTMLTitleType : String = CST_HTML_H3 ): String;
+function TF_AncestroWeb.fs_GetTitleTree ( const as_NameOfTree : String ; const ai_generations : Longint ): String;
 Begin
-  Result := CST_HTML_Paragraph_BEGIN +'<' + as_HTMLTitleType + CST_HTML_ID_EQUAL + '"treetitle">'+
-        as_NameOfTree + ' (' + IntToStr(ai_generations) ;
+  Result := as_NameOfTree + ' (' + IntToStr(ai_generations) ;
   if ai_generations <= 1
-    Then AppendStr(Result, ( gs_AnceSTROWEB_Generation  ))
-    Else AppendStr(Result, ( gs_AnceSTROWEB_Generations ));
-  AppendStr(Result, ')</' + as_HTMLTitleType + '>' + CST_HTML_Paragraph_END );
+    Then AppendStr(Result, ( gs_AnceSTROWEB_Generation  ) + ')')
+    Else AppendStr(Result, ( gs_AnceSTROWEB_Generations ) + ')');
 end;
 
 // procedure TF_AncestroWeb.p_CreateHTMLTree
@@ -1002,10 +1000,9 @@ begin
         DMWeb.IBQ_TreeAsc.Locate(IBQ_CLE_FICHE, gi_CleFiche, []) then
         Exit;
       li_generation := fi_CreateHTMLTree(DMWeb.IBQ_TreeAsc, lstl_HTMLTree, gi_CleFiche);
-      lstl_HTMLTree.Insert(0, fs_GetTitleTree ( ( gs_AnceSTROWEB_Ancestry ), li_generation, CST_HTML_H2));
       lstl_HTMLTree.Insert(0, fs_Replace_EndLines(me_HeadTree.Lines.Text));
       p_CreateAHtmlFile(lstl_HTMLTree, CST_FILE_TREE, me_Description.Lines.Text,
-        ( gs_AnceSTROWEB_FamilyTree ), ( gs_AnceSTROWEB_FullTree ), gs_LinkGedcom, '../');
+        ( gs_AnceSTROWEB_FamilyTree ), gs_AnceSTROWEB_FullTree, fs_GetTitleTree ( gs_AnceSTROWEB_Ancestry, li_generation), gs_LinkGedcom, '../');
       p_IncPrgressBar;
     except
       On E: Exception do
@@ -1093,7 +1090,7 @@ begin
   p_CreateKeyWords;
   pb_ProgressInd.Position := 0;
   p_CreateAHtmlFile(lstl_HTMLHome, CST_FILE_Home, me_Description.Lines.Text,
-    ( gs_AnceSTROWEB_Home ), ( gs_AnceSTROWEB_Home ), gs_LinkGedcom);
+    ( gs_AnceSTROWEB_Home ), ( gs_AnceSTROWEB_Home ), gs_ANCESTROWEB_Welcome, gs_LinkGedcom);
   p_IncPrgressBar;
   ls_destination := FileCopy.Destination + DirectorySeparator + ed_IndexName.Text +
     CST_EXTENSION_HTML;
@@ -1249,7 +1246,7 @@ begin
   end;
   lstl_HTMLAFolder.Add ( CST_HTML_TD_END +CST_HTML_TR_END + CST_HTML_TABLE_END );
   p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_NAMES, me_NamesHead.Lines.Text,
-     ( gs_AnceSTROWEB_Names ), '', gs_LinkGedcom);
+     ( gs_AnceSTROWEB_Names ), gs_AnceSTROWEB_Names, gs_ANCESTROWEB_Names_Long, gs_LinkGedcom);
   ls_destination := FileCopy.Destination + DirectorySeparator + ed_NamesFileName.Text + CST_EXTENSION_HTML;
   try
     lstl_HTMLAFolder.SaveToFile(ls_destination);
@@ -1341,7 +1338,7 @@ var
     lstl_HTMLAList.Add ( CST_HTML_CENTER_END );
     p_CreateAHtmlFile(lstl_HTMLAList, CST_FILE_SUBFILES, me_Description.Lines.Text,
       ( gs_AnceSTROWEB_List ) + ' - ' + ls_NameBegin +
-      ( gs_AnceSTROWEB_At ) + ls_NameEnd, '', gs_LinkGedcom, '..' + CST_HTML_DIR_SEPARATOR);
+      ( gs_AnceSTROWEB_At ) + ls_NameEnd, '', '', gs_LinkGedcom, '..' + CST_HTML_DIR_SEPARATOR);
     ls_destination := FileCopy.Destination + DirectorySeparator +
       CST_SUBDIR_HTML_LISTS + DirectorySeparator + ed_ListsBeginName.Text + IntToStr(
       li_CounterPages) + CST_EXTENSION_HTML;
@@ -1647,7 +1644,7 @@ var
     lstl_HTMLAFolder.Add ( CST_HTML_CENTER_END );
     p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_SUBFILES, me_Description.Lines.Text,
       ( gs_AnceSTROWEB_Files ) + ' - ' + ls_NameBegin +
-      ( gs_AnceSTROWEB_At ) + ls_NameEnd, '', gs_LinkGedcom, '..' + CST_HTML_DIR_SEPARATOR);
+      ( gs_AnceSTROWEB_At ) + ls_NameEnd, '', '', gs_LinkGedcom, '..' + CST_HTML_DIR_SEPARATOR);
     ls_destination := FileCopy.Destination + DirectorySeparator +
       CST_SUBDIR_HTML_FILES + DirectorySeparator + ed_FileBeginName.Text + IntToStr(
       li_CounterPages) + CST_EXTENSION_HTML;
@@ -1694,7 +1691,7 @@ begin
   pb_ProgressInd.Position := 0;
   p_IncPrgressBar;
   p_CreateAHtmlFile(lstl_HTMLPersons, CST_FILE_FILES, me_FilesHead.Lines.Text,
-    ( gs_AnceSTROWEB_Files ), ( gs_AnceSTROWEB_Files ), gs_LinkGedcom);
+    ( gs_AnceSTROWEB_Files ), gs_AnceSTROWEB_Files, gs_ANCESTROWEB_Files_Long, gs_LinkGedcom);
   p_IncPrgressBar;
   ls_destination := FileCopy.Destination + DirectorySeparator +
     ed_FileBeginName.Text + CST_EXTENSION_HTML;
@@ -1740,7 +1737,7 @@ begin
   p_CreateKeyWords;
   pb_ProgressInd.Position := 0;
   p_CreateAHtmlFile(lstl_HTMLContact, CST_FILE_Contact, me_ContactHead.Lines.Text,
-    ( gs_AnceSTROWEB_Contact ), ( gs_AnceSTROWEB_Contact ), gs_LinkGedcom,
+    ( gs_AnceSTROWEB_Contact ), gs_AnceSTROWEB_Contact, gs_ANCESTROWEB_MailCaption, gs_LinkGedcom,
     '', CST_EXTENSION_PHP, lstl_HTMLContactBeforeHTML.Text);
   p_IncPrgressBar;
   ls_destination := FileCopy.Destination + DirectorySeparator + ed_ContactName.Text + CST_EXTENSION_PHP;
@@ -1767,10 +1764,8 @@ begin
   pb_ProgressInd.Position := 0;
   lstl_HTMLSearch := TStringList.Create;
   ls_AfterHead := lstl_HTMLSearch.Text;
-  p_SelectTabSheet(gt_TabSheets,( gs_AnceSTROWEB_Search ));
   p_CreateAHtmlFile(lstl_HTMLSearch, CST_FILE_SEARCH, me_searchHead.Lines.Text,
-        ( gs_AnceSTROWEB_Search ), ( gs_AnceSTROWEB_Search ), gs_LinkGedcom, '');
-  p_SelectTabSheet(gt_TabSheets,( gs_AnceSTROWEB_Search ), '', False);
+        ( gs_AnceSTROWEB_Search ), gs_AnceSTROWEB_Search, gs_ANCESTROWEB_SearchLong, gs_LinkGedcom, '');
 
   p_ReplaceLanguageString(lstl_HTMLSearch,CST_HTML_HEAD_DESCRIBE, StringReplace(me_searchHead.Text,#13,'<BR />',[]));
   p_ReplaceLanguageString(lstl_HTMLSearch,CST_HTML_SEND      , ( gs_AnceSTROWEB_Send  ));
@@ -1800,27 +1795,34 @@ var
   lstl_HTMLAges ,
   lstl_HTMLLines: TStringList;
   ls_destination, ls_AfterHead: string;
-  li_Age, li_count : Longint;
+  li_Age, li_count, li_countTotal, li_MenTotal, li_WomenTotal : Longint;
+  procedure p_setHtmlReplaceValues;
+  Begin
+    p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_COUNT      , IntToStr(li_count),[]);
+    p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_MEN_COUNT  , CST_ZERO          ,[]);
+    p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_WOMEN_COUNT, CST_ZERO          ,[]);
+  end;
+
 begin
   p_Setcomments ( gs_ANCESTROWEB_Ages );
   pb_ProgressInd.Position := 0;
   lstl_HTMLAges  := TStringList.Create;
   lstl_HTMLLines := TStringList.Create;
-  p_LoadStringList ( lstl_HTMLLines, gs_Root, CST_FILE_AGES_LINE );
+  p_LoadStringList ( lstl_HTMLLines, gs_Root, CST_FILE_AGES_LINE + CST_EXTENSION_HTML );
   ls_AfterHead := lstl_HTMLAges.Text;
-  p_SelectTabSheet(gt_TabSheets,( gs_ANCESTROWEB_Ages ));
   p_CreateAHtmlFile(lstl_HTMLAges, CST_FILE_AGES, me_HeadAges.Lines.Text,
-        ( gs_ANCESTROWEB_Ages ), ( gs_ANCESTROWEB_Ages ), gs_LinkGedcom, '');
-  p_SelectTabSheet(gt_TabSheets,( gs_ANCESTROWEB_Ages ), '', False);
+        ( gs_ANCESTROWEB_Ages ), gs_ANCESTROWEB_Ages, gs_ANCESTROWEB_Ages_Long, gs_LinkGedcom, '');
 
   p_ReplaceLanguageString(lstl_HTMLAges,CST_HTML_HEAD_DESCRIBE, StringReplace(me_HeadAges.Text,#13,'<BR />',[]));
 
-  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_CAPTION    , gs_ANCESTROWEB_Ages_Long,[]);
   p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_AN_AGE     , gs_ANCESTROWEB_AnAge    ,[]);
   p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_COUNT      , gs_ANCESTROWEB_Persons_Count    ,[]);
   p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_MEN_COUNT  , gs_ANCESTROWEB_Men_Count    ,[]);
   p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_WOMEN_COUNT, gs_ANCESTROWEB_Women_Count    ,[]);
   li_Age := -1;
+  li_countTotal :=0;
+  li_MenTotal   :=0;
+  li_WomenTotal :=0;
   with DMWeb.IBQ_Ages do
     try
       Close;
@@ -1835,22 +1837,25 @@ begin
             end;
           if li_Age <> FieldByName(IBQ_AGE_AU_DECES).AsInteger Then
             Begin
-              p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_COUNT      , IntToStr(li_count),[]);
-              p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_MEN_COUNT  , CST_ZERO          ,[]);
-              p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_WOMEN_COUNT, CST_ZERO          ,[]);
+              p_setHtmlReplaceValues;
               p_ReplaceLanguageString(lstl_HTMLAges,CST_AGES_LINES  ,lstl_HTMLLines.Text+'['+CST_AGES_LINES+']');
               li_Age:= FieldByName(IBQ_AGE_AU_DECES).AsInteger ;
               p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_AN_AGE, IntToStr(li_Age)  ,[]);
               li_count := 0;
             end;
           inc ( li_count, FieldByName ( IBQ_COUNTER ).AsInteger );
+          inc ( li_countTotal, li_count );
           if FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_MAN Then
            Begin
              p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_MEN_COUNT  , FieldByName ( IBQ_COUNTER ).AsString,[]);
+             inc ( li_MenTotal, FieldByName ( IBQ_COUNTER ).AsInteger );
            end
           Else
            if FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN Then
-             p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_WOMEN_COUNT  , FieldByName ( IBQ_COUNTER ).AsString,[]);
+             Begin
+               p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_WOMEN_COUNT  , FieldByName ( IBQ_COUNTER ).AsString,[]);
+               inc ( li_WomenTotal, FieldByName ( IBQ_COUNTER ).AsInteger );
+             end;
           Next;
         end;
     except
@@ -1860,9 +1865,13 @@ begin
         Abort;
       end;
     end;
-  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_COUNT      , IntToStr(li_count),[]);
+  p_setHtmlReplaceValues;
+  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_LINES      ,lstl_HTMLLines.Text);
+  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_AN_AGE     , gs_ANCESTROWEB_TotalAgeDead,[]);
+  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_COUNT      , IntToStr(li_countTotal),[]);
+  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_MEN_COUNT  , IntToStr(li_MenTotal)  ,[]);
+  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_WOMEN_COUNT, IntToStr(li_WomenTotal),[]);
   DMWeb.IBQ_Ages.Close;
-  p_ReplaceLanguageString(lstl_HTMLAges,CST_AGES_LINES  ,'');
 
   ls_destination := FileCopy.Destination + DirectorySeparator + ed_AgesName.Text  + CST_EXTENSION_HTML;
   try
@@ -1881,7 +1890,7 @@ end;
 
 procedure TF_AncestroWeb.p_CreateAHtmlFile(const astl_Destination: TStringList;
   const as_BeginingFile,
-  as_Describe, as_Title, as_LittleTitle: string;
+  as_Describe, as_Title, as_LittleTitle, as_LongTitle: string;
   as_BottomHTML: string;
   const as_Subdir: string = '';
   const as_ExtFile: string =
@@ -1906,7 +1915,7 @@ begin
     p_SelectTabSheet(gt_TabSheets, as_LittleTitle);
   p_CreateHTMLFile(gt_TabSheets, astl_Destination, as_BottomHTML,
     gs_Root, as_Describe, gstl_HeadKeyWords.Text, gs_HTMLTitle + ' - ' +
-    as_Title, 'main', as_BeginingFile + '1' + as_ExtFile, as_BeginingFile + '2' +
+    as_Title, as_LongTitle, 'main', as_BeginingFile + '1' + as_ExtFile, as_BeginingFile + '2' +
     as_ExtFile, as_BeginingFile + '3' + as_ExtFile, as_BeginingFile +
     '4' + as_ExtFile, as_Subdir, as_BeforeHTML);
   if as_LittleTitle <> '' then

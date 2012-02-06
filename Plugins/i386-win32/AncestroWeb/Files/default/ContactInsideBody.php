@@ -2,7 +2,7 @@
 <tr><td valign="top">
 </td>
 <td valign="top">
-<h1><IMG SRC="./Images/mail.gif" ALT="Contact" />[SendMessage]</h1>
+<h1><IMG SRC="./Images/mail.gif" ALT="Contact" />[Caption]</h1>
 <p class="describe">[Description]</p><br>
 <form name="form1" method="post">
 <? 

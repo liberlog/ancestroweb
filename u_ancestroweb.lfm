@@ -1425,8 +1425,8 @@ object F_AncestroWeb: TF_AncestroWeb
         Name = 'KLE_DOSSIER'
         ParamType = ptInput
       end>
-    left = 496
-    top = 144
+    left = 176
+    top = 176
     ParamData = <    
       item
         DataType = ftInteger
@@ -1436,16 +1436,16 @@ object F_AncestroWeb: TF_AncestroWeb
   end
   object ds_Individu: TDatasource
     DataSet = IBQ_Individu
-    left = 344
-    top = 184
+    left = 72
+    top = 240
   end
   object OpenDialog: TOpenDialog
     Title = 'Fichier de la base de données'
     Filter = 'Bases Firebird/Interbase (*.fdb,*.gdb)|*.fdb;*.gdb|Tous les fichiers (*.*)|*.*'
     FilterIndex = 0
     Options = [ofHideReadOnly, ofNoNetworkButton, ofViewDetail]
-    left = 312
-    top = 16
+    left = 72
+    top = 80
   end
   object OnFormInfoIni: TOnFormInfoIni
     AutoLoad = False
@@ -1453,8 +1453,8 @@ object F_AncestroWeb: TF_AncestroWeb
     SauveEditObjets = [feTEdit, feTCheck, feTComboValue, feTDirectoryEdit, feTFileNameEdit, feTMemo, feTPageControl, feTRadio, feTSpinEdit]
     SauvePosForm = True
     Freeini = False
-    left = 264
-    top = 72
+    left = 176
+    top = 80
   end
   object FileCopy: TExtFileCopy
     Errors = 0
@@ -1470,8 +1470,8 @@ object F_AncestroWeb: TF_AncestroWeb
     OnFailure = TraduceImageFailure
     TraduceOptions = [cpDestinationIsFile, cpCreateDestination]
     ResizeWidth = 200
-    left = 456
-    top = 119
+    left = 72
+    top = 184
   end
   object FileIniCopy: TExtFileCopy
     Errors = 0

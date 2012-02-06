@@ -3,7 +3,12 @@ var gName;
 function arrangeNS6() {
   gName = '';
   whichEl=getNextIdNS6(firstInd.id);
-  firstInd.style.top=document.images[2].offsetTop+document.images[2].offsetHeight;
+  for ( i=0;i<document.images.count;i++)
+    if ( document.images[i].src=="a.gif")
+      {
+      firstInd.style.top=document.images[i].offsetTop+document.images[i].offsetHeight;
+      break;
+      }
   nextY =firstInd.offsetTop + firstInd.offsetHeight;
   allHeights=nextY;
   while (whichEl!=null)
