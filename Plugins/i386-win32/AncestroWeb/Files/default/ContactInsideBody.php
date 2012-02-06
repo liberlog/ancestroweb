@@ -1,3 +1,4 @@
+<div id="center">
 <table>
 <tr><td valign="top">
 </td>
@@ -38,9 +39,10 @@ if ( isset ($txt_envoi ))
 <td>&nbsp;</td>
 <td><input type="submit" name="Submit" value="[Send]">
 <input type="reset" name="Submit2" value="[Reset]">
+</form>
 </td>
 </tr>
 </table>
+</div>
 <p>&nbsp; </p>
-</form>
 <br>
