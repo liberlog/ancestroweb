@@ -599,4 +599,33 @@ object DMWeb: TDMWeb
         ParamType = ptUnknown
       end>
   end
+  object IBQ_Jobs: TIBQuery
+    Database = ibd_BASE
+    Transaction = IBT_BASE
+    BufferChunks = 1000
+    CachedUpdates = False
+    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    SQL.Strings = (
+      'SELECT EV_IND_DESCRIPTION,COUNT(*) AS COUNTER,EV_IND_VILLE'
+      'FROM EVENEMENTS_IND'
+      'WHERE EV_IND_KLE_DOSSIER=:I_DOSSIER '
+      'AND EV_IND_TYPE=''OCCU'''
+      'GROUP BY EV_IND_DESCRIPTION,EV_IND_VILLE'
+      'ORDER BY EV_IND_DESCRIPTION,EV_IND_VILLE'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'I_DOSSIER'
+        ParamType = ptUnknown
+      end>
+    left = 424
+    top = 200
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'I_DOSSIER'
+        ParamType = ptUnknown
+      end>
+  end
 end

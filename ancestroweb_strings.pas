@@ -33,6 +33,12 @@ resourcestring
   gs_ANCESTROWEB_Search = 'Recherche';
   gs_ANCESTROWEB_SearchLong = 'Rechercher sur le site';
   gs_ANCESTROWEB_Ages   = 'Âges';
+  gs_ANCESTROWEB_Jobs   = 'Métiers';
+  gs_ANCESTROWEB_Jobs_Count= 'Métiers';
+  gs_ANCESTROWEB_Jobs_Total= 'Totaux des métiers et villes :';
+  gs_ANCESTROWEB_Jobs_Cities= 'Villes';
+  gs_ANCESTROWEB_A_Job  = 'Métier';
+  gs_ANCESTROWEB_Jobs_Long  = 'Statistiques des métiers';
   gs_ANCESTROWEB_Send   = 'Envoyer';
   gs_ANCESTROWEB_MailCaption   = 'Envoyer un message';
   gs_ANCESTROWEB_Reset  = 'Effacer';

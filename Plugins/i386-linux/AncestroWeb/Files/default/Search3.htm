@@ -6,7 +6,7 @@
 <h1 id="search"><IMG SRC="Images/search.gif" ALT="Search" />[Search]</h1>
 <table border="0">
 <tr>
-<form OnSubmit="callsearch('[Domain]');" name="searchform" method="get" action="[SearchTool]">
+<form name="searchform" method="get" action="[SearchTool]">
 <input name="hl" type="hidden" value="[Lang]">
 <input name="ie" type="hidden" value="UTF-8">
 <td>[Search] :</td>
@@ -15,7 +15,7 @@
 </tr>
 <tr>
 <td>
-<a class="button" href="javascript:document.searchform.submit();">[Send]</A>
+<a class="button" href="javascript:callsearch('matthieu.giroux.free.fr');document.searchform.submit();">[Send]</A>
 <a class="button" href="javascript:document.searchform.reset();">[Reset]</A>
 </form>
 </td>

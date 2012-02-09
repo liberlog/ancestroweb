@@ -9,9 +9,9 @@ BODY { font-family: Arial, Helvetica, Univers, 'Zurich BT', sans-serif; color: #
  A:visited { text-decoration: none;color: #222299}
 
  table#image { font-family: Verdana,Tahoma,Arial,Helvetica,sans-serif; font-size: 10pt; color: #003333; background-color: #448899;}
- table.file, table.man, table.woman, table#ages, table#names  {border-style:solid;border-width:1;padding:0}
- table#ages  {text-align:center}
- #names td, #ages td, #ages th {border-bottom:1px solid green;padding:0}
+ table.file, table.man, table.woman,table#jobs, table#ages, table#names  {border-style:solid;border-width:1;padding:0}
+ table#ages,table#jobs  {text-align:center}
+ #names td, #jobs td, #jobs th, #ages td, #ages th {border-bottom:1px solid green;padding:0}
  td { font-family: Verdana,Tahoma,Arial,Helvetica,sans-serif; font-size: 10pt; color: #003333}
  #center, #ages td, #ages th {text-align:center}
  #ages th {width:170px}

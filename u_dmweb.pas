@@ -57,6 +57,7 @@ const IBQDLLNOM='NOM';
       CST_PROGRESS_COUNTER_NAMES    = 1;
       CST_PROGRESS_COUNTER_SEARCH   = 1;
       CST_PROGRESS_COUNTER_AGES     = 1;
+      CST_PROGRESS_COUNTER_JOBS     = 1;
       CST_PROGRESS_COUNTER_TREE     = 4;
       CST_PROGRESS_COUNTER_CONTACT  = 1;
       CST_PROGRESS_COUNTER_HOME     = 1;
@@ -76,6 +77,9 @@ const IBQDLLNOM='NOM';
       IBQ_SEXE       = 'SEXE' ;
       IBQ_SEXE_MAN   = 1 ;
       IBQ_SEXE_WOMAN = 2 ;
+
+      IBQ_EV_IND_DESCRIPTION ='EV_IND_DESCRIPTION';
+      IBQ_EV_IND_VILLE       ='EV_IND_VILLE';
 
       FICHE_DATE_NAISSANCE = 'DATE_NAISSANCE';
       FICHE_LIEU_NAISSANCE = 'LIEU_NAISSANCE';
@@ -157,6 +161,8 @@ const IBQDLLNOM='NOM';
       CST_FILE_SEARCH       = 'Search';
       CST_FILE_AGES         = 'Ages';
       CST_FILE_AGES_LINE    = 'AgesLine';
+      CST_FILE_JOBS         = 'Jobs';
+      CST_FILE_JOBS_LINE    = 'JobsLine';
       CST_FILE_NAMES        = 'Names' ;
       CST_FILE_Number       = ' no';
       CST_FILE_UNION        = 'union';
@@ -176,13 +182,18 @@ const IBQDLLNOM='NOM';
       CST_SEARCH_SEARCH_QUER= 'SearchQuery';
       CST_SEARCH_DOMAIN     = 'Domain';
 
-      // Ages lines word replace
+      // Ages words' replace
       CST_AGES_LINES       = 'Ages_Lines';
-      CST_AGES_CAPTION_DEAD= 'Caption_Ages_Dead' ;
       CST_AGES_AN_AGE      = 'Age';
       CST_AGES_MEN_COUNT   = 'Count_Ages_Men';
       CST_AGES_WOMEN_COUNT = 'Count_Ages_Women';
       CST_AGES_COUNT       = 'Count_Ages';
+
+      // Jobs words' replace
+      CST_JOBS_LINES       = 'Jobs_Lines';
+      CST_JOBS_A_JOB       = 'Job';
+      CST_JOBS_COUNT       = 'Count_Jobs';
+      CST_JOBS_CITY        = 'City';
 
       CST_ZERO             = '0';
 
@@ -211,6 +222,7 @@ type
 
   TDMWeb = class(TDataModule)
     IBQSources_Record: TIBQuery;
+    IBQ_Jobs: TIBQuery;
     IBQ_Compte: TIBQuery;
     IBQ_Fiche: TIBQuery;
     IBQ_Names: TIBQuery;
