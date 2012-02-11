@@ -13,6 +13,7 @@
       <UseVersionInfo Value="True"/>
       <MajorVersionNr Value="1"/>
       <MinorVersionNr Value="1"/>
+      <BuildNr Value="1"/>
       <Language Value=""/>
       <CharSet Value=""/>
       <StringTable ProductVersion=""/>
@@ -292,7 +293,7 @@
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1958"/>
-        <CursorPos X="85" Y="1994"/>
+        <CursorPos X="128" Y="1973"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
