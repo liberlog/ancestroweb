@@ -66,7 +66,7 @@ resourcestring
   gs_ANCESTROWEB_Ancestry = 'Ascendance';
   gs_ANCESTROWEB_Descent = 'Descendance';
   gs_ANCESTROWEB_AnAge = 'Âge';
-  gs_ANCESTROWEB_TotalAgeDead = 'Total des individus avec un Âge au décès :';
+  gs_ANCESTROWEB_TotalAgeDead = 'Total des individus avec un âge au décès :';
   gs_ANCESTROWEB_Persons_Count = 'Nombre d''individus';
   gs_ANCESTROWEB_Men_Count = 'Hommes';
   gs_ANCESTROWEB_Women_Count = 'Femmes';
