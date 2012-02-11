@@ -1926,13 +1926,74 @@ procedure TF_AncestroWeb.p_genHtmlJobs;
 var
   lstl_HTMLJobs ,
   lstl_HTMLLines: TStringList;
-  ls_destination,ls_City,ls_Job: string;
-  li_count, li_countTotal, li_CitiesTotal : Longint;
+  ls_destination: string;
   // Setting not replaced values
   procedure p_setHtmlReplaceValues;
   Begin
     p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_CITY      , '',[]);
     p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_COUNT  , CST_ZERO          ,[]);
+  end;
+
+  procedure p_CreateLines ;
+var
+  ls_City,ls_Job: string;
+  li_count, li_countTotal, li_CitiesTotal : Longint;
+  Begin
+    ls_City := '';
+    ls_Job  := '';
+    li_countTotal :=0;
+    li_CitiesTotal:=0;
+
+    // setting data
+    with DMWeb.IBQ_Jobs do
+      try
+        Close;
+        ParamByName(I_DOSSIER).Value:=fCleDossier;
+        Open;
+        while not Eof do
+          Begin
+            if FieldByName(IBQ_EV_IND_DESCRIPTION).AsString = '' Then
+              Begin
+               Next;
+               Continue;
+              end;
+            // first and next line
+            if ( ls_Job  <> FieldByName(IBQ_EV_IND_DESCRIPTION).AsString )
+            or ( ls_City <> FieldByName(IBQ_EV_IND_VILLE      ).AsString ) Then
+              Begin
+                p_setHtmlReplaceValues;
+                p_ReplaceLanguageString(lstl_HTMLJobs,CST_JOBS_LINES  ,lstl_HTMLLines.Text+'['+CST_JOBS_LINES+']');
+                ls_Job := FieldByName(IBQ_EV_IND_DESCRIPTION).AsString ;
+                ls_City:= FieldByName(IBQ_EV_IND_VILLE      ).AsString ;
+                p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_A_JOB, ls_Job ,[]);
+                p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_CITY , ls_City ,[]);
+              end;
+            // growing
+            li_count := FieldByName ( IBQ_COUNTER ).AsInteger ;
+            inc ( li_countTotal, li_count );
+            if ( ls_City <> '' ) Then
+              inc ( li_CitiesTotal, li_count );
+            // men or women
+            p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_CITY  , FieldByName ( IBQ_EV_IND_VILLE ).AsString,[]);
+            p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_COUNT , IntToStr(li_count),[]);
+            Next;
+          end;
+      except
+        On E: Exception do
+        begin
+          ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantOpenData ) + DMWeb.IBQ_Ages.Database.DatabaseName + CST_ENDOFLINE + E.Message);
+          Abort;
+        end;
+      end;
+    p_setHtmlReplaceValues;
+
+    // adding last line
+    p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_LINES      ,lstl_HTMLLines.Text);
+    // last total line
+    p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_A_JOB      , gs_ANCESTROWEB_Jobs_Total,[]);
+    p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_COUNT      , IntToStr(li_countTotal),[]);
+    p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_CITY       , IntToStr(li_CitiesTotal)  ,[]);
+    DMWeb.IBQ_Ages.Close;
   end;
 
 begin
@@ -1956,63 +2017,8 @@ begin
   p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_A_JOB , gs_ANCESTROWEB_A_Job    ,[]);
   p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_COUNT , gs_ANCESTROWEB_Jobs_Count    ,[]);
   p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_CITY  , gs_ANCESTROWEB_Jobs_Cities    ,[]);
-  ls_City := '';
-  ls_Job  := '';
-  li_countTotal :=0;
-  li_CitiesTotal:=0;
 
-  // setting data
-  with DMWeb.IBQ_Jobs do
-    try
-      Close;
-      ParamByName(I_DOSSIER).Value:=fCleDossier;
-      Open;
-      while not Eof do
-        Begin
-          if FieldByName(IBQ_EV_IND_DESCRIPTION).AsString = '' Then
-            Begin
-             Next;
-             Continue;
-            end;
-          // first and next line
-          if ( ls_Job  <> FieldByName(IBQ_EV_IND_DESCRIPTION).AsString )
-          or ( ls_City <> FieldByName(IBQ_EV_IND_VILLE      ).AsString ) Then
-            Begin
-              p_setHtmlReplaceValues;
-              p_ReplaceLanguageString(lstl_HTMLJobs,CST_JOBS_LINES  ,lstl_HTMLLines.Text+'['+CST_JOBS_LINES+']');
-              if  ( FieldByName(IBQ_EV_IND_VILLE      ).AsString <> '' )
-              and ( ls_City <> FieldByName(IBQ_EV_IND_VILLE      ).AsString ) Then
-                 inc ( li_CitiesTotal );
-              ls_Job := FieldByName(IBQ_EV_IND_DESCRIPTION).AsString ;
-              ls_City:= FieldByName(IBQ_EV_IND_VILLE      ).AsString ;
-              p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_A_JOB, ls_Job ,[]);
-              p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_CITY , ls_City ,[]);
-              li_count := 0;
-            end;
-          // growing
-          inc ( li_count, FieldByName ( IBQ_COUNTER ).AsInteger );
-          inc ( li_countTotal, li_count );
-          // men or women
-          p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_CITY  , FieldByName ( IBQ_EV_IND_VILLE ).AsString,[]);
-          p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_COUNT , IntToStr(li_count),[]);
-          Next;
-        end;
-    except
-      On E: Exception do
-      begin
-        ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantOpenData ) + DMWeb.IBQ_Ages.Database.DatabaseName + CST_ENDOFLINE + E.Message);
-        Abort;
-      end;
-    end;
-  p_setHtmlReplaceValues;
-
-  // adding last line
-  p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_LINES      ,lstl_HTMLLines.Text);
-  // last total line
-  p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_A_JOB      , gs_ANCESTROWEB_Jobs_Total,[]);
-  p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_COUNT      , IntToStr(li_countTotal),[]);
-  p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_CITY       , IntToStr(li_CitiesTotal)  ,[]);
-  DMWeb.IBQ_Ages.Close;
+  p_CreateLines;
 
   // saving the page
   ls_destination := FileCopy.Destination + DirectorySeparator + ed_JobsName.Text  + CST_EXTENSION_HTML;
