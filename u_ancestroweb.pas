@@ -1988,17 +1988,16 @@ var
              end;
           ls_City:= FieldByName(IBQ_EV_IND_VILLE      ).AsString ;
           if ls_City <> '' Then p_addKeyWord(ls_City); // adding a head's meta keyword
-          p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_A_JOB, ls_Job ,[]);
-          p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_CITY , ls_City ,[]);
           // growing
           li_Linecounter := FieldByName ( IBQ_COUNTER ).AsInteger ;
+          // showing job ant city
+          p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_A_JOB, ls_Job ,[]);
+          p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_CITY , ls_City ,[]);
+          // showing jobs'count
+          p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_COUNT , IntToStr(li_Linecounter),[]);
           inc ( li_countTotal, li_Linecounter );
           if ( ls_City <> '' ) Then
             inc ( li_CitiesTotal, li_Linecounter );
-          // men or women
-          p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_CITY  , FieldByName ( IBQ_EV_IND_VILLE ).AsString,[]);
-          p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_COUNT , IntToStr(li_Linecounter),[]);
-
         end;
     end;
 
