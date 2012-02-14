@@ -628,4 +628,31 @@ object DMWeb: TDMWeb
         ParamType = ptUnknown
       end>
   end
+  object IBQ_JobsInd: TIBQuery
+    Database = ibd_BASE
+    Transaction = IBT_BASE
+    BufferChunks = 1000
+    CachedUpdates = False
+    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    SQL.Strings = (
+      'SELECT EV_IND_DESCRIPTION, EV_IND_CP,EV_IND_DEPT, EV_IND_VILLE, EV_IND_PAYS, EV_IND_DATE'
+      'FROM EVENEMENTS_IND'
+      'WHERE EV_IND_KLE_FICHE=:CLE_FICHE '
+      'AND EV_IND_TYPE=''OCCU'''
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'CLE_FICHE'
+        ParamType = ptUnknown
+      end>
+    left = 448
+    top = 128
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'CLE_FICHE'
+        ParamType = ptUnknown
+      end>
+  end
 end

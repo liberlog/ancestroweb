@@ -163,7 +163,7 @@ procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
                              const as_FileBeforeHead, as_FileAfterHead,
                                    as_FileAfterMenu  , as_FileAfterBody,
                                    as_Subdir ,
-                                   as_BeforeHTML : String  );
+                                   as_BeforeHTML : String  ; const astl_Body : TStringList = nil );
 function fs_GetSheetLink ( const at_TabSheets : TAHTMLULTabSheet ;
                            const as_Title : String ;
                            const as_KeyPage : String ):String;
@@ -473,9 +473,14 @@ procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
                              const as_FileBeforeHead, as_FileAfterHead,
                                    as_FileAfterMenu  , as_FileAfterBody,
                                    as_Subdir ,
-                                   as_BeforeHTML : String  );
+                                   as_BeforeHTML : String ; const astl_Body : TStringList = nil );
 var  lstl_HTML : TStringList;
      ls_Text1, ls_Text2, ls_Text3, ls_Text4  : String ;
+  procedure p_LoadText3 ( const astl_Strings : TStringList );
+  begin
+    p_ReplaceLanguageString(astl_Strings,CST_HTML_CAPTION,as_LongTitle);
+    ls_Text3:=astl_Strings.Text
+  end;
 
 Begin
   lstl_HTML := TStringList.Create;
@@ -491,13 +496,17 @@ Begin
       ls_Text2 := lstl_HTML.Text;
     end
    Else ls_Text2 := '' ;
-  if as_FileAfterMenu <> '' Then
+  if astl_Body <> nil then
     Begin
-      p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileAfterMenu );
-      p_ReplaceLanguageString(lstl_HTML,CST_HTML_CAPTION,as_LongTitle);
-      ls_Text3 := lstl_HTML.Text;
+      p_LoadText3 ( astl_Body );
     end
-   Else ls_Text3 := '' ;
+   Else
+    if as_FileAfterMenu <> '' Then
+      Begin
+        p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileAfterMenu );
+        p_LoadText3 ( lstl_HTML );
+      end
+     Else ls_Text3 := '' ;
   if as_FileAfterBody <> '' Then
     Begin
       p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileAfterBody );

@@ -36,7 +36,7 @@ uses
   U_DMWeb, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, StdCtrls, DB,
   IBQuery, DBCtrls, ExtCtrls, Buttons, ComCtrls, DBGrids,
   functions_html, JvXPCheckCtrls, Spin, FileUtil, U_OnFormInfoIni,
-  U_ExtImage, u_buttons_appli, U_ExtFileCopy, u_traducefile,u_extabscopy,
+  U_ExtImage, u_buttons_appli, U_ExtFileCopy, u_traducefile,
   JvXPButtons;
 
 type
@@ -258,7 +258,7 @@ type
       as_BottomHTML: string;
       const as_Subdir: string = '';
       const as_ExtFile: string = CST_EXTENSION_HTML;
-      const as_BeforeHTML: string = '');
+      const as_BeforeHTML: string = ''; const astl_Body : TStringList = nil );
     function fi_CreateHTMLTree(const IBQ_Tree: TIBQuery;
       const astl_HTMLTree: TStrings;
       const ai_Clefiche: longint;
@@ -1421,6 +1421,9 @@ begin
   Result := fs_Create_Image ( CST_SUBDIR_HTML_IMAGES + CST_HTML_DIR_SEPARATOR + Result, as_FileAltName);
 
 end;
+
+// procedure TF_AncestroWeb.p_genHtmlFiles
+// HTML persons' Files generation
 procedure TF_AncestroWeb.p_genHtmlFiles(const IBQ_FilesFiltered: TIBQuery);
 var
   lstl_HTMLPersons: TStringList;
@@ -1428,6 +1431,7 @@ var
   ls_ImagesDir, ls_ArchivesDir: string;
   li_CounterPages : Longint;
 
+  // Marriages with source
   function fs_CreateMarried (  const as_Date : String ; const ai_ClefUnion : Longint ): String;
   var ls_FileName : String ;
       li_i : Integer ;
@@ -1437,6 +1441,7 @@ var
         Result := '';
         Exit;
       end;
+    // getting source
     DMWeb.IBQ_ConjointSources.Close;
     DMWeb.IBQ_ConjointSources.ParamByName ( I_CLEF_UNION  ).AsInteger:=ai_ClefUnion;
     DMWeb.IBQ_ConjointSources.Open;
@@ -1444,6 +1449,7 @@ var
     if ch_Images.Checked
     and not DMWeb.IBQ_ConjointSources.IsEmpty Then
       Begin
+         // adding source
         if DMWeb.IBQ_Conjoint.FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN
         Then ls_FileName := fs_getNameAndSurName (DMWeb.IBQ_Conjoint)+'&'+fs_getNameAndSurName (IBQ_FilesFiltered)
         Else ls_FileName := fs_getNameAndSurName (IBQ_FilesFiltered )+'&'+fs_getNameAndSurName (DMWeb.IBQ_Conjoint);
@@ -1451,6 +1457,7 @@ var
                      + '-'+DMWeb.IBQ_Conjoint.FieldByName(UNION_CP).AsString+'-'+DMWeb.IBQ_Conjoint.FieldByName(UNION_CITY).AsString+ '-';
         li_i := 1 ;
 
+        // medias
         while not DMWeb.IBQ_ConjointSources.EOF do
           Begin
             if fb_getMediaFile ( DMWeb.IBQ_ConjointSources, ls_ArchivesDir + ls_FileName + IntToStr(li_i) +CST_EXTENSION_JPEG ) Then
@@ -1466,9 +1473,11 @@ var
      AppendStr( Result, ')' );
   end;
 
+  // add an event date with city
   function fs_addDateAndCity ( const IBQ_FicheInfos : TIBQuery ; const as_date, as_City, as_manon, as_womanon : String ):String ;
   begin
 
+    // is there an info
     if not IBQ_FicheInfos.FieldByName(as_date).IsNull Then
       Begin
         if IBQ_FicheInfos.FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN
@@ -1482,29 +1491,81 @@ var
        Else Result := '';
   end;
 
+  // person's infos
+  procedure p_AddJobs ( const astl_HTMLAFolder : TStringList ; const ai_CleFiche, ai_NoInPage : LongInt  );
+  var ls_Line : String ;
+  Begin
+    DMWeb.IBQ_JobsInd.Close;
+    DMWeb.IBQ_JobsInd.ParamByName ( IBQ_CLE_FICHE ).AsInteger:=ai_CleFiche;
+    DMWeb.IBQ_JobsInd.Open;
+    if not DMWeb.IBQ_JobsInd.IsEmpty Then  // Job(s) ?
+      Begin
+        // title
+       astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_H3    , CST_FILE_JOBS
+                                                          + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL));
+       if DMWeb.IBQ_JobsInd.RecordCount = 1  // 1 or more jobs ?
+        Then astl_HTMLAFolder.Add (( gs_ANCESTROWEB_Job   ))
+        else astl_HTMLAFolder.Add (( gs_ANCESTROWEB_Jobs  ));
+       astl_HTMLAFolder.Add ( CST_HTML_H3_END );  // title end
+       astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_UL, CST_FILE_JOBS
+                                                          + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL));
+       while not DMWeb.IBQ_JobsInd.EOF do  // adding all jobs
+        Begin
+         astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_JOBS + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
+                              + DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DESCRIPTION).AsString );
+         if DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_VILLE).AsString <> '' Then
+         astl_HTMLAFolder.Add ( ' ' + gs_ANCESTROWEB_At + ' '
+                              + DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_VILLE).AsString );
+         if ( DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_PAYS).AsString <> '' )
+         or ( DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DATE).AsString <> '' )
+           Then
+            Begin
+             ls_Line := '(' ;
+             if DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_PAYS).AsString <> '' Then
+              AppendStr ( ls_line, DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_PAYS).AsString );
+             if  ( DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_PAYS).AsString <> '' )
+             and ( DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DATE).AsString <> '' ) Then
+               AppendStr ( ls_line,  ' - ' );
+             if not DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DATE).IsNull Then
+              AppendStr ( ls_line, FormatDateTime(gs_ANCESTROWEB_DateFormat,DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DATE).AsDateTime) + ')' );
+             astl_HTMLAFolder.Add ( ls_line + ')' );
+            end;
+         astl_HTMLAFolder.Add ( CST_HTML_LI_END);
+         DMWeb.IBQ_JobsInd.Next;
+        end;
+
+       astl_HTMLAFolder.Add ( CST_HTML_UL_END );  // list end
+      end;
+  End;
   procedure p_AddInfos ( const astl_HTMLAFolder : TStringList ; const ai_CleFiche, ai_NoInPage : LongInt  );
   Begin
     try
+      // getting file
       DMWeb.IBQ_Fiche.Close;
-      DMWeb.IBQ_Fiche.ParamByName(I_CLEF).AsInteger := IBQ_FilesFiltered.FieldByName(IBQ_CLE_FICHE).AsInteger;
+      DMWeb.IBQ_Fiche.ParamByName(I_CLEF).AsInteger := ai_CleFiche;
       DMWeb.IBQ_Fiche.Open;
+      // Married ?
       DMWeb.IBQ_Conjoint.Close;
       DMWeb.IBQ_Conjoint.ParamByName ( I_CLEF    ).AsInteger:=ai_CleFiche;
-//      DMWeb.IBQ_Conjoint.ParamByName ( I_DOSSIER ).AsInteger:=fCleDossier;
       DMWeb.IBQ_Conjoint.Open;
-      astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBQ_Fiche, FICHE_DATE_NAISSANCE, FICHE_LIEU_NAISSANCE, ( gs_AnceSTROWEB_WomanBornOn ), ( gs_AnceSTROWEB_ManBornOn )));
-      astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBQ_Fiche, FICHE_DATE_DECES, FICHE_LIEU_DECES, ( gs_AnceSTROWEB_WomanDiedOn ), ( gs_AnceSTROWEB_ManDiedOn )) + CST_HTML_BR);
-      if not DMWeb.IBQ_Conjoint.IsEmpty Then
+      // Jobs ?
+      // birthday
+      astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBQ_Fiche, FICHE_DATE_NAISSANCE, FICHE_LIEU_NAISSANCE, ( gs_ANCESTROWEB_ManBornOn ), ( gs_ANCESTROWEB_WomanBornOn )));
+      // deathday
+      astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBQ_Fiche, FICHE_DATE_DECES, FICHE_LIEU_DECES, ( gs_ANCESTROWEB_ManDiedOn ), ( gs_ANCESTROWEB_WomanDiedOn )) + CST_HTML_BR);
+      p_AddJobs ( astl_HTMLAFolder, ai_CleFiche, ai_NoInPage );
+      if not DMWeb.IBQ_Conjoint.IsEmpty Then  // Husband
         Begin
+          // title
          astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_H3    , CST_FILE_UNION + 's'
                                                             + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL));
-         if DMWeb.IBQ_Conjoint.RecordCount = 1
+         if DMWeb.IBQ_Conjoint.RecordCount = 1  // 1 or more husbands and ex ?
           Then astl_HTMLAFolder.Add (( gs_AnceSTROWEB_Union   ))
           else astl_HTMLAFolder.Add (( gs_AnceSTROWEB_Unions  ));
-         astl_HTMLAFolder.Add ( CST_HTML_H3_END );
+         astl_HTMLAFolder.Add ( CST_HTML_H3_END );  // title end
          astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_UL, CST_FILE_UNION + 's'
                                                             + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL));
-         while not DMWeb.IBQ_Conjoint.EOF do
+         while not DMWeb.IBQ_Conjoint.EOF do  // adding all husbands
           Begin
            astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_UNION + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
                                 + DMWeb.IBQ_Conjoint.FieldByName(IBQDLLNOM).AsString + ' ' + DMWeb.IBQ_Conjoint.FieldByName(IBQDLLPRENOM).AsString );
@@ -1513,27 +1574,31 @@ var
            DMWeb.IBQ_Conjoint.Next;
           end;
 
-         astl_HTMLAFolder.Add ( CST_HTML_UL_END );
+         astl_HTMLAFolder.Add ( CST_HTML_UL_END );  // list end
         end;
     finally
     end;
   end;
 
+  // stats
   procedure p_AddCounting ( const astl_HTML : TStringList  );
   Begin
    if ch_Comptage.Checked then
     try
+      // loading the request
       DMWeb.IBQ_Compte.Close;
       DMWeb.IBQ_Compte.ParamByName ( I_DOSSIER    ).AsInteger:=fCleDossier;
       DMWeb.IBQ_Compte.Open;
       if not DMWeb.IBQ_Compte.IsEmpty Then
         Begin
+         // stats' title
          astl_HTML.Add ( fs_CreateElementWithId ( CST_HTML_H3    ,CST_FILE_COUNTING));
          astl_HTML.Add (( gs_AnceSTROWEB_Statistics   ));
          astl_HTML.Add ( CST_HTML_H3_END );
+         // stats' table
          astl_HTML.Add ( fs_CreateElementWithId ( CST_HTML_TABLE, CST_FILE_COUNTING));
          while not DMWeb.IBQ_Compte.EOF do
-          Begin
+          Begin    // adding the stats
            astl_HTML.Add (CST_HTML_TR_BEGIN + CST_HTML_TD_BEGIN  + CST_HTML_H4_BEGIN +
                          fs_GetLabelCaption ( DMWeb.IBQ_Compte.FieldByName(COUNTING_LABEL).AsString ) +
                          CST_HTML_H4_END  + CST_HTML_TD_END + CST_HTML_TD_BEGIN +
@@ -1548,13 +1613,16 @@ var
     end;
   end;
 
+  // ancestry and descent trees
   procedure p_AddTrees ( const astl_HTMLAFolder : TStringList ; const ai_CleFiche, ai_NoInPage : LongInt );
   var
     lstl_Tree: TStringList;
     li_generations: longint;
   begin
+   // adding a line and cell in the table
     astl_HTMLAFolder.Add(CST_HTML_TR_BEGIN + CST_HTML_TD_BEGIN );
     lstl_Tree := TStringList.Create;
+    // descent
     if fb_OpenTree(DMWeb.IBQ_TreeDesc, ai_CleFiche, 4)
     and ( DMWeb.IBQ_TreeDesc.RecordCount > 1 ) then
     begin
@@ -1565,6 +1633,7 @@ var
       astl_HTMLAFolder.AddStrings(lstl_Tree);
       astl_HTMLAFolder.Add(CST_HTML_DIV_End);
     end;
+    // ancestry
     if fb_OpenTree(DMWeb.IBQ_TreeAsc, ai_CleFiche, 3)
     and ( DMWeb.IBQ_TreeAsc.RecordCount > 1 ) then
     begin
@@ -1575,6 +1644,7 @@ var
       astl_HTMLAFolder.AddStrings(lstl_Tree);
       astl_HTMLAFolder.Add(CST_HTML_DIV_End);
     end;
+    // line end
     astl_HTMLAFolder.Add(CST_HTML_TD_END + CST_HTML_TR_END);
     lstl_Tree.Free;
   end;
@@ -1603,6 +1673,7 @@ var
     begin
       p_IncPrgressInd; // growing the second counter
       ls_NameSurname := fs_RemplaceEspace ( fs_getNameAndSurName(IBQ_FilesFiltered), '_' );
+      // adding html head's meta-keywords
       p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString, '-'); // adding a head's meta keyword
       p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQDLLPRENOM).AsString); // adding a head's meta keyword
       li_CleFiche := IBQ_FilesFiltered.FieldByName(IBQ_CLE_FICHE).AsInteger;
@@ -1826,6 +1897,7 @@ end;
 procedure TF_AncestroWeb.p_genHtmlAges;
 var
   lstl_HTMLAges ,
+  lstl_HTMLAges2,
   lstl_HTMLLines: TStringList;
   ls_destination: string;
 
@@ -1919,30 +1991,31 @@ begin
   pb_ProgressInd.Position := 0; // initing not needed user value
   // strings from files
   lstl_HTMLAges  := TStringList.Create;
+  lstl_HTMLAges2 := TStringList.Create;
   lstl_HTMLLines := TStringList.Create;
+  p_CreateKeyWords;
   // loading a simple not inited line
   p_LoadStringList ( lstl_HTMLLines, gs_Root, CST_FILE_AGES_LINE + CST_EXTENSION_HTML );
-
-  p_CreateKeyWords;
-
-  // creating and initing the ages page
-  p_CreateAHtmlFile(lstl_HTMLAges, CST_FILE_AGES, me_HeadAges.Lines.Text,
-        ( gs_ANCESTROWEB_Ages ), gs_ANCESTROWEB_Ages, gs_ANCESTROWEB_Ages_Long, gs_LinkGedcom, '');
-
+  p_LoadStringList ( lstl_HTMLAges , gs_Root, CST_FILE_AGES + '3' + CST_EXTENSION_HTML );
   // Customizing the page
   p_ReplaceLanguageString(lstl_HTMLAges,CST_HTML_HEAD_DESCRIBE, StringReplace(me_HeadAges.Text,CST_ENDOFLINE,'<BR />',[]));
 
-  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_AN_AGE     , gs_ANCESTROWEB_AnAge    ,[]);
-  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_COUNT      , gs_ANCESTROWEB_Persons_Count    ,[]);
-  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_MEN_COUNT  , gs_ANCESTROWEB_Men_Count    ,[]);
-  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_WOMEN_COUNT, gs_ANCESTROWEB_Women_Count    ,[]);
+  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_AN_AGE     , gs_ANCESTROWEB_AnAge         ,[]);
+  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_COUNT      , gs_ANCESTROWEB_Persons_Count ,[]);
+  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_MEN_COUNT  , gs_ANCESTROWEB_Men_Count     ,[]);
+  p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_WOMEN_COUNT, gs_ANCESTROWEB_Women_Count   ,[]);
 
   p_addLines;
+
+  // creating and initing the ages page
+  p_CreateAHtmlFile(lstl_HTMLAges2, CST_FILE_AGES, me_HeadAges.Lines.Text,
+        ( gs_ANCESTROWEB_Ages ), gs_ANCESTROWEB_Ages, gs_ANCESTROWEB_Ages_Long, gs_LinkGedcom, '', CST_EXTENSION_HTML, '', lstl_HTMLAges);
+
 
   // saving the page
   ls_destination := FileCopy.Destination + DirectorySeparator + ed_AgesName.Text  + CST_EXTENSION_HTML;
   try
-    lstl_HTMLAges.SaveToFile(ls_destination);
+    lstl_HTMLAges2.SaveToFile(ls_destination);
   except
     On E: Exception do
     begin
@@ -1951,7 +2024,8 @@ begin
     end;
   end;
   // freeing
-  lstl_HTMLAges.Free;
+  lstl_HTMLAges .Free;
+  lstl_HTMLAges2.Free;
   lstl_HTMLLines.Free;
   p_IncPrgressBar;// ages growing
 end;
@@ -1960,6 +2034,7 @@ end;
 procedure TF_AncestroWeb.p_genHtmlJobs;
 var
   lstl_HTMLJobs ,
+  lstl_HTMLJobs2,
   lstl_HTMLLines: TStringList;
   ls_destination: string;
   // Setting not replaced values
@@ -1983,8 +2058,8 @@ var
           p_ReplaceLanguageString(lstl_HTMLJobs,CST_JOBS_LINES  ,lstl_HTMLLines.Text+'['+CST_JOBS_LINES+']');
           if FieldByName(IBQ_EV_IND_DESCRIPTION).AsString <> ls_Job Then
              Begin
-              p_addKeyWord(FieldByName(IBQ_EV_IND_DESCRIPTION).AsString); // adding a head's meta keyword
               ls_Job := FieldByName(IBQ_EV_IND_DESCRIPTION).AsString ;
+              p_addKeyWord(ls_Job); // adding a head's meta keyword
              end;
           ls_City:= FieldByName(IBQ_EV_IND_VILLE      ).AsString ;
           if ls_City <> '' Then p_addKeyWord(ls_City); // adding a head's meta keyword
@@ -2047,29 +2122,31 @@ begin
   pb_ProgressInd.Position := 0; // initing not needed user value
   // strings from files
   lstl_HTMLJobs  := TStringList.Create;
+  lstl_HTMLJobs2 := TStringList.Create;
   lstl_HTMLLines := TStringList.Create;
-  // loading a simple not inited line
-  p_LoadStringList ( lstl_HTMLLines, gs_Root, CST_FILE_JOBS_LINE + CST_EXTENSION_HTML );
 
   p_CreateKeyWords;
-
-  // creating and initing the ages page
-  p_CreateAHtmlFile(lstl_HTMLJobs, CST_FILE_JOBS, me_HeadJobs.Lines.Text,
-        ( gs_ANCESTROWEB_Jobs ), gs_ANCESTROWEB_Jobs, gs_ANCESTROWEB_Jobs_Long, gs_LinkGedcom, '');
+  // loading a simple not inited line
+  p_LoadStringList ( lstl_HTMLLines, gs_Root, CST_FILE_JOBS_LINE + CST_EXTENSION_HTML );
+  p_LoadStringList ( lstl_HTMLJobs , gs_Root, CST_FILE_JOBS + '3' + CST_EXTENSION_HTML );
 
   // Customizing the page
   p_ReplaceLanguageString(lstl_HTMLJobs,CST_HTML_HEAD_DESCRIBE, StringReplace(me_HeadJobs.Text,CST_ENDOFLINE,'<BR />',[]));
 
-  p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_A_JOB , gs_ANCESTROWEB_A_Job    ,[]);
-  p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_COUNT , gs_ANCESTROWEB_Jobs_Count    ,[]);
-  p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_CITY  , gs_ANCESTROWEB_Jobs_Cities    ,[]);
+  p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_A_JOB  , gs_ANCESTROWEB_A_Job        ,[]);
+  p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_COUNT  , gs_ANCESTROWEB_Jobs_Count   ,[]);
+  p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_CITY   , gs_ANCESTROWEB_Jobs_Cities  ,[]);
 
   p_CreateLines;
+
+  // creating and initing the ages page
+  p_CreateAHtmlFile(lstl_HTMLJobs2, CST_FILE_JOBS, me_HeadJobs.Lines.Text,
+        gs_ANCESTROWEB_Jobs, gs_ANCESTROWEB_Jobs, gs_ANCESTROWEB_Jobs_Long, gs_LinkGedcom, '',CST_EXTENSION_HTML,'',lstl_HTMLJobs);
 
   // saving the page
   ls_destination := FileCopy.Destination + DirectorySeparator + ed_JobsName.Text  + CST_EXTENSION_HTML;
   try
-    lstl_HTMLJobs.SaveToFile(ls_destination);
+    lstl_HTMLJobs2.SaveToFile(ls_destination);
   except
     On E: Exception do
     begin
@@ -2090,7 +2167,7 @@ procedure TF_AncestroWeb.p_CreateAHtmlFile(const astl_Destination: TStringList;
   const as_Subdir: string = '';
   const as_ExtFile: string =
   CST_EXTENSION_HTML;
-  const as_BeforeHTML: string = '');
+  const as_BeforeHTML: string = ''; const astl_Body : TStringList = nil );
 var
   lstl_Head: TStringList;
 begin
@@ -2112,7 +2189,7 @@ begin
     gs_Root, as_Describe, gstl_HeadKeyWords.Text, gs_HTMLTitle + ' - ' +
     as_Title, as_LongTitle, 'main', as_BeginingFile + '1' + as_ExtFile, as_BeginingFile + '2' +
     as_ExtFile, as_BeginingFile + '3' + as_ExtFile, as_BeginingFile +
-    '4' + as_ExtFile, as_Subdir, as_BeforeHTML);
+    '4' + as_ExtFile, as_Subdir, as_BeforeHTML, astl_Body );
   if as_LittleTitle <> '' then
     p_SelectTabSheet(gt_TabSheets, as_LittleTitle, '', False);  // reiniting for next page
 end;

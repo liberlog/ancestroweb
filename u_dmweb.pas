@@ -80,6 +80,8 @@ const IBQDLLNOM='NOM';
 
       IBQ_EV_IND_DESCRIPTION ='EV_IND_DESCRIPTION';
       IBQ_EV_IND_VILLE       ='EV_IND_VILLE';
+      IBQ_EV_IND_DATE        ='EV_IND_DATE';
+      IBQ_EV_IND_PAYS        ='EV_IND_PAYS';
 
       FICHE_DATE_NAISSANCE = 'DATE_NAISSANCE';
       FICHE_LIEU_NAISSANCE = 'LIEU_NAISSANCE';
@@ -225,6 +227,7 @@ type
     IBQ_Jobs: TIBQuery;
     IBQ_Compte: TIBQuery;
     IBQ_Fiche: TIBQuery;
+    IBQ_JobsInd: TIBQuery;
     IBQ_Names: TIBQuery;
     IBQ_ConjointSources: TIBQuery;
     IBQ_Conjoint: TIBQuery;

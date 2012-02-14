@@ -10,6 +10,7 @@ uses
   Classes, SysUtils;
 
 resourcestring
+  gs_ANCESTROWEB_DateFormat = 'dd-mm-yyyy';
   gs_ANCESTROWEB_DoEraseOldExport = 'Effacer le répertoire ';
   gs_ANCESTROWEB_FORM_CAPTION = 'Générer un Site Web Généalogique Statique';
   gs_ANCESTROWEB_EXPORT_WEB_BORN = ' - Naissance : ';
@@ -33,6 +34,7 @@ resourcestring
   gs_ANCESTROWEB_Search = 'Recherche';
   gs_ANCESTROWEB_SearchLong = 'Rechercher sur le site';
   gs_ANCESTROWEB_Ages   = 'Âges';
+  gs_ANCESTROWEB_Job   = 'Métier';
   gs_ANCESTROWEB_Jobs   = 'Métiers';
   gs_ANCESTROWEB_Jobs_Count= 'Métiers';
   gs_ANCESTROWEB_Jobs_Total= 'Totaux des métiers et villes :';
