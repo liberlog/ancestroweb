@@ -1527,7 +1527,7 @@ var
              and ( DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DATE).AsString <> '' ) Then
                AppendStr ( ls_line,  ' - ' );
              if not DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DATE).IsNull Then
-              AppendStr ( ls_line, FormatDateTime(gs_ANCESTROWEB_DateFormat,DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DATE).AsDateTime) + ')' );
+              AppendStr ( ls_line, FormatDateTime(gs_ANCESTROWEB_DateFormat,DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DATE).AsDateTime));
              astl_HTMLAFolder.Add ( ls_line + ')' );
             end;
          astl_HTMLAFolder.Add ( CST_HTML_LI_END);

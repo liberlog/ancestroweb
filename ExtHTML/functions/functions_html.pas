@@ -436,6 +436,9 @@ Begin
                  for li_j := 0 to high ( a_Pages ) do
                    with a_Pages [ li_j ] do
                     Begin
+                       if ab_NoLink
+                        Then ls_Link := ''
+                        else ls_Link := as_Subdir + s_Link;
                       if b_PageSelected
                       Then AppendStr(Result,' ' + IntToStr(ai_PageBegin+li_j))
                       Else AppendStr(Result,' ' +fs_Create_Link( ls_link + '#' + s_Title , IntToStr(ai_PageBegin+li_j), as_Target ));
