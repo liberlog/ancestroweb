@@ -264,7 +264,7 @@ type
       const ab_Link: boolean = True;
       const ab_Progress: boolean = True;
       const ab_NotFirst: boolean = False;
-      const as_IdSosa: string = IBQ_Tq_SOSA;
+      const as_IdSosa: string = IBQ_TQ_SOSA;
       const ab_Asc: boolean = True;
       const ai_Limit: longint = 0): longint;
     function fi_CreateSheets: integer;
@@ -1716,10 +1716,11 @@ var
     begin
       li_generations :=
         fi_CreateHTMLTree(DMWeb.IBQ_TreeDesc, lstl_Tree, ai_CleFiche,
-        False, False, True, IBQ_NUM_SOSA, False, 7);
+        False, False, True, IBQ_TQ_NUM_SOSA, False, 7);
       lstl_Tree.Insert(0, fs_Create_DIV('descent' + CST_FILE_Number + IntToStr(ai_NoInPage), CST_HTML_CLASS_EQUAL) + fs_GetTitleTree (( gs_AnceSTROWEB_Descent ), li_generations ));
       astl_HTMLAFolder.AddStrings(lstl_Tree);
       astl_HTMLAFolder.Add(CST_HTML_DIV_End);
+      astl_HTMLAFolder.Add(CST_HTML_BR);
     end;
     // ancestry
     if fb_OpenTree(DMWeb.IBQ_TreeAsc, ai_CleFiche, 3)

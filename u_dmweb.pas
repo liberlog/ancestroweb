@@ -126,7 +126,7 @@ const IBQDLLNOM='NOM';
       IBQ_AGE_AU_DECES='AGE_AU_DECES';
       IBQ_NIVEAU='TQ_NIVEAU';
       IBQ_TQ_SOSA  ='tq_sosa';
-      IBQ_NUM_SOSA  ='num_sosa';
+      IBQ_TQ_NUM_SOSA  ='tq_num_sosa';
 
       CST_LOGIE = 'Ancestrologie';
       CST_MANIA = 'Ancestromania';
