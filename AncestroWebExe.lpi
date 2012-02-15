@@ -1062,7 +1062,7 @@
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="404"/>
-        <CursorPos X="44" Y="439"/>
+        <CursorPos X="113" Y="437"/>
         <UsageCount Value="27"/>
         <Loaded Value="True"/>
       </Unit113>
@@ -1393,7 +1393,7 @@
         <UsageCount Value="12"/>
       </Unit153>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="u_ancestroweb.pas"/>
         <Caret Line="1761" Column="13" TopLine="1747"/>
@@ -1404,116 +1404,112 @@
       </Position2>
       <Position3>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="405" Column="3" TopLine="406"/>
+        <Caret Line="438" Column="91" TopLine="406"/>
       </Position3>
       <Position4>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="438" Column="91" TopLine="406"/>
+        <Caret Line="437" Column="1" TopLine="406"/>
       </Position4>
       <Position5>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="437" Column="1" TopLine="406"/>
+        <Caret Line="439" Column="1" TopLine="406"/>
       </Position5>
       <Position6>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="439" Column="1" TopLine="406"/>
+        <Caret Line="441" Column="1" TopLine="406"/>
       </Position6>
       <Position7>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="441" Column="1" TopLine="406"/>
+        <Caret Line="387" Column="1" TopLine="365"/>
       </Position7>
       <Position8>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="387" Column="1" TopLine="365"/>
+        <Caret Line="388" Column="1" TopLine="365"/>
       </Position8>
       <Position9>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="388" Column="1" TopLine="365"/>
+        <Caret Line="389" Column="1" TopLine="365"/>
       </Position9>
       <Position10>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="389" Column="1" TopLine="365"/>
+        <Caret Line="391" Column="1" TopLine="365"/>
       </Position10>
       <Position11>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="391" Column="1" TopLine="365"/>
+        <Caret Line="392" Column="1" TopLine="365"/>
       </Position11>
       <Position12>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="392" Column="1" TopLine="365"/>
+        <Caret Line="427" Column="51" TopLine="391"/>
       </Position12>
       <Position13>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="427" Column="51" TopLine="391"/>
+        <Caret Line="22" Column="22" TopLine="1"/>
       </Position13>
       <Position14>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="22" Column="22" TopLine="1"/>
+        <Caret Line="25" Column="40" TopLine="1"/>
       </Position14>
       <Position15>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="25" Column="40" TopLine="1"/>
+        <Caret Line="178" Column="50" TopLine="142"/>
       </Position15>
       <Position16>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="178" Column="50" TopLine="142"/>
+        <Caret Line="181" Column="43" TopLine="145"/>
       </Position16>
       <Position17>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="181" Column="43" TopLine="145"/>
+        <Caret Line="244" Column="42" TopLine="208"/>
       </Position17>
       <Position18>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="244" Column="42" TopLine="208"/>
+        <Caret Line="360" Column="40" TopLine="341"/>
       </Position18>
       <Position19>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="360" Column="40" TopLine="341"/>
+        <Caret Line="22" Column="19" TopLine="1"/>
       </Position19>
       <Position20>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="22" Column="19" TopLine="1"/>
+        <Caret Line="25" Column="40" TopLine="1"/>
       </Position20>
       <Position21>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="25" Column="40" TopLine="1"/>
+        <Caret Line="178" Column="50" TopLine="142"/>
       </Position21>
       <Position22>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="178" Column="50" TopLine="142"/>
+        <Caret Line="181" Column="43" TopLine="145"/>
       </Position22>
       <Position23>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="181" Column="43" TopLine="145"/>
+        <Caret Line="244" Column="42" TopLine="208"/>
       </Position23>
       <Position24>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="244" Column="42" TopLine="208"/>
+        <Caret Line="245" Column="25" TopLine="209"/>
       </Position24>
       <Position25>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="245" Column="25" TopLine="209"/>
+        <Caret Line="265" Column="50" TopLine="229"/>
       </Position25>
       <Position26>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="265" Column="50" TopLine="229"/>
+        <Caret Line="271" Column="65" TopLine="235"/>
       </Position26>
       <Position27>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="271" Column="65" TopLine="235"/>
+        <Caret Line="276" Column="43" TopLine="240"/>
       </Position27>
       <Position28>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="276" Column="43" TopLine="240"/>
+        <Caret Line="285" Column="67" TopLine="249"/>
       </Position28>
       <Position29>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="285" Column="67" TopLine="249"/>
-      </Position29>
-      <Position30>
-        <Filename Value="ExtHTML/functions/functions_html.pas"/>
         <Caret Line="403" Column="12" TopLine="367"/>
-      </Position30>
+      </Position29>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
