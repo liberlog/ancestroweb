@@ -37,11 +37,11 @@ ul#subsheets a:link,ul#subsheets a:visited,ul#tabsheets a:link,ul#tabsheets a:vi
 li.tab_left,li.tab_mi22le,li.tab_right{border-bottom:1px solid #4444EB;color:#000;background-color:transparent;padding:3px 10px 0 10px;}
 .tab_top_right_links{color:#000;font-weight:normal;}
 
-ul.unions {
+ul.unions, li.Jobs {
 	padding:0px 0px 10px 25px;
 	margin:0px;
 }
-li.union{
+li.union,li.Job{
 	padding:0px 0px 0px 25px;
 	margin:0px;
 	line-height:18px;
@@ -49,6 +49,10 @@ li.union{
 li.union{
 	list-style:none;
 	background:url(../Images/married.gif) top left no-repeat;
+}
+li.Job{
+	list-style:none;
+	background:url(../Images/job.gif) top left no-repeat;
 }
 
 .button {

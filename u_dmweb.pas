@@ -164,6 +164,7 @@ const IBQDLLNOM='NOM';
       CST_FILE_AGES         = 'Ages';
       CST_FILE_AGES_LINE    = 'AgesLine';
       CST_FILE_JOBS         = 'Jobs';
+      CST_FILE_JOB          = 'Job';
       CST_FILE_JOBS_LINE    = 'JobsLine';
       CST_FILE_NAMES        = 'Names' ;
       CST_FILE_Number       = ' no';

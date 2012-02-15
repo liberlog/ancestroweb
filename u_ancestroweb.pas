@@ -222,7 +222,6 @@ type
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure PCPrincipalChange(Sender: TObject);
     procedure TraduceImageFailure(Sender: TObject; const ErrorCode: integer;
       var ErrorMessage: string; var ContinueCopy: boolean);
   private
@@ -285,14 +284,13 @@ type
     procedure p_genHTMLTree;
     procedure p_ImageEditChange(const aei_Image: TExtImage; const Sender: TObject);
     procedure p_ImageEditErase(const afne_EditImage: TFileNameEdit);
-    procedure p_IncPrgressBar;
-    procedure p_IncPrgressInd;
+    procedure p_IncProgressBar;
+    procedure p_IncProgressInd;
     procedure p_iniReadKey;
     procedure p_iniWriteKey;
     function fb_OpenTree(const AIBQ_Tree: TIBQuery; const ai_Cle: longint;
       const ai_Niveau: integer = 0;const ai_Sexe: integer = 0): boolean;
     procedure p_Setcomments(const as_Comment: String);
-    function ChaineUTF8EnNomVariable(Chaine:String):String;
     procedure ListerDossiers;
   public
     { Déclarations publiques }
@@ -335,23 +333,31 @@ uses  fonctions_init,
   {$R *.lfm}
 {$ENDIF}
 
+// procedure TF_AncestroWeb.FormDestroy
+// Freeing data objects on destroy event
 procedure TF_AncestroWeb.FormDestroy(Sender: TObject);
 begin
   DMWeb.Free;
   DMWeb := nil;
 end;
 
+// procedure TF_AncestroWeb.DBGrid1CellClick
+// Writeng ini on dbgrid click
 procedure TF_AncestroWeb.DBGrid1CellClick(Column: TColumn);
 begin
   fCleFiche := IBQ_Individu.FieldByName(IBQ_CLE_FICHE).AsInteger;
   p_iniWriteKey;
 end;
 
+// procedure TF_AncestroWeb.p_iniWriteKey
+// Writing the DBGrid ini key
 procedure TF_AncestroWeb.p_iniWriteKey;
 begin
   p_IniWriteSectionInt(CST_INI_ANCESTROWEB_SECTION, IBQ_CLE_FICHE, fCleFiche);
 end;
 
+// procedure TF_AncestroWeb.p_iniReadKey
+// Reading the DBGrid ini key
 procedure TF_AncestroWeb.p_iniReadKey;
 begin
   fCleFiche := f_IniReadSectionInt(CST_INI_ANCESTROWEB_SECTION, IBQ_CLE_FICHE, fCleFiche);
@@ -359,6 +365,8 @@ begin
     IBQ_Individu.Locate(IBQ_CLE_FICHE,fCleFiche,[]);
 end;
 
+// procedure TF_AncestroWeb.de_ExportWebAcceptDirectory
+// Web site export : Simplifying user's interactivity
 procedure TF_AncestroWeb.de_ExportWebAcceptDirectory(Sender: TObject;
  {$IFDEF FPC} var Value: string{$ELSE} var Name: string;
     var Action: Boolean{$ENDIF});
@@ -366,6 +374,8 @@ begin
   gb_EraseExport := False;
 end;
 
+// procedure TF_AncestroWeb.edNomBaseExit
+// Database's folder opening on Nombaseedit's Exit
 procedure TF_AncestroWeb.edNomBaseExit(Sender: TObject);
 var
   NumDossier:Integer;
@@ -383,6 +393,8 @@ begin
     end;
 end;
 
+// procedure TF_AncestroWeb.FileCopyDoEraseDir
+// Erasing directory : event
 procedure TF_AncestroWeb.FileCopyDoEraseDir(Sender: TObject; var Continue: boolean);
 begin
   Continue := gb_EraseExport or
@@ -391,6 +403,8 @@ begin
     FileCopy.Destination + ' ?', mtWarning, [mbYes,mbNo], 0) = mrYes);
 end;
 
+// procedure TF_AncestroWeb.FileCopyFailure
+// Failure on copy : Event
 procedure TF_AncestroWeb.FileCopyFailure(Sender: TObject;
   const ErrorCode: integer; var ErrorMessage: string; var ContinueCopy: boolean);
 begin
@@ -398,12 +412,16 @@ begin
   Abort;
 end;
 
+// procedure TF_AncestroWeb.fne_ExportAcceptFileName
+// Exporting ini on filename's accept
 procedure TF_AncestroWeb.fne_ExportAcceptFileName(Sender: TObject;
   var Value: String);
 begin
   bt_exportClick(bt_export);
 end;
 
+// procedure TF_AncestroWeb.fne_importAcceptFileName
+// Importing ini on filename's accept
 procedure TF_AncestroWeb.fne_importAcceptFileName(Sender: TObject;
   var Value: String);
 var ls_FileImport : String;
@@ -428,37 +446,51 @@ begin
   end;
 end;
 
+// procedure TF_AncestroWeb.FWEraseImage3Click
+// filename's edit erase's button event
 procedure TF_AncestroWeb.FWEraseImage3Click(Sender: TObject);
 begin
   p_ImageEditErase(ImageEdit3);
 end;
 
+// procedure TF_AncestroWeb.FWEraseImage2Click
+// filename's edit erase's button event
 procedure TF_AncestroWeb.FWEraseImage2Click(Sender: TObject);
 begin
   p_ImageEditErase(ImageEdit2);
 end;
 
+// procedure TF_AncestroWeb.FWEraseImageClick
+// filename's edit erase's button event
 procedure TF_AncestroWeb.FWEraseImageClick(Sender: TObject);
 begin
   p_ImageEditErase(ImageEdit1);
 end;
 
+// procedure TF_AncestroWeb.ImageEdit2Change
+// filename's edit change event
 procedure TF_AncestroWeb.ImageEdit2Change(Sender: TObject);
 begin
   p_ImageEditChange(ExtImage2, Sender);
 
 end;
+// procedure TF_AncestroWeb.ImageEdit3Change
+// filename's edit change event
 
 procedure TF_AncestroWeb.ImageEdit3Change(Sender: TObject);
 begin
   p_ImageEditChange(ExtImage3, Sender);
 
 end;
+// procedure TF_AncestroWeb.ImageEdit1Change
+// filename's edit change event
 procedure TF_AncestroWeb.ImageEdit1Change(Sender: TObject);
 begin
   p_ImageEditChange(ExtImage1, Sender);
 end;
 
+// procedure TF_AncestroWeb.p_ImageEditChange
+// setting image from Filename edit
 procedure TF_AncestroWeb.p_ImageEditChange(const aei_Image: TExtImage;
   const Sender: TObject);
 var
@@ -471,6 +503,8 @@ begin
     aei_Image.Picture.Assign(nil);
 end;
 
+// function TF_AncestroWeb.fi_ImageEditCount
+// Progress bar counter increment
 function TF_AncestroWeb.fi_ImageEditCount(const as_FileName: string): integer;
 begin
   if not DirectoryExistsUTF8(as_FileName) { *Converted from DirectoryExists*  } and FileExistsUTF8(as_FileName) { *Converted from FileExists*  } then
@@ -479,17 +513,23 @@ begin
     Result := 0;
 end;
 
+// procedure TF_AncestroWeb.p_ImageEditErase
+// Generic Image's edit erasing
 procedure TF_AncestroWeb.p_ImageEditErase(const afne_EditImage: TFileNameEdit);
 begin
   afne_EditImage.FileName := '';
 end;
 
+// procedure TF_AncestroWeb.FormClose
+// Freeing on close
 procedure TF_AncestroWeb.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   p_FreeProperties;
   p_FreeKeyWords;
 end;
 
+// procedure TF_AncestroWeb.bt_genClick
+// Main Web Site Generation
 procedure TF_AncestroWeb.bt_genClick(Sender: TObject);
 begin
   if length(FileCopy.Destination) < 6 then
@@ -568,6 +608,8 @@ begin
   end;
 end;
 
+// procedure TF_AncestroWeb.cbDossierChange
+// database's folder change event
 procedure TF_AncestroWeb.cbDossierChange(Sender: TObject);
 var
   NumDossier:integer;
@@ -581,6 +623,8 @@ begin
     end;
 end;
 
+// procedure TF_AncestroWeb.bt_exportClick
+// Export ini click event
 procedure TF_AncestroWeb.bt_exportClick(Sender: TObject);
 begin
   f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
@@ -596,6 +640,8 @@ begin
      end;
 end;
 
+// procedure TF_AncestroWeb.btnSelectBaseClick
+// Database select on button's click event
 procedure TF_AncestroWeb.btnSelectBaseClick(Sender: TObject);
 begin
   OpenDialog.FileName:='';
@@ -620,11 +666,16 @@ begin
   end;
 end;
 
+// procedure TF_AncestroWeb.ch_FilteredClick
+// "Filter from name" checkbox click event
 procedure TF_AncestroWeb.ch_FilteredClick(Sender: TObject);
 begin
   p_iniWriteKey;
 end;
 
+// function TF_AncestroWeb.fi_CreateSheets
+// creating sheets from external options
+// setting the main progress bar total
 function TF_AncestroWeb.fi_CreateSheets: integer;
 
   procedure p_setCorrectFileName(const aed_NameFile: TEdit;
@@ -685,12 +736,14 @@ begin
   end;
 end;
 
+// procedure TF_AncestroWeb.p_CopyStructure
+// Copy default structure from options
 procedure TF_AncestroWeb.p_CopyStructure;
 var
   ls_Destination: string;
   lt_arg : array [0..0] of string;
 begin
-  p_IncPrgressBar;  // growing the counter
+  p_IncProgressBar;  // growing the counter
   FileCopy.Destination := de_ExportWeb.Text;
   ls_Destination := FileCopy.Destination+ DirectorySeparator;
   if DirectoryExistsUTF8(ls_Destination ) { *Converted from DirectoryExists*  } Then
@@ -717,7 +770,7 @@ begin
     Else
      Abort;
     End;
-  p_IncPrgressBar;   // growing the counter
+  p_IncProgressBar;   // growing the counter
   if (cb_Themes.Items.Count = 0) then
   begin
     ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_ErrorThemes ) + gs_Root + CST_SUBDIR_THEMES);
@@ -739,17 +792,24 @@ begin
     gs_LinkGedcom := '';
 end;
 
-procedure TF_AncestroWeb.p_IncPrgressBar;
+// procedure TF_AncestroWeb.p_IncProgressInd
+// increments main progress bar
+procedure TF_AncestroWeb.p_IncProgressBar;
 begin
   pb_ProgressAll.Position := pb_ProgressAll.Position + 1; // growing
   Application.ProcessMessages;
 end;
 
-procedure TF_AncestroWeb.p_IncPrgressInd;
+// procedure TF_AncestroWeb.p_IncProgressInd
+// increments specialized progress bar
+procedure TF_AncestroWeb.p_IncProgressInd;
 begin
   pb_ProgressInd.Position := pb_ProgressInd.Position + 1; // growing
   Application.ProcessMessages;
 end;
+
+// function TF_AncestroWeb.fs_GetTitleTree
+// Title of HTML trees
 function TF_AncestroWeb.fs_GetTitleTree ( const as_NameOfTree : String ; const ai_generations : Longint ): String;
 Begin
   Result := as_NameOfTree + ' (' + IntToStr(ai_generations) ;
@@ -843,7 +903,7 @@ var
             p_AddLine ( False, ab_OldNext, ab_IsSisBrother );
 
           if ab_Progress then
-            p_IncPrgressInd; // growing the second counter
+            p_IncProgressInd; // growing the second counter
           // Nommage des noeuds
           ls_NodeLink := fs_GetNodeLink(ls_NodeLink, li_LocalLevel);
 
@@ -922,16 +982,18 @@ begin
       ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateATree ) + CST_ENDOFLINE + E.Message);
   end;
   if ab_Progress then
-    p_IncPrgressBar; // growing the counter
+    p_IncProgressBar; // growing the counter
   Inc(Result);
 end;
 
+// procedure TF_AncestroWeb.p_genHTMLTitle
+// HTML Main title
 procedure TF_AncestroWeb.p_genHTMLTitle;
 var
   li_ClePere, li_CleMere: integer;
   gf_Sosa: double;
 begin
-  p_IncPrgressBar; // growing the counter
+  p_IncProgressBar; // growing the counter
   if ch_Filtered.Checked then
     gi_CleFiche := fCleFiche
   else
@@ -960,6 +1022,8 @@ begin
     gs_HTMLTitle, [rfReplaceAll]);
 end;
 
+// function TF_AncestroWeb.fb_OpenTree
+// open a tree from parameters
 function TF_AncestroWeb.fb_OpenTree(const AIBQ_Tree: TIBQuery;
   const ai_Cle: longint; const ai_Niveau: integer = 0;
   const ai_Sexe: integer = 0): boolean;
@@ -982,6 +1046,8 @@ begin
     end;
 end;
 
+// procedure TF_AncestroWeb.p_genHTMLTree
+// creating the main interactive HTML Tree
 procedure TF_AncestroWeb.p_genHTMLTree;
 var
   lstl_HTMLTree: TStringList;
@@ -995,7 +1061,7 @@ begin
   if fb_OpenTree(DMWeb.IBQ_TreeAsc, gi_CleFiche) then
     try
       pb_ProgressInd.Max := DMWeb.IBQ_TreeAsc.RecordCount;
-      p_IncPrgressBar; // growing the counter
+      p_IncProgressBar; // growing the counter
       if not ch_Filtered.Checked and not
         DMWeb.IBQ_TreeAsc.Locate(IBQ_CLE_FICHE, gi_CleFiche, []) then
         Exit;
@@ -1003,7 +1069,7 @@ begin
       lstl_HTMLTree.Insert(0, fs_Replace_EndLines(me_HeadTree.Lines.Text));
       p_CreateAHtmlFile(lstl_HTMLTree, CST_FILE_TREE, me_Description.Lines.Text,
         ( gs_AnceSTROWEB_FamilyTree ), gs_AnceSTROWEB_FullTree, fs_GetTitleTree ( gs_AnceSTROWEB_Ancestry, li_generation), gs_LinkGedcom, '../');
-      p_IncPrgressBar; // growing the counter
+      p_IncProgressBar; // growing the counter
     except
       On E: Exception do
         ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantUseData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
@@ -1023,15 +1089,17 @@ begin
     end;
   end;
   lstl_HTMLTree.Free;
-  p_IncPrgressBar;  // growing the counter
+  p_IncProgressBar;  // growing the counter
 end;
 
+// function TF_AncestroWeb.fs_AddImage
+// creating a HTML image from image's path
 function TF_AncestroWeb.fs_AddImage(const as_ImageFile: string): string;
 var
   ls_Destination, ls_HtmlFileName: string;
 begin
   Result := '';
-  p_IncPrgressBar; // growing the counter
+  p_IncProgressBar; // growing the counter
   if fi_ImageEditCount(as_ImageFile) = 0 then
     Exit;
   ls_HtmlFileName := ExtractFileName(as_ImageFile);
@@ -1046,6 +1114,8 @@ begin
   AppendStr ( Result, ' ' + fs_AddImageTable(fs_Create_Image(CST_SUBDIR_HTML_IMAGES + CST_HTML_DIR_SEPARATOR + ls_HtmlFileName)));
 end;
 
+// function TF_AncestroWeb.fs_AddImageTable
+// add an image in the current HTML TABLE
 function TF_AncestroWeb.fs_AddImageTable(const as_HtmlImage : string ; const as_alt: string = ''): string;
 begin
   if as_HtmlImage = ''
@@ -1056,6 +1126,8 @@ begin
     CST_HTML_TABLE_END + CST_HTML_TD_END + ' ';
 end;
 
+// procedure TF_AncestroWeb.p_genHtmlHome
+// Default HTML page
 procedure TF_AncestroWeb.p_genHtmlHome;
 var
   lstl_HTMLHome: TStringList;
@@ -1094,7 +1166,7 @@ begin
   pb_ProgressInd.Position := 0; // initing not needed user value
   p_CreateAHtmlFile(lstl_HTMLHome, CST_FILE_Home, me_Description.Lines.Text,
     ( gs_AnceSTROWEB_Home ), ( gs_AnceSTROWEB_Home ), gs_ANCESTROWEB_Welcome, gs_LinkGedcom);
-  p_IncPrgressBar; // growing the counter
+  p_IncProgressBar; // growing the counter
   // saving the page
   ls_destination := FileCopy.Destination + DirectorySeparator + ed_IndexName.Text +
     CST_EXTENSION_HTML;
@@ -1110,7 +1182,8 @@ begin
   lstl_HTMLHome.Free;
 end;
 
-
+// procedure TF_AncestroWeb.p_Setcomments
+// infos for user
 procedure TF_AncestroWeb.p_Setcomments (const as_Comment : String);
 Begin
   if as_Comment = ''
@@ -1119,6 +1192,8 @@ Begin
 
 end;
 
+// function TF_AncestroWeb.fb_OpenMedias
+// Open a media data stream
 function TF_AncestroWeb.fb_OpenMedias(const ai_CleFiche: Longint;
                                       const ai_Type: integer;
                                       const ab_Identite: Boolean = False;
@@ -1127,10 +1202,10 @@ Begin
   Result := False;
   try
     DMWeb.IBQ_Medias.Close;
-    DMWeb.IBQ_Medias.ParamByName(IBQ_CLE_FICHE   ).AsInteger := ai_CleFiche;
-    DMWeb.IBQ_Medias.ParamByName(MEDIAS_TYPE          ).AsInteger := ai_Type ;
-    DMWeb.IBQ_Medias.ParamByName(MEDIAS_TABLE         ).AsString  := ach_table ;
-    DMWeb.IBQ_Medias.ParamByName(MEDIAS_MP_IDENTITE   ).AsInteger := Integer ( ab_Identite ) ;
+    DMWeb.IBQ_Medias.ParamByName(IBQ_CLE_FICHE     ).AsInteger := ai_CleFiche;
+    DMWeb.IBQ_Medias.ParamByName(MEDIAS_TYPE       ).AsInteger := ai_Type ;
+    DMWeb.IBQ_Medias.ParamByName(MEDIAS_TABLE      ).AsString  := ach_table ;
+    DMWeb.IBQ_Medias.ParamByName(MEDIAS_MP_IDENTITE).AsInteger := Integer ( ab_Identite ) ;
     DMWeb.IBQ_Medias.Open;
     Result := not DMWeb.IBQ_Medias.IsEmpty;
 
@@ -1142,20 +1217,26 @@ Begin
   end;
 end;
 
+// function TF_AncestroWeb.fs_getNameAndSurName
+// Getting name and surname
 function TF_AncestroWeb.fs_getNameAndSurName ( const ibq_Query : TIBQuery ) : String;
 Begin
   Result:=ibq_Query.FieldByName(IBQDLLNOM).AsString+' ' + ibq_Query.FieldByName(IBQDLLPRENOM).AsString;
 End;
 
+// function TF_AncestroWeb.fs_CreatePrevNext
+// // creating previous or next image link
 function TF_AncestroWeb.fs_CreatePrevNext ( const ai_PreviousNext : Longint ;
                                             const as_PreviousNext : String = CST_PAGE_PREVIOUS;
                                             const as_Subdir : String = '';
                                                   as_BeginLinkFiles : String = CST_SUBDIR_HTML_FILES + '/' ) : String;
 Begin
   Result := CST_HTML_AHREF + as_BeginLinkFiles + IntToStr(ai_PreviousNext) + CST_EXTENSION_HTML + '">'
-                + fs_Create_Image( as_Subdir + CST_SUBDIR_HTML_IMAGES + '/'+as_PreviousNext +'.gif', as_PreviousNext ) + CST_HTML_A_END
+                + fs_Create_Image( as_Subdir + CST_SUBDIR_HTML_IMAGES + CST_HTML_DIR_SEPARATOR+as_PreviousNext + CST_EXTENSION_GIF, as_PreviousNext ) + CST_HTML_A_END
 End;
 
+// function TF_AncestroWeb.fb_getMediaFile
+// creating a non-existing Media File
 function TF_AncestroWeb.fb_getMediaFile ( const IBQ_Media : TIBQuery;
                                           const as_FilePath : string ) : Boolean;
 Begin
@@ -1165,18 +1246,21 @@ Begin
     Begin
       Exit;
     End;
-  if   FileExistsUTF8(as_FilePath ) { *Converted from FileExists*  } Then
+  // verifying existing file copy
+  if   FileExistsUTF8(as_FilePath ) Then
     Begin
       Result := True;
       Exit;
     end;
   try
+    // simple copy ?
     if not IBQ_Media.FieldByName ( MEDIAS_NOM ).IsNull
-    and FileExistsUTF8(fBasePath+DirectorySeparator+IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString) { *Converted from FileExists*  }
+    and FileExistsUTF8(fBasePath+DirectorySeparator+IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString)
      Then Result := fb_CopyFile(fBasePath+DirectorySeparator+IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString,as_FilePath,False,False)=0
     Else
+    // unless creating file from database
     if {$IFNDEF FPC}( GetDriveType( Pchar(ExtractFileDrive ( IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString ))) >0 )
-    and{$ENDIF} FileExistsUTF8(IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString ) { *Converted from FileExists*  }
+    and{$ENDIF} FileExistsUTF8(IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString )
       Then Result := fb_CopyFile(IBQ_Media.FieldByName(MEDIAS_PATH ).AsString,as_FilePath,False,False)=0
       Else Result := fb_ImageFieldToFile(IBQ_Media.FieldByName(MEDIAS_MULTI_MEDIA), as_FilePath);
   Except
@@ -1184,6 +1268,8 @@ Begin
   end;
 End;
 
+// procedure TF_AncestroWeb.p_createLettersSheets
+// creating a HTML list of letters
 procedure TF_AncestroWeb.p_createLettersSheets ( var at_SheetsLetters : TAHTMLULTabSheet;
                                                  const IBQ_FilesFiltered: TIBQuery;
                                                  const ai_PerPage : Integer;
@@ -1215,6 +1301,8 @@ Begin
     end;
 end;
 
+// procedure TF_AncestroWeb.p_genHtmlNames
+// generating HTML Names' page
 procedure TF_AncestroWeb.p_genHtmlNames (const IBQ_FilesFiltered: TIBQuery);
 var
   lstl_HTMLAFolder: TStringList;
@@ -1229,7 +1317,7 @@ begin
   lstl_HTMLAFolder.Add ( fs_CreateElementWithId(CST_HTML_TABLE, 'names') + CST_HTML_TR_BEGIN + CST_HTML_TD_BEGIN  );
   while not IBQ_FilesFiltered.EOF do
   begin
-    p_IncPrgressInd; // growing the second counter
+    p_IncProgressInd; // growing the second counter
     ls_NewName := IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString;
     if (ls_NewName <> ls_Name) Then
      Begin
@@ -1263,7 +1351,7 @@ begin
     end;
   end;
   lstl_HTMLAFolder.Free;
-  p_IncPrgressBar; // growing the counter
+  p_IncProgressBar; // growing the counter
 end;
 
 
@@ -1299,7 +1387,7 @@ var
                         CST_HTML_TR_END);
     for li_i := 1 to gi_FilesPerList do
     begin
-      p_IncPrgressInd; // growing the second counter
+      p_IncProgressInd; // growing the second counter
       p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString, '-'); // adding a head's meta keyword
       p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQDLLPRENOM).AsString); // adding a head's meta keyword
       li_CleFiche := IBQ_FilesFiltered.FieldByName(IBQ_CLE_FICHE).AsInteger;
@@ -1373,7 +1461,7 @@ begin
   IBQ_FilesFiltered.First;
   p_SelectTabSheet(gt_TabSheets, ( gs_AnceSTROWEB_List ), ''); // current page sheet
   ls_Name := '';
-  p_IncPrgressBar; // growing the counter
+  p_IncProgressBar; // growing the counter
   while not IBQ_FilesFiltered.EOF do
     p_AddAList;
   p_SelectTabSheet(gt_TabSheets, ( gs_AnceSTROWEB_List ), '', False);  // reiniting for next page
@@ -1511,7 +1599,7 @@ var
                                                           + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL));
        while not DMWeb.IBQ_JobsInd.EOF do  // adding all jobs
         Begin
-         astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_JOBS + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
+         astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_JOB + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
                               + DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DESCRIPTION).AsString );
          if DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_VILLE).AsString <> '' Then
          astl_HTMLAFolder.Add ( ' ' + gs_ANCESTROWEB_At + ' '
@@ -1527,7 +1615,7 @@ var
              and ( DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DATE).AsString <> '' ) Then
                AppendStr ( ls_line,  ' - ' );
              if not DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DATE).IsNull Then
-              AppendStr ( ls_line, FormatDateTime(gs_ANCESTROWEB_DateFormat,DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DATE).AsDateTime));
+              AppendStr ( ls_line, FormatDateTime(gs_ANCESTROWEB_LittleDateFormat,DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DATE).AsDateTime));
              astl_HTMLAFolder.Add ( ls_line + ')' );
             end;
          astl_HTMLAFolder.Add ( CST_HTML_LI_END);
@@ -1671,7 +1759,7 @@ var
     lstl_HTMLAFolder.Add( CST_HTML_CENTER_BEGIN );
     for li_i := 1 to gi_FilesPerPage do
     begin
-      p_IncPrgressInd; // growing the second counter
+      p_IncProgressInd; // growing the second counter
       ls_NameSurname := fs_RemplaceEspace ( fs_getNameAndSurName(IBQ_FilesFiltered), '_' );
       // adding html head's meta-keywords
       p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString, '-'); // adding a head's meta keyword
@@ -1742,7 +1830,7 @@ var
   end;
 
 begin
-  p_IncPrgressBar; // growing the counter
+  p_IncProgressBar; // growing the counter
   p_Setcomments (( gs_AnceSTROWEB_Files )); // advert for user
   li_CounterPages := 0;
   pb_ProgressInd.Position := 0; // initing not needed user value
@@ -1756,7 +1844,7 @@ begin
   IBQ_FilesFiltered.First;
   p_SelectTabSheet(gt_TabSheets, ( gs_AnceSTROWEB_Files ), '', False); // current page sheet
   ls_Name := '';
-  p_IncPrgressBar; // growing the counter
+  p_IncProgressBar; // growing the counter
   while not IBQ_FilesFiltered.EOF do
     p_AddAFolder;
   lstl_HTMLPersons := TStringList.Create;
@@ -1769,10 +1857,10 @@ begin
   lstl_HTMLPersons.Add(CST_HTML_CENTER_END);
   p_CreateKeyWords;
   pb_ProgressInd.Position := 0; // initing not needed user value
-  p_IncPrgressBar; // growing the counter
+  p_IncProgressBar; // growing the counter
   p_CreateAHtmlFile(lstl_HTMLPersons, CST_FILE_FILES, me_FilesHead.Lines.Text,
     ( gs_AnceSTROWEB_Files ), gs_AnceSTROWEB_Files, gs_ANCESTROWEB_Files_Long, gs_LinkGedcom);
-  p_IncPrgressBar; // growing the counter
+  p_IncProgressBar; // growing the counter
 
   // saving the page
   ls_destination := FileCopy.Destination + DirectorySeparator +
@@ -1835,7 +1923,7 @@ begin
     '', CST_EXTENSION_PHP, lstl_HTMLContactBeforeHTML.Text);
 
   // growing the counter
-  p_IncPrgressBar; // growing the counter
+  p_IncProgressBar; // growing the counter
 
   // saving the page
   ls_destination := FileCopy.Destination + DirectorySeparator + ed_ContactName.Text + CST_EXTENSION_PHP;
@@ -1889,7 +1977,7 @@ begin
   end;
   lstl_HTMLSearch.Free;
   // growing the counter
-  p_IncPrgressBar; // growing the counter
+  p_IncProgressBar; // growing the counter
 end;
 
 // procedure TF_AncestroWeb.p_genHtmlAges
@@ -2027,7 +2115,7 @@ begin
   lstl_HTMLAges .Free;
   lstl_HTMLAges2.Free;
   lstl_HTMLLines.Free;
-  p_IncPrgressBar;// ages growing
+  p_IncProgressBar;// ages growing
 end;
 // procedure TF_AncestroWeb.p_genHtmlJobs
 // Jobs : HTML page creating
@@ -2157,9 +2245,11 @@ begin
   // freeing
   lstl_HTMLJobs.Free;
   lstl_HTMLLines.Free;
-  p_IncPrgressBar;// jobs growing
+  p_IncProgressBar;// jobs growing
 end;
 
+// procedure TF_AncestroWeb.p_CreateAHtmlFile
+// Creating a HTML page from parameters
 procedure TF_AncestroWeb.p_CreateAHtmlFile(const astl_Destination: TStringList;
   const as_BeginingFile,
   as_Describe, as_Title, as_LittleTitle, as_LongTitle: string;
@@ -2194,6 +2284,8 @@ begin
     p_SelectTabSheet(gt_TabSheets, as_LittleTitle, '', False);  // reiniting for next page
 end;
 
+// procedure TF_AncestroWeb.DoInit
+// creating database objects and initing
 procedure TF_AncestroWeb.DoInit(sBase: string);
 var
   Save_Cursor: TCursor;
@@ -2219,6 +2311,8 @@ begin
   end;
 end;
 
+// function TF_AncestroWeb.DoOpenBase
+// database opening
 function TF_AncestroWeb.DoOpenBase(sBase: string):boolean;
 var //ouvre la base, liste les dossiers et sélectionne le premier ou celui de la table dll à la première ouverture
   s:string;
@@ -2241,6 +2335,8 @@ begin
   end;
 end;
 
+// function TF_AncestroWeb.OuvreDossier
+// database folder opening
 function TF_AncestroWeb.OuvreDossier(NumDossier:integer):boolean;
 begin
   Result:=True;
@@ -2271,7 +2367,7 @@ end;
 // initing components and ini
 procedure TF_AncestroWeb.DoAfterInit;
 begin
-  fNom_Dossier:=ChaineUTF8EnNomVariable(fNom_Dossier);
+  fNom_Dossier:=fs_TextToFileName(fNom_Dossier);
   fBasePath := GetUserDir;
   {$IFNDEF FPC}
   de_ExportWeb.RootDir:=GetWindowsSpecialDir(CSIDL_DESKTOPDIRECTORY);
@@ -2370,34 +2466,16 @@ begin
   DoInit(fbddpath);
 end;
 
-procedure TF_AncestroWeb.PCPrincipalChange(Sender: TObject);
-begin
-
-end;
-
+// procedure TF_AncestroWeb.TraduceImageFailure
+// Failure on picture's convert
 procedure TF_AncestroWeb.TraduceImageFailure(Sender: TObject;
   const ErrorCode: integer; var ErrorMessage: string; var ContinueCopy: boolean);
 begin
   ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateImage ) + ErrorMessage);
 end;
 
-function TF_AncestroWeb.ChaineUTF8EnNomVariable(Chaine:String):String;
-var
-  n:integer;
-  c:Char;
-begin
-{$IFDEF FPC}
-  Chaine:=Utf8ToAnsi(Chaine);
-{$ENDIF}
-  Result:=Chaine;
-  for n:=1 to Length(Chaine) do
-  begin
-    c:=Result[n];
-    if not ((c in ['0'..'9'])or(c in ['A'..'z'])) then
-      Result[n]:='_';
-  end;
-end;
-
+//  Procedure TF_AncestroWeb.ListerDossiers
+// Database Folder list
 Procedure TF_AncestroWeb.ListerDossiers;
 var
   s:string;
