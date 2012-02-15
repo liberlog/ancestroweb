@@ -635,7 +635,7 @@ object DMWeb: TDMWeb
     CachedUpdates = False
     GeneratorField.ApplyOnEvent = gaeOnNewRecord
     SQL.Strings = (
-      'SELECT EV_IND_DESCRIPTION, EV_IND_CP,EV_IND_DEPT, EV_IND_VILLE, EV_IND_PAYS, EV_IND_DATE'
+      'SELECT EV_IND_DESCRIPTION, EV_IND_VILLE, EV_IND_PAYS, EV_IND_DATE'
       'FROM EVENEMENTS_IND'
       'WHERE EV_IND_KLE_FICHE=:CLE_FICHE '
       'AND EV_IND_TYPE=''OCCU'''
@@ -646,8 +646,8 @@ object DMWeb: TDMWeb
         Name = 'CLE_FICHE'
         ParamType = ptUnknown
       end>
-    left = 448
-    top = 128
+    left = 424
+    top = 264
     ParamData = <    
       item
         DataType = ftUnknown
