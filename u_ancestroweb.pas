@@ -650,6 +650,7 @@ end;
 procedure TF_AncestroWeb.bt_exportClick(Sender: TObject);
 begin
   f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
+  OnFormInfoIni.p_ExecuteEcriture(Self);
   if fb_iniWriteFile(FIniFile,True)
    Then
      try
@@ -1130,8 +1131,8 @@ begin
   if fi_ImageEditCount(as_ImageFile) = 0 then
     Exit;
   ls_HtmlFileName := ExtractFileName(as_ImageFile);
-  ls_HtmlFileName := Copy(ls_HtmlFileName, 1, Length(ls_HtmlFileName) -
-    Length(ExtractFileExt(ls_HtmlFileName))) + CST_EXTENSION_JPEG;
+  ls_HtmlFileName := fs_TextToFileName(Copy(ls_HtmlFileName, 1, Length(ls_HtmlFileName) -
+    Length(ExtractFileExt(ls_HtmlFileName)))) + CST_EXTENSION_JPEG;
   // saving the picture
   ls_Destination := FileCopy.Destination + DirectorySeparator +
     CST_SUBDIR_HTML_IMAGES + DirectorySeparator + ls_HtmlFileName;
@@ -1571,7 +1572,7 @@ var
         if DMWeb.IBQ_Conjoint.FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN
         Then ls_FileName := fs_getNameAndSurName (DMWeb.IBQ_Conjoint)+'&'+fs_getNameAndSurName (IBQ_FilesFiltered)
         Else ls_FileName := fs_getNameAndSurName (IBQ_FilesFiltered )+'&'+fs_getNameAndSurName (DMWeb.IBQ_Conjoint);
-        ls_FileName := fs_RemplaceEspace(DMWeb.IBQ_Conjoint.FieldByName(UNION_CLEF).AsString + ls_FileName+'-'+as_Date,'_')
+        ls_FileName := fs_TextToFileName(DMWeb.IBQ_Conjoint.FieldByName(UNION_CLEF).AsString + ls_FileName+'-'+as_Date)
                      + '-'+DMWeb.IBQ_Conjoint.FieldByName(UNION_CP).AsString+'-'+DMWeb.IBQ_Conjoint.FieldByName(UNION_CITY).AsString+ '-';
         li_i := 1 ;
 
