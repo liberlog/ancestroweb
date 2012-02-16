@@ -758,7 +758,8 @@ object DMWeb: TDMWeb
   end
   object IBS_Temp: TIBSQL
     Database = ibd_BASE
-    ParamCheck = True
+    GoToFirstRecordOnExecute = False
+    ParamCheck = False
     Transaction = IBT_BASE
     left = 56
     top = 200

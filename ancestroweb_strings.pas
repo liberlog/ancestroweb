@@ -92,7 +92,8 @@ resourcestring
   gs_ANCESTROWEB_cantCreateContact = 'Impossible de sauver la fiche de contact ici : ';
   gs_ANCESTROWEB_DownloadGedcom = 'Téléchargez mon Gedcom ici.';
   gs_ANCESTROWEB_CreatedBy = 'Créé par';
-  gs_ANCESTROWEB_Please_Restart = 'Veuillez redémarrer...';
+  gs_ANCESTROWEB_Please_Restart = 'Succès de la mise à jour !'+#10+' Veuillez redémarrer...';
+  gs_ANCESTROWEB_StartUpdate = 'Une mise à jour de la base est nécessaire à partir de ce script :'+#10;
 
 implementation
 

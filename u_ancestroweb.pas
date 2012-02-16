@@ -1377,6 +1377,8 @@ begin
     ls_NewName := IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString;
     if (ls_NewName <> ls_Name) Then
      Begin
+      if (length(ls_NewName) = 0) Then
+        ls_NewName:=' ';
       if ((length(ls_Name) = 0) or
         (ls_NewName[1] <> ls_Name[1])) then
         lstl_HTMLAFolder.Add ( CST_HTML_TD_END +CST_HTML_TR_END + CST_HTML_TR_BEGIN + CST_HTML_TD_BEGIN +
@@ -2479,13 +2481,15 @@ var
            if not IBT_BASE.Active
             then IBT_BASE.StartTransaction;
            IBS_Temp.SQL.LoadFromFile( gs_Root + 'script_update.sql');
+           ShowMessage(gs_ANCESTROWEB_StartUpdate
+              +gs_Root+'script_update.sql');
            try
              IBS_Temp.ExecQuery;
              IBT_BASE.CommitRetaining;
+             ShowMessage ( gs_ANCESTROWEB_Please_Restart );
            Except
              IBT_BASE.RollbackRetaining;
            End;
-           ShowMessage ( gs_ANCESTROWEB_Please_Restart );
            End;
         IBQ_AscExists.Close;
       Except
