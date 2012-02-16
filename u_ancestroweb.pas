@@ -2436,9 +2436,25 @@ end;
 procedure TF_AncestroWeb.FormCreate(Sender: TObject);
 var
   fbddpath:String;
+  lreg_Registry : TRegistry;
 {$IFDEF WINDOWS}
   fKeyRegistry,s: string;
   i:Integer;
+  function fb_ReadAncestroKey ( const as_Soft : String ): boolean;
+    Begin
+      fKeyRegistry:='\SOFTWARE\'+as_Soft+'\Path';
+      with lreg_Registry do
+        if OpenKeyReadOnly(fKeyRegistry) then
+        begin
+          Result := True;
+          fbddpath:=ReadString('PathFileNameBdd');
+          edNomBase.Text:=fs_getCorrectString(fbddpath);
+          CloseKey;
+          Exit;
+        end;
+      Result := False;
+    end;
+
 {$ENDIF}
 begin
 {$IFDEF FPC}//à faire une version Delphi
@@ -2459,16 +2475,12 @@ begin
 
 {$IFDEF WINDOWS}
   edNomBase.Clear;
-  with TRegistry.create do
+  lreg_Registry := TRegistry.create;
+  with lreg_Registry do
   try
     RootKey := HKEY_CURRENT_USER;
-    fKeyRegistry:='\SOFTWARE\'+CST_MANIA+'\Path';
-    if OpenKeyReadOnly(fKeyRegistry) then
-    begin
-      fbddpath:=ReadString('PathFileNameBdd');
-      edNomBase.Text:=fs_getCorrectString(fbddpath);
-      CloseKey;
-    end;
+    if not fb_ReadAncestroKey (CST_MANIA) Then
+     fb_ReadAncestroKey (CST_LOGIE );
     fKeyRegistry:='\SOFTWARE\'+CST_MANIA+'\Settings';
     if OpenKeyReadOnly(fKeyRegistry) then
     begin

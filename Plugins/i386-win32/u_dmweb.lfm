@@ -44,7 +44,7 @@ object DMWeb: TDMWeb
       'inner join dossier d on d.cle_dossier=g.dll_dossier'
     )
     Params = <>
-    left = 256
+    left = 280
     top = 200
   end
   object IBQUpdateDLL: TIBQuery
@@ -92,7 +92,7 @@ object DMWeb: TDMWeb
         Name = 'sTable'
         ParamType = ptUnknown
       end>
-    left = 328
+    left = 496
     top = 136
     ParamData = <    
       item
@@ -117,29 +117,18 @@ object DMWeb: TDMWeb
       '              t.tq_sosa,'
       '              t.tq_num_sosa,'
       '              i.CLE_FICHE,'
-      '              i.CLE_IMPORTATION,'
-      '              i.CLE_PARENTS,'
       '              i.CLE_PERE,'
       '              i.CLE_MERE,'
       '              i.PREFIXE,'
       '              i.NOM,'
       '              i.PRENOM,'
-      '              i.SURNOM,'
-      '              i.SUFFIXE,'
       '              i.SEXE,'
       '              i.DATE_NAISSANCE,'
       '              i.ANNEE_NAISSANCE,'
       '              i.DATE_DECES,'
       '              i.ANNEE_DECES,'
-      '              i.DECEDE,'
       '              i.AGE_AU_DECES,'
-      '              i.SOURCE,'
-      '              i.COMMENT,'
-      '              i.FILLIATION,'
-      '              i.NUM_SOSA,'
-      '              i.NCHI,'
-      '              i.NMR,'
-      '              i.CLE_FIXE'
+      '              i.DECEDE'
       '         FROM PROC_TQ_DESCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,2) t'
       '              inner join individu i on i.cle_fiche=t.tq_cle_fiche'
       '         ORDER BY tq_num_sosa'
@@ -252,22 +241,13 @@ object DMWeb: TDMWeb
       '              i.PREFIXE,'
       '              i.NOM,'
       '              i.PRENOM,'
-      '              i.SURNOM,'
-      '              i.SUFFIXE,'
       '              i.SEXE,'
       '              i.DATE_NAISSANCE,'
       '              i.ANNEE_NAISSANCE,'
       '              i.DATE_DECES,'
       '              i.ANNEE_DECES,'
       '              i.DECEDE,'
-      '              i.AGE_AU_DECES,'
-      '              i.SOURCE,'
-      '              i.COMMENT,'
-      '              i.FILLIATION,'
-      '              i.NUM_SOSA,'
-      '              i.NCHI,'
-      '              i.NMR,'
-      '              i.CLE_FIXE'
+      '              i.AGE_AU_DECES'
       '         FROM PROC_TQ_ASCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,2) t'
       '              inner join individu i on i.cle_fiche=t.tq_cle_fiche'
       '         ORDER BY tq_sosa'
@@ -590,12 +570,173 @@ object DMWeb: TDMWeb
         Name = 'I_DOSSIER'
         ParamType = ptUnknown
       end>
-    left = 328
+    left = 384
     top = 200
     ParamData = <    
       item
         DataType = ftUnknown
         Name = 'I_DOSSIER'
+        ParamType = ptUnknown
+      end>
+  end
+  object IBQ_Jobs: TIBQuery
+    Database = ibd_BASE
+    Transaction = IBT_BASE
+    BufferChunks = 1000
+    CachedUpdates = False
+    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    SQL.Strings = (
+      'SELECT EV_IND_DESCRIPTION,COUNT(*) AS COUNTER,EV_IND_VILLE'
+      'FROM EVENEMENTS_IND'
+      'WHERE EV_IND_KLE_DOSSIER=:I_DOSSIER '
+      'AND EV_IND_TYPE=''OCCU'''
+      'GROUP BY EV_IND_DESCRIPTION,EV_IND_VILLE'
+      'ORDER BY EV_IND_DESCRIPTION,EV_IND_VILLE'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'I_DOSSIER'
+        ParamType = ptUnknown
+      end>
+    left = 496
+    top = 200
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'I_DOSSIER'
+        ParamType = ptUnknown
+      end>
+  end
+  object IBQ_JobsInd: TIBQuery
+    Database = ibd_BASE
+    Transaction = IBT_BASE
+    BufferChunks = 1000
+    CachedUpdates = False
+    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    SQL.Strings = (
+      'SELECT EV_IND_DESCRIPTION, EV_IND_VILLE, EV_IND_PAYS, EV_IND_DATE'
+      'FROM EVENEMENTS_IND'
+      'WHERE EV_IND_KLE_FICHE=:CLE_FICHE '
+      'AND EV_IND_TYPE=''OCCU'''
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'CLE_FICHE'
+        ParamType = ptUnknown
+      end>
+    left = 424
+    top = 264
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'CLE_FICHE'
+        ParamType = ptUnknown
+      end>
+  end
+  object IBQ_TreeNamesDesc: TIBQuery
+    Database = ibd_BASE
+    Transaction = IBT_BASE
+    BufferChunks = 1000
+    CachedUpdates = False
+    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    SQL.Strings = (
+      'SELECT NOM,COUNT(*) AS COUNTER'
+      'FROM PROC_TQ_DESCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,0) t'
+      'inner join individu i on i.cle_fiche=t.tq_cle_fiche'
+      'GROUP BY NOM'
+      'ORDER BY NOM'
+      ''
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'I_CLEF'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftInteger
+        Name = 'I_NIVEAU'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftInteger
+        Name = 'I_PARQUI'
+        ParamType = ptInput
+      end>
+    left = 512
+    top = 16
+    ParamData = <    
+      item
+        DataType = ftInteger
+        Name = 'I_CLEF'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftInteger
+        Name = 'I_NIVEAU'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftInteger
+        Name = 'I_PARQUI'
+        ParamType = ptInput
+      end>
+  end
+  object IBQ_TreeDescByNames: TIBQuery
+    Database = ibd_BASE
+    Transaction = IBT_BASE
+    BufferChunks = 1000
+    CachedUpdates = False
+    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    SQL.Strings = (
+      'SELECT  t.tq_niveau,'
+      '              t.tq_sosa,'
+      '             CLE_FICHE,'
+      '              NUM_SOSA, CLE_PERE,'
+      '              CLE_MERE,'
+      '              NOM,'
+      '              SEXE,'
+      '              PRENOM,'
+      '              ANNEE_NAISSANCE,'
+      '              ANNEE_DECES'
+      '         FROM PROC_TQ_DESCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,0) t'
+      '              inner join individu i on i.cle_fiche=t.tq_cle_fiche'
+      'ORDER BY NOM,PRENOM,ANNEE_NAISSANCE DESC,ANNEE_DECES DESC'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'I_CLEF'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftInteger
+        Name = 'I_NIVEAU'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftInteger
+        Name = 'I_PARQUI'
+        ParamType = ptUnknown
+      end>
+    left = 384
+    top = 136
+    ParamData = <    
+      item
+        DataType = ftInteger
+        Name = 'I_CLEF'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftInteger
+        Name = 'I_NIVEAU'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftInteger
+        Name = 'I_PARQUI'
         ParamType = ptUnknown
       end>
   end
