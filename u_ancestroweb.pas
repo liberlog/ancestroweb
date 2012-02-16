@@ -595,6 +595,7 @@ begin
       end
     else p_genHtmlFiles(IBQ_Individu);
 
+    FileCopy.Destination := de_ExportWeb.Text;
     if ch_genNames.Checked then
     begin
       if ch_Filtered.Checked
@@ -802,6 +803,7 @@ begin
   if (cb_Themes.ItemIndex = -1) then
     cb_Themes.ItemIndex := 0;
   FileCopy.Source := gs_Root + CST_SUBDIR_THEMES +DirectorySeparator+cb_Themes.Items[cb_Themes.ItemIndex];
+  FileCopy.Destination := de_ExportWeb.Text;
   FileCopy.CopySourceToDestination;
   FileCopy.Source := gs_Root + CST_SUBDIR_CLASSES;
   FileCopy.CopySourceToDestination;
