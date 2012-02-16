@@ -502,7 +502,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Height = 29
               Top = 50
               Width = 97
-              Caption = 'Visualiser'
+              Caption = 'Voir'
               TabOrder = 4
               OnClick = FWPreview1Click
             end

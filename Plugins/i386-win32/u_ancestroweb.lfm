@@ -66,9 +66,9 @@ object F_AncestroWeb: TF_AncestroWeb
     Height = 366
     Top = 0
     Width = 640
-    ActivePage = ts_Home
+    ActivePage = ts_Gen
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 1
     object ts_Gen: TTabSheet
       Caption = 'Générer'
@@ -498,11 +498,11 @@ object F_AncestroWeb: TF_AncestroWeb
               ParentColor = False
             end
             object FWPreview1: TFWPreview
-              Left = 136
+              Left = 144
               Height = 29
               Top = 50
-              Width = 105
-              Caption = 'Visualiser'
+              Width = 97
+              Caption = 'Voir'
               TabOrder = 4
               OnClick = FWPreview1Click
             end

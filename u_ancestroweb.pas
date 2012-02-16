@@ -2449,6 +2449,7 @@ procedure TF_AncestroWeb.FormCreate(Sender: TObject);
 var
   fbddpath:String;
   lreg_Registry : TRegistry;
+  lb_Logie : Boolean ;
 {$IFDEF WINDOWS}
   fKeyRegistry,s: string;
   i:Integer;
@@ -2466,9 +2467,34 @@ var
         end;
       Result := False;
     end;
-
 {$ENDIF}
+  procedure p_updateIfNeeded;
+  Begin
+    with DMWeb do
+      try
+        IBQ_AscExists.Open;
+        if IBQ_AscExists.IsEmpty
+        and FileExists (gs_Root + 'script_update.sql') then
+         Begin
+           if not IBT_BASE.Active
+            then IBT_BASE.StartTransaction;
+           IBS_Temp.SQL.LoadFromFile( gs_Root + 'script_update.sql');
+           try
+             IBS_Temp.ExecQuery;
+             IBT_BASE.CommitRetaining;
+           Except
+             IBT_BASE.RollbackRetaining;
+           End;
+           ShowMessage ( gs_ANCESTROWEB_Please_Restart );
+           End;
+        IBQ_AscExists.Close;
+      Except
+
+      end;
+  end;
+
 begin
+  lb_Logie := False;
 {$IFDEF FPC}//à faire une version Delphi
   if InstanceRunning(CST_AncestroWeb) then
   begin
@@ -2492,7 +2518,8 @@ begin
   try
     RootKey := HKEY_CURRENT_USER;
     if not fb_ReadAncestroKey (CST_MANIA) Then
-     fb_ReadAncestroKey (CST_LOGIE );
+     if fb_ReadAncestroKey (CST_LOGIE ) Then
+       lb_Logie:=True;
     fKeyRegistry:='\SOFTWARE\'+CST_MANIA+'\Settings';
     if OpenKeyReadOnly(fKeyRegistry) then
     begin
@@ -2534,6 +2561,8 @@ begin
   PCPrincipal.ActivePage:=ts_Gen;
   Caption := fs_getCorrectString(CST_AncestroWeb_WithLicense+' : '+gs_AnceSTROWEB_FORM_CAPTION);
   DoInit(fbddpath);
+  if lb_Logie Then
+    p_updateIfNeeded;
 end;
 
 // procedure TF_AncestroWeb.TraduceImageFailure

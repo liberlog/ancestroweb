@@ -225,6 +225,7 @@ type
 
   TDMWeb = class(TDataModule)
     IBQSources_Record: TIBQuery;
+    IBQ_AscExists: TIBQuery;
     IBQ_Jobs: TIBQuery;
     IBQ_Compte: TIBQuery;
     IBQ_Fiche: TIBQuery;
@@ -240,7 +241,7 @@ type
     IBQ_TreeNames: TIBQuery;
     IBQ_TreeDesc: TIBQuery;
     IBQ_TreeNamesDesc: TIBQuery;
-    IBSQL: TIBSQL;
+    IBS_Temp: TIBSQL;
     IBT_BASE: TIBTransaction;
     ibd_BASE: TIBDatabase;
     IBQDLL: TIBQuery;

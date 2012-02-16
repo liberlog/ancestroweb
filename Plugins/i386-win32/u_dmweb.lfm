@@ -756,4 +756,25 @@ object DMWeb: TDMWeb
     left = 40
     top = 80
   end
+  object IBS_Temp: TIBSQL
+    Database = ibd_BASE
+    ParamCheck = True
+    Transaction = IBT_BASE
+    left = 56
+    top = 200
+  end
+  object IBQ_AscExists: TIBQuery
+    Database = ibd_BASE
+    Transaction = IBT_BASE
+    BufferChunks = 1000
+    CachedUpdates = False
+    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    SQL.Strings = (
+      'select * from RDB$PROCEDURES where rdb$Procedure_name '
+      '= ''PROC_TQ_ASCENDANCE'''
+    )
+    Params = <>
+    left = 192
+    top = 264
+  end
 end
