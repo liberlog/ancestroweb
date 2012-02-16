@@ -1284,12 +1284,24 @@ Begin
     // simple copy ?
     if not IBQ_Media.FieldByName ( MEDIAS_NOM ).IsNull
     and FileExistsUTF8(fBasePath+DirectorySeparator+IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString)
-     Then Result := fb_CopyFile(fBasePath+DirectorySeparator+IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString,as_FilePath,False,False)=0
+     Then
+       Begin
+         FileCopy.Source:=fBasePath+DirectorySeparator+IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString;
+         FileCopy.Destination:=as_FilePath;
+         FileCopy.CopySourceToDestination;
+         Result:=True;
+       end
     Else
     // unless creating file from database
     if {$IFNDEF FPC}( GetDriveType( Pchar(ExtractFileDrive ( IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString ))) >0 )
     and{$ENDIF} FileExistsUTF8(IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString )
-      Then Result := fb_CopyFile(IBQ_Media.FieldByName(MEDIAS_PATH ).AsString,as_FilePath,False,False)=0
+      Then
+        Begin
+         FileCopy.Source:=IBQ_Media.FieldByName(MEDIAS_PATH ).AsString;
+         FileCopy.Destination:=as_FilePath;
+         FileCopy.CopySourceToDestination;
+         Result:=True;
+        end
       Else Result := fb_ImageFieldToFile(IBQ_Media.FieldByName(MEDIAS_MULTI_MEDIA), as_FilePath);
   Except
    Result:=False;
