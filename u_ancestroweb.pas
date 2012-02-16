@@ -95,6 +95,7 @@ type
     FWEraseImage3: TFWErase;
     FWEraseImage2: TFWErase;
     FWEraseGedcom: TJvXPButton;
+    FWPreview1: TFWPreview;
     ImageEdit1: TFileNameEdit;
     ImageEdit2: TFileNameEdit;
     ImageEdit3: TFileNameEdit;
@@ -216,6 +217,7 @@ type
     procedure FWEraseImage3Click(Sender: TObject);
     procedure FWEraseImage2Click(Sender: TObject);
     procedure FWEraseImageClick(Sender: TObject);
+    procedure FWPreview1Click(Sender: TObject);
     procedure ImageEdit2Change(Sender: TObject);
     procedure ImageEdit3Change(Sender: TObject);
     procedure ImageEdit1Change(Sender: TObject);
@@ -464,6 +466,16 @@ end;
 procedure TF_AncestroWeb.FWEraseImageClick(Sender: TObject);
 begin
   p_ImageEditErase(ImageEdit1);
+end;
+
+procedure TF_AncestroWeb.FWPreview1Click(Sender: TObject);
+begin
+  with DMWeb.Execute do
+    Begin
+      CommandLine := 'explorer "' + de_ExportWeb.Directory + '"';
+      Execute;
+    end;
+
 end;
 
 // procedure TF_AncestroWeb.ImageEdit2Change

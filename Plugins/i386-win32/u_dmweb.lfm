@@ -740,4 +740,20 @@ object DMWeb: TDMWeb
         ParamType = ptUnknown
       end>
   end
-end
+  object Execute: TProcess
+    Active = False
+    Options = []
+    Priority = ppNormal
+    StartupOptions = []
+    ShowWindow = swoNone
+    WindowColumns = 0
+    WindowHeight = 0
+    WindowLeft = 0
+    WindowRows = 0
+    WindowTop = 0
+    WindowWidth = 0
+    FillAttribute = 0
+    left = 40
+    top = 80
+  end
+end

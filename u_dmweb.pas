@@ -33,11 +33,11 @@ A partir de la vous pouvez faire toutes vos requetes sur la base
 interface
 
 uses
-  SysUtils, Classes, IBDatabase,
+  SysUtils, Classes, process, IBDatabase,
 {$IFNDEF FPC}
   fonctions_system,
 {$ENDIF}
-  IBQuery, Dialogs, Forms, functions_html;
+  IBQuery, IBSQLMonitor, IBSQL, Dialogs, Forms, functions_html;
 
 var gt_TabSheets : TaHTMLULTabSheet;
     gi_FilesPerPage : Integer = 15 ;
@@ -240,10 +240,12 @@ type
     IBQ_TreeNames: TIBQuery;
     IBQ_TreeDesc: TIBQuery;
     IBQ_TreeNamesDesc: TIBQuery;
+    IBSQL: TIBSQL;
     IBT_BASE: TIBTransaction;
     ibd_BASE: TIBDatabase;
     IBQDLL: TIBQuery;
     IBQUpdateDLL: TIBQuery;
+    Execute: TProcess;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
