@@ -127,7 +127,7 @@ const CST_HTML_DIV                 = 'DIV' ;
                     			   Major : 0 ; Minor : 9 ; Release : 0 ; Build : 0 );
       {$ENDIF}
 
-function fs_CreateULTabseets ( const at_TabSheets : TAHTMLULTabSheet ;
+function fs_CreateULTabsheets ( const at_TabSheets : TAHTMLULTabSheet ;
                                const as_Subdir : String ; const as_idMenu : String = CST_HTML_MENU ;
                                const ab_ShowPages : Boolean = True;
                                const ab_NoLink   : Boolean = False;
@@ -391,7 +391,7 @@ begin
   AppendStr(Result,'>'+as_Text+CST_HTML_A_END);
 end;
 
-function fs_CreateULTabseets ( const at_TabSheets : TAHTMLULTabSheet ;
+function fs_CreateULTabsheets ( const at_TabSheets : TAHTMLULTabSheet ;
                                const as_Subdir : String ;
                                const as_idMenu : String = CST_HTML_MENU ;
                                const ab_ShowPages : Boolean = True;
@@ -524,7 +524,7 @@ Begin
   astl_Destination.Text := as_BeforeHTML + CST_ENDOFLINE + ls_Text1 + CST_ENDOFLINE + fs_createHead(as_PathFiles,as_Describe, as_Keywords, as_title) + CST_ENDOFLINE + ls_Text2
                         +  fs_CreateElementWithId(CST_HTML_DIV, 'title', CST_HTML_CLASS_EQUAL )
                         +  CST_HTML_H1_BEGIN + as_title + CST_HTML_H1_END + CST_HTML_DIV_End
-                        +  CST_ENDOFLINE + fs_CreateULTabseets ( at_TabSheets, as_Subdir ) + CST_ENDOFLINE + ls_Text3
+                        +  CST_ENDOFLINE + fs_CreateULTabsheets ( at_TabSheets, as_Subdir ) + CST_ENDOFLINE + ls_Text3
                         +  CST_ENDOFLINE + fs_CreateElementWithId ( CST_HTML_DIV, as_IdOfPageMainElement )
                         +  CST_ENDOFLINE + astl_Destination.Text
                         +  CST_ENDOFLINE + CST_HTML_DIV_End

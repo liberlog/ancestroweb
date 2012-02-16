@@ -265,8 +265,7 @@ type
       const ab_Progress: boolean = True;
       const ab_NotFirst: boolean = False;
       const as_IdSosa: string = IBQ_TQ_SOSA;
-      const ab_Asc: boolean = True;
-      const ai_Limit: longint = 0): longint;
+      const ab_Asc: boolean = True): longint;
     function fi_CreateSheets: integer;
     procedure p_createLettersSheets (var at_SheetsLetters : TAHTMLULTabSheet;
                                      const IBQ_FilesFiltered: TIBQuery;
@@ -281,7 +280,7 @@ type
     procedure p_genPhpContact;
     procedure p_genHtmlHome;
     procedure p_genHTMLTitle;
-    procedure p_genHTMLTree;
+    procedure p_genHTMLTree ( const IBQ_tree : TIBQuery );
     procedure p_ImageEditChange(const aei_Image: TExtImage; const Sender: TObject);
     procedure p_ImageEditErase(const afne_EditImage: TFileNameEdit);
     procedure p_IncProgressBar;
@@ -563,14 +562,24 @@ begin
     p_genHtmlHome;
     if ch_Filtered.Checked then
     begin
-      if fb_OpenTree(DmWeb.IBQ_TreeByNames, gi_CleFiche) then
-        p_createLettersSheets( gt_SheetsLetters, DmWeb.IBQ_TreeByNames, gi_FilesPerPage, ed_FileBeginName.Text);
+      if ch_ancestors.Checked Then
+        Begin
+          if fb_OpenTree(DmWeb.IBQ_TreeByNames, gi_CleFiche) then
+            p_createLettersSheets( gt_SheetsLetters, DmWeb.IBQ_TreeByNames, gi_FilesPerPage, ed_FileBeginName.Text);
+        end
+       Else
+       Begin
+         if fb_OpenTree(DmWeb.IBQ_TreeDescByNames, gi_CleFiche) then
+           p_createLettersSheets( gt_SheetsLetters, DmWeb.IBQ_TreeDescByNames, gi_FilesPerPage, ed_FileBeginName.Text);
+       end;
     end
     else
       p_createLettersSheets( gt_SheetsLetters, IBQ_Individu, gi_FilesPerPage, ed_FileBeginName.Text);
 
     if ch_genTree.Checked then
-      p_genHTMLTree;
+      if ch_ancestors.Checked
+       Then p_genHTMLTree ( DMWeb.IBQ_TreeAsc  )
+       Else p_genHTMLTree ( DMWeb.IBQ_TreeDesc );
     if ch_genages.Checked then
       p_genHtmlAges;
     if ch_genjobs.Checked then
@@ -578,7 +587,12 @@ begin
     if ch_genSearch.Checked then
       p_genHtmlSearch;
     if ch_Filtered.Checked
-    then p_genHtmlFiles(DmWeb.IBQ_TreeByNames)
+    then
+      begin
+        if ch_ancestors.Checked
+          Then p_genHtmlFiles(DmWeb.IBQ_TreeByNames)
+          Else p_genHtmlFiles(DmWeb.IBQ_TreeDescByNames);
+      end
     else p_genHtmlFiles(IBQ_Individu);
 
     if ch_genNames.Checked then
@@ -586,8 +600,16 @@ begin
       if ch_Filtered.Checked
       then
        Begin
-         if fb_OpenTree(DmWeb.IBQ_TreeNames, gi_CleFiche) Then
-           p_genHtmlNames(DmWeb.IBQ_TreeNames);
+         if ch_ancestors.Checked Then
+           Begin
+             if fb_OpenTree(DmWeb.IBQ_TreeNames, gi_CleFiche) Then
+               p_genHtmlNames(DmWeb.IBQ_TreeNames);
+           end
+          else
+           Begin
+             if fb_OpenTree(DmWeb.IBQ_TreeNamesDesc, gi_CleFiche) Then
+               p_genHtmlNames(DmWeb.IBQ_TreeNamesDesc);
+           end;
        end
       else
        Begin
@@ -827,12 +849,10 @@ function TF_AncestroWeb.fi_CreateHTMLTree(const IBQ_Tree: TIBQuery;
   const ab_Progress: boolean = True;
   const ab_NotFirst: boolean = False;
   const as_IdSosa: string = IBQ_TQ_SOSA;
-  const ab_Asc: boolean = True;
-  const ai_Limit: longint = 0): longint;
+  const ab_Asc: boolean = True): longint;
 var
   li_LocalLevel, li_LocalPreLevel: integer;
   ls_Tempo, ls_Barres, ls_NodeLink, ls_NameSurname, ls_Image: string;
-  li_Counter : longint;
 
   function fs_getText: string;
   begin
@@ -851,12 +871,13 @@ var
   end;
 
 
-  procedure p_AddLine ( const ab_IsTheEnd, ab_OldNext, ab_IsSisBrother : boolean );
+  procedure p_AddLine ( const ab_IsTheEnd, ab_OldNext, ab_IsFirst : boolean );
   var ls_Link: string;
   Begin
-    if not ab_IsSisBrother
-    or ab_asc
-    or not ch_Filtered.Checked Then
+    if not ch_Filtered.Checked
+    or ( ab_IsFirst )
+    or ( ab_asc = ch_ancestors.Checked ) // filtered by the correct direction ?
+    Then
       Begin
         ls_NameSurname:= fs_RemplaceEspace ( ls_NameSurname, '_' );
         if ls_NameSurname = '' Then ls_NameSurname := ' ';
@@ -877,14 +898,13 @@ var
   procedure p_CreateChilds(const af_Sosa: double; const as_Aboville: string;
   const ab_HasNext, ab_OldNext, ab_IsFirst, ab_IsSecond, ab_IsSisBrother: boolean );
   var
-    li_Sexe: integer;
+    li_Sexe, li_i: integer;
     lf_SosaPere, lf_SosaMere, lf_NewSosa: double;
     ls_newAboville: string;
   begin
     if (ab_Asc and IBQ_Tree.Locate(as_IdSosa, af_Sosa, [])) or
       (not ab_Asc and IBQ_Tree.Locate(as_IdSosa, as_Aboville, [])) then
     begin
-      Inc(li_Counter);
       if not ab_NotFirst
       or not ab_IsFirst
       or ab_IsSecond
@@ -900,12 +920,13 @@ var
            Then
             Result := li_LocalLevel;
           if li_LocalPreLevel <> -1 then
-            p_AddLine ( False, ab_OldNext, ab_IsSisBrother );
+            p_AddLine ( False, ab_OldNext, ab_IsFirst or ab_IsSecond );
 
           if ab_Progress then
             p_IncProgressInd; // growing the second counter
           // Nommage des noeuds
-          ls_NodeLink := fs_GetNodeLink(ls_NodeLink, li_LocalLevel);
+          if li_LocalPreLevel <> li_LocalLevel Then  // a div by level
+            ls_NodeLink := fs_GetNodeLink(ls_NodeLink, li_LocalLevel);
 
           // Création du début de Division
           p_setLevel(astl_HTMLTree, ls_NodeLink, ab_IsFirst or ab_IsSecond and ab_NotFirst, li_LocalLevel, li_LocalPreLevel, ab_Link);
@@ -918,12 +939,12 @@ var
           ls_Barres := fs_NewLineImages(ls_Barres, ab_HasNext, li_LocalLevel);
           ls_Tempo := fs_CreateLineImages(ls_Barres, li_LocalLevel);
           case li_sexe of
-            IBQ_SEXE_MAN : ls_Image := fs_Create_Tree_Image('g' + CST_TREE_GIF_EXT) + ls_Image;
+            IBQ_SEXE_MAN   : ls_Image := fs_Create_Tree_Image('g' + CST_TREE_GIF_EXT) + ls_Image;
             IBQ_SEXE_WOMAN : ls_Image := fs_Create_Tree_Image('f' + CST_TREE_GIF_EXT) + ls_Image;
           end;
         end;
       if ab_Asc then
-      begin
+      begin    // next parents
         lf_SosaPere := af_Sosa * 2;
         lf_SosaMere := af_Sosa * 2 + 1;
         p_CreateChilds(lf_SosaPere, as_aboville, IBQ_Tree.Locate(
@@ -932,33 +953,35 @@ var
       end
       else
       begin
-        IBQ_Tree.Next;
+        IBQ_Tree.Next;  // next record for next tests
         ls_newAboville :=
           copy(as_aboville, 1, Length(as_aboville) - 1) + chr(
           Ord(as_aboville[Length(as_aboville)]) + 1);
-        if IBQ_Tree.FieldByName(as_IdSosa).AsString = ls_newAboville then
+        if IBQ_Tree.FieldByName(as_IdSosa).AsString = ls_newAboville then // next record of sister or brother
         begin
-          IBQ_Tree.Next;
           p_CreateChilds(lf_NewSosa, ls_newAboville,
-            IBQ_Tree.FieldByName(as_IdSosa).AsString = copy(
-            as_aboville, 1, Length(as_aboville) - 1) + chr(
-            Ord(as_aboville[Length(as_aboville)]) + 1),
+            IBQ_Tree.Locate(as_IdSosa,copy(ls_newAboville, 1, Length(ls_newAboville) - 1) + chr(Ord(ls_newAboville[Length(ls_newAboville)]) + 1),[]),
             ab_HasNext, False, False, True );
         end
         else
         begin
-          if (ai_Limit > 0) and (li_Counter >= ai_Limit)
-          then
-            Exit;
           ls_newAboville := as_aboville + '1';
-          if IBQ_Tree.Locate(as_IdSosa, ls_newAboville, []) then
-          begin
-            IBQ_Tree.Next;
-            p_CreateChilds(lf_NewSosa, ls_newAboville,
-              IBQ_Tree.FieldByName(as_IdSosa).AsString = copy(as_aboville, 1,
-              Length(as_aboville) - 1) + chr(Ord(as_aboville[Length(as_aboville)]) + 1),
-              ab_HasNext, False, ab_IsFirst, False );
-          end;
+          if IBQ_Tree.FieldByName(as_IdSosa).AsString = ls_newAboville then  // next record of childs
+            begin
+              p_CreateChilds(lf_NewSosa, ls_newAboville,
+                 IBQ_Tree.Locate(as_IdSosa,copy(ls_newAboville, 1, Length(ls_newAboville) - 1) + chr(Ord(ls_newAboville[Length(ls_newAboville)]) + 1),[]),
+                 ab_HasNext, False, ab_IsFirst, False );
+              // verify if there is another sister or brother
+              ls_newAboville :=
+                copy(as_aboville, 1, length ( as_Aboville ) - 1) + chr(
+                Ord(as_aboville[length ( as_Aboville )]) + 1);
+              if IBQ_Tree.Locate(as_IdSosa,ls_newAboville,[]) then
+              begin
+                p_CreateChilds(lf_NewSosa, ls_newAboville,
+                  IBQ_Tree.Locate(as_IdSosa,copy(ls_newAboville, 1, Length(ls_newAboville) - 1) + chr(Ord(ls_newAboville[Length(ls_newAboville)]) + 1),[]),
+                  ab_HasNext, False, False, True );
+              end
+           End;
         end;
       end;
     end;
@@ -968,15 +991,16 @@ begin
   li_LocalLevel := -1;
   Result := -1;
   ls_NodeLink := '';
-  li_Counter := 0;
   ls_Tempo := '';
   gs_HTMLTreeNodeLink := '';
   ls_Barres := '';
   try
+    // first node
     IBQ_Tree.Locate(IBQ_CLE_FICHE, ai_Clefiche, []);
+    // create the tree
     p_CreateChilds(IBQ_Tree.FieldByName(as_IdSosa).AsFloat,
       IBQ_Tree.FieldByName(as_IdSosa).AsString, False, False, True, False, False);
-    p_AddLine ( True, False, True );
+    p_AddLine ( True, False, False );
   except
     On E: Exception do
       ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateATree ) + CST_ENDOFLINE + E.Message);
@@ -1048,7 +1072,7 @@ end;
 
 // procedure TF_AncestroWeb.p_genHTMLTree
 // creating the main interactive HTML Tree
-procedure TF_AncestroWeb.p_genHTMLTree;
+procedure TF_AncestroWeb.p_genHTMLTree ( const IBQ_tree : TIBQuery );
 var
   lstl_HTMLTree: TStringList;
   ls_destination: string;
@@ -1058,14 +1082,17 @@ begin
   lstl_HTMLTree := TStringList.Create;
   p_CreateKeyWords;
   pb_ProgressInd.Position := 0; // initing not needed user value
-  if fb_OpenTree(DMWeb.IBQ_TreeAsc, gi_CleFiche) then
+  if fb_OpenTree(IBQ_Tree, gi_CleFiche)
+   then
     try
-      pb_ProgressInd.Max := DMWeb.IBQ_TreeAsc.RecordCount;
+      pb_ProgressInd.Max := IBQ_Tree.RecordCount;
       p_IncProgressBar; // growing the counter
       if not ch_Filtered.Checked and not
-        DMWeb.IBQ_TreeAsc.Locate(IBQ_CLE_FICHE, gi_CleFiche, []) then
+        IBQ_Tree.Locate(IBQ_CLE_FICHE, gi_CleFiche, []) then
         Exit;
-      li_generation := fi_CreateHTMLTree(DMWeb.IBQ_TreeAsc, lstl_HTMLTree, gi_CleFiche);
+      if ch_ancestors.Checked
+        Then li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree, gi_CleFiche)
+        Else li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree, gi_CleFiche,True,True,False,IBQ_TQ_NUM_SOSA,False);
       lstl_HTMLTree.Insert(0, fs_Replace_EndLines(me_HeadTree.Lines.Text));
       p_CreateAHtmlFile(lstl_HTMLTree, CST_FILE_TREE, me_Description.Lines.Text,
         ( gs_AnceSTROWEB_FamilyTree ), gs_AnceSTROWEB_FullTree, fs_GetTitleTree ( gs_AnceSTROWEB_Ancestry, li_generation), gs_LinkGedcom, '../');
@@ -1294,6 +1321,8 @@ Begin
         for li_i := li_OldCounterPages to li_Counter + li_modulo -1 do
          Begin
           IBQ_FilesFiltered.RecNo:= li_i * ai_PerPage + 1 ;
+//           if pos ( 'GOURDEL', fs_getNameAndSurName(IBQ_FilesFiltered) ) > 0 Then
+  //           Showmessage ( fs_RemplaceEspace (fs_getNameAndSurName(IBQ_FilesFiltered), '_' ) + ' ' + IntToStr(li_i) );
           p_AddTabSheetPage(at_SheetsLetters, high ( at_SheetsLetters ), as_BeginFile + IntToStr(li_i) + CST_EXTENSION_HTML, fs_RemplaceEspace (fs_getNameAndSurName(IBQ_FilesFiltered), '_' ));
          end;
       p_AddTabSheet(at_SheetsLetters, lch_i,
@@ -1313,7 +1342,7 @@ begin
   pb_ProgressInd.Position:=0;  // initing user value
   pb_ProgressInd.Max:=IBQ_FilesFiltered.RecordCount;
   lstl_HTMLAFolder := TStringList.Create;
-  lstl_HTMLAFolder.Add ( fs_CreateULTabseets ( gt_SheetsLetters, '', CST_HTML_SUBMENU, False, True ));
+  lstl_HTMLAFolder.Add ( fs_CreateULTabsheets ( gt_SheetsLetters, '', CST_HTML_SUBMENU, False, True ));
   lstl_HTMLAFolder.Add ( fs_CreateElementWithId(CST_HTML_TABLE, 'names') + CST_HTML_TR_BEGIN + CST_HTML_TD_BEGIN  );
   while not IBQ_FilesFiltered.EOF do
   begin
@@ -1365,7 +1394,7 @@ var
   procedure p_AddAList;
   var
     lstl_HTMLAList: TStringList;
-    ls_NewName, ls_Sexe, ls_NameBegin, ls_NameEnd: string;
+    ls_NewName, ls_Sexe, ls_NameWith_, ls_NameBegin, ls_NameEnd: string;
     li_i, li_CleFiche: longint;
     lb_next : Boolean ;
   begin
@@ -1375,7 +1404,7 @@ var
     if (ls_NameBegin <> '') then
       p_SelectTabSheet(lt_SheetsLists,ls_NameBegin[1],ls_NameBegin); // current letter sheet
     lstl_HTMLAList.Text :=
-      fs_CreateULTabseets(lt_SheetsLists, '', CST_HTML_SUBMENU);
+      fs_CreateULTabsheets(lt_SheetsLists, '', CST_HTML_SUBMENU);
     if (ls_NameBegin <> '') then
       p_SelectTabSheet(lt_SheetsLists,ls_NameBegin[1],ls_NameBegin, False);  // reiniting for next page
     lb_next := True;
@@ -1407,14 +1436,15 @@ var
           lstl_HTMLAList.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + ls_NewName[1] + '" />');
        end;
       ls_Name := ls_NewName;
-      ls_Name:= ls_Name + ' ' + IBQ_FilesFiltered.FieldByName(IBQDLLPRENOM).AsString ;
-      lstl_HTMLAList.Add(   fs_AddPhoto(li_CleFiche, fs_getaltPhoto(IBQ_FilesFiltered), ls_ImagesDir, 24) +
+      ls_Name:= ls_Name + ' ' + IBQ_FilesFiltered.FieldByName(IBQDLLPRENOM).AsString ; // showed name
+      ls_NameWith_ := fs_RemplaceChar ( ls_Name, ' ', '_' ); // name for hyperlink
+      lstl_HTMLAList.Add(   fs_AddPhoto(li_CleFiche, fs_getaltPhoto(IBQ_FilesFiltered), ls_ImagesDir, 24) +   // mini photo
                             CST_HTML_TD_END + CST_HTML_TD_BEGIN +
                             CST_HTML_IMAGE_SRC + '../' + CST_SUBDIR_HTML_IMAGES + '/' + ls_Sexe + CST_EXTENSION_GIF + '" />' +
                             CST_HTML_TD_END + CST_HTML_TD_BEGIN + CST_HTML_AHREF + '../' + CST_SUBDIR_HTML_FILES + '/' +
-                            fs_GetSheetLink ( gt_SheetsLetters, ls_name[1], ls_Name ) + '#' + fs_RemplaceEspace(ls_name, '_' )+ '">' +ls_name +
-                                 CST_HTML_TD_END + fs_Create_TD(CST_TABLE_CENTER) + IBQ_FilesFiltered.FieldByName(IBQ_ANNEE_NAISSANCE).AsString +
-                            CST_HTML_TD_END + fs_Create_TD(CST_TABLE_CENTER) + ' ' + IBQ_FilesFiltered.FieldByName(IBQ_ANNEE_DECES).AsString+ CST_HTML_TR_END);
+                            fs_GetSheetLink ( gt_SheetsLetters, ls_name[1], ls_NameWith_ ) + '#' + ls_NameWith_+ '">' +ls_name +
+                            CST_HTML_TD_END + fs_Create_TD(CST_TABLE_CENTER) + IBQ_FilesFiltered.FieldByName(IBQ_ANNEE_NAISSANCE).AsString + // birth
+                            CST_HTML_TD_END + fs_Create_TD(CST_TABLE_CENTER) + ' ' + IBQ_FilesFiltered.FieldByName(IBQ_ANNEE_DECES).AsString+ CST_HTML_TR_END); // death
       ls_NameEnd := IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString;
       IBQ_FilesFiltered.Next;
       if IBQ_FilesFiltered.EOF then
@@ -1711,12 +1741,12 @@ var
     astl_HTMLAFolder.Add(CST_HTML_TR_BEGIN + CST_HTML_TD_BEGIN );
     lstl_Tree := TStringList.Create;
     // descent
-    if fb_OpenTree(DMWeb.IBQ_TreeDesc, ai_CleFiche, 4)
+    if fb_OpenTree(DMWeb.IBQ_TreeDesc, ai_CleFiche, 3)
     and ( DMWeb.IBQ_TreeDesc.RecordCount > 1 ) then
     begin
       li_generations :=
         fi_CreateHTMLTree(DMWeb.IBQ_TreeDesc, lstl_Tree, ai_CleFiche,
-        False, False, True, IBQ_TQ_NUM_SOSA, False, 7);
+        False, False, True, IBQ_TQ_NUM_SOSA, False);
       lstl_Tree.Insert(0, fs_Create_DIV('descent' + CST_FILE_Number + IntToStr(ai_NoInPage), CST_HTML_CLASS_EQUAL) + fs_GetTitleTree (( gs_AnceSTROWEB_Descent ), li_generations ));
       astl_HTMLAFolder.AddStrings(lstl_Tree);
       astl_HTMLAFolder.Add(CST_HTML_DIV_End);
@@ -1753,7 +1783,7 @@ var
     ls_NameSurname := fs_RemplaceEspace ( fs_getNameAndSurName(IBQ_FilesFiltered), '_' );
     if (ls_NameBegin <> '') then
       p_SelectTabSheet(gt_SheetsLetters,ls_NameSurname[1],ls_NameSurname); // current letter sheet
-    lstl_HTMLAFolder.Text := fs_CreateULTabseets(gt_SheetsLetters, '', CST_HTML_SUBMENU); // Creating the letters' sheets
+    lstl_HTMLAFolder.Text := fs_CreateULTabsheets(gt_SheetsLetters, '', CST_HTML_SUBMENU); // Creating the letters' sheets
     if (ls_NameBegin <> '') then
       p_SelectTabSheet(gt_SheetsLetters,ls_NameSurname[1],ls_NameSurname, False);  // reiniting for next page
     lb_next := True;
@@ -1849,7 +1879,7 @@ begin
   while not IBQ_FilesFiltered.EOF do
     p_AddAFolder;
   lstl_HTMLPersons := TStringList.Create;
-  lstl_HTMLPersons.Text := fs_CreateULTabseets(gt_SheetsLetters,
+  lstl_HTMLPersons.Text := fs_CreateULTabsheets(gt_SheetsLetters,
     CST_SUBDIR_HTML_FILES + CST_HTML_DIR_SEPARATOR, CST_HTML_SUBMENU) +
     CST_HTML_CENTER_BEGIN + '<' + CST_HTML_Paragraph +
     CST_HTML_ID_EQUAL + '"head">' + fs_Replace_EndLines(

@@ -104,9 +104,6 @@ Begin
       If length ( as_NodeLink ) < ai_CurrentLevel + 1
         Then
           Result :=  fs_getNewNodeLink ;
-  if length ( gs_HTMLTreeNodeLink ) < length ( Result )
-   Then
-    gs_HTMLTreeNodeLink := Result ;
 End;
 
 function fs_NewLineImages ( const as_LettersImages : String; const ab_HasNext : Boolean; const ai_CurrentLevel : Integer ): String;
@@ -213,6 +210,9 @@ function  fs_Create_Tree_DIV        ( const as_Name        : String      ;
                                       const as_IdEqual  : String = CST_HTML_ID_EQUAL;
                                       const Is_Visible  : Boolean   = False ):String ;
 Begin
+  if length ( gs_HTMLTreeNodeLink ) < length ( as_Name )
+   Then
+    gs_HTMLTreeNodeLink := as_Name ;
   If Is_Visible
     Then
       Result := '<' + CST_HTML_DIV + as_IdEqual + as_Name + CST_HTML_DIV_SHOW + '>'

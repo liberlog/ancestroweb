@@ -236,8 +236,10 @@ type
     IBQ_Ages: TIBQuery;
     IBQ_TreeAsc: TIBQuery;
     IBQ_TreeByNames: TIBQuery;
+    IBQ_TreeDescByNames: TIBQuery;
     IBQ_TreeNames: TIBQuery;
     IBQ_TreeDesc: TIBQuery;
+    IBQ_TreeNamesDesc: TIBQuery;
     IBT_BASE: TIBTransaction;
     ibd_BASE: TIBDatabase;
     IBQDLL: TIBQuery;
