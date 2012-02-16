@@ -1572,8 +1572,8 @@ var
         if DMWeb.IBQ_Conjoint.FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN
         Then ls_FileName := fs_getNameAndSurName (DMWeb.IBQ_Conjoint)+'&'+fs_getNameAndSurName (IBQ_FilesFiltered)
         Else ls_FileName := fs_getNameAndSurName (IBQ_FilesFiltered )+'&'+fs_getNameAndSurName (DMWeb.IBQ_Conjoint);
-        ls_FileName := fs_TextToFileName(DMWeb.IBQ_Conjoint.FieldByName(UNION_CLEF).AsString + ls_FileName+'-'+as_Date)
-                     + '-'+DMWeb.IBQ_Conjoint.FieldByName(UNION_CP).AsString+'-'+DMWeb.IBQ_Conjoint.FieldByName(UNION_CITY).AsString+ '-';
+        ls_FileName := fs_TextToFileName(DMWeb.IBQ_Conjoint.FieldByName(UNION_CLEF).AsString + ls_FileName+'-'+as_Date
+                     + '-'+DMWeb.IBQ_Conjoint.FieldByName(UNION_CP).AsString+'-'+DMWeb.IBQ_Conjoint.FieldByName(UNION_CITY).AsString )+ '-';
         li_i := 1 ;
 
         // medias
