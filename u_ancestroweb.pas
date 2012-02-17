@@ -472,7 +472,13 @@ procedure TF_AncestroWeb.FWPreview1Click(Sender: TObject);
 begin
   with DMWeb.Execute do
     Begin
-      CommandLine := 'explorer "' + de_ExportWeb.Directory + '"';
+      CommandLine :=
+      {$IFDEF LINUX}
+      'xdg-open'
+      {$ELSE}
+      'explorer'
+      {$ENDIF}
+      +' "' + de_ExportWeb.Directory + '"';
       Execute;
     end;
 
@@ -2450,9 +2456,9 @@ end;
 procedure TF_AncestroWeb.FormCreate(Sender: TObject);
 var
   fbddpath:String;
-  lreg_Registry : TRegistry;
   lb_Logie : Boolean ;
 {$IFDEF WINDOWS}
+  lreg_Registry : TRegistry;
   fKeyRegistry,s: string;
   i:Integer;
   function fb_ReadAncestroKey ( const as_Soft : String ): boolean;
