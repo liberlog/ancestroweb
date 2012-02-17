@@ -1465,9 +1465,26 @@ object F_AncestroWeb: TF_AncestroWeb
       end
     end
   end
-  object ds_Individu: TDatasource
-    left = 72
-    top = 240
+  object IBQ_Individu: TIBQuery
+    SQL.Strings = (
+      
+        'select  CLE_FICHE,NUM_SOSA,CLE_PERE,CLE_MERE,NOM,PRENOM,SEXE,ANN' +
+        'EE_NAISSANCE,ANNEE_DECES from INDIVIDU WHERE KLE_DOSSIER=:KLE_DO' +
+        'SSIER '
+      'ORDER BY NOM,PRENOM,ANNEE_NAISSANCE DESC,ANNEE_DECES DESC')
+    Left = 572
+    Top = 256
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'KLE_DOSSIER'
+        ParamType = ptUnknown
+      end>
+  end
+  object ds_Individu: TDataSource
+    DataSet = IBQ_Individu
+    Left = 472
+    Top = 256
   end
   object OpenDialog: TOpenDialog
     Title = 'Fichier de la base de données'
