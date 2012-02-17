@@ -37,7 +37,7 @@ uses
   IBQuery, DBCtrls, ExtCtrls, Buttons, ComCtrls, DBGrids,
   functions_html, JvXPCheckCtrls, Spin, FileUtil, U_OnFormInfoIni,
   U_ExtImage, u_buttons_appli, U_ExtFileCopy, u_traducefile,
-  JvXPButtons;
+  JvXPButtons, IniFiles;
 
 type
 
@@ -208,7 +208,8 @@ type
     procedure DBGrid1CellClick(Column: TColumn);
     procedure de_ExportWebAcceptDirectory(Sender: TObject;{$IFDEF FPC} var Value: string{$ELSE} var Name: string;
     var Action: Boolean{$ENDIF});
-    procedure edNomBaseExit(Sender: TObject);
+    procedure edNomBaseChange(Sender: TObject);
+    procedure edNomBaseOpen;
     procedure FileCopyDoEraseDir(Sender: TObject; var Continue: boolean);
     procedure FileCopyFailure(Sender: TObject; const ErrorCode: integer;
       var ErrorMessage: string; var ContinueCopy: boolean);
@@ -224,12 +225,16 @@ type
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure OnFormInfoIniIniLoad(const AInifile: TCustomInifile;
+      var Continue: Boolean);
+    procedure OnFormInfoIniIniWrite(const AInifile: TCustomInifile;
+      var Continue: Boolean);
     procedure TraduceImageFailure(Sender: TObject; const ErrorCode: integer;
       var ErrorMessage: string; var ContinueCopy: boolean);
   private
     { Déclarations privées }
     PremiereOuverture:boolean;
-    procedure DoAfterInit;
+    procedure DoAfterInit( const ab_Ini : Boolean = True );
     function DoOpenBase(sBase: string):boolean;
     function OuvreDossier(NumDossier:integer):boolean;
     function fb_getMediaFile ( const IBQ_Media : TIBQuery;
@@ -253,6 +258,7 @@ type
     function fs_getNameAndSurName(const ibq_Query: TIBQuery): String;
     function fs_GetTitleTree(const as_NameOfTree: String;
                              const ai_generations: Longint): String;
+    procedure p_AddABase(const as_Base: String; const ab_SetIndex :Boolean = True);
     procedure p_CopyStructure;
     procedure p_CreateAHtmlFile(const astl_Destination: TStringList;
       const as_BeginingFile, as_Describe, as_Title, as_LittleTitle, as_LongTitle: string;
@@ -295,7 +301,8 @@ type
     procedure ListerDossiers;
   public
     { Déclarations publiques }
-    procedure DoInit(sBase: string);
+    function DoInit(const sBase: string):Boolean;
+    function DoInitBase(const AedNomBase: TCustomComboBox):Boolean;
   end;
 
 var
@@ -312,7 +319,7 @@ implementation
 
 uses  fonctions_init,
   functions_html_tree,
-  IniFiles,IBSQL,
+  IBSQL,
 {$IFNDEF FPC}
   AncestroWeb_strings_delphi,
   fonctions_system, windirs,
@@ -325,6 +332,7 @@ uses  fonctions_init,
   fonctions_string,
   fonctions_languages,
   fonctions_images,
+  fonctions_components,
   fonctions_file;
 
 {$IFNDEF FPC}
@@ -375,21 +383,26 @@ begin
   gb_EraseExport := False;
 end;
 
+procedure TF_AncestroWeb.edNomBaseChange(Sender: TObject);
+begin
+  edNomBaseOpen;
+end;
+
 // procedure TF_AncestroWeb.edNomBaseExit
 // Database's folder opening on Nombaseedit's Exit
-procedure TF_AncestroWeb.edNomBaseExit(Sender: TObject);
+procedure TF_AncestroWeb.edNomBaseOpen;
 var
   NumDossier:Integer;
 begin
-  if (edNomBase.Caption<>'')
-  and ((edNomBase.Caption<>DMWeb.ibd_BASE.DatabaseName) or (DMWeb.ibd_BASE.Connected=false)) then
-    if DoOpenBase(edNomBase.Caption) then
+  if  DoInitBase(edNomBase)
+  and fb_AutoComboInit(cbDossier)
+   then
     begin
       NumDossier:=StrToInt(trim(copy(cbDossier.Caption,1,2)));
       if OuvreDossier(NumDossier) then
       begin
        fNom_Dossier:=fs_getCorrectString(copy(cbDossier.Caption,5,250));
-       DoAfterInit;
+       DoAfterInit ( False );
       end;
     end;
 end;
@@ -682,6 +695,27 @@ begin
      end;
 end;
 
+procedure TF_AncestroWeb.p_AddABase ( const as_Base : String ; const ab_SetIndex :Boolean = True);
+var li_i : Integer;
+    lb_found : Boolean;
+Begin
+  lb_found:=False;
+  for li_i := 0 to edNomBase.Items.Count - 1 do
+    if edNomBase.Items [ li_i ] = as_Base Then
+      Begin
+        lb_found:=True;
+        if ab_SetIndex Then
+          edNomBase.ItemIndex:=li_i;
+        Break;
+      end;
+  if not lb_found  then
+    Begin
+      edNomBase.Items.Add(as_Base);
+      if ab_SetIndex Then
+        edNomBase.ItemIndex:=edNomBase.Items.Count-1;
+    end;
+End;
+
 // procedure TF_AncestroWeb.btnSelectBaseClick
 // Database select on button's click event
 procedure TF_AncestroWeb.btnSelectBaseClick(Sender: TObject);
@@ -704,7 +738,9 @@ begin
 
   if OpenDialog.Execute then
   begin
-    edNomBase.Text:=OpenDialog.FileName;
+    p_AddABase(OpenDialog.FileName);
+    p_writeComboBoxItems(edNomBase,edNomBase.Items);
+    edNomBaseOpen;
   end;
 end;
 
@@ -2372,29 +2408,39 @@ end;
 
 // procedure TF_AncestroWeb.DoInit
 // creating database objects and initing
-procedure TF_AncestroWeb.DoInit(sBase: string);
+function TF_AncestroWeb.DoInit(const sBase: string):Boolean;
 var
   Save_Cursor: TCursor;
-  Ok:Boolean;
 begin
+  Result := False;
   Save_Cursor := Screen.Cursor;
   Screen.Cursor := crHourGlass; { Affiche le curseur en forme de sablier }
   try
     if not Assigned(DMWeb) then
     begin
       DMWeb := TDMWeb.Create(self);
+      IBQ_Individu.Database:=DMWeb.ibd_BASE;
     end;
-    Ok:=True;
-    if not DMWeb.IBT_BASE.Active then
-      Ok:=DoOpenBase(sBase);
-    if Ok then
-      Ok:=OuvreDossier(fCleDossier);
-    if Ok then
+    Result:=True;
+    Result:=DoOpenBase(sBase);
+    if Result then
+      Result:=OuvreDossier(fCleDossier);
+    if Result then
       DoAfterInit;
     PremiereOuverture:=False;
   finally
     Screen.Cursor := Save_Cursor; { Revient toujours à normal }
   end;
+end;
+
+function TF_AncestroWeb.DoInitBase(const AedNomBase: TCustomComboBox): Boolean;
+begin
+  if fb_AutoComboInit(AedNomBase)
+  and (   (DMWeb=nil)
+       or (aedNomBase.Text<>DMWeb.ibd_BASE.DatabaseName)
+       or (DMWeb.ibd_BASE.Connected=false))
+   Then Result := DoInit(AedNomBase.Text)
+   Else Result := False;
 end;
 
 // function TF_AncestroWeb.DoOpenBase
@@ -2451,14 +2497,12 @@ end;
 
 // procedure TF_AncestroWeb.DoAfterInit
 // initing components and ini
-procedure TF_AncestroWeb.DoAfterInit;
+procedure TF_AncestroWeb.DoAfterInit( const ab_Ini : Boolean = True );
 begin
   fNom_Dossier:=fs_TextToFileName(fNom_Dossier);
   fBasePath := GetUserDir;
   {$IFNDEF FPC}
   de_ExportWeb.RootDir:=GetWindowsSpecialDir(CSIDL_DESKTOPDIRECTORY);
-  {$ELSE}
-  fBasePath := GetUserDir;
   {$ENDIF}
   fBasePath:=fBasePath+CST_AncestroWeb+DirectorySeparator+fNom_Dossier;
   FileCopy.Destination := fBasePath + DirectorySeparator + CST_SUBDIR_EXPORT ;
@@ -2469,6 +2513,9 @@ begin
   fne_Export.FileName := fBasePath + DirectorySeparator + CST_SUBDIR_SAVE ;
 
   // Reading ini
+  if not ab_Ini Then
+    Exit;
+  f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
   OnFormInfoIni.p_ExecuteLecture(Self);
   p_iniReadKey;
 end;
@@ -2524,6 +2571,8 @@ var
   end;
 
 begin
+  f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
+  OnFormInfoIni.p_ExecuteLecture(Self);
   lb_Logie := False;
 {$IFDEF FPC}//à faire une version Delphi
   if InstanceRunning(CST_AncestroWeb) then
@@ -2542,7 +2591,6 @@ begin
 
 
 {$IFDEF WINDOWS}
-  edNomBase.Clear;
   lreg_Registry := TRegistry.create;
   with lreg_Registry do
   try
@@ -2557,7 +2605,7 @@ begin
       begin //bizarre, cette boucle ne fonctionne pas avec un TRegIniFile, ou il faudrait fermer la clé entre chaque lecture
         s:=ReadString('NomBase'+IntToStr(i));
         if s>'' then
-          edNomBase.Items.Add(fs_getCorrectString(s));
+          p_AddABase(fs_getCorrectString(s), False);
       end;
     end;
   finally
@@ -2590,9 +2638,22 @@ begin
   Height := 400;
   PCPrincipal.ActivePage:=ts_Gen;
   Caption := fs_getCorrectString(CST_AncestroWeb_WithLicense+' : '+gs_AnceSTROWEB_FORM_CAPTION);
-  DoInit(fbddpath);
+  p_AddABase(fbddpath);
+  DoInitBase(edNomBase);
   if lb_Logie Then
     p_updateIfNeeded;
+end;
+
+procedure TF_AncestroWeb.OnFormInfoIniIniLoad(const AInifile: TCustomInifile;
+  var Continue: Boolean);
+begin
+  p_ReadComboBoxItems(edNomBase,edNomBase.Items);
+end;
+
+procedure TF_AncestroWeb.OnFormInfoIniIniWrite(const AInifile: TCustomInifile;
+  var Continue: Boolean);
+begin
+  p_writeComboBoxItems(edNomBase,edNomBase.Items);
 end;
 
 // procedure TF_AncestroWeb.TraduceImageFailure

@@ -262,7 +262,7 @@ object F_AncestroWeb: TF_AncestroWeb
             AutoSize = False
             DropDownCount = 10
             ItemHeight = 13
-            OnExit = edNomBaseExit
+            OnChange = edNomBaseChange
             TabOrder = 0
           end
           object btnSelectBase: TSpeedButton
@@ -1466,25 +1466,33 @@ object F_AncestroWeb: TF_AncestroWeb
     end
   end
   object IBQ_Individu: TIBQuery
+    BufferChunks = 1000
+    CachedUpdates = False
+    GeneratorField.ApplyOnEvent = gaeOnNewRecord
     SQL.Strings = (
-      
-        'select  CLE_FICHE,NUM_SOSA,CLE_PERE,CLE_MERE,NOM,PRENOM,SEXE,ANN' +
-        'EE_NAISSANCE,ANNEE_DECES from INDIVIDU WHERE KLE_DOSSIER=:KLE_DO' +
-        'SSIER '
-      'ORDER BY NOM,PRENOM,ANNEE_NAISSANCE DESC,ANNEE_DECES DESC')
-    Left = 572
-    Top = 256
-    ParamData = <
+      'select  CLE_FICHE,NUM_SOSA,CLE_PERE,CLE_MERE,NOM,PRENOM,SEXE, ANNEE_NAISSANCE,ANNEE_DECES from INDIVIDU WHERE KLE_DOSSIER=:KLE_DOSSIER '
+      'ORDER BY '
+      'NOM,PRENOM,ANNEE_NAISSANCE DESC,ANNEE_DECES DESC'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'KLE_DOSSIER'
+        ParamType = ptUnknown
+      end>
+    left = 572
+    top = 256
+    ParamData = <    
       item
         DataType = ftInteger
         Name = 'KLE_DOSSIER'
         ParamType = ptUnknown
       end>
   end
-  object ds_Individu: TDataSource
+  object ds_Individu: TDatasource
     DataSet = IBQ_Individu
-    Left = 472
-    Top = 256
+    left = 472
+    top = 256
   end
   object OpenDialog: TOpenDialog
     Title = 'Fichier de la base de données'
@@ -1499,6 +1507,8 @@ object F_AncestroWeb: TF_AncestroWeb
     SauvePosObjects = True
     SauveEditObjets = [feTEdit, feTCheck, feTComboValue, feTDirectoryEdit, feTFileNameEdit, feTMemo, feTPageControl, feTRadio, feTSpinEdit]
     SauvePosForm = True
+    OnIniLoad = OnFormInfoIniIniLoad
+    OnIniWrite = OnFormInfoIniIniWrite
     Freeini = False
     left = 176
     top = 80

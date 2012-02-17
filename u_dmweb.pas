@@ -262,7 +262,7 @@ type
   end;
 
 var
-  DMWeb: TDMWeb;
+  DMWeb: TDMWeb = nil;
   sDataBaseName: string;
   fNom_Dossier:string;
   fCleFiche: integer;
