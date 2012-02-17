@@ -296,7 +296,7 @@ object DMWeb: TDMWeb
     GeneratorField.ApplyOnEvent = gaeOnNewRecord
     SQL.Strings = (
       'SELECT '
-      'MULTI_MEDIA ,  MULTI_NOM,  MULTI_PATH'
+      'MULTI_CLEF,MULTI_MEDIA ,  MULTI_NOM,  MULTI_PATH'
       '   FROM MULTIMEDIA,'
       '        MEDIA_POINTEURS'
       '   WHERE '
@@ -362,7 +362,7 @@ object DMWeb: TDMWeb
     CachedUpdates = False
     GeneratorField.ApplyOnEvent = gaeOnNewRecord
     SQL.Strings = (
-      'select EV_FAM_KLE_FAMILLE, MP_MEDIA, MULTI_MEDIA, MULTI_PATH, MULTI_NOM'
+      'select EV_FAM_KLE_FAMILLE, MP_MEDIA, MULTI_MEDIA, MULTI_PATH, MULTI_NOM, MULTI_CLEF'
       ' FROM EVENEMENTS_FAM, MEDIA_POINTEURS, MULTIMEDIA where MP_TABLE=''F'''
       'and MP_POINTE_SUR=EV_FAM_CLEF'
       'and MULTI_CLEF=MP_MEDIA'
@@ -778,4 +778,4 @@ object DMWeb: TDMWeb
     left = 192
     top = 264
   end
-end
+end

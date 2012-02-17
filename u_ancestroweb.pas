@@ -1287,7 +1287,7 @@ End;
 // creating a non-existing Media File
 function TF_AncestroWeb.fb_getMediaFile ( const IBQ_Media : TIBQuery;
                                           const as_FilePath : string ) : Boolean;
-var ls_Dir : String;
+var ls_Path : String;
 Begin
   Result := False;
 
@@ -1302,34 +1302,47 @@ Begin
       Exit;
     end;
   try
-    ls_Dir := DirectorySeparator + IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString;
-    {$IFDEF WINDOWS}
-    ls_dir := fs_RemplaceChar(ls_dir,'/',DirectorySeparator);
-    {$ELSE}
-    ls_dir := fs_RemplaceChar(ls_dir,'\',DirectorySeparator);
-    {$ENDIF}
-    // simple copy ?
-    if not IBQ_Media.FieldByName ( MEDIAS_NOM ).IsNull
-    and FileExistsUTF8(fBasePath+ls_dir)
-     Then
-       Begin
-         FileCopy.Source:=fBasePath+ls_dir;
-         FileCopy.Destination:=as_FilePath;
-         FileCopy.CopySourceToDestination;
-         Result:=True;
-       end
-    Else
+    if not IBQ_Media.FieldByName ( MEDIAS_NOM ).IsNull Then
+     Begin
+      ls_Path := DirectorySeparator + IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString;
+      {$IFDEF WINDOWS}
+      ls_dir := fs_RemplaceChar(ls_dir,'/',DirectorySeparator);
+      {$ELSE}
+      ls_Path := fs_RemplaceChar(ls_Path,'\',DirectorySeparator);
+      {$ENDIF}
+      // simple copy ?
+      if not IBQ_Media.FieldByName ( MEDIAS_NOM ).IsNull
+      and FileExistsUTF8(fBasePath+ls_Path)
+       Then
+         Begin
+           FileCopy.Source:=fBasePath+ls_Path;
+           FileCopy.Destination:=as_FilePath;
+           FileCopy.CopySourceToDestination;
+           Result:=True;
+           Exit;
+         end;
+      End;
     // unless creating file from database
     if {$IFNDEF FPC}( GetDriveType( Pchar(ExtractFileDrive ( IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString ))) >0 )
     and{$ENDIF} FileExistsUTF8(IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString )
       Then
         Begin
-         FileCopy.Source:=IBQ_Media.FieldByName(MEDIAS_PATH ).AsString;
+         ls_Path := IBQ_Media.FieldByName(MEDIAS_PATH ).AsString;
+         FileCopy.Source:= ls_Path;
          FileCopy.Destination:=as_FilePath;
          FileCopy.CopySourceToDestination;
+         if ( pos ( fBasePath, ls_Path ) = 1 ) Then
+          try
+            DMWeb.IBS_Temp.SQL.Text := 'UPDATE MULTIMEDIA SET ' + MEDIAS_NOM + '='''
+                                    + fs_stringDbQuote(copy ( ls_Path, length ( fBasePath ) + 1, length ( ls_Path ) - length ( fBasePath )))
+                                    + ''' WHERE ' + MEDIAS_CLEF + '=' + IBQ_Media.FieldByName(MEDIAS_CLEF ).AsString;
+            DMWeb.IBS_Temp.ExecQuery;
+          finally
+          end;
          Result:=True;
-        end
-      Else Result := fb_ImageFieldToFile(IBQ_Media.FieldByName(MEDIAS_MULTI_MEDIA), as_FilePath);
+         Exit;
+        end;
+     Result := fb_ImageFieldToFile(IBQ_Media.FieldByName(MEDIAS_MULTI_MEDIA), as_FilePath);
   Except
    Result:=False;
   end;

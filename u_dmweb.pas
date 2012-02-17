@@ -102,6 +102,7 @@ const IBQDLLNOM='NOM';
       MEDIAS_MP_IDENTITE   = 'MP_IDENTITE' ;
       MEDIAS_MP_POINTE_SUR = 'MP_POINTE_SUR' ;
       MEDIAS_PATH          = 'MULTI_PATH' ;
+      MEDIAS_CLEF          = 'MULTI_CLEF' ;
       MEDIAS_NOM           = 'MULTI_NOM' ;
       MEDIAS_TABLE         = 'MP_TABLE' ;
       MEDIAS_MEDIA         = 'MP_MEDIA' ;
