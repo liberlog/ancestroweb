@@ -1124,7 +1124,7 @@ begin
     end;
 
     // saving the page
-  ls_destination := FileCopy.Destination + DirectorySeparator +
+  ls_destination := de_ExportWeb.Directory + DirectorySeparator +
     CST_SUBDIR_HTML_TREE + DirectorySeparator + ed_TreeName.Text + CST_EXTENSION_HTML;
   try
     if fb_CreateDirectoryStructure(FileCopy.Destination + DirectorySeparator + CST_SUBDIR_HTML_TREE + DirectorySeparator) then
@@ -1154,7 +1154,7 @@ begin
   ls_HtmlFileName := fs_TextToFileName(Copy(ls_HtmlFileName, 1, Length(ls_HtmlFileName) -
     Length(ExtractFileExt(ls_HtmlFileName)))) + CST_EXTENSION_JPEG;
   // saving the picture
-  ls_Destination := FileCopy.Destination + DirectorySeparator +
+  ls_destination := de_ExportWeb.Directory + DirectorySeparator +
     CST_SUBDIR_HTML_IMAGES + DirectorySeparator + ls_HtmlFileName;
   TraduceImage.FileSource := as_ImageFile;
   TraduceImage.FileDestination := ls_Destination;
@@ -1216,14 +1216,14 @@ begin
     ( gs_AnceSTROWEB_Home ), ( gs_AnceSTROWEB_Home ), gs_ANCESTROWEB_Welcome, gs_LinkGedcom);
   p_IncProgressBar; // growing the counter
   // saving the page
-  ls_destination := FileCopy.Destination + DirectorySeparator + ed_IndexName.Text +
+  ls_destination := de_ExportWeb.Directory + DirectorySeparator + ed_IndexName.Text +
     CST_EXTENSION_HTML;
   try
     lstl_HTMLHome.SaveToFile(ls_destination);
   except
     On E: Exception do
     begin
-      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateHome ) + ls_destination + CST_ENDOFLINE + E.Message);
+      ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
       Abort;
     end;
   end;
@@ -1287,6 +1287,7 @@ End;
 // creating a non-existing Media File
 function TF_AncestroWeb.fb_getMediaFile ( const IBQ_Media : TIBQuery;
                                           const as_FilePath : string ) : Boolean;
+var ls_Dir : String;
 Begin
   Result := False;
 
@@ -1301,12 +1302,18 @@ Begin
       Exit;
     end;
   try
+    ls_Dir := DirectorySeparator + IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString;
+    {$IFDEF WINDOWS}
+    ls_dir := fs_RemplaceChar(ls_dir,'/',DirectorySeparator);
+    {$ELSE}
+    ls_dir := fs_RemplaceChar(ls_dir,'\',DirectorySeparator);
+    {$ENDIF}
     // simple copy ?
     if not IBQ_Media.FieldByName ( MEDIAS_NOM ).IsNull
-    and FileExistsUTF8(fBasePath+DirectorySeparator+IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString)
+    and FileExistsUTF8(fBasePath+ls_dir)
      Then
        Begin
-         FileCopy.Source:=fBasePath+DirectorySeparator+IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString;
+         FileCopy.Source:=fBasePath+ls_dir;
          FileCopy.Destination:=as_FilePath;
          FileCopy.CopySourceToDestination;
          Result:=True;
@@ -1404,13 +1411,13 @@ begin
   p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_NAMES, me_NamesHead.Lines.Text,
      ( gs_AnceSTROWEB_Names ), gs_AnceSTROWEB_Names, gs_ANCESTROWEB_Names_Long, gs_LinkGedcom);
   // saving the page
-  ls_destination := FileCopy.Destination + DirectorySeparator + ed_NamesFileName.Text + CST_EXTENSION_HTML;
+  ls_destination := de_ExportWeb.Directory + DirectorySeparator + ed_NamesFileName.Text + CST_EXTENSION_HTML;
   try
     lstl_HTMLAFolder.SaveToFile(ls_destination);
   except
     On E: Exception do
     begin
-      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateHome ) + ls_destination + CST_ENDOFLINE + E.Message);
+      ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
       Abort;
     end;
   end;
@@ -1498,7 +1505,7 @@ var
       ( gs_AnceSTROWEB_List ) + ' - ' + ls_NameBegin +
       ( gs_AnceSTROWEB_At ) + ls_NameEnd, '', '', gs_LinkGedcom, '..' + CST_HTML_DIR_SEPARATOR);
     // saving the page
-    ls_destination := FileCopy.Destination + DirectorySeparator +
+    ls_destination := de_ExportWeb.Directory + DirectorySeparator +
       CST_SUBDIR_HTML_LISTS + DirectorySeparator + ed_ListsBeginName.Text + IntToStr(
       li_CounterPages) + CST_EXTENSION_HTML;
     try
@@ -1506,7 +1513,7 @@ var
     except
       On E: Exception do
       begin
-        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateHome ) + ls_destination + CST_ENDOFLINE + E.Message);
+        ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
         Abort;
       end;
     end;
@@ -1879,7 +1886,7 @@ var
       ( gs_AnceSTROWEB_At ) + ls_NameEnd, '', '', gs_LinkGedcom, '..' + CST_HTML_DIR_SEPARATOR);
 
     // saving the page
-    ls_destination := FileCopy.Destination + DirectorySeparator +
+    ls_destination := de_ExportWeb.Directory + DirectorySeparator +
       CST_SUBDIR_HTML_FILES + DirectorySeparator + ed_FileBeginName.Text + IntToStr(
       li_CounterPages) + CST_EXTENSION_HTML;
     try
@@ -1887,7 +1894,7 @@ var
     except
       On E: Exception do
       begin
-        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateHome ) + ls_destination + CST_ENDOFLINE + E.Message);
+        ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
         Abort;
       end;
     end;
@@ -1929,14 +1936,14 @@ begin
   p_IncProgressBar; // growing the counter
 
   // saving the page
-  ls_destination := FileCopy.Destination + DirectorySeparator +
+  ls_destination := de_ExportWeb.Directory + DirectorySeparator +
     ed_FileBeginName.Text + CST_EXTENSION_HTML;
   try
     lstl_HTMLPersons.SaveToFile(ls_destination);
   except
     On E: Exception do
     begin
-      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateHome ) + ls_destination + CST_ENDOFLINE + E.Message);
+      ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
       Abort;
     end;
   end;
@@ -1992,7 +1999,7 @@ begin
   p_IncProgressBar; // growing the counter
 
   // saving the page
-  ls_destination := FileCopy.Destination + DirectorySeparator + ed_ContactName.Text + CST_EXTENSION_PHP;
+  ls_destination := de_ExportWeb.Directory + DirectorySeparator + ed_ContactName.Text + CST_EXTENSION_PHP;
   try
     lstl_HTMLContact.SaveToFile(ls_destination);
   except
@@ -2031,7 +2038,7 @@ begin
   p_ReplaceLanguageString(lstl_HTMLSearch,CST_SEARCH_SEARCH_TOOL  ,ed_SearchTool.Text);
 
   // saving the page
-  ls_destination := FileCopy.Destination + DirectorySeparator + ed_SearchName.Text  + CST_EXTENSION_HTML;
+  ls_destination := de_ExportWeb.directory + DirectorySeparator + ed_SearchName.Text  + CST_EXTENSION_HTML;
   try
     lstl_HTMLSearch.SaveToFile(ls_destination);
   except
@@ -2167,7 +2174,7 @@ begin
 
 
   // saving the page
-  ls_destination := FileCopy.Destination + DirectorySeparator + ed_AgesName.Text  + CST_EXTENSION_HTML;
+  ls_destination := de_ExportWeb.Directory + DirectorySeparator + ed_AgesName.Text  + CST_EXTENSION_HTML;
   try
     lstl_HTMLAges2.SaveToFile(ls_destination);
   except
@@ -2298,7 +2305,7 @@ begin
         gs_ANCESTROWEB_Jobs, gs_ANCESTROWEB_Jobs, gs_ANCESTROWEB_Jobs_Long, gs_LinkGedcom, '',CST_EXTENSION_HTML,'',lstl_HTMLJobs);
 
   // saving the page
-  ls_destination := FileCopy.Destination + DirectorySeparator + ed_JobsName.Text  + CST_EXTENSION_HTML;
+  ls_destination := de_ExportWeb.Directory + DirectorySeparator + ed_JobsName.Text  + CST_EXTENSION_HTML;
   try
     lstl_HTMLJobs2.SaveToFile(ls_destination);
   except

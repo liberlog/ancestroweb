@@ -88,7 +88,7 @@ resourcestring
   gs_ANCESTROWEB_cantOpenData = 'Impossible d''ouvrir les données sur ';
   gs_ANCESTROWEB_cantOpenFile = 'Impossible d''ouvrir le fichier ici : ';
   gs_ANCESTROWEB_cantUseData = 'Impossible d''utiliser les données sur ';
-  gs_ANCESTROWEB_cantCreateHome = 'Impossible de sauver l''accueil ici : ';
+  gs_ANCESTROWEB_cantCreateHere = 'Impossible de sauver ici : ';
   gs_ANCESTROWEB_cantCreateContact = 'Impossible de sauver la fiche de contact ici : ';
   gs_ANCESTROWEB_DownloadGedcom = 'Téléchargez mon Gedcom ici.';
   gs_ANCESTROWEB_CreatedBy = 'Créé par';
