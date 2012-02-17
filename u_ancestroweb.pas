@@ -1306,7 +1306,7 @@ Begin
      Begin
       ls_Path := DirectorySeparator + IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString;
       {$IFDEF WINDOWS}
-      ls_dir := fs_RemplaceChar(ls_dir,'/',DirectorySeparator);
+      ls_Path := fs_RemplaceChar(ls_Path,'/',DirectorySeparator);
       {$ELSE}
       ls_Path := fs_RemplaceChar(ls_Path,'\',DirectorySeparator);
       {$ENDIF}

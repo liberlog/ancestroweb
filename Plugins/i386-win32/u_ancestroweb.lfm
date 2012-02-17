@@ -17,7 +17,7 @@ object F_AncestroWeb: TF_AncestroWeb
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poScreenCenter
-  LCLVersion = '0.9.30.2RC1'
+  LCLVersion = '0.9.30.2'
   object spSkinPanel1: TPanel
     Left = 0
     Height = 30
@@ -124,7 +124,7 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object cb_Themes: TComboBox
             Left = 68
-            Height = 21
+            Height = 23
             Top = 150
             Width = 199
             ItemHeight = 13
@@ -504,6 +504,10 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 97
               Caption = 'Voir'
               TabOrder = 4
+              Font.Color = clMaroon
+              Font.Height = -15
+              Font.Name = 'MS Sans Serif'
+              ParentFont = False
               OnClick = FWPreview1Click
             end
           end
@@ -521,8 +525,8 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Home: TTabSheet
       Caption = 'Accueil'
-      ClientHeight = 340
-      ClientWidth = 632
+      ClientHeight = 332
+      ClientWidth = 636
       object Panel8: TPanel
         Left = 0
         Height = 340
@@ -1461,46 +1465,7 @@ object F_AncestroWeb: TF_AncestroWeb
       end
     end
   end
-  object IBQ_Individu: TIBQuery
-    Database = DMWeb.ibd_BASE
-    Transaction = DMWeb.IBT_BASE
-    BufferChunks = 1000
-    CachedUpdates = False
-    GeneratorField.ApplyOnEvent = gaeOnNewRecord
-    SQL.Strings = (
-      'select CLE_FICHE'
-      ',NOM'
-      ',PRENOM'
-      ',cle_pere'
-      ',cle_mere'
-      ',sexe'
-      ',num_sosa'
-      ',ANNEE_NAISSANCE'
-      ',ANNEE_DECES '
-      'from INDIVIDU '
-      'WHERE KLE_DOSSIER=:KLE_DOSSIER '
-      'ORDER BY NOM'
-      ',PRENOM'
-      ',ANNEE_NAISSANCE'
-      ',ANNEE_DECES '
-    )
-    Params = <    
-      item
-        DataType = ftInteger
-        Name = 'KLE_DOSSIER'
-        ParamType = ptInput
-      end>
-    left = 176
-    top = 176
-    ParamData = <    
-      item
-        DataType = ftInteger
-        Name = 'KLE_DOSSIER'
-        ParamType = ptInput
-      end>
-  end
   object ds_Individu: TDatasource
-    DataSet = IBQ_Individu
     left = 72
     top = 240
   end
