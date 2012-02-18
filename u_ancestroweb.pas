@@ -36,7 +36,7 @@ uses
   U_DMWeb, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, StdCtrls, DB,
   IBQuery, DBCtrls, ExtCtrls, Buttons, ComCtrls, DBGrids,
   functions_html, JvXPCheckCtrls, Spin, FileUtil, U_OnFormInfoIni,
-  U_ExtImage, u_buttons_appli, U_ExtFileCopy, u_traducefile,
+  U_ExtImage, u_buttons_appli, IBSQL, U_ExtFileCopy, u_traducefile,
   JvXPButtons, IniFiles;
 
 type
@@ -254,8 +254,10 @@ type
                                  const as_PreviousNext: String=CST_PAGE_PREVIOUS;
                                  const as_Subdir: String='';
                                        as_BeginLinkFiles: String=CST_SUBDIR_HTML_FILES+'/'): String;
-    function fs_getaltPhoto(const IBQ_IndividuFiltered: TIBQuery): String;
-    function fs_getNameAndSurName(const ibq_Query: TIBQuery): String;
+    function fs_getaltPhoto(const IBQ_IndividuFiltered: TIBQuery): String; virtual; overload;
+    function fs_getaltPhoto(const IBQ_IndividuFiltered: TIBSQL): String; virtual; overload;
+    function fs_getNameAndSurName(const ibq_Query: TIBQuery): String; virtual; overload;
+    function fs_getNameAndSurName(const ibq_Query: TIBSQL): String; virtual; overload;
     function fs_GetTitleTree(const as_NameOfTree: String;
                              const ai_generations: Longint): String;
     procedure p_AddABase(const as_Base: String; const ab_SetIndex :Boolean = True);
@@ -283,7 +285,7 @@ type
     procedure p_genHtmlFiles(const IBQ_FilesFiltered: TIBQuery);
     procedure p_genHtmlJobs;
     procedure p_genHtmlList(const IBQ_FilesFiltered: TIBQuery);
-    procedure p_genHtmlNames(const IBQ_FilesFiltered: TIBQuery);
+    procedure p_genHtmlNames(const IBQ_FilesFiltered: TIBSQL);
     procedure p_genHtmlSearch;
     procedure p_genPhpContact;
     procedure p_genHtmlHome;
@@ -296,7 +298,9 @@ type
     procedure p_iniReadKey;
     procedure p_iniWriteKey;
     function fb_OpenTree(const AIBQ_Tree: TIBQuery; const ai_Cle: longint;
-      const ai_Niveau: integer = 0;const ai_Sexe: integer = 0): boolean;
+      const ai_Niveau: integer = 0;const ai_Sexe: integer = 0): boolean; virtual; overload;
+    function fb_OpenTree(const AIBQ_Tree: TIBSQL; const ai_Cle: longint;
+      const ai_Niveau: integer = 0;const ai_Sexe: integer = 0): boolean; virtual; overload;
     procedure p_Setcomments(const as_Comment: String);
     procedure ListerDossiers;
   public
@@ -320,16 +324,16 @@ implementation
 
 uses  fonctions_init,
   functions_html_tree,
-  IBSQL,
 {$IFNDEF FPC}
   AncestroWeb_strings_delphi,
-  fonctions_system, windirs,
+  windirs,
 {$ELSE}
   AncestroWeb_strings,UniqueInstanceRaw,
 {$ENDIF}
 {$IFDEF WIN32}
 //  windirs,
 {$ENDIF}
+  fonctions_system,
   fonctions_string,
   fonctions_languages,
   fonctions_images,
@@ -597,17 +601,21 @@ begin
     begin
       if ch_ancestors.Checked Then
         Begin
-          if fb_OpenTree(DmWeb.IBQ_TreeByNames, gi_CleFiche) then
-            p_createLettersSheets( gt_SheetsLetters, DmWeb.IBQ_TreeByNames, gi_FilesPerPage, ed_FileBeginName.Text);
+          if fb_OpenTree(DmWeb.IBQ_TreeByNames, gi_CleFiche )
+             then
+              p_createLettersSheets( gt_SheetsLetters, DmWeb.IBQ_TreeByNames, gi_FilesPerPage, ed_FileBeginName.Text);
         end
        Else
        Begin
-         if fb_OpenTree(DmWeb.IBQ_TreeDescByNames, gi_CleFiche) then
+         if fb_OpenTree(DmWeb.IBQ_TreeDescByNames, gi_CleFiche ) then
            p_createLettersSheets( gt_SheetsLetters, DmWeb.IBQ_TreeDescByNames, gi_FilesPerPage, ed_FileBeginName.Text);
        end;
     end
     else
+     Begin
+      IBQ_Individu.First;
       p_createLettersSheets( gt_SheetsLetters, IBQ_Individu, gi_FilesPerPage, ed_FileBeginName.Text);
+     end;
 
     if ch_genTree.Checked then
       if ch_ancestors.Checked
@@ -635,21 +643,21 @@ begin
        Begin
          if ch_ancestors.Checked Then
            Begin
-             if fb_OpenTree(DmWeb.IBQ_TreeNames, gi_CleFiche) Then
-               p_genHtmlNames(DmWeb.IBQ_TreeNames);
+             if fb_OpenTree(DmWeb.IBS_TreeNames,gi_CleFiche) Then
+               p_genHtmlNames(DmWeb.IBS_TreeNames);
            end
           else
            Begin
-             if fb_OpenTree(DmWeb.IBQ_TreeNamesDesc, gi_CleFiche) Then
-               p_genHtmlNames(DmWeb.IBQ_TreeNamesDesc);
+             if fb_OpenTree(DmWeb.IBS_TreeNamesDesc, gi_CleFiche) Then
+               p_genHtmlNames(DmWeb.IBS_TreeNamesDesc);
            end;
        end
       else
        Begin
-         DmWeb.IBQ_Names.Close;
-         DmWeb.IBQ_Names.ParamByName(I_DOSSIER).AsInteger:=fCleDossier;
-         DmWeb.IBQ_Names.Open;
-         p_genHtmlNames(DmWeb.IBQ_Names);
+         DmWeb.IBS_Names.Close;
+         DmWeb.IBS_Names.ParamByName(I_DOSSIER).AsInteger:=DMWeb.CleDossier;
+         DmWeb.IBS_Names.ExecQuery;
+         p_genHtmlNames(DmWeb.IBS_Names);
 
        end;
     end;
@@ -670,7 +678,7 @@ var
   NumDossier:integer;
 begin
   NumDossier:=StrToInt(trim(copy(cbDossier.Caption,1,2)));
-  if NumDossier<>fCleDossier then
+  if NumDossier<>DMWeb.CleDossier then
     if OuvreDossier(NumDossier) then
     begin
       fNom_Dossier:=fs_getCorrectString(copy(cbDossier.Caption,5,250));
@@ -1119,9 +1127,30 @@ begin
       if (FindParam(I_PARQUI) <> nil) Then
         ParamByName(I_PARQUI).AsInteger := ai_Sexe;
       if (FindParam(I_DOSSIER) <> nil) Then
-        ParamByName(I_DOSSIER).AsInteger := fCleDossier;
+        ParamByName(I_DOSSIER).AsInteger := DMWeb.CleDossier;
       AIBQ_Tree.Open;
       Result := not AIBQ_Tree.IsEmpty;
+    except
+      On E: Exception do
+        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
+    end;
+end;
+
+// function TF_AncestroWeb.fb_OpenTree
+// open a tree from parameters
+function TF_AncestroWeb.fb_OpenTree(const AIBQ_Tree: TIBSQL;
+  const ai_Cle: longint; const ai_Niveau: integer = 0;
+  const ai_Sexe: integer = 0): boolean;
+begin
+  Result := False;
+  with AIBQ_Tree do
+    try
+      AIBQ_Tree.Close;
+      ParamByName(I_CLEF).AsInteger := ai_Cle;
+      ParamByName(I_NIVEAU).AsInteger := ai_Niveau;
+      ParamByName(I_PARQUI).AsInteger := ai_Sexe;
+      AIBQ_Tree.ExecQuery;
+      Result := AIBQ_Tree.Eof;
     except
       On E: Exception do
         ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
@@ -1292,7 +1321,7 @@ Begin
     DMWeb.IBQ_Medias.ParamByName(MEDIAS_TABLE      ).AsString  := ach_table ;
     DMWeb.IBQ_Medias.ParamByName(MEDIAS_MP_IDENTITE).AsInteger := Integer ( ab_Identite ) ;
     DMWeb.IBQ_Medias.Open;
-    Result := not DMWeb.IBQ_Medias.IsEmpty;
+    Result := DMWeb.IBQ_Medias.Eof;
 
   Except
     on E : Exception do
@@ -1305,6 +1334,13 @@ end;
 // function TF_AncestroWeb.fs_getNameAndSurName
 // Getting name and surname
 function TF_AncestroWeb.fs_getNameAndSurName ( const ibq_Query : TIBQuery ) : String;
+Begin
+  Result:=ibq_Query.FieldByName(IBQDLLNOM).AsString+' ' + ibq_Query.FieldByName(IBQDLLPRENOM).AsString;
+End;
+
+// function TF_AncestroWeb.fs_getNameAndSurName
+// Getting name and surname
+function TF_AncestroWeb.fs_getNameAndSurName ( const ibq_Query : TIBSQL ) : String;
 Begin
   Result:=ibq_Query.FieldByName(IBQDLLNOM).AsString+' ' + ibq_Query.FieldByName(IBQDLLPRENOM).AsString;
 End;
@@ -1341,25 +1377,23 @@ Begin
   try
     if not IBQ_Media.FieldByName ( MEDIAS_NOM ).IsNull Then
      Begin
-      ls_Path := DirectorySeparator + IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString;
-      {$IFDEF WINDOWS}
-      ls_Path := fs_RemplaceChar(ls_Path,'/',DirectorySeparator);
-      {$ELSE}
-      ls_Path := fs_RemplaceChar(ls_Path,'\',DirectorySeparator);
-      {$ENDIF}
+      ls_Path := DirectorySeparator + fs_GetCorrectPath ( IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString );
       // simple copy ?
-      if not IBQ_Media.FieldByName ( MEDIAS_NOM ).IsNull Then
-      if FileExistsUTF8(fBasePath+ls_Path)
+      if not IBQ_Media.FieldByName ( MEDIAS_NOM ).IsNull
+      and (   FileExistsUTF8(fSoftUserPath  +ls_Path)
+           or FileExistsUTF8(fFolderBasePath+ls_Path))
        Then
          Begin
            WriteLn(IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString+ ' - ' + IBQ_Media.FieldByName(MEDIAS_PATH ).AsString);
-           FileCopy.Source:=fBasePath+ls_Path;
+           if FileExistsUTF8(fSoftUserPath+ls_Path)
+            Then FileCopy.Source:=fSoftUserPath  +ls_Path
+            Else FileCopy.Source:=fFolderBasePath+ls_Path;
            FileCopy.Destination:=as_FilePath;
            FileCopy.CopySourceToDestination;
            Result:=True;
            Exit;
          end else
-         WriteLn(fBasePath+ls_Path+ ' not found ' );
+         WriteLn(fSoftUserPath+ls_Path+ ' not found ' );
       End;
     // unless creating file from database
     if IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString <> '' Then
@@ -1371,10 +1405,10 @@ Begin
            FileCopy.Source:= ls_Path;
            FileCopy.Destination:=as_FilePath;
            FileCopy.CopySourceToDestination;
-           if ( pos ( fBasePath, ls_Path ) = 1 ) Then
+           if ( pos ( fFolderBasePath, ls_Path ) = 1 ) Then
             try
               DMWeb.IBS_Temp.SQL.Text := 'UPDATE MULTIMEDIA SET ' + MEDIAS_NOM + '='''
-                                      + fs_stringDbQuote(copy ( ls_Path, length ( fBasePath ) + 1, length ( ls_Path ) - length ( fBasePath )))
+                                      + fs_stringDbQuote(copy ( ls_Path, length ( fFolderBasePath ) + 1, length ( ls_Path ) - length ( fFolderBasePath )))
                                       + ''' WHERE ' + MEDIAS_CLEF + '=' + IBQ_Media.FieldByName(MEDIAS_CLEF ).AsString;
               DMWeb.IBS_Temp.ExecQuery;
             Except
@@ -1430,7 +1464,7 @@ end;
 
 // procedure TF_AncestroWeb.p_genHtmlNames
 // generating HTML Names' page
-procedure TF_AncestroWeb.p_genHtmlNames (const IBQ_FilesFiltered: TIBQuery);
+procedure TF_AncestroWeb.p_genHtmlNames (const IBQ_FilesFiltered: TIBSQL);
 var
   lstl_HTMLAFolder: TStringList;
   ls_NewName, ls_Name, ls_destination: string;
@@ -1607,6 +1641,17 @@ Begin
       IBQ_IndividuFiltered.FieldByName(
       IBQDLLPRENOM).AsString;
 end;
+function TF_AncestroWeb.fs_getaltPhoto(const IBQ_IndividuFiltered : TIBSQL):String;
+Begin
+  Result:=IBQ_IndividuFiltered.FieldByName(
+      IBQ_ANNEE_NAISSANCE).AsString + '-' +
+      IBQ_IndividuFiltered.FieldByName(
+      IBQ_ANNEE_DECES).AsString + ' ' +
+      IBQ_IndividuFiltered.FieldByName(
+      IBQDLLNOM).AsString + ' ' +
+      IBQ_IndividuFiltered.FieldByName(
+      IBQDLLPRENOM).AsString;
+end;
 function TF_AncestroWeb.fs_AddPhoto( const ai_cleFiche: longint;
 const as_FileAltName, as_ImagesDir: string; const ai_ResizeWidth : Integer = 180 ): string;
 var li_i : Integer;
@@ -1665,14 +1710,14 @@ var
     DMWeb.IBQ_ConjointSources.Open;
     Result := ' (' + ( gs_AnceSTROWEB_Married_On )+ as_Date ;
     if ch_Images.Checked
-    and not DMWeb.IBQ_ConjointSources.IsEmpty Then
+    and not DMWeb.IBQ_ConjointSources.EOF Then
       Begin
          // adding source
-        if DMWeb.IBQ_Conjoint.FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN
-        Then ls_FileName := fs_getNameAndSurName (DMWeb.IBQ_Conjoint)+'&'+fs_getNameAndSurName (IBQ_FilesFiltered)
-        Else ls_FileName := fs_getNameAndSurName (IBQ_FilesFiltered )+'&'+fs_getNameAndSurName (DMWeb.IBQ_Conjoint);
-        ls_FileName := fs_TextToFileName(DMWeb.IBQ_Conjoint.FieldByName(UNION_CLEF).AsString + ls_FileName+'-'+as_Date
-                     + '-'+DMWeb.IBQ_Conjoint.FieldByName(UNION_CP).AsString+'-'+DMWeb.IBQ_Conjoint.FieldByName(UNION_CITY).AsString )+ '-';
+        if DMWeb.IBS_Conjoint.FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN
+        Then ls_FileName := fs_getNameAndSurName (DMWeb.IBS_Conjoint)+'&'+fs_getNameAndSurName (IBQ_FilesFiltered)
+        Else ls_FileName := fs_getNameAndSurName (IBQ_FilesFiltered )+'&'+fs_getNameAndSurName (DMWeb.IBS_Conjoint);
+        ls_FileName := fs_TextToFileName(DMWeb.IBS_Conjoint.FieldByName(UNION_CLEF).AsString + ls_FileName+'-'+as_Date
+                     + '-'+DMWeb.IBS_Conjoint.FieldByName(UNION_CP).AsString+'-'+DMWeb.IBS_Conjoint.FieldByName(UNION_CITY).AsString )+ '-';
         li_i := 1 ;
 
         // medias
@@ -1692,7 +1737,7 @@ var
   end;
 
   // add an event date with city
-  function fs_addDateAndCity ( const IBQ_FicheInfos : TIBQuery ; const as_date, as_City, as_manon, as_womanon : String ):String ;
+  function fs_addDateAndCity ( const IBQ_FicheInfos : TIBSQL ; const as_date, as_City, as_manon, as_womanon : String ):String ;
   begin
 
     // is there an info
@@ -1713,43 +1758,43 @@ var
   procedure p_AddJobs ( const astl_HTMLAFolder : TStringList ; const ai_CleFiche, ai_NoInPage : LongInt  );
   var ls_Line : String ;
   Begin
-    DMWeb.IBQ_JobsInd.Close;
-    DMWeb.IBQ_JobsInd.ParamByName ( IBQ_CLE_FICHE ).AsInteger:=ai_CleFiche;
-    DMWeb.IBQ_JobsInd.Open;
-    if not DMWeb.IBQ_JobsInd.IsEmpty Then  // Job(s) ?
+    DMWeb.IBS_JobsInd.Close;
+    DMWeb.IBS_JobsInd.ParamByName ( IBQ_CLE_FICHE ).AsInteger:=ai_CleFiche;
+    DMWeb.IBS_JobsInd.ExecQuery;
+    if not DMWeb.IBS_JobsInd.Eof Then  // Job(s) ?
       Begin
         // title
        astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_H3    , CST_FILE_JOBS
                                                           + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL));
-       if DMWeb.IBQ_JobsInd.RecordCount = 1  // 1 or more jobs ?
+       if DMWeb.IBS_JobsInd.RecordCount = 1  // 1 or more jobs ?
         Then astl_HTMLAFolder.Add (( gs_ANCESTROWEB_Job   ))
         else astl_HTMLAFolder.Add (( gs_ANCESTROWEB_Jobs  ));
        astl_HTMLAFolder.Add ( CST_HTML_H3_END );  // title end
        astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_UL, CST_FILE_JOBS
                                                           + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL));
-       while not DMWeb.IBQ_JobsInd.EOF do  // adding all jobs
+       while not DMWeb.IBS_JobsInd.EOF do  // adding all jobs
         Begin
          astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_JOB + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
-                              + DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DESCRIPTION).AsString );
-         if DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_VILLE).AsString <> '' Then
+                              + DMWeb.IBS_JobsInd.FieldByName(IBQ_EV_IND_DESCRIPTION).AsString );
+         if DMWeb.IBS_JobsInd.FieldByName(IBQ_EV_IND_VILLE).AsString <> '' Then
          astl_HTMLAFolder.Add ( ' ' + gs_ANCESTROWEB_At + ' '
-                              + DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_VILLE).AsString );
-         if ( DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_PAYS).AsString <> '' )
-         or ( DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DATE).AsString <> '' )
+                              + DMWeb.IBS_JobsInd.FieldByName(IBQ_EV_IND_VILLE).AsString );
+         if ( DMWeb.IBS_JobsInd.FieldByName(IBQ_EV_IND_PAYS).AsString <> '' )
+         or ( DMWeb.IBS_JobsInd.FieldByName(IBQ_EV_IND_DATE).AsString <> '' )
            Then
             Begin
              ls_Line := '(' ;
-             if DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_PAYS).AsString <> '' Then
-              AppendStr ( ls_line, DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_PAYS).AsString );
-             if  ( DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_PAYS).AsString <> '' )
-             and ( DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DATE).AsString <> '' ) Then
+             if DMWeb.IBS_JobsInd.FieldByName(IBQ_EV_IND_PAYS).AsString <> '' Then
+              AppendStr ( ls_line, DMWeb.IBS_JobsInd.FieldByName(IBQ_EV_IND_PAYS).AsString );
+             if  ( DMWeb.IBS_JobsInd.FieldByName(IBQ_EV_IND_PAYS).AsString <> '' )
+             and ( DMWeb.IBS_JobsInd.FieldByName(IBQ_EV_IND_DATE).AsString <> '' ) Then
                AppendStr ( ls_line,  ' - ' );
-             if not DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DATE).IsNull Then
-              AppendStr ( ls_line, FormatDateTime(gs_ANCESTROWEB_LittleDateFormat,DMWeb.IBQ_JobsInd.FieldByName(IBQ_EV_IND_DATE).AsDateTime));
+             if not DMWeb.IBS_JobsInd.FieldByName(IBQ_EV_IND_DATE).IsNull Then
+              AppendStr ( ls_line, FormatDateTime(gs_ANCESTROWEB_LittleDateFormat,DMWeb.IBS_JobsInd.FieldByName(IBQ_EV_IND_DATE).AsDateTime));
              astl_HTMLAFolder.Add ( ls_line + ')' );
             end;
          astl_HTMLAFolder.Add ( CST_HTML_LI_END);
-         DMWeb.IBQ_JobsInd.Next;
+         DMWeb.IBS_JobsInd.Next;
         end;
 
        astl_HTMLAFolder.Add ( CST_HTML_UL_END );  // list end
@@ -1759,37 +1804,37 @@ var
   Begin
     try
       // getting file
-      DMWeb.IBQ_Fiche.Close;
-      DMWeb.IBQ_Fiche.ParamByName(I_CLEF).AsInteger := ai_CleFiche;
-      DMWeb.IBQ_Fiche.Open;
+      DMWeb.IBS_Fiche.Close;
+      DMWeb.IBS_Fiche.ParamByName(I_CLEF).AsInteger := ai_CleFiche;
+      DMWeb.IBS_Fiche.ExecQuery;
       // Married ?
-      DMWeb.IBQ_Conjoint.Close;
-      DMWeb.IBQ_Conjoint.ParamByName ( I_CLEF    ).AsInteger:=ai_CleFiche;
-      DMWeb.IBQ_Conjoint.Open;
+      DMWeb.IBS_Conjoint.Close;
+      DMWeb.IBS_Conjoint.ParamByName ( I_CLEF    ).AsInteger:=ai_CleFiche;
+      DMWeb.IBS_Conjoint.ExecQuery;
       // Jobs ?
       // birthday
-      astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBQ_Fiche, FICHE_DATE_NAISSANCE, FICHE_LIEU_NAISSANCE, ( gs_ANCESTROWEB_ManBornOn ), ( gs_ANCESTROWEB_WomanBornOn )));
+      astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBS_Fiche, FICHE_DATE_NAISSANCE, FICHE_LIEU_NAISSANCE, ( gs_ANCESTROWEB_ManBornOn ), ( gs_ANCESTROWEB_WomanBornOn )));
       // deathday
-      astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBQ_Fiche, FICHE_DATE_DECES, FICHE_LIEU_DECES, ( gs_ANCESTROWEB_ManDiedOn ), ( gs_ANCESTROWEB_WomanDiedOn )) + CST_HTML_BR);
+      astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBS_Fiche, FICHE_DATE_DECES, FICHE_LIEU_DECES, ( gs_ANCESTROWEB_ManDiedOn ), ( gs_ANCESTROWEB_WomanDiedOn )) + CST_HTML_BR);
       p_AddJobs ( astl_HTMLAFolder, ai_CleFiche, ai_NoInPage );
-      if not DMWeb.IBQ_Conjoint.IsEmpty Then  // Husband
+      if not DMWeb.IBS_Conjoint.Eof Then  // Husband
         Begin
           // title
          astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_H3    , CST_FILE_UNION + 's'
                                                             + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL));
-         if DMWeb.IBQ_Conjoint.RecordCount = 1  // 1 or more husbands and ex ?
+         if DMWeb.IBS_Conjoint.RecordCount = 1  // 1 or more husbands and ex ?
           Then astl_HTMLAFolder.Add (( gs_AnceSTROWEB_Union   ))
           else astl_HTMLAFolder.Add (( gs_AnceSTROWEB_Unions  ));
          astl_HTMLAFolder.Add ( CST_HTML_H3_END );  // title end
          astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_UL, CST_FILE_UNION + 's'
                                                             + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL));
-         while not DMWeb.IBQ_Conjoint.EOF do  // adding all husbands
+         while not DMWeb.IBS_Conjoint.EOF do  // adding all husbands
           Begin
            astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_UNION + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
-                                + DMWeb.IBQ_Conjoint.FieldByName(IBQDLLNOM).AsString + ' ' + DMWeb.IBQ_Conjoint.FieldByName(IBQDLLPRENOM).AsString );
-           astl_HTMLAFolder.Add ( fs_CreateMarried ( DMWeb.IBQ_Conjoint.FieldByName(UNION_DATE_MARIAGE).AsString, DMWeb.IBQ_Conjoint.FieldByName(UNION_CLEF).AsInteger ));
+                                + DMWeb.IBS_Conjoint.FieldByName(IBQDLLNOM).AsString + ' ' + DMWeb.IBS_Conjoint.FieldByName(IBQDLLPRENOM).AsString );
+           astl_HTMLAFolder.Add ( fs_CreateMarried ( DMWeb.IBS_Conjoint.FieldByName(UNION_DATE_MARIAGE).AsString, DMWeb.IBS_Conjoint.FieldByName(UNION_CLEF).AsInteger ));
            astl_HTMLAFolder.Add ( CST_HTML_LI_END);
-           DMWeb.IBQ_Conjoint.Next;
+           DMWeb.IBS_Conjoint.Next;
           end;
 
          astl_HTMLAFolder.Add ( CST_HTML_UL_END );  // list end
@@ -1804,10 +1849,10 @@ var
    if ch_Comptage.Checked then
     try
       // loading the request
-      DMWeb.IBQ_Compte.Close;
-      DMWeb.IBQ_Compte.ParamByName ( I_DOSSIER    ).AsInteger:=fCleDossier;
-      DMWeb.IBQ_Compte.Open;
-      if not DMWeb.IBQ_Compte.IsEmpty Then
+      DMWeb.IBS_Compte.Close;
+      DMWeb.IBS_Compte.ParamByName ( I_DOSSIER    ).AsInteger:=DMWeb.CleDossier;
+      DMWeb.IBS_Compte.ExecQuery;
+      if not DMWeb.IBS_Compte.Eof Then
         Begin
          // stats' title
          astl_HTML.Add ( fs_CreateElementWithId ( CST_HTML_H3    ,CST_FILE_COUNTING));
@@ -1815,14 +1860,14 @@ var
          astl_HTML.Add ( CST_HTML_H3_END );
          // stats' table
          astl_HTML.Add ( fs_CreateElementWithId ( CST_HTML_TABLE, CST_FILE_COUNTING));
-         while not DMWeb.IBQ_Compte.EOF do
+         while not DMWeb.IBS_Compte.EOF do
           Begin    // adding the stats
            astl_HTML.Add (CST_HTML_TR_BEGIN + CST_HTML_TD_BEGIN  + CST_HTML_H4_BEGIN +
-                         fs_GetLabelCaption ( DMWeb.IBQ_Compte.FieldByName(COUNTING_LABEL).AsString ) +
+                         fs_GetLabelCaption ( DMWeb.IBS_Compte.FieldByName(COUNTING_LABEL).AsString ) +
                          CST_HTML_H4_END  + CST_HTML_TD_END + CST_HTML_TD_BEGIN +
-                         DMWeb.IBQ_Compte.FieldByName(COUNTING_COUNTING).AsString +
+                         DMWeb.IBS_Compte.FieldByName(COUNTING_COUNTING).AsString +
                          CST_HTML_TD_END + CST_HTML_TR_END);
-           DMWeb.IBQ_Compte.Next;
+           DMWeb.IBS_Compte.Next;
           end;
 
          astl_HTML.Add ( CST_HTML_TABLE_END );
@@ -2133,7 +2178,7 @@ var
       end;
       procedure p_setLine;
       begin
-        with DMWeb.IBQ_Ages do
+        with DMWeb.IBS_Ages do
           Begin
           // first and next line
           if li_Age <> FieldByName(IBQ_AGE_AU_DECES).AsInteger Then
@@ -2169,11 +2214,11 @@ var
     li_WomenTotal :=0;
 
     // setting data
-    with DMWeb.IBQ_Ages do
+    with DMWeb.IBS_Ages do
       try
         Close;
-        ParamByName(I_DOSSIER).Value:=fCleDossier;
-        Open;
+        ParamByName(I_DOSSIER).Value:=DMWeb.CleDossier;
+        ExecQuery;
         while not Eof do
           Begin
             if FieldByName(IBQ_AGE_AU_DECES).IsNull Then
@@ -2189,7 +2234,7 @@ var
       except
         On E: Exception do
         begin
-          ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantOpenData ) + DMWeb.IBQ_Ages.Database.DatabaseName + CST_ENDOFLINE + E.Message);
+          ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantOpenData ) + DMWeb.IBS_Ages.Database.DatabaseName + CST_ENDOFLINE + E.Message);
           Abort;
         end;
       end;
@@ -2202,7 +2247,7 @@ var
     p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_COUNT      , IntToStr(li_countTotal),[]);
     p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_MEN_COUNT  , IntToStr(li_MenTotal)  ,[]);
     p_ReplaceLanguageString ( lstl_HTMLAges, CST_AGES_WOMEN_COUNT, IntToStr(li_WomenTotal),[]);
-    DMWeb.IBQ_Ages.Close;
+    DMWeb.IBS_Ages.Close;
   end;
 
 begin
@@ -2271,7 +2316,7 @@ var
     li_Linecounter, li_countTotal, li_CitiesTotal : Longint;
     procedure p_setline;
     Begin
-      with DMWeb.IBQ_Jobs do
+      with DMWeb.IBS_Jobs do
         Begin
           p_setHtmlReplaceValues;
           p_ReplaceLanguageString(lstl_HTMLJobs,CST_JOBS_LINES  ,lstl_HTMLLines.Text+'['+CST_JOBS_LINES+']');
@@ -2302,11 +2347,11 @@ var
     li_CitiesTotal:=0;
 
     // setting data
-    with DMWeb.IBQ_Jobs do
+    with DMWeb.IBS_Jobs do
       try
         Close;
-        ParamByName(I_DOSSIER).Value:=fCleDossier;
-        Open;
+        ParamByName(I_DOSSIER).Value:=DMWeb.CleDossier;
+        ExecQuery;
         while not Eof do
           Begin
             if FieldByName(IBQ_EV_IND_DESCRIPTION).AsString = '' Then
@@ -2321,7 +2366,7 @@ var
       except
         On E: Exception do
         begin
-          ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantOpenData ) + DMWeb.IBQ_Ages.Database.DatabaseName + CST_ENDOFLINE + E.Message);
+          ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantOpenData ) + DMWeb.IBS_Ages.Database.DatabaseName + CST_ENDOFLINE + E.Message);
           Abort;
         end;
       end;
@@ -2333,7 +2378,7 @@ var
     p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_A_JOB      , gs_ANCESTROWEB_Jobs_Total,[]);
     p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_COUNT      , IntToStr(li_countTotal),[]);
     p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_CITY       , IntToStr(li_CitiesTotal)  ,[]);
-    DMWeb.IBQ_Ages.Close;
+    DMWeb.IBS_Ages.Close;
   end;
 
 begin
@@ -2433,7 +2478,7 @@ begin
     Result:=True;
     Result:=DoOpenBase(sBase);
     if Result then
-      Result:=OuvreDossier(fCleDossier);
+      Result:=OuvreDossier(DMWeb.CleDossier);
     if Result then
       DoAfterInit;
     PremiereOuverture:=False;
@@ -2467,7 +2512,7 @@ begin
       Result:=DMWeb.LitDllDossier;
       if Result then
       begin
-        s:=IntToStr(fCleDossier);
+        s:=IntToStr(DMWeb.CleDossier);
         if Length(s)<2 then
           s:=s+' ';
         cbDossier.Caption:=s+', '+fNom_Dossier;
@@ -2493,7 +2538,7 @@ begin
       fNomIndi:=IBQ_Individu.FieldByName('nom').AsString;
       fPrenomIndi:=IBQ_Individu.FieldByName('prenom').AsString;
     end;
-    fCleDossier:=NumDossier;
+    DMWeb.CleDossier:=NumDossier;
   except
     On E: Exception do
     begin
@@ -2509,17 +2554,17 @@ end;
 procedure TF_AncestroWeb.DoAfterInit( const ab_Ini : Boolean = True );
 begin
   fNom_Dossier:=fs_TextToFileName(fNom_Dossier);
-  fBasePath := GetUserDir;
+  fSoftUserPath := GetUserDir;
   {$IFNDEF FPC}
   de_ExportWeb.RootDir:=GetWindowsSpecialDir(CSIDL_DESKTOPDIRECTORY);
   {$ENDIF}
-  fBasePath:=fBasePath+CST_AncestroWeb+DirectorySeparator+fNom_Dossier;
-  FileCopy.Destination := fBasePath + DirectorySeparator + CST_SUBDIR_EXPORT ;
+  fSoftUserPath:=fSoftUserPath+CST_AncestroWeb+DirectorySeparator+fNom_Dossier;
+  FileCopy.Destination := fSoftUserPath + DirectorySeparator + CST_SUBDIR_EXPORT ;
   fb_CreateDirectoryStructure( FileCopy.Destination );
-  fb_CreateDirectoryStructure( fBasePath + DirectorySeparator + CST_SUBDIR_SAVE );
-  de_ExportWeb.Directory := fBasePath+DirectorySeparator+CST_SUBDIR_EXPORT;
-  fne_Import.FileName := fBasePath + DirectorySeparator + CST_SUBDIR_SAVE ;
-  fne_Export.FileName := fBasePath + DirectorySeparator + CST_SUBDIR_SAVE ;
+  fb_CreateDirectoryStructure( fSoftUserPath + DirectorySeparator + CST_SUBDIR_SAVE );
+  de_ExportWeb.Directory := fSoftUserPath+DirectorySeparator+CST_SUBDIR_EXPORT;
+  fne_Import.FileName := fSoftUserPath + DirectorySeparator + CST_SUBDIR_SAVE ;
+  fne_Export.FileName := fSoftUserPath + DirectorySeparator + CST_SUBDIR_SAVE ;
 
   // Reading ini
   if not ab_Ini Then
@@ -2556,8 +2601,8 @@ var
   Begin
     with DMWeb do
       try
-        IBQ_AscExists.Open;
-        if IBQ_AscExists.IsEmpty
+        IBS_AscExists.ExecQuery;
+        if IBS_AscExists.EOF
         and FileExists (gs_Root + 'script_update.sql') then
          Begin
            if not IBT_BASE.Active
@@ -2573,7 +2618,7 @@ var
              IBT_BASE.RollbackRetaining;
            End;
            End;
-        IBQ_AscExists.Close;
+        IBS_AscExists.Close;
       Except
 
       end;
@@ -2679,13 +2724,11 @@ Procedure TF_AncestroWeb.ListerDossiers;
 var
   s:string;
 begin
-  with TIBSQL.Create(self) do
+  with DMWeb.IBQ_Dossier do
   begin
     try
-      Database:=DMWeb.ibd_BASE;
-      ParamCheck:=False;
-      SQL.Text:='select CLE_DOSSIER,NOM_DOSSIER FROM DOSSIER ORDER BY CLE_DOSSIER';
-      ExecQuery;
+      Open;
+      First;
       cbDossier.Items.Clear;
       while not EOF do
       begin
@@ -2695,15 +2738,14 @@ begin
         cbDossier.Items.Add(s+', '+fs_getCorrectString(Fields[1].AsString));
         if cbDossier.Items.Count=1 then
         begin
-          fCleDossier:=Fields[0].AsInteger;
-          fNom_Dossier:=fs_getCorrectString(Fields[1].AsString);
-          cbDossier.Caption:=cbDossier.Items[0];
+          DMWeb.CleDossier:=Fields[0].AsInteger;
+          with F_AncestroWeb.cbDossier do
+            Caption:=Items[0];
         end;
         Next;
       end;
       Close;
     finally
-      Free;
     end;
   end;
 end;

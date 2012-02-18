@@ -27,12 +27,9 @@ object DMWeb: TDMWeb
     left = 40
     top = 16
   end
-  object IBQDLL: TIBQuery
+  object IBS_DLL: TIBSQL
     Database = ibd_BASE
-    Transaction = IBT_BASE
-    BufferChunks = 1000
-    CachedUpdates = False
-    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    ParamCheck = True
     SQL.Strings = (
       'SELECT g.dll_dossier'
       ',g.dll_indi as cle_fiche'
@@ -43,68 +40,30 @@ object DMWeb: TDMWeb
       'inner join individu i on i.cle_fiche=g.dll_indi'
       'inner join dossier d on d.cle_dossier=g.dll_dossier'
     )
-    Params = <>
-    left = 280
-    top = 200
-  end
-  object IBQUpdateDLL: TIBQuery
-    Database = ibd_BASE
     Transaction = IBT_BASE
-    BufferChunks = 1000
-    CachedUpdates = False
-    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    left = 40
+    top = 80
+  end
+  object IBS_UpdateDLL: TIBSQL
+    Database = ibd_BASE
+    ParamCheck = True
     SQL.Strings = (
       'UPDATE  GESTION_DLL'
       'SET DLL_RETOUR = :RETOUR'
     )
-    Params = <    
-      item
-        DataType = ftUnknown
-        Name = 'RETOUR'
-        ParamType = ptUnknown
-      end>
+    Transaction = IBT_BASE
     left = 192
     top = 200
-    ParamData = <    
-      item
-        DataType = ftUnknown
-        Name = 'RETOUR'
-        ParamType = ptUnknown
-      end>
   end
-  object IBQSources_Record: TIBQuery
+  object IBS_Sources_Record: TIBSQL
     Database = ibd_BASE
-    Transaction = IBT_BASE
-    BufferChunks = 1000
-    CachedUpdates = False
-    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    ParamCheck = True
     SQL.Strings = (
       'select * from SOURCES_RECORD WHERE DATA_ID = :Ikey  and TYPE_TABLE = :sTable'
     )
-    Params = <    
-      item
-        DataType = ftUnknown
-        Name = 'Ikey'
-        ParamType = ptUnknown
-      end    
-      item
-        DataType = ftUnknown
-        Name = 'sTable'
-        ParamType = ptUnknown
-      end>
+    Transaction = IBT_BASE
     left = 496
     top = 136
-    ParamData = <    
-      item
-        DataType = ftUnknown
-        Name = 'Ikey'
-        ParamType = ptUnknown
-      end    
-      item
-        DataType = ftUnknown
-        Name = 'sTable'
-        ParamType = ptUnknown
-      end>
   end
   object IBQ_TreeDesc: TIBQuery
     Database = ibd_BASE
@@ -135,17 +94,17 @@ object DMWeb: TDMWeb
     )
     Params = <    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_CLEF'
         ParamType = ptUnknown
       end    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_NIVEAU'
         ParamType = ptUnknown
       end    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_PARQUI'
         ParamType = ptUnknown
       end>
@@ -153,17 +112,17 @@ object DMWeb: TDMWeb
     top = 136
     ParamData = <    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_CLEF'
         ParamType = ptUnknown
       end    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_NIVEAU'
         ParamType = ptUnknown
       end    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_PARQUI'
         ParamType = ptUnknown
       end>
@@ -191,17 +150,17 @@ object DMWeb: TDMWeb
     )
     Params = <    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_CLEF'
         ParamType = ptUnknown
       end    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_NIVEAU'
         ParamType = ptUnknown
       end    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_PARQUI'
         ParamType = ptUnknown
       end>
@@ -209,17 +168,17 @@ object DMWeb: TDMWeb
     top = 136
     ParamData = <    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_CLEF'
         ParamType = ptUnknown
       end    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_NIVEAU'
         ParamType = ptUnknown
       end    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_PARQUI'
         ParamType = ptUnknown
       end>
@@ -255,17 +214,17 @@ object DMWeb: TDMWeb
     )
     Params = <    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_CLEF'
         ParamType = ptUnknown
       end    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_NIVEAU'
         ParamType = ptUnknown
       end    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_PARQUI'
         ParamType = ptUnknown
       end>
@@ -273,17 +232,17 @@ object DMWeb: TDMWeb
     top = 72
     ParamData = <    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_CLEF'
         ParamType = ptUnknown
       end    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_NIVEAU'
         ParamType = ptUnknown
       end    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_PARQUI'
         ParamType = ptUnknown
       end>
@@ -384,12 +343,9 @@ object DMWeb: TDMWeb
         ParamType = ptUnknown
       end>
   end
-  object IBQ_Conjoint: TIBQuery
+  object IBS_Conjoint: TIBSQL
     Database = ibd_BASE
-    Transaction = IBT_BASE
-    BufferChunks = 1000
-    CachedUpdates = False
-    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    ParamCheck = True
     SQL.Strings = (
       'select '
       '           CLE_FICHE'
@@ -408,79 +364,37 @@ object DMWeb: TDMWeb
       'ORDER BY ordre'
       ''
     )
-    Params = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_CLEF'
-        ParamType = ptUnknown
-      end>
+    Transaction = IBT_BASE
     left = 192
     top = 16
-    ParamData = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_CLEF'
-        ParamType = ptUnknown
-      end>
   end
-  object IBQ_Compte: TIBQuery
+  object IBS_Compte: TIBSQL
     Database = ibd_BASE
-    Transaction = IBT_BASE
-    BufferChunks = 1000
-    CachedUpdates = False
-    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    ParamCheck = True
     SQL.Strings = (
       'select  * from proc_comptage(:I_DOSSIER)'
       ''
     )
-    Params = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_DOSSIER'
-        ParamType = ptUnknown
-      end>
+    Transaction = IBT_BASE
     left = 256
     top = 16
-    ParamData = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_DOSSIER'
-        ParamType = ptUnknown
-      end>
   end
-  object IBQ_Names: TIBQuery
+  object IBS_Names: TIBSQL
     Database = ibd_BASE
-    Transaction = IBT_BASE
-    BufferChunks = 1000
-    CachedUpdates = False
-    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    ParamCheck = True
     SQL.Strings = (
       'select NOM,COUNT(*) AS COUNTER from INDIVIDU'
       'WHERE KLE_DOSSIER=:I_DOSSIER  '
       'GROUP BY NOM'
       'ORDER BY NOM'
     )
-    Params = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_DOSSIER'
-        ParamType = ptUnknown
-      end>
+    Transaction = IBT_BASE
     left = 328
     top = 16
-    ParamData = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_DOSSIER'
-        ParamType = ptUnknown
-      end>
   end
-  object IBQ_TreeNames: TIBQuery
+  object IBS_TreeNames: TIBSQL
     Database = ibd_BASE
-    Transaction = IBT_BASE
-    BufferChunks = 1000
-    CachedUpdates = False
-    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    ParamCheck = True
     SQL.Strings = (
       'SELECT NOM,COUNT(*) AS COUNTER'
       'FROM PROC_TQ_ASCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,0) t'
@@ -489,47 +403,13 @@ object DMWeb: TDMWeb
       'ORDER BY NOM'
       ''
     )
-    Params = <    
-      item
-        DataType = ftInteger
-        Name = 'I_CLEF'
-        ParamType = ptInput
-      end    
-      item
-        DataType = ftInteger
-        Name = 'I_NIVEAU'
-        ParamType = ptInput
-      end    
-      item
-        DataType = ftInteger
-        Name = 'I_PARQUI'
-        ParamType = ptInput
-      end>
+    Transaction = IBT_BASE
     left = 400
     top = 16
-    ParamData = <    
-      item
-        DataType = ftInteger
-        Name = 'I_CLEF'
-        ParamType = ptInput
-      end    
-      item
-        DataType = ftInteger
-        Name = 'I_NIVEAU'
-        ParamType = ptInput
-      end    
-      item
-        DataType = ftInteger
-        Name = 'I_PARQUI'
-        ParamType = ptInput
-      end>
   end
-  object IBQ_Fiche: TIBQuery
+  object IBS_Fiche: TIBSQL
     Database = ibd_BASE
-    Transaction = IBT_BASE
-    BufferChunks = 1000
-    CachedUpdates = False
-    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    ParamCheck = True
     SQL.Strings = (
       'select NOM,PRENOM,'
       'DATE_NAISSANCE,LIEU_NAISSANCE,'
@@ -537,54 +417,26 @@ object DMWeb: TDMWeb
       'SEXE FROM PROC_ETAT_FICHE ( :I_CLEF )'
       ''
     )
-    Params = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_CLEF'
-        ParamType = ptUnknown
-      end>
+    Transaction = IBT_BASE
     left = 400
     top = 72
-    ParamData = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_CLEF'
-        ParamType = ptUnknown
-      end>
   end
-  object IBQ_Ages: TIBQuery
+  object IBS_Ages: TIBSQL
     Database = ibd_BASE
-    Transaction = IBT_BASE
-    BufferChunks = 1000
-    CachedUpdates = False
-    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    ParamCheck = True
     SQL.Strings = (
       'select AGE_AU_DECES,SEXE,COUNT(*) AS COUNTER from INDIVIDU'
       'WHERE KLE_DOSSIER=:I_DOSSIER '
       'GROUP BY AGE_AU_DECES, SEXE'
       'ORDER BY AGE_AU_DECES DESC,SEXE'
     )
-    Params = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_DOSSIER'
-        ParamType = ptUnknown
-      end>
+    Transaction = IBT_BASE
     left = 384
     top = 200
-    ParamData = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_DOSSIER'
-        ParamType = ptUnknown
-      end>
   end
-  object IBQ_Jobs: TIBQuery
+  object IBS_Jobs: TIBSQL
     Database = ibd_BASE
-    Transaction = IBT_BASE
-    BufferChunks = 1000
-    CachedUpdates = False
-    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    ParamCheck = True
     SQL.Strings = (
       'SELECT EV_IND_DESCRIPTION,COUNT(*) AS COUNTER,EV_IND_VILLE'
       'FROM EVENEMENTS_IND'
@@ -593,54 +445,26 @@ object DMWeb: TDMWeb
       'GROUP BY EV_IND_DESCRIPTION,EV_IND_VILLE'
       'ORDER BY EV_IND_DESCRIPTION,EV_IND_VILLE'
     )
-    Params = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_DOSSIER'
-        ParamType = ptUnknown
-      end>
+    Transaction = IBT_BASE
     left = 496
     top = 200
-    ParamData = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_DOSSIER'
-        ParamType = ptUnknown
-      end>
   end
-  object IBQ_JobsInd: TIBQuery
+  object IBS_JobsInd: TIBSQL
     Database = ibd_BASE
-    Transaction = IBT_BASE
-    BufferChunks = 1000
-    CachedUpdates = False
-    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    ParamCheck = True
     SQL.Strings = (
       'SELECT EV_IND_DESCRIPTION, EV_IND_VILLE, EV_IND_PAYS, EV_IND_DATE'
       'FROM EVENEMENTS_IND'
       'WHERE EV_IND_KLE_FICHE=:CLE_FICHE '
       'AND EV_IND_TYPE=''OCCU'''
     )
-    Params = <    
-      item
-        DataType = ftUnknown
-        Name = 'CLE_FICHE'
-        ParamType = ptUnknown
-      end>
+    Transaction = IBT_BASE
     left = 424
     top = 264
-    ParamData = <    
-      item
-        DataType = ftUnknown
-        Name = 'CLE_FICHE'
-        ParamType = ptUnknown
-      end>
   end
-  object IBQ_TreeNamesDesc: TIBQuery
+  object IBS_TreeNamesDesc: TIBSQL
     Database = ibd_BASE
-    Transaction = IBT_BASE
-    BufferChunks = 1000
-    CachedUpdates = False
-    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    ParamCheck = True
     SQL.Strings = (
       'SELECT NOM,COUNT(*) AS COUNTER'
       'FROM PROC_TQ_DESCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,0) t'
@@ -649,40 +473,9 @@ object DMWeb: TDMWeb
       'ORDER BY NOM'
       ''
     )
-    Params = <    
-      item
-        DataType = ftInteger
-        Name = 'I_CLEF'
-        ParamType = ptInput
-      end    
-      item
-        DataType = ftInteger
-        Name = 'I_NIVEAU'
-        ParamType = ptInput
-      end    
-      item
-        DataType = ftInteger
-        Name = 'I_PARQUI'
-        ParamType = ptInput
-      end>
+    Transaction = IBT_BASE
     left = 512
     top = 16
-    ParamData = <    
-      item
-        DataType = ftInteger
-        Name = 'I_CLEF'
-        ParamType = ptInput
-      end    
-      item
-        DataType = ftInteger
-        Name = 'I_NIVEAU'
-        ParamType = ptInput
-      end    
-      item
-        DataType = ftInteger
-        Name = 'I_PARQUI'
-        ParamType = ptInput
-      end>
   end
   object IBQ_TreeDescByNames: TIBQuery
     Database = ibd_BASE
@@ -707,17 +500,17 @@ object DMWeb: TDMWeb
     )
     Params = <    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_CLEF'
         ParamType = ptUnknown
       end    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_NIVEAU'
         ParamType = ptUnknown
       end    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_PARQUI'
         ParamType = ptUnknown
       end>
@@ -725,17 +518,17 @@ object DMWeb: TDMWeb
     top = 136
     ParamData = <    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_CLEF'
         ParamType = ptUnknown
       end    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_NIVEAU'
         ParamType = ptUnknown
       end    
       item
-        DataType = ftInteger
+        DataType = ftUnknown
         Name = 'I_PARQUI'
         ParamType = ptUnknown
       end>
@@ -753,8 +546,8 @@ object DMWeb: TDMWeb
     WindowTop = 0
     WindowWidth = 0
     FillAttribute = 0
-    left = 40
-    top = 80
+    left = 48
+    top = 144
   end
   object IBS_Temp: TIBSQL
     Database = ibd_BASE
@@ -764,18 +557,41 @@ object DMWeb: TDMWeb
     left = 56
     top = 200
   end
-  object IBQ_AscExists: TIBQuery
+  object IBS_AscExists: TIBSQL
+    Database = ibd_BASE
+    ParamCheck = True
+    SQL.Strings = (
+      'select * from RDB$PROCEDURES where rdb$Procedure_name '
+      '= ''PROC_TQ_ASCENDANCE'''
+    )
+    Transaction = IBT_BASE
+    left = 192
+    top = 264
+  end
+  object IBQ_Dossier: TIBQuery
     Database = ibd_BASE
     Transaction = IBT_BASE
     BufferChunks = 1000
     CachedUpdates = False
     GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    ParamCheck = False
     SQL.Strings = (
-      'select * from RDB$PROCEDURES where rdb$Procedure_name '
-      '= ''PROC_TQ_ASCENDANCE'''
+      'select CLE_DOSSIER,NOM_DOSSIER,DS_BASE_PATH FROM DOSSIER ORDER BY CLE_DOSSIER'
     )
     Params = <>
-    left = 192
-    top = 264
+    left = 168
+    top = 336
+  end
+  object IBS_Individu: TIBSQL
+    Database = ibd_BASE
+    ParamCheck = True
+    SQL.Strings = (
+      'select  CLE_FICHE,NUM_SOSA,CLE_PERE,CLE_MERE,NOM,PRENOM,SEXE, ANNEE_NAISSANCE,ANNEE_DECES from INDIVIDU WHERE KLE_DOSSIER=:KLE_DOSSIER '
+      'ORDER BY '
+      'NOM,PRENOM,ANNEE_NAISSANCE DESC,ANNEE_DECES DESC'
+    )
+    Transaction = IBT_BASE
+    left = 304
+    top = 336
   end
 end

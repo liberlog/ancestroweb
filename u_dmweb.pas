@@ -19,7 +19,7 @@
 Ce module permets de se connecter a la base d Ancestrologie
 Il recois en parametre depuis FMain, le chemin et nom de la base de donnée
 
-Le Query IBQDLL, vous permet de récuperer
+Le Query IBS_DLL, vous permet de récuperer
 Dossier
 Identifiant
 Nom
@@ -95,6 +95,7 @@ const IBQDLLNOM='NOM';
       UNION_CITY         = 'EV_FAM_VILLE' ;
 
       UNION_CLEF         = 'UNION_CLEF' ;
+      CLE_DOSSIER        = 'CLE_DOSSIER';
 
       CONJOINT_CLE_ID_UNKNOWN = 'CLE_ID_UNKNOWN' ;
 
@@ -225,39 +226,44 @@ type
   { TDMWeb }
 
   TDMWeb = class(TDataModule)
-    IBQSources_Record: TIBQuery;
-    IBQ_AscExists: TIBQuery;
-    IBQ_Jobs: TIBQuery;
-    IBQ_Compte: TIBQuery;
-    IBQ_Fiche: TIBQuery;
-    IBQ_JobsInd: TIBQuery;
-    IBQ_Names: TIBQuery;
+    IBS_Sources_Record: TIBSQL;
+    IBS_AscExists: TIBSQL;
+    IBS_Individu: TIBSQL;
+    IBS_Jobs: TIBSQL;
+    IBS_Compte: TIBSQL;
+    IBS_Fiche: TIBSQL;
+    IBS_JobsInd: TIBSQL;
+    IBQ_Dossier: TIBQuery;
+    IBS_Names: TIBSQL;
     IBQ_ConjointSources: TIBQuery;
-    IBQ_Conjoint: TIBQuery;
+    IBS_Conjoint: TIBSQL;
     IBQ_Medias: TIBQuery;
-    IBQ_Ages: TIBQuery;
+    IBS_Ages: TIBSQL;
     IBQ_TreeAsc: TIBQuery;
     IBQ_TreeByNames: TIBQuery;
     IBQ_TreeDescByNames: TIBQuery;
-    IBQ_TreeNames: TIBQuery;
+    IBS_TreeNames: TIBSQL;
     IBQ_TreeDesc: TIBQuery;
-    IBQ_TreeNamesDesc: TIBQuery;
+    IBS_TreeNamesDesc: TIBSQL;
     IBS_Temp: TIBSQL;
     IBT_BASE: TIBTransaction;
     ibd_BASE: TIBDatabase;
-    IBQDLL: TIBQuery;
-    IBQUpdateDLL: TIBQuery;
+    IBS_DLL: TIBSQL;
+    IBS_UpdateDLL: TIBSQL;
     Execute: TProcess;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
+    procedure p_setCledossier ( const AValue : Integer );
   private
     { Déclarations privées }
+    fCleDossier: integer;
     s_User_Name, s_PassWord: string;
 
   public
     { Déclarations publiques }
     function doOpenDatabase(const sBase: string):boolean;
     function LitDllDossier:boolean;
+    property CleDossier: integer read fCleDossier write p_setCledossier;
 
   end;
 
@@ -266,10 +272,10 @@ var
   sDataBaseName: string;
   fNom_Dossier:string;
   fCleFiche: integer;
-  fCleDossier: integer;
   fNomIndi: string;
   fPrenomIndi: string;
-  fBasePath: string;
+  fSoftUserPath: string;
+  fFolderBasePath: string;
   gs_Root: string;
 
 
@@ -286,7 +292,8 @@ uses
 {$ELSE}
      AncestroWeb_strings,
 {$ENDIF}
-    fonctions_init,fonctions_string;
+    fonctions_init,fonctions_string,
+    U_AncestroWeb;
 
 procedure TDMWeb.DataModuleCreate(Sender: TObject);
 begin
@@ -327,13 +334,13 @@ function TDMWeb.LitDllDossier:boolean;
 begin
   Result:=True;
   try
-    IBQDLL.Open;
-    fCleFiche := IBQDLL.FieldByName(IBQ_CLE_FICHE).AsInteger;
-    fCleDossier := IBQDLL.FieldByName(IBQDLLDOSSIER).AsInteger;
-    fNomIndi := fs_getCorrectString ( IBQDLL.FieldByName(IBQDLLNOM).AsString );
-    fPrenomIndi := fs_getCorrectString ( IBQDLL.FieldByName(IBQDLLPRENOM).AsString );
-    fNom_Dossier:=fs_getCorrectString(IBQDLL.FieldByName(NOM_DOSSIER).AsString);
-    IBQDLL.Close;
+    IBS_DLL.ExecQuery;
+    fCleFiche := IBS_DLL.FieldByName(IBQ_CLE_FICHE).AsInteger;
+    fCleDossier := IBS_DLL.FieldByName(IBQDLLDOSSIER).AsInteger;
+    fNomIndi := fs_getCorrectString ( IBS_DLL.FieldByName(IBQDLLNOM).AsString );
+    fPrenomIndi := fs_getCorrectString ( IBS_DLL.FieldByName(IBQDLLPRENOM).AsString );
+    fNom_Dossier:=fs_getCorrectString(IBS_DLL.FieldByName(NOM_DOSSIER).AsString);
+    IBS_DLL.Close;
   except
     On E:Exception do
     begin
@@ -354,6 +361,21 @@ begin
   end;
   if ibd_BASE.Connected then
     ibd_BASE.Close;
+end;
+
+procedure TDMWeb.p_setCledossier(const AValue: Integer);
+begin
+  if AValue <> fCleDossier Then
+    Begin
+      fCleDossier:=AValue;
+      with IBQ_Dossier do
+       Begin
+        Open;
+        Locate ( CLE_DOSSIER, fCleDossier, [] );
+        fFolderBasePath:=Fields[2].AsString;
+        fNom_Dossier:=fs_getCorrectString(Fields[1].AsString);
+       end;
+    end;
 end;
 
 end.
