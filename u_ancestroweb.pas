@@ -1380,8 +1380,7 @@ Begin
             Except
               on e:Exception do
                Begin
-                writeln ( E.Message + ' : ');
-                writeln ( DMWeb.IBS_Temp.SQL.Text );
+                ShowMessage ( E.Message + ' : ' + #10 + DMWeb.IBS_Temp.SQL.Text );
                end;
             end;
            Result:=True;
