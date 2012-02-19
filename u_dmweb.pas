@@ -175,6 +175,7 @@ const IBQDLLNOM='NOM';
       CST_FILE_MAN          = 'man';
       CST_FILE_WOMAN        = 'woman';
       CST_FILE_PERSON       = 'person';
+      CST_FILE_ORIGINAL     = '-original';
       CST_PAGE_PREVIOUS     = 'previous';
       CST_PAGE_NEXT         = 'next';
 

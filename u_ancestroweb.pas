@@ -13,6 +13,13 @@ unit U_AncestroWeb;
 // Auteur : Matthieu GIROUX
 // Descriptions
 // Création d'un arbre complet, d'une page de contact en PHP, de fiches, etc.
+// Historique
+// 1.1.4.0 : Plus de TIBSQL, copie de l'archive originale fonctionnel, moins de bugs
+// 1.1.3.1 : Professions dans la fiche de l'individu, Possibilité de descendre son arbre familial
+// 1.1.1.2 : Plus de tests
+// 1.1.1.1 : Métiers et âges
+// 1.0.0.0 : Intégration dans Freelogy
+// 0.9.9.0 : première version publiée
 ////////////////////////////////////////////////////////////////////////////////
 
 interface
@@ -238,7 +245,8 @@ type
     function DoOpenBase(sBase: string):boolean;
     function OuvreDossier(NumDossier:integer):boolean;
     function fb_getMediaFile ( const IBQ_Media : TIBQuery;
-                               const as_FilePath: string): Boolean;
+                               const as_FilePath: string ;
+                               var as_FileNameBegin : String ): Boolean;
     function fb_OpenMedias( const ai_CleFiche: Longint;
                             const ai_Type: integer;
                             const ab_Identite: Boolean = False;
@@ -324,6 +332,7 @@ implementation
 
 uses  fonctions_init,
   functions_html_tree,
+  u_extabscopy,
 {$IFNDEF FPC}
   AncestroWeb_strings_delphi,
   windirs,
@@ -586,7 +595,7 @@ begin
   or gb_Generate then
     Exit;
 
-  gs_RootPathForExport := de_ExportWeb.Directory;
+  gs_RootPathForExport := de_ExportWeb.Directory + DirectorySeparator;
   gb_Generate := True;
   IBQ_Individu.DisableControls;
   pb_ProgressAll.Position := 0;
@@ -832,7 +841,7 @@ var
 begin
   p_IncProgressBar;  // growing the counter
   FileCopy.Destination := gs_RootPathForExport;
-  ls_Destination := FileCopy.Destination+ DirectorySeparator;
+  ls_Destination := FileCopy.Destination;
   if DirectoryExistsUTF8(ls_Destination ) { *Converted from DirectoryExists*  } Then
    Begin
     lt_arg [0] := ls_Destination;
@@ -1190,7 +1199,7 @@ begin
     end;
 
     // saving the page
-  ls_destination := gs_RootPathForExport + DirectorySeparator +
+  ls_destination := gs_RootPathForExport +
     CST_SUBDIR_HTML_TREE + DirectorySeparator + ed_TreeName.Text + CST_EXTENSION_HTML;
   try
     if fb_CreateDirectoryStructure(FileCopy.Destination + DirectorySeparator + CST_SUBDIR_HTML_TREE + DirectorySeparator) then
@@ -1220,7 +1229,7 @@ begin
   ls_HtmlFileName := fs_TextToFileName(Copy(ls_HtmlFileName, 1, Length(ls_HtmlFileName) -
     Length(ExtractFileExt(ls_HtmlFileName)))) + CST_EXTENSION_JPEG;
   // saving the picture
-  ls_destination := gs_RootPathForExport + DirectorySeparator +
+  ls_destination := gs_RootPathForExport +
     CST_SUBDIR_HTML_IMAGES + DirectorySeparator + ls_HtmlFileName;
   TraduceImage.FileSource := as_ImageFile;
   TraduceImage.FileDestination := ls_Destination;
@@ -1282,7 +1291,7 @@ begin
     ( gs_AnceSTROWEB_Home ), ( gs_AnceSTROWEB_Home ), gs_ANCESTROWEB_Welcome, gs_LinkGedcom);
   p_IncProgressBar; // growing the counter
   // saving the page
-  ls_destination := gs_RootPathForExport + DirectorySeparator + ed_IndexName.Text +
+  ls_destination := gs_RootPathForExport + ed_IndexName.Text +
     CST_EXTENSION_HTML;
   try
     lstl_HTMLHome.SaveToFile(ls_destination);
@@ -1321,7 +1330,7 @@ Begin
     DMWeb.IBQ_Medias.ParamByName(MEDIAS_TABLE      ).AsString  := ach_table ;
     DMWeb.IBQ_Medias.ParamByName(MEDIAS_MP_IDENTITE).AsInteger := Integer ( ab_Identite ) ;
     DMWeb.IBQ_Medias.Open;
-    Result := DMWeb.IBQ_Medias.Eof;
+    Result := not DMWeb.IBQ_Medias.Eof;
 
   Except
     on E : Exception do
@@ -1359,7 +1368,8 @@ End;
 // function TF_AncestroWeb.fb_getMediaFile
 // creating a non-existing Media File
 function TF_AncestroWeb.fb_getMediaFile ( const IBQ_Media : TIBQuery;
-                                          const as_FilePath : string ) : Boolean;
+                                          const as_FilePath : string ;
+                                          var as_FileNameBegin : String ) : Boolean;
 var ls_Path : String;
 Begin
   Result := False;
@@ -1369,7 +1379,8 @@ Begin
       Exit;
     End;
   // verifying existing file copy
-  if   FileExistsUTF8(as_FilePath ) Then
+  if FileExistsUTF8(as_FilePath + as_FileNameBegin + CST_EXTENSION_JPEG )
+  or FileExistsUTF8(as_FilePath + as_FileNameBegin + CST_FILE_ORIGINAL + CST_EXTENSION_JPEG ) Then
     Begin
       Result := True;
       Exit;
@@ -1388,7 +1399,8 @@ Begin
            if FileExistsUTF8(fSoftUserPath+ls_Path)
             Then FileCopy.Source:=fSoftUserPath  +ls_Path
             Else FileCopy.Source:=fFolderBasePath+ls_Path;
-           FileCopy.Destination:=as_FilePath;
+           AppendStr ( as_FileNameBegin, CST_FILE_ORIGINAL );
+           FileCopy.Destination:=as_FilePath + as_FileNameBegin + CST_EXTENSION_JPEG;
            FileCopy.CopySourceToDestination;
            Result:=True;
            Exit;
@@ -1403,7 +1415,8 @@ Begin
           Begin
            ls_Path := IBQ_Media.FieldByName(MEDIAS_PATH ).AsString;
            FileCopy.Source:= ls_Path;
-           FileCopy.Destination:=as_FilePath;
+           AppendStr ( as_FileNameBegin, CST_FILE_ORIGINAL );
+           FileCopy.Destination:=as_FilePath+as_FileNameBegin+CST_EXTENSION_JPEG;
            FileCopy.CopySourceToDestination;
            if ( pos ( fFolderBasePath, ls_Path ) = 1 ) Then
             try
@@ -1421,7 +1434,7 @@ Begin
            Exit;
           end else
            WriteLn(IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString+ ' unfound ' );
-     Result := fb_ImageFieldToFile(IBQ_Media.FieldByName(MEDIAS_MULTI_MEDIA), as_FilePath);
+     Result := fb_ImageFieldToFile(IBQ_Media.FieldByName(MEDIAS_MULTI_MEDIA), as_FilePath + as_FileNameBegin + CST_EXTENSION_JPEG);
   Except
    Result:=False;
   end;
@@ -1503,7 +1516,7 @@ begin
   p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_NAMES, me_NamesHead.Lines.Text,
      ( gs_AnceSTROWEB_Names ), gs_AnceSTROWEB_Names, gs_ANCESTROWEB_Names_Long, gs_LinkGedcom);
   // saving the page
-  ls_destination := gs_RootPathForExport + DirectorySeparator + ed_NamesFileName.Text + CST_EXTENSION_HTML;
+  ls_destination := gs_RootPathForExport + ed_NamesFileName.Text + CST_EXTENSION_HTML;
   try
     lstl_HTMLAFolder.SaveToFile(ls_destination);
   except
@@ -1597,7 +1610,7 @@ var
       ( gs_AnceSTROWEB_List ) + ' - ' + ls_NameBegin +
       ( gs_AnceSTROWEB_At ) + ls_NameEnd, '', '', gs_LinkGedcom, '..' + CST_HTML_DIR_SEPARATOR);
     // saving the page
-    ls_destination := gs_RootPathForExport + DirectorySeparator +
+    ls_destination := gs_RootPathForExport +
       CST_SUBDIR_HTML_LISTS + DirectorySeparator + ed_ListsBeginName.Text + IntToStr(
       li_CounterPages) + CST_EXTENSION_HTML;
     try
@@ -1618,9 +1631,9 @@ begin
   p_createLettersSheets ( lt_SheetsLists, IBQ_FilesFiltered, gi_FilesPerList, ed_ListsBeginName.Text );
   li_CounterPages := 0;
   pb_ProgressInd.Position := 0; // initing user value
-  ls_ImagesDir := FileCopy.Destination + DirectorySeparator + CST_SUBDIR_HTML_LISTS + DirectorySeparator + CST_SUBDIR_HTML_IMAGES + DirectorySeparator ;
+  ls_ImagesDir := gs_RootPathForExport + CST_SUBDIR_HTML_LISTS + DirectorySeparator + CST_SUBDIR_HTML_IMAGES + DirectorySeparator ;
   fb_CreateDirectoryStructure(ls_ImagesDir);
-  fb_CreateDirectoryStructure(FileCopy.Destination + DirectorySeparator + CST_SUBDIR_HTML_LISTS);
+  fb_CreateDirectoryStructure(gs_RootPathForExport + CST_SUBDIR_HTML_LISTS);
   pb_ProgressInd.Max := IBQ_FilesFiltered.RecordCount;
   IBQ_FilesFiltered.First;
   p_SelectTabSheet(gt_TabSheets, ( gs_AnceSTROWEB_List ), ''); // current page sheet
@@ -1696,7 +1709,7 @@ var
 
   // Marriages with source
   function fs_CreateMarried (  const as_Date : String ; const ai_ClefUnion : Longint ): String;
-  var ls_FileName : String ;
+  var ls_FileName, ls_FileNameBegin : String ;
       li_i : Integer ;
   Begin
     if ( as_Date = '' ) Then
@@ -1714,19 +1727,20 @@ var
       Begin
          // adding source
         if DMWeb.IBS_Conjoint.FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN
-        Then ls_FileName := fs_getNameAndSurName (DMWeb.IBS_Conjoint)+'&'+fs_getNameAndSurName (IBQ_FilesFiltered)
-        Else ls_FileName := fs_getNameAndSurName (IBQ_FilesFiltered )+'&'+fs_getNameAndSurName (DMWeb.IBS_Conjoint);
-        ls_FileName := fs_TextToFileName(DMWeb.IBS_Conjoint.FieldByName(UNION_CLEF).AsString + ls_FileName+'-'+as_Date
+        Then ls_FileNameBegin := fs_getNameAndSurName (DMWeb.IBS_Conjoint)+'&'+fs_getNameAndSurName (IBQ_FilesFiltered)
+        Else ls_FileNameBegin := fs_getNameAndSurName (IBQ_FilesFiltered )+'&'+fs_getNameAndSurName (DMWeb.IBS_Conjoint);
+        ls_FileNameBegin := fs_TextToFileName(DMWeb.IBS_Conjoint.FieldByName(UNION_CLEF).AsString + ls_FileNameBegin+'-'+as_Date
                      + '-'+DMWeb.IBS_Conjoint.FieldByName(UNION_CP).AsString+'-'+DMWeb.IBS_Conjoint.FieldByName(UNION_CITY).AsString )+ '-';
         li_i := 1 ;
 
         // medias
         while not DMWeb.IBQ_ConjointSources.EOF do
           Begin
-            if fb_getMediaFile ( DMWeb.IBQ_ConjointSources, ls_ArchivesDir + ls_FileName + IntToStr(li_i) +CST_EXTENSION_JPEG ) Then
+            ls_FileName := ls_FileNameBegin + IntToStr(li_i);
+            if fb_getMediaFile ( DMWeb.IBQ_ConjointSources, ls_ArchivesDir, ls_FileName ) Then
               Begin
-                AppendStr( Result, ' - ' +fs_Create_Link ( CST_HTML_OUTDIR_SEPARATOR + CST_SUBDIR_HTML_ARCHIVE + CST_HTML_DIR_SEPARATOR + ls_FileName + IntToStr(li_i)+CST_EXTENSION_JPEG,
-                                                           IntToStr(li_i),CST_HTML_TARGET_BLANK ));
+                AppendStr( Result, ' - ' +fs_Create_Link ( CST_HTML_OUTDIR_SEPARATOR + CST_SUBDIR_HTML_ARCHIVE + CST_HTML_DIR_SEPARATOR + ls_FileName +CST_EXTENSION_JPEG,
+                                                           gs_ANCESTROWEB_ArchiveLinkBegin + IntToStr(li_i),CST_HTML_TARGET_BLANK ));
                 inc ( li_i );
               End;
 
@@ -1989,7 +2003,7 @@ var
       ( gs_AnceSTROWEB_At ) + ls_NameEnd, '', '', gs_LinkGedcom, '..' + CST_HTML_DIR_SEPARATOR);
 
     // saving the page
-    ls_destination := gs_RootPathForExport + DirectorySeparator +
+    ls_destination := gs_RootPathForExport +
       CST_SUBDIR_HTML_FILES + DirectorySeparator + ed_FileBeginName.Text + IntToStr(
       li_CounterPages) + CST_EXTENSION_HTML;
     try
@@ -2010,9 +2024,9 @@ begin
   p_Setcomments (( gs_AnceSTROWEB_Files )); // advert for user
   li_CounterPages := 0;
   pb_ProgressInd.Position := 0; // initing not needed user value
-  ls_ImagesDir := FileCopy.Destination + DirectorySeparator + CST_SUBDIR_HTML_FILES +
+  ls_ImagesDir := gs_RootPathForExport + CST_SUBDIR_HTML_FILES +
     DirectorySeparator + CST_SUBDIR_HTML_IMAGES + DirectorySeparator;
-  ls_ArchivesDir := FileCopy.Destination + DirectorySeparator + CST_SUBDIR_HTML_ARCHIVE +
+  ls_ArchivesDir := gs_RootPathForExport + CST_SUBDIR_HTML_ARCHIVE +
     DirectorySeparator ;
   fb_CreateDirectoryStructure(ls_ImagesDir);
   fb_CreateDirectoryStructure(ls_ArchivesDir);
@@ -2021,8 +2035,13 @@ begin
   p_SelectTabSheet(gt_TabSheets, ( gs_AnceSTROWEB_Files ), '', False); // current page sheet
   ls_Name := '';
   p_IncProgressBar; // growing the counter
-  while not IBQ_FilesFiltered.EOF do
-    p_AddAFolder;
+  with FileCopy do
+    Begin
+      FileOptions:=FileOptions+[cpDestinationIsFile];
+      while not IBQ_FilesFiltered.EOF do
+        p_AddAFolder;
+      FileOptions:=FileOptions-[cpDestinationIsFile];
+    end;
   lstl_HTMLPersons := TStringList.Create;
   lstl_HTMLPersons.Text := fs_CreateULTabsheets(gt_SheetsLetters,
     CST_SUBDIR_HTML_FILES + CST_HTML_DIR_SEPARATOR, CST_HTML_SUBMENU) +
@@ -2039,7 +2058,7 @@ begin
   p_IncProgressBar; // growing the counter
 
   // saving the page
-  ls_destination := gs_RootPathForExport + DirectorySeparator +
+  ls_destination := gs_RootPathForExport +
     ed_FileBeginName.Text + CST_EXTENSION_HTML;
   try
     lstl_HTMLPersons.SaveToFile(ls_destination);
@@ -2102,7 +2121,7 @@ begin
   p_IncProgressBar; // growing the counter
 
   // saving the page
-  ls_destination := gs_RootPathForExport + DirectorySeparator + ed_ContactName.Text + CST_EXTENSION_PHP;
+  ls_destination := gs_RootPathForExport + ed_ContactName.Text + CST_EXTENSION_PHP;
   try
     lstl_HTMLContact.SaveToFile(ls_destination);
   except
@@ -2141,7 +2160,7 @@ begin
   p_ReplaceLanguageString(lstl_HTMLSearch,CST_SEARCH_SEARCH_TOOL  ,ed_SearchTool.Text);
 
   // saving the page
-  ls_destination := gs_RootPathForExport + DirectorySeparator + ed_SearchName.Text  + CST_EXTENSION_HTML;
+  ls_destination := gs_RootPathForExport + ed_SearchName.Text  + CST_EXTENSION_HTML;
   try
     lstl_HTMLSearch.SaveToFile(ls_destination);
   except
@@ -2277,7 +2296,7 @@ begin
 
 
   // saving the page
-  ls_destination := gs_RootPathForExport + DirectorySeparator + ed_AgesName.Text  + CST_EXTENSION_HTML;
+  ls_destination := gs_RootPathForExport + ed_AgesName.Text  + CST_EXTENSION_HTML;
   try
     lstl_HTMLAges2.SaveToFile(ls_destination);
   except
@@ -2408,7 +2427,7 @@ begin
         gs_ANCESTROWEB_Jobs, gs_ANCESTROWEB_Jobs, gs_ANCESTROWEB_Jobs_Long, gs_LinkGedcom, '',CST_EXTENSION_HTML,'',lstl_HTMLJobs);
 
   // saving the page
-  ls_destination := gs_RootPathForExport + DirectorySeparator + ed_JobsName.Text  + CST_EXTENSION_HTML;
+  ls_destination := gs_RootPathForExport + ed_JobsName.Text  + CST_EXTENSION_HTML;
   try
     lstl_HTMLJobs2.SaveToFile(ls_destination);
   except

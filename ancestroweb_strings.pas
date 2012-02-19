@@ -79,6 +79,7 @@ resourcestring
   gs_ANCESTROWEB_Unions = 'Unions';
   gs_ANCESTROWEB_Statistics = 'Statistiques';
   gs_ANCESTROWEB_NoData = 'Pas de base de données ouvertes';
+  gs_ANCESTROWEB_ArchiveLinkBegin = 'A';
 
   gs_ANCESTROWEB_cantConnect = 'Impossible de se connecter à la base : ';
   gs_ANCESTROWEB_cantCreateATree = 'Impossible de créer l''arbre : ';

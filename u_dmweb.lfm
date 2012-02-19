@@ -3,8 +3,8 @@ object DMWeb: TDMWeb
   OnDestroy = DataModuleDestroy
   OldCreateOrder = False
   Height = 408
-  HorizontalOffset = 519
-  VerticalOffset = 84
+  HorizontalOffset = 520
+  VerticalOffset = 113
   Width = 572
   object IBT_BASE: TIBTransaction
     Active = False
