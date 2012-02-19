@@ -1744,12 +1744,12 @@ begin
    end;
 
   li_i := 1;
-  Result := fs_RemplaceEspace(as_FileAltName, '_') + '-' + IntToStr(
+  Result := fs_TextToFileName(as_FileAltName ) + '-' + IntToStr(
     ai_cleFiche) + CST_EXTENSION_JPEG;
   while FileExistsUTF8(Result) { *Converted from FileExists*  } do
   Begin
     inc ( li_i );
-    Result := fs_RemplaceEspace(as_FileAltName, '_') + '-' + IntToStr(
+    Result := fs_TextToFileName(as_FileAltName ) + '-' + IntToStr(
     ai_cleFiche)+'-'+ IntToStr(li_i) + CST_EXTENSION_JPEG;
   end;
 
