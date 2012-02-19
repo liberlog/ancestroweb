@@ -347,6 +347,7 @@ var
   gs_LinkGedcom: string;
   gs_RootPathForExport: string;
   gt_SheetsLetters: TAHTMLULTabSheet;
+  gt_ExistingPersons : Array of Longint;
 
 
 implementation
@@ -385,11 +386,45 @@ begin
   DMWeb := nil;
 end;
 
+
+// procedure TF_AncestroWeb.p_createLettersSheets
+// creating a HTML list of letters
+procedure p_createExistingPersons (const IBQ_FilesFiltered: TIBQuery; const ab_DisableControls : Boolean = True);
+Begin
+  Finalize(gt_ExistingPersons);
+  with IBQ_FilesFiltered do
+    Begin
+      if ab_DisableControls Then
+        DisableControls;
+      First;
+      while not EOF do
+        try
+          SetLength(gt_ExistingPersons, high ( gt_ExistingPersons ) + 2);
+          gt_ExistingPersons [ high ( gt_ExistingPersons )] := FieldByName(IBQ_CLE_FICHE).AsInteger;
+          Next;
+        finally
+        end;
+      if ab_DisableControls Then
+        EnableControls;
+    end;
+end;
+
+function fb_IsCreatedPerson ( const ai_Key : Longint ):Boolean;
+var li_i : Longint;
+Begin
+  Result := False;
+  for li_i := 0 to high ( gt_ExistingPersons ) do
+    if gt_ExistingPersons [ li_i ] = ai_Key Then
+      Begin
+        Result := True;
+        Exit;
+      end;
+end;
+
 // procedure TF_AncestroWeb.DBGrid1CellClick
 // Writeng ini on dbgrid click
 procedure TF_AncestroWeb.DBGrid1CellClick(Column: TColumn);
 begin
-  fCleFiche := IBQ_Individu.FieldByName(IBQ_CLE_FICHE).AsInteger;
   p_iniWriteKey;
 end;
 
@@ -397,6 +432,8 @@ end;
 // Writing the DBGrid ini key
 procedure TF_AncestroWeb.p_iniWriteKey;
 begin
+  if IBQ_Individu.Active Then
+    fCleFiche := IBQ_Individu.FieldByName(IBQ_CLE_FICHE).AsInteger;
   p_IniWriteSectionInt(CST_INI_ANCESTROWEB_SECTION, IBQ_CLE_FICHE, fCleFiche);
 end;
 
@@ -405,7 +442,7 @@ end;
 procedure TF_AncestroWeb.p_iniReadKey;
 begin
   fCleFiche := f_IniReadSectionInt(CST_INI_ANCESTROWEB_SECTION, IBQ_CLE_FICHE, fCleFiche);
-  if IBQ_Individu.Active Then;
+  if IBQ_Individu.Active Then
     IBQ_Individu.Locate(IBQ_CLE_FICHE,fCleFiche,[]);
 end;
 
@@ -633,12 +670,18 @@ begin
         Begin
           if fb_OpenTree(DmWeb.IBQ_TreeByNames, gi_CleFiche )
              then
-              p_createLettersSheets( gt_SheetsLetters, DmWeb.IBQ_TreeByNames, gi_FilesPerPage, ed_FileBeginName.Text);
+               Begin
+                p_createLettersSheets( gt_SheetsLetters, DmWeb.IBQ_TreeByNames, gi_FilesPerPage, ed_FileBeginName.Text);
+                p_createExistingPersons ( DmWeb.IBQ_TreeByNames );
+               end;
         end
        Else
        Begin
          if fb_OpenTree(DmWeb.IBQ_TreeDescByNames, gi_CleFiche ) then
-           p_createLettersSheets( gt_SheetsLetters, DmWeb.IBQ_TreeDescByNames, gi_FilesPerPage, ed_FileBeginName.Text);
+           Begin
+             p_createLettersSheets( gt_SheetsLetters, DmWeb.IBQ_TreeDescByNames, gi_FilesPerPage, ed_FileBeginName.Text);
+             p_createExistingPersons ( DmWeb.IBQ_TreeByNames );
+           end;
        end;
     end
     else
@@ -947,7 +990,7 @@ function TF_AncestroWeb.fi_CreateHTMLTree(const IBQ_Tree: TIBQuery;
   const as_IdSosa: string = IBQ_TQ_SOSA;
   const ab_Asc: boolean = True): longint;
 var
-  li_LocalLevel, li_LocalPreLevel: integer;
+  li_LocalLevel, li_LocalPreLevel, li_Clefiche: integer;
   ls_Tempo, ls_Barres, ls_NodeLink, ls_NameSurname, ls_Image: string;
 
   function fs_getText: string;
@@ -962,17 +1005,18 @@ var
     if not IBQ_Tree.FieldByName(IBQ_AGE_AU_DECES).IsNull then
       AppendStr(Result, ' (' + IBQ_Tree.FieldByName(IBQ_AGE_AU_DECES).AsString +
         ( gs_AnceSTROWEB_Years ) + ')');
-    p_addKeyWord(IBQ_Tree.FieldByName(IBQDLLNOM).AsString, '-'); // adding a head's meta keyword
-    p_addKeyWord(IBQ_Tree.FieldByName(IBQDLLPRENOM).AsString); // adding a head's meta keyword
+    p_addKeyWord(IBQ_Tree.FieldByName(IBQ_NOM).AsString, '-'); // adding a head's meta keyword
+    p_addKeyWord(IBQ_Tree.FieldByName(IBQ_PRENOM).AsString); // adding a head's meta keyword
   end;
 
 
-  procedure p_AddLine ( const ab_IsTheEnd, ab_OldNext, ab_IsFirst : boolean );
+  procedure p_AddLine ( const ai_Key : Longint ; const ab_IsTheEnd, ab_OldNext, ab_IsFirst : boolean );
   var ls_Link: string;
   Begin
     if not ch_Filtered.Checked
     or ( ab_IsFirst )
     or ( ab_asc = ch_ancestors.Checked ) // filtered by the correct direction ?
+    or fb_IsCreatedPerson(ai_Key)
     Then
       Begin
         ls_NameSurname:= fs_RemplaceEspace ( ls_NameSurname, '_' );
@@ -991,8 +1035,7 @@ var
     astl_HTMLTree.Add(ls_Tempo);
   end;
 
-  procedure p_CreateChilds(const af_Sosa: double; const as_Aboville: string;
-  const ab_HasNext, ab_OldNext, ab_IsFirst, ab_IsSecond, ab_IsSisBrother: boolean );
+  procedure p_CreateChilds(const af_Sosa: double; const as_Aboville: string; const ab_HasNext, ab_OldNext, ab_IsFirst, ab_IsSecond, ab_IsSisBrother: boolean );
   var
     li_Sexe, li_i: integer;
     lf_SosaPere, lf_SosaMere, lf_NewSosa: double;
@@ -1016,8 +1059,9 @@ var
            Then
             Result := li_LocalLevel;
           if li_LocalPreLevel <> -1 then
-            p_AddLine ( False, ab_OldNext, ab_IsFirst or ab_IsSecond );
+            p_AddLine ( li_Clefiche, False, ab_OldNext, ab_IsFirst or ab_IsSecond );
 
+          li_Clefiche := IBQ_Tree.FieldByName(IBQ_CLE_FICHE).AsInteger;
           if ab_Progress then
             p_IncProgressInd; // growing the second counter
           // Nommage des noeuds
@@ -1093,10 +1137,11 @@ begin
   try
     // first node
     IBQ_Tree.Locate(IBQ_CLE_FICHE, ai_Clefiche, []);
+    li_Clefiche:=ai_Clefiche;
     // create the tree
     p_CreateChilds(IBQ_Tree.FieldByName(as_IdSosa).AsFloat,
       IBQ_Tree.FieldByName(as_IdSosa).AsString, False, False, True, False, False);
-    p_AddLine ( True, False, False );
+    p_AddLine ( li_Clefiche, True, False, False );
   except
     On E: Exception do
       ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateATree ) + CST_ENDOFLINE + E.Message);
@@ -1134,9 +1179,9 @@ begin
     li_ClePere := IBQ_Individu.FieldByName(IBQ_CLE_PERE).AsInteger;
     li_CleMere := IBQ_Individu.FieldByName(IBQ_CLE_MERE).AsInteger;
     if IBQ_Individu.Locate(IBQ_CLE_FICHE, li_ClePere, []) then
-      AppendStr(gs_HTMLTitle, ' ' + IBQ_Individu.FieldByName(IBQDLLNOM).AsString);
+      AppendStr(gs_HTMLTitle, ' ' + IBQ_Individu.FieldByName(IBQ_NOM).AsString);
     if IBQ_Individu.Locate(IBQ_CLE_FICHE, li_CleMere, []) then
-      AppendStr(gs_HTMLTitle, ' & ' + IBQ_Individu.FieldByName(IBQDLLNOM).AsString);
+      AppendStr(gs_HTMLTitle, ' & ' + IBQ_Individu.FieldByName(IBQ_NOM).AsString);
   end;
   gs_HTMLTitle := StringReplace( ( gs_AnceSTROWEB_HTMLTitle ), '@ARG',
     gs_HTMLTitle, [rfReplaceAll]);
@@ -1180,7 +1225,7 @@ begin
       ParamByName(I_NIVEAU).AsInteger := ai_Niveau;
       ParamByName(I_PARQUI).AsInteger := ai_Sexe;
       AIBQ_Tree.ExecQuery;
-      Result := AIBQ_Tree.Eof;
+      Result := not AIBQ_Tree.Eof;
     except
       On E: Exception do
         ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
@@ -1365,14 +1410,14 @@ end;
 // Getting name and surname
 function TF_AncestroWeb.fs_getNameAndSurName ( const ibq_Query : TIBQuery ) : String;
 Begin
-  Result:=ibq_Query.FieldByName(IBQDLLNOM).AsString+' ' + ibq_Query.FieldByName(IBQDLLPRENOM).AsString;
+  Result:=ibq_Query.FieldByName(IBQ_NOM).AsString+' ' + ibq_Query.FieldByName(IBQ_PRENOM).AsString;
 End;
 
 // function TF_AncestroWeb.fs_getNameAndSurName
 // Getting name and surname
 function TF_AncestroWeb.fs_getNameAndSurName ( const ibq_Query : TIBSQL ) : String;
 Begin
-  Result:=ibq_Query.FieldByName(IBQDLLNOM).AsString+' ' + ibq_Query.FieldByName(IBQDLLPRENOM).AsString;
+  Result:=ibq_Query.FieldByName(IBQ_NOM).AsString+' ' + ibq_Query.FieldByName(IBQ_PRENOM).AsString;
 End;
 
 // function TF_AncestroWeb.fs_CreatePrevNext
@@ -1401,33 +1446,34 @@ Begin
     End;
   // verifying existing file copy
   if FileExistsUTF8(as_FilePath + as_FileNameBegin + CST_EXTENSION_JPEG )
-  or FileExistsUTF8(as_FilePath + as_FileNameBegin + CST_FILE_ORIGINAL + CST_EXTENSION_JPEG ) Then
+  or FileExistsUTF8(as_FilePath + as_FileNameBegin + gs_ANCESTROWEB_FileName_NotACopy + CST_EXTENSION_JPEG ) Then
     Begin
       Result := True;
       Exit;
     end;
   try
-    if not IBQ_Media.FieldByName ( MEDIAS_NOM ).IsNull Then
+    // Searching original copy with partial name
+    if IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString <> '' Then
      Begin
       ls_Path := DirectorySeparator + fs_GetCorrectPath ( IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString );
       // simple copy ?
       if not IBQ_Media.FieldByName ( MEDIAS_NOM ).IsNull
-      and (   FileExistsUTF8(fSoftUserPath  +ls_Path)
-           or FileExistsUTF8(fFolderBasePath+ls_Path))
+      and (   FileExistsUTF8(fFolderBasePath+ls_Path)
+           or FileExistsUTF8(fSoftUserPath  +ls_Path))
        Then
          Begin
            WriteLn(IBQ_Media.FieldByName ( MEDIAS_NOM ).AsString+ ' - ' + IBQ_Media.FieldByName(MEDIAS_PATH ).AsString);
            if FileExistsUTF8(fSoftUserPath+ls_Path)
             Then FileCopy.Source:=fSoftUserPath  +ls_Path
             Else FileCopy.Source:=fFolderBasePath+ls_Path;
-           AppendStr ( as_FileNameBegin, CST_FILE_ORIGINAL );
+           AppendStr ( as_FileNameBegin, gs_ANCESTROWEB_FileName_NotACopy );
            FileCopy.Destination:=as_FilePath + as_FileNameBegin + CST_EXTENSION_JPEG;
            FileCopy.CopySourceToDestination;
            Result:=True;
            Exit;
          end;
       End;
-    // unless creating file from database
+    // Searching original copy with full name
     if IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString <> '' Then
       if {$IFNDEF FPC}( GetDriveType( Pchar(ExtractFileDrive ( IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString ))) >0 )
       and{$ENDIF} FileExistsUTF8(IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString )
@@ -1435,11 +1481,11 @@ Begin
           Begin
            ls_Path := IBQ_Media.FieldByName(MEDIAS_PATH ).AsString;
            FileCopy.Source:= ls_Path;
-           AppendStr ( as_FileNameBegin, CST_FILE_ORIGINAL );
+           AppendStr ( as_FileNameBegin, gs_ANCESTROWEB_FileName_NotACopy );
            FileCopy.Destination:=as_FilePath+as_FileNameBegin+CST_EXTENSION_JPEG;
            FileCopy.CopySourceToDestination;
            if ( pos ( fFolderBasePath, ls_Path ) = 1 ) Then
-            try
+            try // updating the partial name
               DMWeb.IBS_Temp.SQL.Text := 'UPDATE MULTIMEDIA SET ' + MEDIAS_NOM + '='''
                                       + fs_stringDbQuote(copy ( ls_Path, length ( fFolderBasePath ) + 1, length ( ls_Path ) - length ( fFolderBasePath )))
                                       + ''' WHERE ' + MEDIAS_CLEF + '=' + IBQ_Media.FieldByName(MEDIAS_CLEF ).AsString;
@@ -1453,6 +1499,7 @@ Begin
            Result:=True;
            Exit;
           end;
+    // unless creating file from database
      Result := fb_ImageFieldToFile(IBQ_Media.FieldByName(MEDIAS_MULTI_MEDIA), as_FilePath + as_FileNameBegin + CST_EXTENSION_JPEG);
   Except
    Result:=False;
@@ -1472,7 +1519,7 @@ Begin
   li_OldCounterPages := 0;
   Finalize(at_SheetsLetters);
   for lch_i := CST_FILES_BEGIN_LETTER to CST_FILES_END_LETTER do
-  if IBQ_FilesFiltered.Locate(IBQDLLNOM, lch_i,
+  if IBQ_FilesFiltered.Locate(IBQ_NOM, lch_i,
     [loPartialKey, loCaseInsensitive]) then
     begin
       li_OldCounterPages := li_Counter;
@@ -1511,7 +1558,7 @@ begin
   while not IBQ_FilesFiltered.EOF do
   begin
     p_IncProgressInd; // growing the second counter
-    ls_NewName := IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString;
+    ls_NewName := IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString;
     if (ls_NewName <> ls_Name) Then
      Begin
       if (length(ls_NewName) = 0) Then
@@ -1526,7 +1573,7 @@ begin
                            + fs_GetSheetLink ( gt_SheetsLetters, ls_NewName[1], ls_NewName ) + '#' + ls_NewName + '">'
                            + ls_NewName + CST_HTML_A_END +' ('+ IBQ_FilesFiltered.FieldByName( IBQ_COUNTER ).AsString + ')' );
      end;
-    ls_Name := IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString;
+    ls_Name := IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString;
     p_addKeyWord(ls_Name, '-'); // adding a head's meta keyword
     IBQ_FilesFiltered.Next;
 
@@ -1566,7 +1613,7 @@ var
   begin
     p_CreateKeyWords;
     lstl_HTMLAList := TStringList.Create;
-    ls_NameBegin := IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString;
+    ls_NameBegin := IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString;
     if (ls_NameBegin <> '') then
       p_SelectTabSheet(lt_SheetsLists,ls_NameBegin[1],ls_NameBegin); // current letter sheet
     lstl_HTMLAList.Text :=
@@ -1583,10 +1630,10 @@ var
     for li_i := 1 to gi_FilesPerList do
     begin
       p_IncProgressInd; // growing the second counter
-      p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString, '-'); // adding a head's meta keyword
-      p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQDLLPRENOM).AsString); // adding a head's meta keyword
+      p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString, '-'); // adding a head's meta keyword
+      p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQ_PRENOM).AsString); // adding a head's meta keyword
       li_CleFiche := IBQ_FilesFiltered.FieldByName(IBQ_CLE_FICHE).AsInteger;
-      ls_NewName := IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString;
+      ls_NewName := IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString;
       case IBQ_FilesFiltered.FieldByName(IBQ_SEXE).AsInteger of
        IBQ_SEXE_MAN   : ls_Sexe := CST_FILE_MAN;
        IBQ_SEXE_WOMAN : ls_Sexe := CST_FILE_WOMAN;
@@ -1602,7 +1649,7 @@ var
           lstl_HTMLAList.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + ls_NewName[1] + '" />');
        end;
       ls_Name := ls_NewName;
-      ls_Name:= ls_Name + ' ' + IBQ_FilesFiltered.FieldByName(IBQDLLPRENOM).AsString ; // showed name
+      ls_Name:= ls_Name + ' ' + IBQ_FilesFiltered.FieldByName(IBQ_PRENOM).AsString ; // showed name
       ls_NameWith_ := fs_RemplaceChar ( ls_Name, ' ', '_' ); // name for hyperlink
       lstl_HTMLAList.Add(   fs_AddPhoto(li_CleFiche, fs_getaltPhoto(IBQ_FilesFiltered), ls_ImagesDir, 24) +   // mini photo
                             CST_HTML_TD_END + CST_HTML_TD_BEGIN +
@@ -1611,7 +1658,7 @@ var
                             fs_GetSheetLink ( gt_SheetsLetters, ls_name[1], ls_NameWith_ ) + '#' + ls_NameWith_+ '">' +ls_name +
                             CST_HTML_TD_END + fs_Create_TD(CST_TABLE_CENTER) + IBQ_FilesFiltered.FieldByName(IBQ_ANNEE_NAISSANCE).AsString + // birth
                             CST_HTML_TD_END + fs_Create_TD(CST_TABLE_CENTER) + ' ' + IBQ_FilesFiltered.FieldByName(IBQ_ANNEE_DECES).AsString+ CST_HTML_TR_END); // death
-      ls_NameEnd := IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString;
+      ls_NameEnd := IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString;
       IBQ_FilesFiltered.Next;
       if IBQ_FilesFiltered.EOF then
        Begin
@@ -1669,9 +1716,9 @@ Begin
       IBQ_IndividuFiltered.FieldByName(
       IBQ_ANNEE_DECES).AsString + ' ' +
       IBQ_IndividuFiltered.FieldByName(
-      IBQDLLNOM).AsString + ' ' +
+      IBQ_NOM).AsString + ' ' +
       IBQ_IndividuFiltered.FieldByName(
-      IBQDLLPRENOM).AsString;
+      IBQ_PRENOM).AsString;
 end;
 function TF_AncestroWeb.fs_getaltPhoto(const IBQ_IndividuFiltered : TIBSQL):String;
 Begin
@@ -1680,9 +1727,9 @@ Begin
       IBQ_IndividuFiltered.FieldByName(
       IBQ_ANNEE_DECES).AsString + ' ' +
       IBQ_IndividuFiltered.FieldByName(
-      IBQDLLNOM).AsString + ' ' +
+      IBQ_NOM).AsString + ' ' +
       IBQ_IndividuFiltered.FieldByName(
-      IBQDLLPRENOM).AsString;
+      IBQ_PRENOM).AsString;
 end;
 function TF_AncestroWeb.fs_AddPhoto( const ai_cleFiche: longint;
 const as_FileAltName, as_ImagesDir: string; const ai_ResizeWidth : Integer = 180 ): string;
@@ -1864,7 +1911,7 @@ var
          while not DMWeb.IBS_Conjoint.EOF do  // adding all husbands
           Begin
            astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_UNION + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
-                                + DMWeb.IBS_Conjoint.FieldByName(IBQDLLNOM).AsString + ' ' + DMWeb.IBS_Conjoint.FieldByName(IBQDLLPRENOM).AsString );
+                                + DMWeb.IBS_Conjoint.FieldByName(IBQ_NOM).AsString + ' ' + DMWeb.IBS_Conjoint.FieldByName(IBQ_PRENOM).AsString );
            astl_HTMLAFolder.Add ( fs_CreateMarried ( DMWeb.IBS_Conjoint.FieldByName(UNION_DATE_MARIAGE).AsString, DMWeb.IBS_Conjoint.FieldByName(UNION_CLEF).AsInteger ));
            astl_HTMLAFolder.Add ( CST_HTML_LI_END);
            DMWeb.IBS_Conjoint.Next;
@@ -1957,7 +2004,7 @@ var
   begin
     p_CreateKeyWords;
     lstl_HTMLAFolder := TStringList.Create;
-    ls_NameBegin := IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString;
+    ls_NameBegin := IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString;
     ls_NameSurname := fs_RemplaceEspace ( fs_getNameAndSurName(IBQ_FilesFiltered), '_' );
     if (ls_NameBegin <> '') then
       p_SelectTabSheet(gt_SheetsLetters,ls_NameSurname[1],ls_NameSurname); // current letter sheet
@@ -1971,10 +2018,10 @@ var
       p_IncProgressInd; // growing the second counter
       ls_NameSurname := fs_RemplaceEspace ( fs_getNameAndSurName(IBQ_FilesFiltered), '_' );
       // adding html head's meta-keywords
-      p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString, '-'); // adding a head's meta keyword
-      p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQDLLPRENOM).AsString); // adding a head's meta keyword
+      p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString, '-'); // adding a head's meta keyword
+      p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQ_PRENOM).AsString); // adding a head's meta keyword
       li_CleFiche := IBQ_FilesFiltered.FieldByName(IBQ_CLE_FICHE).AsInteger;
-      ls_NewName := IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString;
+      ls_NewName := IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString;
       if (ls_NewName <> ls_Name) Then
        Begin
         if (ls_name = '') or ((length(ls_NewName) > 0) and
@@ -1996,7 +2043,7 @@ var
       lstl_HTMLAFolder.Add(CST_HTML_BR + fs_CreateElementWithId ( CST_HTML_TABLE , ls_NewName + CST_FILE_Number + IntToStr(li_i) , CST_HTML_CLASS_EQUAL ) +
         CST_HTML_TR_BEGIN + fs_Create_TD ( ls_NewName + CST_FILE_Number + IntToStr(li_i), CST_HTML_CLASS_EQUAL, 2 ));
       lstl_HTMLAFolder.Add( CST_HTML_DIV_BEGIN + '<' + CST_HTML_H2 + CST_HTML_ID_EQUAL +'"subtitle">' + CST_HTML_IMAGE_SRC + '../' + CST_SUBDIR_HTML_IMAGES + '/' + ls_NewName + CST_EXTENSION_GIF + '" />' + ls_name +
-        ' ' + IBQ_FilesFiltered.FieldByName(IBQDLLPRENOM).AsString + CST_HTML_H2_BEGIN + CST_HTML_DIV_END);
+        ' ' + IBQ_FilesFiltered.FieldByName(IBQ_PRENOM).AsString + CST_HTML_H2_BEGIN + CST_HTML_DIV_END);
       lstl_HTMLAFolder.Add(CST_HTML_TD_END + CST_HTML_TR_END  + CST_HTML_TR_BEGIN  + CST_HTML_TD_BEGIN);
       p_AddInfos ( lstl_HTMLAFolder, li_CleFiche, li_i );
       lstl_HTMLAFolder.Add(CST_HTML_TD_END);
@@ -2004,7 +2051,7 @@ var
       lstl_HTMLAFolder.Add( CST_HTML_TR_END );
       p_AddTrees ( lstl_HTMLAFolder, li_CleFiche, li_i );
       lstl_HTMLAFolder.Add( CST_HTML_TABLE_END + CST_HTML_BR);
-      ls_NameEnd := IBQ_FilesFiltered.FieldByName(IBQDLLNOM).AsString;
+      ls_NameEnd := IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString;
       IBQ_FilesFiltered.Next;
       if IBQ_FilesFiltered.EOF then
        Begin
@@ -2745,12 +2792,14 @@ procedure TF_AncestroWeb.OnFormInfoIniIniLoad(const AInifile: TCustomInifile;
   var Continue: Boolean);
 begin
   p_ReadComboBoxItems(edNomBase,edNomBase.Items);
+  p_iniReadKey;
 end;
 
 procedure TF_AncestroWeb.OnFormInfoIniIniWrite(const AInifile: TCustomInifile;
   var Continue: Boolean);
 begin
   p_writeComboBoxItems(edNomBase,edNomBase.Items);
+  p_iniWriteKey;
 end;
 
 procedure TF_AncestroWeb.PCPrincipalChange(Sender: TObject);

@@ -95,6 +95,7 @@ resourcestring
   gs_ANCESTROWEB_CreatedBy = 'Créé par';
   gs_ANCESTROWEB_Please_Restart = 'Succès de la mise à jour !'+#10+' Veuillez redémarrer...';
   gs_ANCESTROWEB_StartUpdate = 'Une mise à jour de la base est nécessaire à partir de ce script :'+#10;
+  gs_ANCESTROWEB_FileName_NotACopy = '-original';
 
 implementation
 

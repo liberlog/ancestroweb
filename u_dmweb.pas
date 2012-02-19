@@ -44,9 +44,9 @@ var gt_TabSheets : TaHTMLULTabSheet;
     gi_FilesPerList : Integer = 60 ;
 
 
-const IBQDLLNOM='NOM';
-      IBQDLLPRENOM='PRENOM';
-      IBQDLLDOSSIER='dll_DOSSIER';
+const IBQ_NOM='NOM';
+      IBQ_PRENOM='PRENOM';
+      IBQ_DLL_DOSSIER='dll_DOSSIER';
       NOM_DOSSIER = 'NOM_DOSSIER';
 
       EQUAL       = '=' ;
@@ -175,7 +175,6 @@ const IBQDLLNOM='NOM';
       CST_FILE_MAN          = 'man';
       CST_FILE_WOMAN        = 'woman';
       CST_FILE_PERSON       = 'person';
-      CST_FILE_ORIGINAL     = '-original';
       CST_PAGE_PREVIOUS     = 'previous';
       CST_PAGE_NEXT         = 'next';
 
@@ -336,9 +335,9 @@ begin
   try
     IBS_DLL.ExecQuery;
     fCleFiche := IBS_DLL.FieldByName(IBQ_CLE_FICHE).AsInteger;
-    fCleDossier := IBS_DLL.FieldByName(IBQDLLDOSSIER).AsInteger;
-    fNomIndi := fs_getCorrectString ( IBS_DLL.FieldByName(IBQDLLNOM).AsString );
-    fPrenomIndi := fs_getCorrectString ( IBS_DLL.FieldByName(IBQDLLPRENOM).AsString );
+    fCleDossier := IBS_DLL.FieldByName(IBQ_DLL_DOSSIER).AsInteger;
+    fNomIndi := fs_getCorrectString ( IBS_DLL.FieldByName(IBQ_NOM).AsString );
+    fPrenomIndi := fs_getCorrectString ( IBS_DLL.FieldByName(IBQ_PRENOM).AsString );
     fNom_Dossier:=fs_getCorrectString(IBS_DLL.FieldByName(NOM_DOSSIER).AsString);
     IBS_DLL.Close;
   except

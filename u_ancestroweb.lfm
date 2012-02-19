@@ -1,7 +1,7 @@
 object F_AncestroWeb: TF_AncestroWeb
-  Left = 257
+  Left = 259
   Height = 396
-  Top = 131
+  Top = 189
   Width = 640
   ActiveControl = PCPrincipal
   BorderIcons = []
@@ -66,9 +66,9 @@ object F_AncestroWeb: TF_AncestroWeb
     Height = 366
     Top = 0
     Width = 640
-    ActivePage = ts_about
+    ActivePage = ts_Gen
     Align = alClient
-    TabIndex = 9
+    TabIndex = 0
     TabOrder = 1
     OnChange = PCPrincipalChange
     object ts_Gen: TTabSheet
@@ -314,7 +314,7 @@ object F_AncestroWeb: TF_AncestroWeb
           object cbDossier: TComboBox
             Left = 60
             Height = 26
-            Top = 55
+            Top = 56
             Width = 206
             AutoComplete = True
             AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
