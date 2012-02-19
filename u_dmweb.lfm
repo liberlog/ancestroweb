@@ -582,16 +582,4 @@ object DMWeb: TDMWeb
     left = 168
     top = 336
   end
-  object IBS_Individu: TIBSQL
-    Database = ibd_BASE
-    ParamCheck = True
-    SQL.Strings = (
-      'select  CLE_FICHE,NUM_SOSA,CLE_PERE,CLE_MERE,NOM,PRENOM,SEXE, ANNEE_NAISSANCE,ANNEE_DECES from INDIVIDU WHERE KLE_DOSSIER=:KLE_DOSSIER '
-      'ORDER BY '
-      'NOM,PRENOM,ANNEE_NAISSANCE DESC,ANNEE_DECES DESC'
-    )
-    Transaction = IBT_BASE
-    left = 304
-    top = 336
-  end
 end

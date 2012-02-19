@@ -229,7 +229,6 @@ type
   TDMWeb = class(TDataModule)
     IBS_Sources_Record: TIBSQL;
     IBS_AscExists: TIBSQL;
-    IBS_Individu: TIBSQL;
     IBS_Jobs: TIBSQL;
     IBS_Compte: TIBSQL;
     IBS_Fiche: TIBSQL;

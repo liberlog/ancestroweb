@@ -14,6 +14,7 @@ unit U_AncestroWeb;
 // Descriptions
 // Création d'un arbre complet, d'une page de contact en PHP, de fiches, etc.
 // Historique
+// 1.1.4.1 : Gestion de versions
 // 1.1.4.0 : Plus de TIBSQL, copie de l'archive originale fonctionnel, moins de bugs
 // 1.1.3.1 : Professions dans la fiche de l'individu, Possibilité de descendre son arbre familial
 // 1.1.1.2 : Plus de tests
@@ -40,11 +41,28 @@ uses
 {$IFDEF WIN32}
   Registry,
 {$ENDIF}
+  fonctions_version,
   U_DMWeb, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, StdCtrls, DB,
   IBQuery, DBCtrls, ExtCtrls, Buttons, ComCtrls, DBGrids,
   functions_html, JvXPCheckCtrls, Spin, FileUtil, U_OnFormInfoIni,
   U_ExtImage, u_buttons_appli, IBSQL, U_ExtFileCopy, u_traducefile,
   JvXPButtons, IniFiles;
+
+  const
+    gVer_AncestroWeb : T_Version = ( Component : 'Application Ancestroweb' ;
+                                               FileUnit : 'U_AncestroWeb' ;
+                                               Owner : 'Matthieu Giroux' ;
+                                               Comment : 'Composant de copie multi-platformes.' ;
+                                               BugsStory : '1.1.5.0 : Adding versioning' +#13#10
+                                                         + '1.1.4.0 : More of TIBSQL, copy original media, less bugs' +#13#10
+                                                         + '1.1.3.1 : Jobs in Person''s file, Tree descending' +#13#10
+                                                         + '1.1.1.2 : More tests' +#13#10
+                                                         + '1.1.1.1 : Jobs and ages' +#13#10
+                                                         + '1.0.0.0 : Integrating in Freelogy' +#13#10
+                                                         + '0.9.9.0 : First published version' ;
+                                               UnitType : CST_TYPE_UNITE_APPLI ;
+                                               Major : 1 ; Minor : 1 ; Release : 5 ; Build : 0 );
+
 
 type
 
@@ -110,6 +128,7 @@ type
     bt_gen: TFWSaveAs;
     IBQ_Individu: TIBQuery;
     GedcomEdit: TFileNameEdit;
+    JvXPButton1: TJvXPButton;
     Label1: TLabel;
     Label10: TLabel;
     Label11: TLabel;
@@ -232,10 +251,12 @@ type
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure JvXPButton1Click(Sender: TObject);
     procedure OnFormInfoIniIniLoad(const AInifile: TCustomInifile;
       var Continue: Boolean);
     procedure OnFormInfoIniIniWrite(const AInifile: TCustomInifile;
       var Continue: Boolean);
+    procedure PCPrincipalChange(Sender: TObject);
     procedure TraduceImageFailure(Sender: TObject; const ErrorCode: integer;
       var ErrorMessage: string; var ContinueCopy: boolean);
   private
@@ -1404,8 +1425,7 @@ Begin
            FileCopy.CopySourceToDestination;
            Result:=True;
            Exit;
-         end else
-         WriteLn(fSoftUserPath+ls_Path+ ' not found ' );
+         end;
       End;
     // unless creating file from database
     if IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString <> '' Then
@@ -1427,13 +1447,12 @@ Begin
             Except
               on e:Exception do
                Begin
-                ShowMessage ( E.Message + ' : ' + #10 + DMWeb.IBS_Temp.SQL.Text );
+                writeln ( E.Message + ' : ' + #10 + DMWeb.IBS_Temp.SQL.Text );
                end;
             end;
            Result:=True;
            Exit;
-          end else
-           WriteLn(IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString+ ' unfound ' );
+          end;
      Result := fb_ImageFieldToFile(IBQ_Media.FieldByName(MEDIAS_MULTI_MEDIA), as_FilePath + as_FileNameBegin + CST_EXTENSION_JPEG);
   Except
    Result:=False;
@@ -2717,6 +2736,11 @@ begin
     p_updateIfNeeded;
 end;
 
+procedure TF_AncestroWeb.JvXPButton1Click(Sender: TObject);
+begin
+  fb_AfficheApropos ( True, CST_AncestroWeb, '' );
+end;
+
 procedure TF_AncestroWeb.OnFormInfoIniIniLoad(const AInifile: TCustomInifile;
   var Continue: Boolean);
 begin
@@ -2727,6 +2751,11 @@ procedure TF_AncestroWeb.OnFormInfoIniIniWrite(const AInifile: TCustomInifile;
   var Continue: Boolean);
 begin
   p_writeComboBoxItems(edNomBase,edNomBase.Items);
+end;
+
+procedure TF_AncestroWeb.PCPrincipalChange(Sender: TObject);
+begin
+
 end;
 
 // procedure TF_AncestroWeb.TraduceImageFailure
@@ -2769,5 +2798,7 @@ begin
   end;
 end;
 
+initialization
+  p_ConcatVersion ( gVer_AncestroWeb );
 end.
 
