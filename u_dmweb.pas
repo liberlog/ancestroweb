@@ -175,9 +175,11 @@ const IBQ_NOM='NOM';
       CST_FILE_MAN          = 'man';
       CST_FILE_WOMAN        = 'woman';
       CST_FILE_PERSON       = 'person';
+      CST_FILE_UPDATE       = 'script_update' ;
       CST_PAGE_PREVIOUS     = 'previous';
       CST_PAGE_NEXT         = 'next';
 
+      CST_EXTENSION_SQL     = '.sql';
       CST_TABLE_TITLE       = 'title';
       CST_TABLE_CENTER      = 'center';
 
@@ -226,6 +228,7 @@ type
   { TDMWeb }
 
   TDMWeb = class(TDataModule)
+    IBS_ConjExists: TIBSQL;
     IBS_Sources_Record: TIBSQL;
     IBS_AscExists: TIBSQL;
     IBS_Jobs: TIBSQL;

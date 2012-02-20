@@ -393,6 +393,7 @@ procedure p_createExistingPersons (const IBQ_FilesFiltered: TIBQuery; const ab_D
 Begin
   Finalize(gt_ExistingPersons);
   with IBQ_FilesFiltered do
+  if not IsEmpty Then
     Begin
       if ab_DisableControls Then
         DisableControls;
@@ -1952,7 +1953,8 @@ var
 
          astl_HTML.Add ( CST_HTML_TABLE_END );
         end;
-    finally
+    Except
+      ShowMessage(gs_ANCESTROWEB_Unset_Stats);
     end;
   end;
 
@@ -2686,28 +2688,38 @@ var
       Result := False;
     end;
 {$ENDIF}
+  procedure p_updateBase ( const as_FileUpdate : String );
+  Begin
+    if FileExists (gs_Root + as_FileUpdate) then
+    with DMWeb do
+     Begin
+       if not IBT_BASE.Active
+        then IBT_BASE.StartTransaction;
+       IBS_Temp.SQL.LoadFromFile( gs_Root + as_FileUpdate);
+       ShowMessage(gs_ANCESTROWEB_StartUpdate
+          +gs_Root+as_FileUpdate);
+       try
+         IBS_Temp.ExecQuery;
+         IBT_BASE.CommitRetaining;
+         ShowMessage ( gs_ANCESTROWEB_Please_Restart );
+       Except
+         IBT_BASE.RollbackRetaining;
+       End;
+     End;
+  end;
+
   procedure p_updateIfNeeded;
   Begin
     with DMWeb do
       try
         IBS_AscExists.ExecQuery;
-        if IBS_AscExists.EOF
-        and FileExists (gs_Root + 'script_update.sql') then
-         Begin
-           if not IBT_BASE.Active
-            then IBT_BASE.StartTransaction;
-           IBS_Temp.SQL.LoadFromFile( gs_Root + 'script_update.sql');
-           ShowMessage(gs_ANCESTROWEB_StartUpdate
-              +gs_Root+'script_update.sql');
-           try
-             IBS_Temp.ExecQuery;
-             IBT_BASE.CommitRetaining;
-             ShowMessage ( gs_ANCESTROWEB_Please_Restart );
-           Except
-             IBT_BASE.RollbackRetaining;
-           End;
-           End;
+        if IBS_AscExists.EOF then
+          p_updateBase ( CST_FILE_UPDATE+'2'+ CST_EXTENSION_SQL );
         IBS_AscExists.Close;
+        IBS_ConjExists.ExecQuery;
+        if IBS_ConjExists.EOF then
+          p_updateBase ( CST_FILE_UPDATE+ CST_EXTENSION_SQL );
+        IBS_ConjExists.Close;
       Except
 
       end;
@@ -2783,7 +2795,9 @@ begin
   Caption := fs_getCorrectString(CST_AncestroWeb_WithLicense+' : '+gs_AnceSTROWEB_FORM_CAPTION);
   p_AddABase(fbddpath);
   DoInitBase(edNomBase);
+  {$IFNDEF WINDOWS}
   if lb_Logie Then
+  {$ENDIF}
     p_updateIfNeeded;
 end;
 

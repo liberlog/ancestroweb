@@ -582,4 +582,15 @@ object DMWeb: TDMWeb
     left = 168
     top = 336
   end
+  object IBS_ConjExists: TIBSQL
+    Database = ibd_BASE
+    ParamCheck = True
+    SQL.Strings = (
+      'select * from RDB$PROCEDURES where rdb$Procedure_name '
+      '= ''PROC_CONJOINTS_ORDONNES'''
+    )
+    Transaction = IBT_BASE
+    left = 56
+    top = 264
+  end
 end
