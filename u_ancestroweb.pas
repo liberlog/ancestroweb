@@ -1961,11 +1961,15 @@ var
   var
     lstl_Tree: TStringList;
     li_generations: longint;
+    lb_AddAncestry : Boolean ;
   begin
    // adding a line and cell in the table
     astl_HTMLAFolder.Add(CST_HTML_TR_BEGIN + CST_HTML_TD_BEGIN );
     lstl_Tree := TStringList.Create;
-    // descent
+    if fb_OpenTree(DMWeb.IBQ_TreeAsc, ai_CleFiche, 3)
+     Then lb_AddAncestry := DMWeb.IBQ_TreeAsc.RecordCount > 1
+     Else lb_AddAncestry := False;
+     // descent
     if fb_OpenTree(DMWeb.IBQ_TreeDesc, ai_CleFiche, 3)
     and ( DMWeb.IBQ_TreeDesc.RecordCount > 1 ) then
     begin
@@ -1975,11 +1979,11 @@ var
       lstl_Tree.Insert(0, fs_Create_DIV('descent' + CST_FILE_Number + IntToStr(ai_NoInPage), CST_HTML_CLASS_EQUAL) + fs_GetTitleTree (( gs_AnceSTROWEB_Descent ), li_generations ));
       astl_HTMLAFolder.AddStrings(lstl_Tree);
       astl_HTMLAFolder.Add(CST_HTML_DIV_End);
-      astl_HTMLAFolder.Add(CST_HTML_BR);
+      if lb_AddAncestry then
+        astl_HTMLAFolder.Add(CST_HTML_BR);
     end;
     // ancestry
-    if fb_OpenTree(DMWeb.IBQ_TreeAsc, ai_CleFiche, 3)
-    and ( DMWeb.IBQ_TreeAsc.RecordCount > 1 ) then
+    if lb_AddAncestry then
     begin
       lstl_Tree.Clear;
       li_generations :=
