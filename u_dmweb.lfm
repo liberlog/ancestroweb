@@ -3,8 +3,8 @@ object DMWeb: TDMWeb
   OnDestroy = DataModuleDestroy
   OldCreateOrder = False
   Height = 408
-  HorizontalOffset = 524
-  VerticalOffset = 229
+  HorizontalOffset = 525
+  VerticalOffset = 258
   Width = 572
   object IBT_BASE: TIBTransaction
     Active = False
@@ -557,17 +557,6 @@ object DMWeb: TDMWeb
     left = 56
     top = 200
   end
-  object IBS_AscExists: TIBSQL
-    Database = ibd_BASE
-    ParamCheck = True
-    SQL.Strings = (
-      'select * from RDB$PROCEDURES where rdb$Procedure_name '
-      '= ''PROC_TQ_ASCENDANCE'''
-    )
-    Transaction = IBT_BASE
-    left = 192
-    top = 264
-  end
   object IBQ_Dossier: TIBQuery
     Database = ibd_BASE
     Transaction = IBT_BASE
@@ -581,16 +570,5 @@ object DMWeb: TDMWeb
     Params = <>
     left = 168
     top = 336
-  end
-  object IBS_ConjExists: TIBSQL
-    Database = ibd_BASE
-    ParamCheck = True
-    SQL.Strings = (
-      'select * from RDB$PROCEDURES where rdb$Procedure_name '
-      '= ''PROC_CONJOINTS_ORDONNES'''
-    )
-    Transaction = IBT_BASE
-    left = 56
-    top = 264
   end
 end

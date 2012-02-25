@@ -366,6 +366,7 @@ uses  fonctions_init,
 {$ENDIF}
   fonctions_system,
   fonctions_string,
+  fonctions_db,
   fonctions_languages,
   fonctions_images,
   fonctions_components,
@@ -2708,23 +2709,6 @@ var
      End;
   end;
 
-  procedure p_updateIfNeeded;
-  Begin
-    with DMWeb do
-      try
-        IBS_AscExists.ExecQuery;
-        if IBS_AscExists.EOF then
-          p_updateBase ( CST_FILE_UPDATE+'2'+ CST_EXTENSION_SQL );
-        IBS_AscExists.Close;
-        IBS_ConjExists.ExecQuery;
-        if IBS_ConjExists.EOF then
-          p_updateBase ( CST_FILE_UPDATE+ CST_EXTENSION_SQL );
-        IBS_ConjExists.Close;
-      Except
-
-      end;
-  end;
-
 begin
   f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
   OnFormInfoIni.p_ExecuteLecture(Self);
@@ -2795,10 +2779,6 @@ begin
   Caption := fs_getCorrectString(CST_AncestroWeb_WithLicense+' : '+gs_AnceSTROWEB_FORM_CAPTION);
   p_AddABase(fbddpath);
   DoInitBase(edNomBase);
-  {$IFNDEF WINDOWS}
-  if lb_Logie Then
-  {$ENDIF}
-    p_updateIfNeeded;
 end;
 
 procedure TF_AncestroWeb.JvXPButton1Click(Sender: TObject);

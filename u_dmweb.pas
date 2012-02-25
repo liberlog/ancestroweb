@@ -228,9 +228,7 @@ type
   { TDMWeb }
 
   TDMWeb = class(TDataModule)
-    IBS_ConjExists: TIBSQL;
     IBS_Sources_Record: TIBSQL;
-    IBS_AscExists: TIBSQL;
     IBS_Jobs: TIBSQL;
     IBS_Compte: TIBSQL;
     IBS_Fiche: TIBSQL;
