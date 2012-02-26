@@ -56,6 +56,9 @@ const CST_HTML_DIV                 = 'DIV' ;
       CST_HTML_LI_RIGHT            = '<'+CST_HTML_LI+' CLASS="tab_right">' ;
       CST_HTML_LI_END              = '</'+CST_HTML_LI+'>' ;
       CST_HTML_A_BEGIN             = '<A' ;
+      CST_HTML_A_BEGIN_LOWER       = '<a' ;
+      CST_HTML_A_BEGIN_LINK        = 'www.' ;
+      CST_HTML_A_BEGIN_LINK_HTTP   = 'http://' ;
       CST_HTML_A_END               = '</A>' ;
       CST_HTML_AHREF               = CST_HTML_A_BEGIN + ' HREF="' ;
       CST_HTML_SPAN                = 'SPAN' ;
@@ -147,12 +150,14 @@ function  fs_Create_TD             ( const as_Name        : String  = ''  ;
 function  fs_Create_Link           ( const as_href        : String   ;
                                      const as_Text        : String   ;
                                      const as_Target      : String = ''):String ;
+function  fs_Create_simple_Link    ( const as_href_Text   : String   ;
+                                     const as_Target      : String = ''):String ;
 function  fs_Create_DIV             ( const as_Name        : String      ;
                                       const as_IdEqual  : String = CST_HTML_ID_EQUAL;
                                       const Is_Visible  : Boolean   = False ):String ;
 function  fs_Create_Text            ( const as_Text        : String      ;
                                       const as_Option      : String = '' ):String ;
-function  fs_Replace_EndLines       ( const as_Text        : String      ;
+function  fs_Format_Lines           ( const as_Text        : String      ;
                                       const ReplaceWith : String = CST_HTML_BR ):String ;
 function fs_createHead (const as_PathFiles,as_Describe, as_Keywords, as_title : String): String;
 procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
@@ -194,7 +199,7 @@ var gs_html_source_file : String = 'Files' + DirectorySeparator;
 implementation
 
 uses Dialogs,fonctions_languages, fonctions_string,
-     unite_html_resources;
+     unite_html_resources, StrUtils;
 
 
 function fb_FindTabSheet ( const at_TabSheets : TAHTMLULTabSheet ;
@@ -335,10 +340,71 @@ Begin
   if ai_Colspan >  1  Then AppendStr(Result, CST_HTML_COLSPAN_EQUAL + '"' + IntToStr(ai_Colspan) + '"' );
   AppendStr(Result, '>' );
 End ;
-function  fs_Replace_EndLines       ( const as_Text        : String      ;
-                                      const ReplaceWith : String = CST_HTML_BR ):String ;
+
+function fb_CreateAFromLink ( var as_Text        : String;
+                              const ai_pos1 : Longint; ai_pos2 : Longint ):Boolean;
+Begin
+
+   inc( ai_Pos2 );
+   Result := False;
+   while ( ai_Pos2 <= length ( as_Text) )
+   and ( fb_isFileChar(as_Text[ai_Pos2]) or (as_Text[ai_Pos2] = CST_HTML_DIR_SEPARATOR)) do
+     Begin
+       if not Result Then // is there a dot
+         Result := as_Text[ai_Pos2] = '.';
+       inc(ai_Pos2);
+     end;
+   dec ( ai_pos2 );
+   if Result Then
+    if ai_pos1 = 1 Then
+     Begin
+       if ai_pos2 = Length(as_Text)
+        Then as_Text:=fs_Create_simple_Link(as_Text,CST_HTML_TARGET_BLANK)
+        Else as_Text:=fs_Create_simple_Link(copy(as_Text,1,ai_pos2), CST_HTML_TARGET_BLANK) +copy ( as_Text, ai_pos2 +1, Length ( as_Text ) - ai_pos2 );
+      End
+    Else
+    if ai_pos2 = Length(as_Text)
+     Then as_Text:=copy ( as_Text, 1, ai_pos1 - 1 )+fs_Create_simple_Link(copy(as_Text,ai_pos1,ai_pos2-ai_pos1+1), CST_HTML_TARGET_BLANK)
+     Else as_Text:=copy ( as_Text, 1, ai_pos1 - 1 )+fs_Create_simple_Link(copy(as_Text,ai_pos1,ai_pos2-ai_pos1+1), CST_HTML_TARGET_BLANK)+copy ( as_Text, ai_pos2 +1, Length ( as_Text ) - ai_pos2 );
+End;
+
+function  fs_Format_Lines       ( const as_Text        : String      ;
+                                  const ReplaceWith : String = CST_HTML_BR ):String ;
+var li_Pos1, li_Pos2 : Longint;
 begin
   Result := StringReplace ( as_Text, CST_ENDOFLINE, CST_HTML_BR+CST_ENDOFLINE,[rfReplaceAll] );
+  li_Pos1 := 1;
+  if  ( pos ( CST_HTML_A_BEGIN, Result ) = 0 )
+  and ( pos ( CST_HTML_A_BEGIN_LOWER, Result ) = 0 ) Then
+   begin
+     while ( posex ( CST_HTML_A_BEGIN_LINK_HTTP, Result, li_Pos1 ) > 0 ) do
+     Begin
+       li_Pos1 :=posex ( CST_HTML_A_BEGIN_LINK_HTTP, Result, li_Pos1 );
+       li_Pos2 := li_Pos1 + 8;
+       if  ( length ( Result ) > li_Pos2 )
+       and fb_isFileChar(Result[li_Pos2]) Then
+        Begin
+          fb_CreateAFromLink ( Result, li_Pos1, li_Pos2 );
+         end;
+       li_Pos1 := PosEx( CST_HTML_A_END, Result, li_Pos2 + li_Pos2 - li_Pos1 );
+     end;
+     while ( posex ( CST_HTML_A_BEGIN_LINK, Result, li_Pos1 ) > 0 ) do
+     Begin
+       li_Pos1 :=posex ( CST_HTML_A_BEGIN_LINK, Result, li_Pos1 );
+       if ( li_Pos1 = 1 )
+       or ( Result[li_Pos1-1] <> '/' ) then
+        Begin
+          li_Pos2 := li_Pos1 + 4;
+          if  ( length ( Result ) > li_Pos2 )
+          and fb_isFileChar(Result[li_Pos2]) Then
+           Begin
+             fb_CreateAFromLink ( Result, li_Pos1, li_Pos2 );
+           end;
+          li_Pos1 := PosEx( CST_HTML_A_END, Result, li_Pos2 + li_Pos2 - li_Pos1 );
+        end
+       Else li_Pos1:=li_Pos1+4;
+     end;
+   end;
 end;
 
 function  fs_Create_Text            ( const as_Text        : String      ;
@@ -381,6 +447,14 @@ function fs_CreateElementWithId ( const as_ElementType   : String ;
 Begin
   Result := '<' + as_ElementType + as_OptionToSetId + '"' + as_idElement + '">';
 end;
+function  fs_Create_simple_Link    ( const as_href_Text   : String   ;
+                                     const as_Target      : String = ''):String ;
+Begin
+  if pos ( CST_HTML_A_BEGIN_LINK_HTTP, as_href_Text ) = 0
+   Then Result := fs_Create_Link ( CST_HTML_A_BEGIN_LINK_HTTP + as_href_Text, as_href_Text, as_Target )
+   Else Result := fs_Create_Link ( as_href_Text, as_href_Text, as_Target );
+end;
+
 function  fs_Create_Link           ( const as_href        : String   ;
                                      const as_Text        : String   ;
                                      const as_Target      : String = ''):String ;
@@ -528,7 +602,7 @@ Begin
                         +  CST_ENDOFLINE + fs_CreateElementWithId ( CST_HTML_DIV, as_IdOfPageMainElement )
                         +  CST_ENDOFLINE + astl_Destination.Text
                         +  CST_ENDOFLINE + CST_HTML_DIV_End
-                        +  CST_ENDOFLINE + fs_Replace_EndLines(as_EndPage)
+                        +  CST_ENDOFLINE + fs_Format_Lines(as_EndPage)
                         +  CST_ENDOFLINE + ls_Text4;
 end;
 

@@ -66,38 +66,38 @@ object F_AncestroWeb: TF_AncestroWeb
     Height = 366
     Top = 0
     Width = 640
-    ActivePage = ts_Gen
+    ActivePage = ts_Files
     Align = alClient
-    TabIndex = 0
+    TabIndex = 2
     TabOrder = 1
     OnChange = PCPrincipalChange
     object ts_Gen: TTabSheet
       Caption = 'Générer'
-      ClientHeight = 332
-      ClientWidth = 636
+      ClientHeight = 330
+      ClientWidth = 634
       object Panel1: TPanel
         Left = 0
-        Height = 332
+        Height = 330
         Top = 0
-        Width = 636
+        Width = 634
         Align = alClient
         BevelOuter = bvNone
-        ClientHeight = 332
-        ClientWidth = 636
+        ClientHeight = 330
+        ClientWidth = 634
         TabOrder = 0
         object Panel3: TPanel
           Left = 0
-          Height = 332
+          Height = 330
           Top = 0
           Width = 275
           Align = alLeft
           BevelOuter = bvNone
-          ClientHeight = 332
+          ClientHeight = 330
           ClientWidth = 275
           TabOrder = 0
           object de_ExportWeb: TDirectoryEdit
             Left = 4
-            Height = 22
+            Height = 24
             Top = 110
             Width = 240
             OnAcceptDirectory = de_ExportWebAcceptDirectory
@@ -125,7 +125,7 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object cb_Themes: TComboBox
             Left = 68
-            Height = 25
+            Height = 27
             Top = 150
             Width = 199
             ItemHeight = 0
@@ -134,7 +134,7 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object GedcomEdit: TFileNameEdit
             Left = 68
-            Height = 22
+            Height = 24
             Top = 223
             Width = 152
             DialogOptions = []
@@ -210,7 +210,7 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object me_Bottom: TMemo
             Left = 4
-            Height = 57
+            Height = 55
             Top = 268
             Width = 262
             Anchors = [akTop, akLeft, akRight, akBottom]
@@ -227,7 +227,7 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object cb_Files: TComboBox
             Left = 68
-            Height = 25
+            Height = 27
             Top = 188
             Width = 199
             ItemHeight = 0
@@ -313,7 +313,7 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object cbDossier: TComboBox
             Left = 60
-            Height = 26
+            Height = 28
             Top = 56
             Width = 206
             AutoComplete = True
@@ -339,35 +339,35 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object Splitter1: TSplitter
           Left = 275
-          Height = 332
+          Height = 330
           Top = 0
           Width = 1
         end
         object Panel4: TPanel
           Left = 276
-          Height = 332
+          Height = 330
           Top = 0
-          Width = 360
+          Width = 358
           Align = alClient
           BevelOuter = bvNone
-          ClientHeight = 332
-          ClientWidth = 360
+          ClientHeight = 330
+          ClientWidth = 358
           TabOrder = 1
           object Panel5: TPanel
             Left = 0
-            Height = 246
+            Height = 244
             Top = 0
-            Width = 360
+            Width = 358
             Align = alClient
             BevelOuter = bvNone
-            ClientHeight = 246
-            ClientWidth = 360
+            ClientHeight = 244
+            ClientWidth = 358
             TabOrder = 0
             object DBGrid1: TDBGrid
               Left = 0
-              Height = 203
+              Height = 201
               Top = 43
-              Width = 360
+              Width = 358
               Align = alClient
               Color = clWindow
               Columns = <              
@@ -403,11 +403,11 @@ object F_AncestroWeb: TF_AncestroWeb
               Left = 0
               Height = 43
               Top = 0
-              Width = 360
+              Width = 358
               Align = alTop
               BevelOuter = bvNone
               ClientHeight = 43
-              ClientWidth = 360
+              ClientWidth = 358
               TabOrder = 1
               object ch_ancestors: TJvXPCheckbox
                 Left = 5
@@ -433,12 +433,12 @@ object F_AncestroWeb: TF_AncestroWeb
           object Panel6: TPanel
             Left = 0
             Height = 81
-            Top = 251
-            Width = 360
+            Top = 249
+            Width = 358
             Align = alBottom
             BevelOuter = bvNone
             ClientHeight = 81
-            ClientWidth = 360
+            ClientWidth = 358
             TabOrder = 1
             object bt_gen: TFWSaveAs
               Left = 250
@@ -453,7 +453,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object fne_Export: TFileNameEdit
               Left = 98
-              Height = 22
+              Height = 24
               Top = 26
               Width = 225
               OnAcceptFileName = fne_ExportAcceptFileName
@@ -467,7 +467,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object fne_import: TFileNameEdit
               Left = 98
-              Height = 22
+              Height = 24
               Top = 0
               Width = 226
               OnAcceptFileName = fne_importAcceptFileName
@@ -516,8 +516,8 @@ object F_AncestroWeb: TF_AncestroWeb
             Cursor = crVSplit
             Left = 0
             Height = 5
-            Top = 246
-            Width = 360
+            Top = 244
+            Width = 358
             Align = alBottom
             ResizeAnchor = akBottom
           end
@@ -526,17 +526,17 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Home: TTabSheet
       Caption = 'Accueil'
-      ClientHeight = 332
-      ClientWidth = 636
+      ClientHeight = 330
+      ClientWidth = 634
       object Panel8: TPanel
         Left = 0
-        Height = 332
+        Height = 330
         Top = 0
-        Width = 636
+        Width = 634
         Align = alClient
         BevelOuter = bvNone
-        ClientHeight = 332
-        ClientWidth = 636
+        ClientHeight = 330
+        ClientWidth = 634
         TabOrder = 0
         object Label2: TLabel
           Left = 4
@@ -548,7 +548,7 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ed_Author: TEdit
           Left = 60
-          Height = 22
+          Height = 24
           Top = 1
           Width = 224
           TabOrder = 0
@@ -579,7 +579,7 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ImageEdit1: TFileNameEdit
           Left = 60
-          Height = 22
+          Height = 24
           Top = 137
           Width = 96
           DialogOptions = []
@@ -594,7 +594,7 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ImageEdit2: TFileNameEdit
           Left = 212
-          Height = 22
+          Height = 24
           Top = 136
           Width = 152
           DialogOptions = []
@@ -608,7 +608,7 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ImageEdit3: TFileNameEdit
           Left = 420
-          Height = 22
+          Height = 24
           Top = 137
           Width = 152
           DialogOptions = []
@@ -652,7 +652,7 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ed_IndexName: TEdit
           Left = 402
-          Height = 22
+          Height = 24
           Top = 1
           Width = 224
           TabOrder = 8
@@ -694,16 +694,16 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Files: TTabSheet
       Caption = 'Fiches'
-      ClientHeight = 332
-      ClientWidth = 636
+      ClientHeight = 330
+      ClientWidth = 634
       object Panel10: TPanel
         Left = 0
-        Height = 332
+        Height = 330
         Top = 0
-        Width = 636
+        Width = 634
         Align = alClient
-        ClientHeight = 332
-        ClientWidth = 636
+        ClientHeight = 330
+        ClientWidth = 634
         TabOrder = 0
         object Label13: TLabel
           Left = 244
@@ -715,7 +715,7 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ed_FileBeginName: TEdit
           Left = 404
-          Height = 22
+          Height = 24
           Top = 1
           Width = 224
           TabOrder = 0
@@ -748,7 +748,7 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ed_ListsBeginName: TEdit
           Left = 404
-          Height = 22
+          Height = 24
           Top = 25
           Width = 224
           TabOrder = 3
@@ -775,8 +775,8 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_tree: TTabSheet
       Caption = 'Arbre'
-      ClientHeight = 332
-      ClientWidth = 636
+      ClientHeight = 330
+      ClientWidth = 634
       object Panel2: TPanel
         Left = 0
         Height = 332
@@ -834,8 +834,8 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Names: TTabSheet
       Caption = 'Patronymes'
-      ClientHeight = 332
-      ClientWidth = 636
+      ClientHeight = 330
+      ClientWidth = 634
       object Panel12: TPanel
         Left = 0
         Height = 332
@@ -892,8 +892,8 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Referring: TTabSheet
       Caption = 'Recherche'
-      ClientHeight = 332
-      ClientWidth = 636
+      ClientHeight = 330
+      ClientWidth = 634
       object Panel11: TPanel
         Left = 0
         Height = 332
@@ -1012,8 +1012,8 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Contact: TTabSheet
       Caption = 'Contact'
-      ClientHeight = 332
-      ClientWidth = 636
+      ClientHeight = 330
+      ClientWidth = 634
       object Panel9: TPanel
         Left = 0
         Height = 332
@@ -1246,8 +1246,8 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Jobs: TTabSheet
       Caption = 'Métiers'
-      ClientHeight = 332
-      ClientWidth = 636
+      ClientHeight = 330
+      ClientWidth = 634
       object Panel14: TPanel
         Left = 0
         Height = 332
@@ -1305,8 +1305,8 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_Ages: TTabSheet
       Caption = 'Âges'
-      ClientHeight = 332
-      ClientWidth = 636
+      ClientHeight = 330
+      ClientWidth = 634
       object Panel13: TPanel
         Left = 0
         Height = 332
@@ -1364,8 +1364,8 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_about: TTabSheet
       Caption = 'À propos'
-      ClientHeight = 332
-      ClientWidth = 636
+      ClientHeight = 330
+      ClientWidth = 634
       object pa_About: TScrollBox
         Left = 0
         Height = 332

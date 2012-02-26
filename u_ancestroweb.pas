@@ -1257,7 +1257,7 @@ begin
       if ch_ancestors.Checked
         Then li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree, gi_CleFiche)
         Else li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree, gi_CleFiche,True,True,False,IBQ_TQ_NUM_SOSA,False);
-      lstl_HTMLTree.Insert(0, fs_Replace_EndLines(me_HeadTree.Lines.Text));
+      lstl_HTMLTree.Insert(0, fs_Format_Lines(me_HeadTree.Lines.Text));
       p_CreateAHtmlFile(lstl_HTMLTree, CST_FILE_TREE, me_Description.Lines.Text,
         ( gs_AnceSTROWEB_FamilyTree ), gs_AnceSTROWEB_FullTree, fs_GetTitleTree ( gs_AnceSTROWEB_Ancestry, li_generation), gs_LinkGedcom, '../');
       p_IncProgressBar; // growing the counter
@@ -1344,7 +1344,7 @@ begin
   p_Setcomments (( gs_AnceSTROWEB_Home )); // advert for user
   lstl_HTMLHome := TStringList.Create;
   lstl_HTMLHome.Text := CST_HTML_CENTER_BEGIN + '<' + CST_HTML_Paragraph +
-    CST_HTML_ID_EQUAL + '"head">' + fs_Replace_EndLines(
+    CST_HTML_ID_EQUAL + '"head">' + fs_Format_Lines(
     me_Description.Text) + CST_HTML_Paragraph_END;
 
   ls_Images := fs_AddImages(ImageEdit1.FileName, ImageEdit2.FileName,
@@ -2119,7 +2119,7 @@ begin
   lstl_HTMLPersons.Text := fs_CreateULTabsheets(gt_SheetsLetters,
     CST_SUBDIR_HTML_FILES + CST_HTML_DIR_SEPARATOR, CST_HTML_SUBMENU) +
     CST_HTML_CENTER_BEGIN + '<' + CST_HTML_Paragraph +
-    CST_HTML_ID_EQUAL + '"head">' + fs_Replace_EndLines(
+    CST_HTML_ID_EQUAL + '"head">' + fs_Format_Lines(
     me_FilesHead.Text) + CST_HTML_Paragraph_END;
   p_AddCounting ( lstl_HTMLPersons );
   lstl_HTMLPersons.Add(CST_HTML_CENTER_END);
