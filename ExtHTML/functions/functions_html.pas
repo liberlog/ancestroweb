@@ -351,7 +351,7 @@ Begin
    and ( fb_isFileChar(as_Text[ai_Pos2]) or (as_Text[ai_Pos2] = CST_HTML_DIR_SEPARATOR)) do
      Begin
        if not Result Then // is there a dot
-         Result := as_Text[ai_Pos2] = '.';
+         Result := (as_Text[ai_Pos2] = '.') and ( ai_Pos2 < length ( as_Text)) and fb_isFileChar(as_Text[ai_Pos2+1]);
        inc(ai_Pos2);
      end;
    dec ( ai_pos2 );
@@ -380,7 +380,7 @@ begin
      while ( posex ( CST_HTML_A_BEGIN_LINK_HTTP, Result, li_Pos1 ) > 0 ) do
      Begin
        li_Pos1 :=posex ( CST_HTML_A_BEGIN_LINK_HTTP, Result, li_Pos1 );
-       li_Pos2 := li_Pos1 + 8;
+       li_Pos2 := li_Pos1 + 7;
        if  ( length ( Result ) > li_Pos2 )
        and fb_isFileChar(Result[li_Pos2]) Then
         Begin
