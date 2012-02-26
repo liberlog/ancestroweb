@@ -373,10 +373,10 @@ function  fs_Format_Lines       ( const as_Text        : String      ;
 var li_Pos1, li_Pos2 : Longint;
 begin
   Result := StringReplace ( as_Text, CST_ENDOFLINE, CST_HTML_BR+CST_ENDOFLINE,[rfReplaceAll] );
-  li_Pos1 := 1;
   if  ( pos ( CST_HTML_A_BEGIN, Result ) = 0 )
   and ( pos ( CST_HTML_A_BEGIN_LOWER, Result ) = 0 ) Then
    begin
+     li_Pos1 := 1;
      while ( posex ( CST_HTML_A_BEGIN_LINK_HTTP, Result, li_Pos1 ) > 0 ) do
      Begin
        li_Pos1 :=posex ( CST_HTML_A_BEGIN_LINK_HTTP, Result, li_Pos1 );
@@ -388,6 +388,7 @@ begin
          end;
        li_Pos1 := PosEx( CST_HTML_A_END, Result, li_Pos2 + li_Pos2 - li_Pos1 );
      end;
+     li_Pos1 := 1;
      while ( posex ( CST_HTML_A_BEGIN_LINK, Result, li_Pos1 ) > 0 ) do
      Begin
        li_Pos1 :=posex ( CST_HTML_A_BEGIN_LINK, Result, li_Pos1 );
