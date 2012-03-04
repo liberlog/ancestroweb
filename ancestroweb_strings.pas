@@ -74,7 +74,7 @@ resourcestring
   gs_ANCESTROWEB_Women_Count = 'Femmes';
   gs_ANCESTROWEB_Ages_Long  = 'Statistiques de longévités';
   gs_ANCESTROWEB_The_Medias = 'les médias : ';
-  gs_ANCESTROWEB_Married_On = 'Mariés le ';
+  gs_ANCESTROWEB_Family_On = 'Union le ';
   gs_ANCESTROWEB_Union = 'Union';
   gs_ANCESTROWEB_Unions = 'Unions';
   gs_ANCESTROWEB_Statistics = 'Statistiques';

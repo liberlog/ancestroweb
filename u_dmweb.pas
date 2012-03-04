@@ -90,7 +90,7 @@ const IBQ_NOM='NOM';
 
       IBQ_COUNTER = 'COUNTER' ;
 
-      UNION_DATE_MARIAGE = 'DATE_MARIAGE' ;
+      UNION_DATE_MARIAGE = 'date_prem_fam' ;
       UNION_CP           = 'EV_FAM_CP' ;
       UNION_CITY         = 'EV_FAM_VILLE' ;
 

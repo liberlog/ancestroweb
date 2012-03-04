@@ -1447,9 +1447,15 @@ Begin
       Exit;
     End;
   // verifying existing file copy
-  if FileExistsUTF8(as_FilePath + as_FileNameBegin + CST_EXTENSION_JPEG )
-  or FileExistsUTF8(as_FilePath + as_FileNameBegin + gs_ANCESTROWEB_FileName_NotACopy + CST_EXTENSION_JPEG ) Then
+  if FileExistsUTF8(as_FilePath + as_FileNameBegin + CST_EXTENSION_JPEG ) Then
     Begin
+      Result := True;
+      Exit;
+    end;
+  // verifying existing original file copy
+  if FileExistsUTF8(as_FilePath + as_FileNameBegin + gs_ANCESTROWEB_FileName_NotACopy + CST_EXTENSION_JPEG ) Then
+    Begin
+      AppendStr ( as_FileNameBegin, gs_ANCESTROWEB_FileName_NotACopy ); // setting correct link name
       Result := True;
       Exit;
     end;
@@ -1789,7 +1795,7 @@ var
     DMWeb.IBQ_ConjointSources.Close;
     DMWeb.IBQ_ConjointSources.ParamByName ( I_CLEF_UNION  ).AsInteger:=ai_ClefUnion;
     DMWeb.IBQ_ConjointSources.Open;
-    Result := ' (' + ( gs_AnceSTROWEB_Married_On )+ as_Date ;
+    Result := ' (' + ( gs_ANCESTROWEB_Family_On )+ as_Date ;
     if ch_Images.Checked
     and not DMWeb.IBQ_ConjointSources.EOF Then
       Begin
@@ -1914,7 +1920,7 @@ var
           Begin
            astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_UNION + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
                                 + DMWeb.IBS_Conjoint.FieldByName(IBQ_NOM).AsString + ' ' + DMWeb.IBS_Conjoint.FieldByName(IBQ_PRENOM).AsString );
-           astl_HTMLAFolder.Add ( fs_CreateMarried ( DMWeb.IBS_Conjoint.FieldByName(UNION_DATE_MARIAGE).AsString, DMWeb.IBS_Conjoint.FieldByName(UNION_CLEF).AsInteger ));
+           astl_HTMLAFolder.Add ( fs_CreateMarried ( DMWeb.IBS_Conjoint.FieldByName(UNION_DATE_MARIAGE).AsString , DMWeb.IBS_Conjoint.FieldByName(UNION_CLEF).AsInteger ));
            astl_HTMLAFolder.Add ( CST_HTML_LI_END);
            DMWeb.IBS_Conjoint.Next;
           end;
