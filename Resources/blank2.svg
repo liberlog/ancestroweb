@@ -14,7 +14,10 @@
    inkscape:version="0.48.2 r9819"
    width="25.224417"
    height="28.906582"
-   sodipodi:docname="blank2.svg">
+   sodipodi:docname="blank2.svg"
+   inkscape:export-filename="/home/matthieu/Bureau/Matthieu/Programmation/Lazarus Delphi/AncestroWeb/Resources/blank2.png"
+   inkscape:export-xdpi="286.43994"
+   inkscape:export-ydpi="286.43994">
   <metadata
      id="metadata8">
     <rdf:RDF>
@@ -23,7 +26,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -38,15 +41,15 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1680"
-     inkscape:window-height="900"
+     inkscape:window-width="1920"
+     inkscape:window-height="1000"
      id="namedview4"
      showgrid="false"
      inkscape:zoom="28.105634"
-     inkscape:cx="2.3516157"
+     inkscape:cx="2.4939359"
      inkscape:cy="17.422294"
-     inkscape:window-x="1920"
-     inkscape:window-y="92"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
      inkscape:window-maximized="1"
      inkscape:current-layer="a3783"
      fit-margin-top="0"
