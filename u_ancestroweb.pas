@@ -1,7 +1,7 @@
 unit U_AncestroWeb;
 
 {$IFDEF FPC}
-  {$mode Delphi}{$H+}
+{$mode objfpc}{$H+}
 {$ENDIF}
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +90,6 @@ type
     DBGrid1: TDBGrid;
     de_ExportWeb: TDirectoryEdit;
     ds_Individu: TDatasource;
-    Edit1: TEdit;
     edNomBase: TComboBox;
     ed_AgesName: TEdit;
     ed_Author: TEdit;
@@ -1561,6 +1560,14 @@ procedure TF_AncestroWeb.p_genHtmlNames (const IBQ_FilesFiltered: TIBSQL);
 var
   lstl_HTMLAFolder: TStringList;
   ls_NewName, ls_Name, ls_destination: string;
+
+  procedure p_createMap;
+  Begin
+    if ch_genMap.Checked Then
+     Begin
+     End;
+  end;
+
 begin
   p_CreateKeyWords;
   ls_name := '';
@@ -1593,6 +1600,7 @@ begin
 
   end;
   lstl_HTMLAFolder.Add ( CST_HTML_TD_END +CST_HTML_TR_END + CST_HTML_TABLE_END );
+  p_createMap;
   p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_NAMES, me_NamesHead.Lines.Text,
      ( gs_AnceSTROWEB_Names ), gs_AnceSTROWEB_Names, gs_ANCESTROWEB_Names_Long, gs_LinkGedcom);
   // saving the page
@@ -1807,10 +1815,10 @@ var
       Begin
          // adding source
         if DMWeb.IBS_Conjoint.FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN
-        Then ls_FileNameBegin := fs_getNameAndSurName (DMWeb.IBS_Conjoint)+'&'+fs_getNameAndSurName (IBQ_FilesFiltered)
-        Else ls_FileNameBegin := fs_getNameAndSurName (IBQ_FilesFiltered )+'&'+fs_getNameAndSurName (DMWeb.IBS_Conjoint);
-        ls_FileNameBegin := fs_TextToFileName(DMWeb.IBS_Conjoint.FieldByName(UNION_CLEF).AsString + ls_FileNameBegin+'-'+as_Date
-                     + '-'+DMWeb.IBS_Conjoint.FieldByName(UNION_CP).AsString+'-'+DMWeb.IBS_Conjoint.FieldByName(UNION_CITY).AsString )+ '-';
+        Then ls_FileNameBegin := fs_getNameAndSurName (IBQ_FilesFiltered )+'&'+fs_getNameAndSurName (DMWeb.IBS_Conjoint)
+        Else ls_FileNameBegin := fs_getNameAndSurName (DMWeb.IBS_Conjoint)+'&'+fs_getNameAndSurName (IBQ_FilesFiltered);
+        ls_FileNameBegin := as_Date + '_ID'+fs_TextToFileName(DMWeb.IBS_Conjoint.FieldByName(UNION_CLEF).AsString + '_' + ls_FileNameBegin+'_'+
+                            DMWeb.IBS_Conjoint.FieldByName(UNION_CP).AsString+'_'+DMWeb.IBS_Conjoint.FieldByName(UNION_CITY).AsString )+ '_';
         li_i := 1 ;
 
         // medias
