@@ -48,6 +48,10 @@ resourcestring
   gs_ANCESTROWEB_Welcome = 'Bienvenue !';
   gs_ANCESTROWEB_WomanBornOn = 'Née le ';
   gs_ANCESTROWEB_ManBornOn = 'Né le ';
+  gs_ANCESTROWEB_Map = 'Carte';
+  gs_ANCESTROWEB_Map_Long = 'Carte des patronymes';
+  gs_ANCESTROWEB_MapCountry = 'FRANCE';
+  gs_ANCESTROWEB_MapProblemNoPostalCode = 'Problème pour la carte : Pas de code postal';
   gs_ANCESTROWEB_WomanDiedOn = 'Décédée le ';
   gs_ANCESTROWEB_ManDiedOn = 'Décédé le ';
   gs_ANCESTROWEB_Names = 'Patronymes';

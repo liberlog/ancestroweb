@@ -105,6 +105,7 @@ type
     ed_JobsName: TEdit;
     ed_ListsBeginName: TEdit;
     ed_NamesFileName: TEdit;
+    ed_MapFileName: TEdit;
     ed_SearchName: TEdit;
     ed_SearchQuery: TEdit;
     ed_SearchSite: TEdit;
@@ -174,13 +175,16 @@ type
     Label48: TLabel;
     Label49: TLabel;
     Label5: TLabel;
+    Label50: TLabel;
     Label8: TLabel;
     LabelBase: TLabel;
     lb_Comments: TLabel;
     Label7: TLabel;
     Label9: TLabel;
+    lb_DescribeMap: TLabel;
     lb_Images: TLabel;
     me_ContactHead: TMemo;
+    me_MapHead: TMemo;
     me_Description: TMemo;
     me_FilesHead: TMemo;
     me_HeadAges: TMemo;
@@ -870,6 +874,12 @@ begin
     Inc(Result, CST_PROGRESS_COUNTER_NAMES);
     p_setCorrectFileName(ed_NamesFileName, CST_FILE_NAMES);
     p_AddTabSheet(gt_TabSheets, ( gs_AnceSTROWEB_Names ), ed_NamesFileName.Text + CST_EXTENSION_HTML);
+    if ch_genMap.Checked then
+    begin
+      Inc(Result, CST_PROGRESS_COUNTER_MAP);
+      p_setCorrectFileName(ed_MapFileName, CST_FILE_MAP);
+      p_AddTabSheet(gt_TabSheets, ( gs_ANCESTROWEB_Map ), ed_MapFileName.Text + CST_EXTENSION_PHP);
+    end;
   end;
   Inc(Result, CST_PROGRESS_COUNTER_FILES+CST_PROGRESS_COUNTER_LIST);
   p_setCorrectFileName(ed_FileBeginName, CST_FILE_FILES);
@@ -1561,11 +1571,229 @@ var
   lstl_HTMLAFolder: TStringList;
   ls_NewName, ls_Name, ls_destination: string;
 
+  lt_Names : Array of Record
+                        Name : String;
+                        Minlatitude  ,
+                        Minlongitude ,
+                        Maxlatitude  ,
+                        Maxlongitude ,
+                        MaxCounter   : Double;
+                      end;
+
+const CST_DUMMY_COORD = 2000000;
+      CST_NB_DOTS     = 5;
+
+  function fi_findName ( const as_Name : string ): Integer;
+  var li_i : Integer;
+  Begin
+    for li_i := 0 to high ( lt_Names ) do
+     if lt_Names [ li_i ].Name = as_Name Then
+      Begin
+        Result := li_i;
+        Exit;
+      end;
+    Result := -1;
+  End;
+  procedure p_getGlobalMinMax (var ad_Minlatitude, ad_Maxlatitude, ad_Minlongitude , ad_Maxlongitude, ad_MaxCounter  : Double );
+  var li_i : Integer;
+  Begin
+    ad_Minlatitude := CST_DUMMY_COORD;
+    ad_Maxlatitude := -CST_DUMMY_COORD;
+    ad_Minlongitude  := CST_DUMMY_COORD;
+    ad_Maxlongitude  := -CST_DUMMY_COORD;
+    ad_MaxCounter  := 0;
+    for li_i := 0 to high ( lt_Names ) do
+     with lt_Names [ li_i ] do
+      Begin
+        if Minlatitude < ad_Minlatitude Then
+          ad_Minlatitude := Minlatitude;
+        if Maxlatitude > ad_Maxlatitude Then
+          ad_Maxlatitude := Maxlatitude;
+        if Minlongitude > ad_Minlongitude Then
+          ad_Minlongitude := Minlongitude;
+        if Maxlongitude > ad_Maxlongitude Then
+          ad_Maxlongitude := Maxlongitude;
+        if MaxCounter > ad_MaxCounter Then
+          ad_MaxCounter := MaxCounter;
+      end;
+  End;
+
+  procedure p_getCityInfos ( as_codepostal, as_Pays : String ; var as_City : String; var ad_latitude , ad_longitude : Double);
+  Begin
+    ad_latitude :=CST_DUMMY_COORD;
+    ad_longitude:=CST_DUMMY_COORD;
+    as_City := '' ;
+    if as_codepostal = '' Then
+      Begin
+        p_Setcomments(gs_ANCESTROWEB_MapProblemNoPostalCode);
+        Exit;
+      end;
+    if as_pays = '' Then
+     as_pays := gs_ANCESTROWEB_MapCountry;
+    DMWeb.IBS_City.Close;
+    DMWeb.IBS_City.ParamByName(I_CP  ).Value:=as_codepostal;
+    DMWeb.IBS_City.ParamByName(I_PAYS).Value:=as_Pays;
+    DMWeb.IBS_City.ExecQuery;
+    if DMWeb.IBS_City.Eof and DMWeb.IBS_City.Bof Then
+      Exit;
+    ad_latitude :=DMWeb.IBS_City.FieldByName(IBQ_CP_LATITUDE ).AsDouble;
+    ad_longitude:=DMWeb.IBS_City.FieldByName(IBQ_CP_LONGITUDE).AsDouble;
+    as_City     :=DMWeb.IBS_City.FieldByName(IBQ_CP_VILLE    ).AsString;
+  end;
+
+    procedure p_createMinMaxMap ( const IBQ_MapFiltered :TIBSQL);
+    var
+        li_i : Integer;
+        ld_latitude  ,
+        ld_counter   ,
+        ld_longitude : Double;
+        ls_City ,
+        ls_AName : String;
+    Begin
+      with IBQ_MapFiltered do
+      while not Eof do
+        Begin
+          ls_AName := FieldByName(IBQ_NOM).AsString;
+          if ls_AName <> '' Then
+            Begin
+              p_getCityInfos ( FieldByName(IBQ_EV_IND_CP).AsString, FieldByName(IBQ_EV_IND_PAYS).AsString, ls_City, ld_latitude, ld_longitude );
+              ld_counter :=  FieldByName(IBQ_COUNTER ).AsFloat;
+              if ls_City <> '' Then
+                begin
+                  if fi_findName ( ls_AName ) <> -1 Then
+                   with lt_Names [ li_i ] do
+                   // mise à jour des max
+                    Begin
+                      if ld_latitude  < Minlatitude then
+                       Minlatitude:= ld_latitude;
+                      if ld_latitude  > Maxlatitude then
+                       Maxlatitude:= ld_latitude;
+                      if ld_longitude  < Minlongitude then
+                       Minlongitude:= ld_longitude;
+                      if ld_longitude  > Maxlongitude then
+                        Maxlongitude:= ld_longitude;
+                      if ld_counter  > MaxCounter then
+                        MaxCounter:=ld_counter;
+                    end
+                  else
+                   Begin
+                     SetLength(lt_Names, high ( lt_Names ) + 2);
+                     with lt_Names [ high ( lt_Names )] do
+                      Begin
+                        Minlatitude :=ld_latitude;
+                        Maxlatitude :=ld_latitude;
+                        Minlongitude:=ld_longitude;
+                        Maxlongitude:=ld_longitude;
+                        MaxCounter := ld_counter;
+                      end;
+                   end;
+                end;
+            end;
+          Next;
+        end;
+    end;
+
+  procedure p_setAline ( const astl_Aline : TStringList; const IBQ_MapFiltered :TIBSQL; const ad_MaxCounter : Double ; const ai_Name : Integer = -1);
+  var li_i, li_dot : Integer ;
+      ld_counter : Double;
+  Begin
+    p_ReplaceLanguageString ( astl_Aline, CST_MAP_LATITUD , DMWeb.IBS_City.FieldByName(IBQ_CP_LATITUDE  ).AsString );
+    p_ReplaceLanguageString ( astl_Aline, CST_MAP_LONGITUD, DMWeb.IBS_City.FieldByName(IBQ_CP_LONGITUDE ).AsString );
+    ld_counter:= IBQ_MapFiltered.FieldByName(IBQ_COUNTER).AsDouble;
+    li_dot := 1;
+    for li_i := 1 to CST_NB_DOTS do
+      if ld_counter <= ad_MaxCounter / li_i Then
+       li_dot := li_i;
+    p_ReplaceLanguageString ( astl_Aline, CST_MAP_N, IntToStr(li_dot));
+    case li_dot of
+     1 : p_ReplaceLanguageString ( astl_Aline, CST_MAP_ICON, CST_MAP_LITTLE_DOT );
+     2 : p_ReplaceLanguageString ( astl_Aline, CST_MAP_ICON, CST_MAP_LI_MID_DOT );
+     3 : p_ReplaceLanguageString ( astl_Aline, CST_MAP_ICON, CST_MAP_MIDDLE_DOT );
+     4 : p_ReplaceLanguageString ( astl_Aline, CST_MAP_ICON, CST_MAP_BIG_MID_DOT );
+     else p_ReplaceLanguageString ( astl_Aline, CST_MAP_ICON, CST_MAP_BIG_DOT );
+    end;
+  end;
+
+  procedure p_createAMap ( const IBQ_MapFiltered :TIBSQL);
+  var ld_MinLatitude, ld_MaxLatitude, ld_MinLongitude, ld_MaxLongitude, ld_MaxCounter : Double;
+    lstl_AllNames ,
+    lstl_ACase    ,
+    lstl_ALine    : TStringList;
+  Begin
+    Finalize ( lt_Names );
+    p_createMinMaxMap ( IBQ_MapFiltered );
+    p_getGlobalMinMax ( ld_Minlatitude, ld_Maxlatitude, ld_Minlongitude , ld_Maxlongitude, ld_MaxCounter );
+    p_CreateKeyWords;
+    ls_name := '';
+    pb_ProgressInd.Position:=0;  // initing user value
+    pb_ProgressInd.Max:=IBQ_FilesFiltered.RecordCount;
+    lstl_AllNames := TStringList.Create;
+    lstl_ACase    := TStringList.Create;
+    lstl_HTMLAFolder.Clear;
+    ls_NewName := '';
+    ls_Name := 'Z';
+    p_LoadStringList(lstl_AllNames, gs_Root, CST_FILE_MapCase + CST_EXTENSION_PHP);
+    p_ReplaceLanguageString ( lstl_AllNames, CST_MAP_LINE, '' );
+    while not IBQ_MapFiltered.EOF do
+    begin
+      p_IncProgressInd; // growing the second counter
+      ls_NewName := IBQ_MapFiltered.FieldByName(IBQ_NOM).AsString;
+      if ls_NewName <> ls_name Then
+       Begin
+         p_ReplaceLanguageString ( lstl_ACase, CST_MAP_LINE, '' );
+         p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CASE, lstl_ACase.Text );
+         p_LoadStringList(lstl_ACase, gs_Root, CST_FILE_MapCase + CST_EXTENSION_PHP);
+         p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_LINE, '' );
+         p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CASE, lstl_ACase.Text );
+       end;
+      ls_Name := IBQ_MapFiltered.FieldByName(IBQ_NOM).AsString;
+      p_addKeyWord(ls_Name, '-'); // adding a head's meta keyword
+      IBQ_FilesFiltered.Next;
+
+    end;
+    p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CASE, lstl_AllNames.Text );
+    p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_MAP, me_MapHead.Lines.Text,
+       gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map_Long, gs_LinkGedcom);
+    // saving the page
+    ls_destination := gs_RootPathForExport + ed_MapFileName.Text + CST_EXTENSION_HTML;
+    try
+      lstl_HTMLAFolder.SaveToFile(ls_destination);
+    except
+      On E: Exception do
+      begin
+        ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
+        Abort;
+      end;
+    end;
+  end;
+
   procedure p_createMap;
   Begin
     if ch_genMap.Checked Then
-     Begin
-     End;
+    begin
+      if ch_Filtered.Checked
+      then
+       Begin
+         if ch_ancestors.Checked Then
+           Begin
+             if fb_OpenTree(DmWeb.IBS_TreeMap,gi_CleFiche) Then
+               p_createAMap (DmWeb.IBS_TreeMap);
+           end
+          else
+           Begin
+             if fb_OpenTree(DmWeb.IBS_TreeMapDes, gi_CleFiche) Then
+               p_createAMap (DmWeb.IBS_TreeMapDes);
+           end;
+       end
+      else
+       Begin
+         DmWeb.IBS_MapAll.Close;
+         DmWeb.IBS_MapAll.ParamByName(I_DOSSIER).AsInteger:=DMWeb.CleDossier;
+         DmWeb.IBS_MapAll.ExecQuery;
+         p_createAMap (DmWeb.IBS_MapAll);
+
+       end;
+    end;
   end;
 
 begin
@@ -1600,7 +1828,6 @@ begin
 
   end;
   lstl_HTMLAFolder.Add ( CST_HTML_TD_END +CST_HTML_TR_END + CST_HTML_TABLE_END );
-  p_createMap;
   p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_NAMES, me_NamesHead.Lines.Text,
      ( gs_AnceSTROWEB_Names ), gs_AnceSTROWEB_Names, gs_ANCESTROWEB_Names_Long, gs_LinkGedcom);
   // saving the page
@@ -1614,6 +1841,7 @@ begin
       Abort;
     end;
   end;
+  p_createMap;
   lstl_HTMLAFolder.Free;
   p_IncProgressBar; // growing the counter
 end;

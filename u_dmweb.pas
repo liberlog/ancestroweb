@@ -55,6 +55,7 @@ const IBQ_NOM='NOM';
 
       CST_PROGRESS_COUNTER_TITLE    = 1;
       CST_PROGRESS_COUNTER_NAMES    = 1;
+      CST_PROGRESS_COUNTER_MAP      = 1;
       CST_PROGRESS_COUNTER_SEARCH   = 1;
       CST_PROGRESS_COUNTER_AGES     = 1;
       CST_PROGRESS_COUNTER_JOBS     = 1;
@@ -79,6 +80,7 @@ const IBQ_NOM='NOM';
       IBQ_SEXE_WOMAN = 2 ;
 
       IBQ_EV_IND_DESCRIPTION ='EV_IND_DESCRIPTION';
+      IBQ_EV_IND_CP          ='EV_IND_CP';
       IBQ_EV_IND_VILLE       ='EV_IND_VILLE';
       IBQ_EV_IND_DATE        ='EV_IND_DATE';
       IBQ_EV_IND_PAYS        ='EV_IND_PAYS';
@@ -118,6 +120,10 @@ const IBQ_NOM='NOM';
       MEDIAS_TYPE_VIDEO  = 3 ;
       MEDIAS_TYPE_SON    = 2 ;
 
+      IBQ_CP_LATITUDE  = 'CP_LATITUDE';
+      IBQ_CP_LONGITUDE = 'CP_LONGITUDE';
+      IBQ_CP_VILLE     = 'CP_VILLE';
+
       COUNTING_LABEL    = 'LIBELLE' ;
       COUNTING_COUNTING = 'COMPTAGE' ;
 
@@ -135,11 +141,28 @@ const IBQ_NOM='NOM';
 
 
       I_CLEF      ='I_CLEF';
+      I_PAYS      ='I_PAYS';
+      I_CP        ='I_CP';
       I_CLEF_MULTI='I_CLEF_MULTI';
       I_NIVEAU    ='I_NIVEAU';
       I_DOSSIER   ='I_DOSSIER';
       I_PARQUI    ='I_PARQUI';
       I_CLEF_UNION      ='I_CLEF_UNION';
+      CST_MAP_CASE            = 'MapCase';
+      CST_MAP_LINE            = 'MapLine';
+      CST_MAP_N               = 'n';
+      CST_MAP_LONGITUD        = 'Longitud';
+      CST_MAP_LATITUD         = 'Latitud';
+      CST_MAP_ICON            = 'Icon';
+      CST_MAP_NAME_CITY       = 'NameOrCity';
+      CST_MAP_ZOOM            = 'Zoom';
+      CST_MAP_LITTLE_DOT      = 'littleDot';
+      CST_MAP_LI_MID_DOT      = 'littleMiddleDot';
+      CST_MAP_MIDDLE_DOT      = 'middleDot';
+      CST_MAP_BIG_MID_DOT     = 'bigMiddleDot';
+      CST_MAP_BIG_DOT         = 'bigDot';
+
+      CST_MAP_MAX_ZOOM        = 'MaxZoom';
       CST_SUBDIR_THEMES       = 'Themes' ;
       CST_SUBDIR_CLASSES      = 'Classes' ;
       CST_SUBDIR_EXPORT       = 'HTML'  ;
@@ -157,6 +180,8 @@ const IBQ_NOM='NOM';
       CST_FILE_Home         = 'index';
       CST_FILE_Contact      = 'Contact';
       CST_FILE_ContactInBody= 'ContactInsideBody';
+      CST_FILE_MapCase      = 'MapCase';
+      CST_FILE_MapLine      = 'MapLine';
       CST_FILE_ContactBefore= 'ContactBeforeHTML';
       CST_FILE_SearchInBody = 'SearchInsideBody';
       CST_FILE_FILES        = 'Files';
@@ -169,6 +194,7 @@ const IBQ_NOM='NOM';
       CST_FILE_JOB          = 'Job';
       CST_FILE_JOBS_LINE    = 'JobsLine';
       CST_FILE_NAMES        = 'Names' ;
+      CST_FILE_MAP          = 'Map' ;
       CST_FILE_Number       = ' no';
       CST_FILE_UNION        = 'union';
       CST_FILE_COUNTING     = 'counting';
@@ -242,8 +268,12 @@ type
     IBQ_TreeAsc: TIBQuery;
     IBQ_TreeByNames: TIBQuery;
     IBQ_TreeDescByNames: TIBQuery;
+    IBS_City: TIBSQL;
+    IBS_MapAll: TIBSQL;
+    IBS_TreeMapDes: TIBSQL;
     IBS_TreeNames: TIBSQL;
     IBQ_TreeDesc: TIBQuery;
+    IBS_TreeMap: TIBSQL;
     IBS_TreeNamesDesc: TIBSQL;
     IBS_Temp: TIBSQL;
     IBT_BASE: TIBTransaction;
