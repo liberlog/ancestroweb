@@ -178,6 +178,7 @@ const IBQ_NOM='NOM';
       CST_SUBDIR_HTML_TREE    = 'Tree' ;
       KLE_DOSSIER = 'KLE_DOSSIER';
       CST_FILE_Home         = 'index';
+      CST_FILE_Button       = 'Button';
       CST_FILE_Contact      = 'Contact';
       CST_FILE_ContactInBody= 'ContactInsideBody';
       CST_FILE_MapCase      = 'MapCase';

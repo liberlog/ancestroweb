@@ -1054,7 +1054,7 @@ var
 
   procedure p_CreateChilds(const af_Sosa: double; const as_Aboville: string; const ab_HasNext, ab_OldNext, ab_IsFirst, ab_IsSecond, ab_IsSisBrother: boolean );
   var
-    li_Sexe, li_i: integer;
+    li_Sexe : integer;
     lf_SosaPere, lf_SosaMere, lf_NewSosa: double;
     ls_newAboville: string;
   begin
@@ -1100,6 +1100,7 @@ var
             IBQ_SEXE_WOMAN : ls_Image := fs_Create_Tree_Image('f' + CST_TREE_GIF_EXT) + ls_Image;
           end;
         end;
+      lf_NewSosa := 0;
       if ab_Asc then
       begin    // next parents
         lf_SosaPere := af_Sosa * 2;
@@ -1597,11 +1598,6 @@ const CST_DUMMY_COORD = 2000000;
   procedure p_getGlobalMinMax (var ad_Minlatitude, ad_Maxlatitude, ad_Minlongitude , ad_Maxlongitude, ad_MaxCounter  : Double );
   var li_i : Integer;
   Begin
-    ad_Minlatitude := CST_DUMMY_COORD;
-    ad_Maxlatitude := -CST_DUMMY_COORD;
-    ad_Minlongitude  := CST_DUMMY_COORD;
-    ad_Maxlongitude  := -CST_DUMMY_COORD;
-    ad_MaxCounter  := 0;
     for li_i := 0 to high ( lt_Names ) do
      with lt_Names [ li_i ] do
       Begin
@@ -1650,6 +1646,9 @@ const CST_DUMMY_COORD = 2000000;
         ls_City ,
         ls_AName : String;
     Begin
+      ld_longitude := 0;
+      ld_latitude  := 0;
+      ls_City      := '';
       with IBQ_MapFiltered do
       while not Eof do
         Begin
@@ -1660,7 +1659,8 @@ const CST_DUMMY_COORD = 2000000;
               ld_counter :=  FieldByName(IBQ_COUNTER ).AsFloat;
               if ls_City <> '' Then
                 begin
-                  if fi_findName ( ls_AName ) <> -1 Then
+                  li_i := fi_findName ( ls_AName );
+                  if li_i <> -1 Then
                    with lt_Names [ li_i ] do
                    // mise à jour des max
                     Begin
@@ -1708,7 +1708,7 @@ const CST_DUMMY_COORD = 2000000;
 
   end;
 
-  procedure p_setAline ( const astl_Aline : TStringList; const IBQ_MapFiltered :TIBSQL; const ad_MaxCounter : Double ; const ai_Name : Integer = -1);
+  procedure p_setAline ( const astl_Aline : TStringList; const IBQ_MapFiltered :TIBSQL; const ad_MaxCounter : Double );
   var li_i, li_dot : Integer ;
       ld_counter : Double;
   Begin
@@ -1738,13 +1738,20 @@ const CST_DUMMY_COORD = 2000000;
   Begin
     Finalize ( lt_Names );
     p_createMinMaxMap ( IBQ_MapFiltered );
+    ld_Minlatitude := CST_DUMMY_COORD;
+    ld_Maxlatitude := -CST_DUMMY_COORD;
+    ld_Minlongitude  := CST_DUMMY_COORD;
+    ld_Maxlongitude  := -CST_DUMMY_COORD;
+    ld_MaxCounter  := 0;
     p_getGlobalMinMax ( ld_Minlatitude, ld_Maxlatitude, ld_Minlongitude , ld_Maxlongitude, ld_MaxCounter );
     p_CreateKeyWords;
     ls_name := '';
+    li_Name := -1;
     pb_ProgressInd.Position:=0;  // initing user value
     pb_ProgressInd.Max:=IBQ_FilesFiltered.RecordCount;
     lstl_AllNames := TStringList.Create;
     lstl_ACase    := TStringList.Create;
+    lstl_ALine    := TStringList.Create;
     lstl_HTMLAFolder.Clear;
     ls_NewName := '';
     ls_Name := 'Z';
@@ -1766,8 +1773,8 @@ const CST_DUMMY_COORD = 2000000;
        end;
       p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_LINE, lstl_ALine.Text );
       p_ReplaceLanguageString ( lstl_AllNames   , CST_MAP_LINE, lstl_ALine.Text );
-      p_setAline(lstl_HTMLAFolder,IBQ_MapFiltered,lt_Names [ li_Name ].MaxCounter,li_Name);
-      p_setAline(lstl_AllNames   ,IBQ_MapFiltered,ld_MaxCounter,-1);
+      p_setAline(lstl_HTMLAFolder,IBQ_MapFiltered,lt_Names [ li_Name ].MaxCounter);
+      p_setAline(lstl_AllNames   ,IBQ_MapFiltered,ld_MaxCounter);
       p_addKeyWord(ls_Name, '-'); // adding a head's meta keyword
       IBQ_FilesFiltered.Next;
 
@@ -1834,14 +1841,20 @@ begin
       if (length(ls_NewName) = 0) Then
         ls_NewName:=' ';
       if ((length(ls_Name) = 0) or
-        (ls_NewName[1] <> ls_Name[1])) then
+        (ls_NewName[1] <> ls_Name[1])) then // Anchor
         lstl_HTMLAFolder.Add ( CST_HTML_TD_END +CST_HTML_TR_END + CST_HTML_TR_BEGIN + CST_HTML_TD_BEGIN +
                                CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + ls_NewName[1] + '" />'+
-                               CST_HTML_H4_BEGIN + ls_NewName[1]+ CST_HTML_H4_END + CST_HTML_TD_END +CST_HTML_TD_BEGIN)
+                               CST_HTML_H4_BEGIN + ls_NewName[1] + CST_HTML_H4_END + CST_HTML_TD_END +CST_HTML_TD_BEGIN)
         Else lstl_HTMLAFolder.Add ( ' - ' );
+      // Name and its link
       lstl_HTMLAFolder.Add ( CST_HTML_AHREF + CST_SUBDIR_HTML_FILES + CST_HTML_DIR_SEPARATOR
                            + fs_GetSheetLink ( gt_SheetsLetters, ls_NewName[1], ls_NewName ) + '#' + ls_NewName + '">'
-                           + ls_NewName + CST_HTML_A_END +' ('+ IBQ_FilesFiltered.FieldByName( IBQ_COUNTER ).AsString + ')' );
+                           + ls_NewName + CST_HTML_A_END +' ('+ IBQ_FilesFiltered.FieldByName( IBQ_COUNTER ).AsString );
+      if ch_genMap.Checked Then // Creating optionnal map button
+      lstl_HTMLAFolder.Add ( ' - ' + fs_Create_Link(ed_MapFileName.Text+CST_EXTENSION_PHP + '?name=' +ls_NewName,
+                             fs_Create_Image(CST_SUBDIR_HTML_IMAGES+CST_HTML_DIR_SEPARATOR+CST_FILE_MAP
+                             +CST_HTML_DIR_SEPARATOR+CST_FILE_MAP+CST_FILE_Button+CST_EXTENSION_GIF,gs_ANCESTROWEB_Map)));
+      lstl_HTMLAFolder.Add ( ')' );
      end;
     ls_Name := IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString;
     p_addKeyWord(ls_Name, '-'); // adding a head's meta keyword
@@ -1965,6 +1978,7 @@ var
 
 begin
   p_Setcomments ( gs_AnceSTROWEB_List ); // advert for user
+  Finalize ( lt_SheetsLists );
   p_createLettersSheets ( lt_SheetsLists, IBQ_FilesFiltered, gi_FilesPerList, ed_ListsBeginName.Text );
   li_CounterPages := 0;
   pb_ProgressInd.Position := 0; // initing user value
@@ -2482,12 +2496,11 @@ end;
 procedure TF_AncestroWeb.p_genHtmlSearch;
 var
   lstl_HTMLSearch: TStringList;
-  ls_destination, ls_AfterHead: string;
+  ls_destination: string;
 begin
   p_Setcomments (( gs_AnceSTROWEB_Search )); // advert for user
   pb_ProgressInd.Position := 0; // initing not needed user value
   lstl_HTMLSearch := TStringList.Create;
-  ls_AfterHead := lstl_HTMLSearch.Text;
   p_CreateAHtmlFile(lstl_HTMLSearch, CST_FILE_SEARCH, me_searchHead.Lines.Text,
         ( gs_AnceSTROWEB_Search ), gs_AnceSTROWEB_Search, gs_ANCESTROWEB_SearchLong, gs_LinkGedcom, '');
 
@@ -2795,8 +2808,6 @@ procedure TF_AncestroWeb.p_CreateAHtmlFile(const astl_Destination: TStringList;
   const as_ExtFile: string =
   CST_EXTENSION_HTML;
   const as_BeforeHTML: string = ''; const astl_Body : TStringList = nil );
-var
-  lstl_Head: TStringList;
 begin
   if as_BottomHTML <> '' then
     as_BottomHTML := '<' + CST_HTML_Paragraph + CST_HTML_ID_EQUAL + '"gedcom">' +
@@ -2938,8 +2949,8 @@ end;
 procedure TF_AncestroWeb.FormCreate(Sender: TObject);
 var
   fbddpath:String;
-  lb_Logie : Boolean ;
 {$IFDEF WINDOWS}
+  lb_Logie : Boolean ;
   lreg_Registry : TRegistry;
   fKeyRegistry,s: string;
   i:Integer;
@@ -2981,7 +2992,6 @@ var
 begin
   f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
   OnFormInfoIni.p_ExecuteLecture(Self);
-  lb_Logie := False;
 {$IFDEF FPC}//à faire une version Delphi
   if InstanceRunning(CST_AncestroWeb) then
   begin
@@ -2999,6 +3009,7 @@ begin
 
 
 {$IFDEF WINDOWS}
+  lb_Logie := False;
   lreg_Registry := TRegistry.create;
   with lreg_Registry do
   try
