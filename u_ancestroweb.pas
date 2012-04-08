@@ -1692,6 +1692,15 @@ const CST_DUMMY_COORD = 2000000;
           Next;
         end;
     end;
+  function fs_MapZoom ( const ad_Minlatitude, ad_Maxlatitude, ad_Minlongitude , ad_Maxlongitude  : Double ): String;
+  var ld_Longitude, ld_Zoom : Double;
+  Begin
+    ld_Longitude := ad_Maxlongitude - ad_Minlongitude ;
+    ld_Zoom      := ad_Maxlatitude  - ad_Minlatitude  ;
+    if ld_Longitude > ld_Zoom Then
+     ld_Zoom:=ld_Longitude;
+    Result := IntToStr ( trunc ( CST_MAP_ZOOM_MAX / ld_Zoom / 180 ));
+  End;
   procedure p_setACase ( const astl_ACase, astl_ACaseSource : TStringList; var ai_Name : Integer);
   Begin
     ai_Name := fi_findName(ls_NewName);
@@ -1701,8 +1710,8 @@ const CST_DUMMY_COORD = 2000000;
       Begin
         p_ReplaceLanguageString ( astl_ACase, CST_MAP_LATITUD , FloatToStr(MinLatitude ));
         p_ReplaceLanguageString ( astl_ACase, CST_MAP_LONGITUD, FloatToStr(MinLongitude));
-        p_ReplaceLanguageString ( astl_ACase, CST_MAP_MAX_ZOOM, '20' );
-        p_ReplaceLanguageString ( astl_ACase, CST_MAP_ZOOM    , '10' );
+        p_ReplaceLanguageString ( astl_ACase, CST_MAP_MAX_ZOOM, IntToStr ( CST_MAP_ZOOM_MAX ));
+        p_ReplaceLanguageString ( astl_ACase, CST_MAP_ZOOM    , fs_MapZoom ( Minlatitude, Maxlatitude, Minlongitude , Maxlongitude ));
       end;
     ls_Name := ls_NewName;
 
@@ -1761,8 +1770,8 @@ const CST_DUMMY_COORD = 2000000;
     p_ReplaceLanguageString ( lstl_AllNames, CST_MAP_LINE, '' );
     p_ReplaceLanguageString ( lstl_AllNames, CST_MAP_LATITUD , FloatToStr(ld_MinLatitude ));
     p_ReplaceLanguageString ( lstl_AllNames, CST_MAP_LONGITUD, FloatToStr(ld_MinLongitude));
-    p_ReplaceLanguageString ( lstl_AllNames, CST_MAP_MAX_ZOOM, '20' );
-    p_ReplaceLanguageString ( lstl_AllNames, CST_MAP_ZOOM    , '10' );
+    p_ReplaceLanguageString ( lstl_AllNames, CST_MAP_MAX_ZOOM, IntToStr ( CST_MAP_ZOOM_MAX ));
+    p_ReplaceLanguageString ( lstl_AllNames, CST_MAP_ZOOM    , fs_MapZoom ( ld_Minlatitude, ld_Maxlatitude, ld_Minlongitude , ld_Maxlongitude ));
     while not IBQ_MapFiltered.EOF do
     begin
       p_IncProgressInd; // growing the second counter

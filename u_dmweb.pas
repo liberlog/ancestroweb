@@ -156,6 +156,7 @@ const IBQ_NOM='NOM';
       CST_MAP_ICON            = 'Icon';
       CST_MAP_NAME_CITY       = 'NameOrCity';
       CST_MAP_ZOOM            = 'Zoom';
+      CST_MAP_ZOOM_MAX        = 13;
       CST_MAP_LITTLE_DOT      = 'littleDot';
       CST_MAP_LI_MID_DOT      = 'littleMiddleDot';
       CST_MAP_MIDDLE_DOT      = 'middleDot';
