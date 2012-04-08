@@ -1695,11 +1695,11 @@ const CST_DUMMY_COORD = 2000000;
   function fs_MapZoom ( const ad_Minlatitude, ad_Maxlatitude, ad_Minlongitude , ad_Maxlongitude  : Double ): String;
   var ld_Longitude, ld_Zoom : Double;
   Begin
-    ld_Longitude := ad_Maxlongitude - ad_Minlongitude ;
-    ld_Zoom      := ad_Maxlatitude  - ad_Minlatitude  ;
+    ld_Zoom      := 90 + ad_Maxlatitude  - ad_Minlatitude  ;
+    ld_Longitude := 90 + ad_Maxlongitude - ad_Minlongitude ;
     if ld_Longitude > ld_Zoom Then
      ld_Zoom:=ld_Longitude;
-    Result := IntToStr ( trunc ( CST_MAP_ZOOM_MAX / ld_Zoom / 180 ));
+    Result := IntToStr ( trunc ( CST_MAP_ZOOM_MAX * ld_Zoom / 180 ));
   End;
   procedure p_setACase ( const astl_ACase, astl_ACaseSource : TStringList; var ai_Name : Integer);
   Begin
