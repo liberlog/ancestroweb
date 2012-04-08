@@ -1692,6 +1692,21 @@ const CST_DUMMY_COORD = 2000000;
           Next;
         end;
     end;
+  procedure p_setACase ( const astl_ACase, astl_ACaseSource : TStringList; var ai_Name : Integer);
+  Begin
+    ai_Name := fi_findName(ls_NewName);
+    p_ReplaceLanguageString ( astl_ACase, CST_MAP_LINE, '' );
+    p_ReplaceLanguageString ( astl_ACase, CST_MAP_CASE, astl_ACaseSource.Text );
+    with lt_Names [ ai_Name ] do
+      Begin
+        p_ReplaceLanguageString ( astl_ACase, CST_MAP_LATITUD , FloatToStr(MinLatitude ));
+        p_ReplaceLanguageString ( astl_ACase, CST_MAP_LONGITUD, FloatToStr(MinLongitude));
+        p_ReplaceLanguageString ( astl_ACase, CST_MAP_MAX_ZOOM, '20' );
+        p_ReplaceLanguageString ( astl_ACase, CST_MAP_ZOOM    , '10' );
+      end;
+    ls_Name := ls_NewName;
+
+  end;
 
   procedure p_setAline ( const astl_Aline : TStringList; const IBQ_MapFiltered :TIBSQL; const ad_MaxCounter : Double ; const ai_Name : Integer = -1);
   var li_i, li_dot : Integer ;
@@ -1719,6 +1734,7 @@ const CST_DUMMY_COORD = 2000000;
     lstl_AllNames ,
     lstl_ACase    ,
     lstl_ALine    : TStringList;
+    li_Name       : Integer ;
   Begin
     Finalize ( lt_Names );
     p_createMinMaxMap ( IBQ_MapFiltered );
@@ -1733,20 +1749,25 @@ const CST_DUMMY_COORD = 2000000;
     ls_NewName := '';
     ls_Name := 'Z';
     p_LoadStringList(lstl_AllNames, gs_Root, CST_FILE_MapCase + CST_EXTENSION_PHP);
+    p_LoadStringList(lstl_ACase   , gs_Root, CST_FILE_MapCase + CST_EXTENSION_PHP);
+    p_LoadStringList(lstl_ALine   , gs_Root, CST_FILE_MapLine + CST_EXTENSION_PHP);
     p_ReplaceLanguageString ( lstl_AllNames, CST_MAP_LINE, '' );
+    p_ReplaceLanguageString ( lstl_AllNames, CST_MAP_LATITUD , FloatToStr(ld_MinLatitude ));
+    p_ReplaceLanguageString ( lstl_AllNames, CST_MAP_LONGITUD, FloatToStr(ld_MinLongitude));
+    p_ReplaceLanguageString ( lstl_AllNames, CST_MAP_MAX_ZOOM, '20' );
+    p_ReplaceLanguageString ( lstl_AllNames, CST_MAP_ZOOM    , '10' );
     while not IBQ_MapFiltered.EOF do
     begin
       p_IncProgressInd; // growing the second counter
       ls_NewName := IBQ_MapFiltered.FieldByName(IBQ_NOM).AsString;
       if ls_NewName <> ls_name Then
        Begin
-         p_ReplaceLanguageString ( lstl_ACase, CST_MAP_LINE, '' );
-         p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CASE, lstl_ACase.Text );
-         p_LoadStringList(lstl_ACase, gs_Root, CST_FILE_MapCase + CST_EXTENSION_PHP);
-         p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_LINE, '' );
-         p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CASE, lstl_ACase.Text );
+         p_setACase(lstl_HTMLAFolder, lstl_ACase, li_Name);
        end;
-      ls_Name := IBQ_MapFiltered.FieldByName(IBQ_NOM).AsString;
+      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_LINE, lstl_ALine.Text );
+      p_ReplaceLanguageString ( lstl_AllNames   , CST_MAP_LINE, lstl_ALine.Text );
+      p_setAline(lstl_HTMLAFolder,IBQ_MapFiltered,lt_Names [ li_Name ].MaxCounter,li_Name);
+      p_setAline(lstl_AllNames   ,IBQ_MapFiltered,ld_MaxCounter,-1);
       p_addKeyWord(ls_Name, '-'); // adding a head's meta keyword
       IBQ_FilesFiltered.Next;
 
