@@ -1695,8 +1695,8 @@ const CST_DUMMY_COORD = 2000000;
   function fs_MapZoom ( const ad_Minlatitude, ad_Maxlatitude, ad_Minlongitude , ad_Maxlongitude  : Double ): String;
   var ld_Longitude, ld_Zoom : Double;
   Begin
-    ld_Zoom      := 90 + ad_Maxlatitude  - ad_Minlatitude  ;
-    ld_Longitude := 90 + ad_Maxlongitude - ad_Minlongitude ;
+    ld_Zoom      := 90  + ad_Maxlatitude  - ad_Minlatitude  ;
+    ld_Longitude := 180 + ad_Maxlongitude - ad_Minlongitude / 2 ;
     if ld_Longitude > ld_Zoom Then
      ld_Zoom:=ld_Longitude;
     Result := IntToStr ( trunc ( CST_MAP_ZOOM_MAX * ld_Zoom / 180 ));

@@ -66,9 +66,9 @@ object F_AncestroWeb: TF_AncestroWeb
     Height = 366
     Top = 0
     Width = 640
-    ActivePage = ts_Gen
+    ActivePage = ts_about
     Align = alClient
-    TabIndex = 0
+    TabIndex = 3
     TabOrder = 1
     OnChange = PCPrincipalChange
     object ts_Gen: TTabSheet
@@ -1449,12 +1449,12 @@ object F_AncestroWeb: TF_AncestroWeb
       ClientWidth = 636
       object pa_About: TScrollBox
         Left = 0
-        Height = 332
+        Height = 335
         Top = 0
         Width = 636
         Align = alClient
-        ClientHeight = 328
-        ClientWidth = 632
+        ClientHeight = 333
+        ClientWidth = 634
         TabOrder = 0
         object Label19: TLabel
           Left = 17
@@ -1594,8 +1594,8 @@ object F_AncestroWeb: TF_AncestroWeb
     Filter = 'Bases Firebird/Interbase (*.fdb,*.gdb)|*.fdb;*.gdb|Tous les fichiers (*.*)|*.*'
     FilterIndex = 0
     Options = [ofHideReadOnly, ofNoNetworkButton, ofViewDetail]
-    left = 32
-    top = 88
+    left = 56
+    top = 48
   end
   object OnFormInfoIni: TOnFormInfoIni
     AutoLoad = False
@@ -1605,8 +1605,8 @@ object F_AncestroWeb: TF_AncestroWeb
     OnIniLoad = OnFormInfoIniIniLoad
     OnIniWrite = OnFormInfoIniIniWrite
     Freeini = False
-    left = 176
-    top = 80
+    left = 360
+    top = 56
   end
   object FileCopy: TExtFileCopy
     Errors = 0
@@ -1614,23 +1614,23 @@ object F_AncestroWeb: TF_AncestroWeb
     Mask = '*'
     FileOptions = [cpUseFilter, cpCreateDestination]
     DoEraseDir = FileCopyDoEraseDir
-    left = 72
-    top = 128
+    left = 352
+    top = 104
   end
   object TraduceImage: TTraduceFile
     Errors = 0
     OnFailure = TraduceImageFailure
     TraduceOptions = [cpDestinationIsFile, cpCreateDestination]
     ResizeWidth = 200
-    left = 144
-    top = 192
+    left = 208
+    top = 104
   end
   object FileIniCopy: TExtFileCopy
     Errors = 0
     Mask = '*'
     FileOptions = [cpUseFilter, cpCreateDestination]
     DoEraseDir = FileCopyDoEraseDir
-    left = 176
-    top = 128
+    left = 280
+    top = 104
   end
 end
