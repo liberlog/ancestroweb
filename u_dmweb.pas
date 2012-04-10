@@ -149,6 +149,7 @@ const IBQ_NOM='NOM';
       I_PARQUI    ='I_PARQUI';
       I_CLEF_UNION      ='I_CLEF_UNION';
       CST_MAP_CASE            = 'MapCase';
+      CST_MAP_NAME            = 'AName';
       CST_MAP_LINE            = 'MapLine';
       CST_MAP_N               = 'n';
       CST_MAP_LONGITUD        = 'Longitud';
@@ -270,7 +271,7 @@ type
     IBQ_TreeAsc: TIBQuery;
     IBQ_TreeByNames: TIBQuery;
     IBQ_TreeDescByNames: TIBQuery;
-    IBS_City: TIBSQL;
+    IBS_City: TIBQuery;
     IBS_MapAll: TIBSQL;
     IBS_TreeMapDes: TIBSQL;
     IBS_TreeNames: TIBSQL;

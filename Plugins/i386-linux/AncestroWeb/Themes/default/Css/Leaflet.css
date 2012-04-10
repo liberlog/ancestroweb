@@ -1,5 +1,7 @@
 /* required styles */
 
+div#map{width: 600px; height: 400px}
+
 .leaflet-map-pane,
 .leaflet-tile,
 .leaflet-marker-icon,
@@ -12,10 +14,10 @@
 .leaflet-overlay-pane svg,
 .leaflet-zoom-box,
 .leaflet-image-layer { /* TODO optimize classes */
-	position: absolute;
+	/* position: absolute;
 	}
 .leaflet-container {
-	overflow: hidden;
+	overflow: hidden;*/
 	}
 .leaflet-tile-pane, .leaflet-container {
 	-webkit-transform: translate3d(0,0,0);
