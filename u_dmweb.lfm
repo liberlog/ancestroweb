@@ -592,12 +592,9 @@ object DMWeb: TDMWeb
     left = 40
     top = 264
   end
-  object IBS_City: TIBQuery
+  object IBS_City: TIBSQL
     Database = ibd_BASE
-    Transaction = IBT_BASE
-    BufferChunks = 1000
-    CachedUpdates = False
-    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    ParamCheck = True
     SQL.Strings = (
       'SELECT FIRST 1 CP_LATITUDE,CP_LONGITUDE,CP_VILLE'
       'FROM REF_CP_VILLE INNER JOIN REF_PAYS '
@@ -606,30 +603,9 @@ object DMWeb: TDMWeb
       'AND CP_CP= :I_CP'
       'AND CP_VILLE <> '''''
     )
-    Params = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_PAYS'
-        ParamType = ptInput
-      end    
-      item
-        DataType = ftUnknown
-        Name = 'I_CP'
-        ParamType = ptInput
-      end>
-    left = 296
+    Transaction = IBT_BASE
+    left = 304
     top = 264
-    ParamData = <    
-      item
-        DataType = ftUnknown
-        Name = 'I_PAYS'
-        ParamType = ptInput
-      end    
-      item
-        DataType = ftUnknown
-        Name = 'I_CP'
-        ParamType = ptInput
-      end>
   end
   object IBS_MapAll: TIBSQL
     Database = ibd_BASE
