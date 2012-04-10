@@ -3,8 +3,8 @@ object DMWeb: TDMWeb
   OnDestroy = DataModuleDestroy
   OldCreateOrder = False
   Height = 408
-  HorizontalOffset = 532
-  VerticalOffset = 461
+  HorizontalOffset = 402
+  VerticalOffset = 142
   Width = 572
   object IBT_BASE: TIBTransaction
     Active = False
@@ -612,7 +612,7 @@ object DMWeb: TDMWeb
     ParamCheck = True
     SQL.Strings = (
       'SELECT NOM,EV_IND_CP,EV_IND_PAYS,COUNT (*) AS COUNTER'
-      'FROM individu i on i.cle_fiche=t.tq_cle_fiche'
+      'FROM individu i'
       'left join EVENEMENTS_IND e on i.cle_fiche=e.EV_IND_KLE_FICHE'
       'WHERE KLE_DOSSIER=:I_DOSSIER'
       'GROUP BY NOM,EV_IND_CP,EV_IND_PAYS'
@@ -639,4 +639,4 @@ object DMWeb: TDMWeb
     left = 192
     top = 264
   end
-end
+end

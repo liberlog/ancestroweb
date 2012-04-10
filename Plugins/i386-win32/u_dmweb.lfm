@@ -3,8 +3,8 @@ object DMWeb: TDMWeb
   OnDestroy = DataModuleDestroy
   OldCreateOrder = False
   Height = 408
-  HorizontalOffset = 525
-  VerticalOffset = 258
+  HorizontalOffset = 402
+  VerticalOffset = 142
   Width = 572
   object IBT_BASE: TIBTransaction
     Active = False
@@ -347,21 +347,26 @@ object DMWeb: TDMWeb
     Database = ibd_BASE
     ParamCheck = True
     SQL.Strings = (
-      'select '
-      '           CLE_FICHE'
-      '            ,c.NOM'
-      '            ,c.PRENOM'
-      '            ,c.SEXE'
-      '            ,p.clef_union as UNION_CLEF'
-      '            ,m.ev_fam_date_writen as DATE_MARIAGE'
-      '            ,m.ev_fam_date_year'
-      '            ,m.ev_fam_ville'
-      '            ,m.EV_FAM_CP'
-      '            ,p.clef_marr'
-      '      from proc_conjoints_ordonnes(:I_CLEF,0) p'
-      '        left join evenements_fam m on m.ev_fam_clef=p.clef_marr'
-      '        left join individu c on c.cle_fiche=p.conjoint '
-      'ORDER BY ordre'
+      'select'
+      '     u.union_clef,'
+      '     c.nom,'
+      '     c.sexe,'
+      '     c.prenom,'
+      '     f.EV_FAM_CP,'
+      '     f.EV_FAM_VILLE '
+      '     ,case u.union_mari'
+      '        when :I_CLEF then u.union_femme'
+      '        else u.union_mari'
+      '        end as conjoint'
+      '     ,(select first(1) (case char_length(ev_fam_date_year) when 1 then LPAD(ev_fam_date_year,4,''0'') when 2 then LPAD(ev_fam_date_year,4,''0'') when 3 then LPAD(ev_fam_date_year,4,''0'') ELSE ev_fam_date_year end)||''-'''
+      '     ||(case char_length(ev_fam_date_mois) when 1 then LPAD(ev_fam_date_mois,2,''0'') ELSE ev_fam_date_mois end)||''-''||'
+      '     (case char_length(extract(day from ev_fam_date)) when 1 then LPAD(extract(day from ev_fam_date),2,''0'') ELSE extract(day from ev_fam_date) end)'
+      '       from evenements_fam'
+      '       where ev_fam_kle_famille=u.union_clef and ev_fam_date_year is not null'
+      '       order by ev_fam_date_year,ev_fam_date_mois,ev_fam_date) as date_prem_fam'
+      '     FROM t_union u'
+      '      left join individu c on (c.cle_fiche is not distinct from u.union_mari or c.cle_fiche is not distinct from u.union_femme) and cle_fiche<>:I_CLEF left join evenements_fam as f on union_clef=EV_FAM_CLEF'
+      '     Where :I_CLEF in (u.union_mari,u.union_femme)'
       ''
     )
     Transaction = IBT_BASE
@@ -546,7 +551,7 @@ object DMWeb: TDMWeb
     WindowTop = 0
     WindowWidth = 0
     FillAttribute = 0
-    left = 48
+    left = 40
     top = 144
   end
   object IBS_Temp: TIBSQL
@@ -554,7 +559,7 @@ object DMWeb: TDMWeb
     GoToFirstRecordOnExecute = False
     ParamCheck = False
     Transaction = IBT_BASE
-    left = 56
+    left = 40
     top = 200
   end
   object IBQ_Dossier: TIBQuery
@@ -568,7 +573,70 @@ object DMWeb: TDMWeb
       'select CLE_DOSSIER,NOM_DOSSIER,DS_BASE_PATH FROM DOSSIER ORDER BY CLE_DOSSIER'
     )
     Params = <>
-    left = 168
+    left = 192
     top = 336
   end
-end
+  object IBS_TreeMap: TIBSQL
+    Database = ibd_BASE
+    ParamCheck = True
+    SQL.Strings = (
+      'SELECT NOM,EV_IND_CP,EV_IND_PAYS,COUNT (*) AS COUNTER'
+      'FROM PROC_TQ_ASCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,0) t'
+      'inner join individu i on i.cle_fiche=t.tq_cle_fiche'
+      'left join EVENEMENTS_IND e on i.cle_fiche=e.EV_IND_KLE_FICHE'
+      'GROUP BY NOM,EV_IND_CP,EV_IND_PAYS'
+      'ORDER BY NOM,EV_IND_CP,EV_IND_PAYS'
+      ''
+    )
+    Transaction = IBT_BASE
+    left = 40
+    top = 264
+  end
+  object IBS_City: TIBSQL
+    Database = ibd_BASE
+    ParamCheck = True
+    SQL.Strings = (
+      'SELECT FIRST 1 CP_LATITUDE,CP_LONGITUDE,CP_VILLE'
+      'FROM REF_CP_VILLE INNER JOIN REF_PAYS '
+      'ON ( CP_PAYS = RPA_CODE ) '
+      'WHERE RPA_LIBELLE=:I_PAYS '
+      'AND CP_CP= :I_CP'
+      'AND CP_VILLE <> '''''
+    )
+    Transaction = IBT_BASE
+    left = 304
+    top = 264
+  end
+  object IBS_MapAll: TIBSQL
+    Database = ibd_BASE
+    ParamCheck = True
+    SQL.Strings = (
+      'SELECT NOM,EV_IND_CP,EV_IND_PAYS,COUNT (*) AS COUNTER'
+      'FROM individu i'
+      'left join EVENEMENTS_IND e on i.cle_fiche=e.EV_IND_KLE_FICHE'
+      'WHERE KLE_DOSSIER=:I_DOSSIER'
+      'GROUP BY NOM,EV_IND_CP,EV_IND_PAYS'
+      'ORDER BY NOM,EV_IND_CP,EV_IND_PAYS'
+      ''
+    )
+    Transaction = IBT_BASE
+    left = 40
+    top = 336
+  end
+  object IBS_TreeMapDes: TIBSQL
+    Database = ibd_BASE
+    ParamCheck = True
+    SQL.Strings = (
+      'SELECT NOM,EV_IND_CP,EV_IND_PAYS,COUNT (*) AS COUNTER'
+      'FROM PROC_TQ_DESCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,0) t'
+      'inner join individu i on i.cle_fiche=t.tq_cle_fiche'
+      'left join EVENEMENTS_IND e on i.cle_fiche=e.EV_IND_KLE_FICHE'
+      'GROUP BY NOM,EV_IND_CP,EV_IND_PAYS'
+      'ORDER BY NOM,EV_IND_CP,EV_IND_PAYS'
+      ''
+    )
+    Transaction = IBT_BASE
+    left = 192
+    top = 264
+  end
+end

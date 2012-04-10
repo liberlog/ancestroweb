@@ -1744,7 +1744,6 @@ const CST_DUMMY_COORD = 2000000;
   Begin
     with IBS_MapFiltered do
      Begin
-       writeln ( FieldByName(IBQ_EV_IND_CP).AsString + ' ' + FieldByName(IBQ_EV_IND_PAYS).AsString );
        p_getCityInfos ( FieldByName(IBQ_EV_IND_CP).AsString, FieldByName(IBQ_EV_IND_PAYS).AsString, ls_City, ld_latitude, ld_longitude );
        if not ab_IsNamedMap Then
          ls_City:=FieldByName(IBQ_NOM).AsString;
@@ -1760,8 +1759,8 @@ const CST_DUMMY_COORD = 2000000;
     p_ReplaceLanguageString ( astl_Aline, CST_MAP_LATITUD   , FloatToStr(ld_latitude ),[rfReplaceAll]);
     p_ReplaceLanguageString ( astl_Aline, CST_MAP_LONGITUD  , FloatToStr(ld_longitude),[rfReplaceAll]);
     li_dot := 1;
-    for li_i := CST_NB_DOTS - 1 downto 0 do
-      if ld_counter >= ad_MaxCounter / li_i Then
+    for li_i := 1 to CST_NB_DOTS do
+      if ld_counter <= ad_MaxCounter / li_i Then
        li_dot := li_i;
     case li_dot of
      1 :  p_ReplaceLanguageString ( astl_Aline, CST_MAP_ICON, CST_MAP_LITTLE_DOT  ,[rfReplaceAll]);
@@ -1771,7 +1770,6 @@ const CST_DUMMY_COORD = 2000000;
      else p_ReplaceLanguageString ( astl_Aline, CST_MAP_ICON, CST_MAP_BIG_DOT     ,[rfReplaceAll]);
     end;
     with IBS_MapFiltered do
-    writeln ( FieldByName(IBQ_EV_IND_CP).AsString + ' ' + FieldByName(IBQ_EV_IND_PAYS).AsString + ' ' + ls_City+ ' ' + FloatToStr(ld_latitude )+ ' ' + FloatToStr(ld_longitude ) );
   end;
 
   procedure p_createAMap ( const IBS_MapFiltered :TIBSQL);
