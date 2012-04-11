@@ -31,6 +31,8 @@ resourcestring
   gs_ANCESTROWEB_HTMLTitle = 'Généalogie @ARG';
   gs_ANCESTROWEB_FullTree = 'Arbre';
   gs_ANCESTROWEB_FamilyTree = 'Arbre familial';
+  gs_ANCESTROWEB_FamilyPersons = 'membres';
+  gs_ANCESTROWEB_FamilyPerson = 'membre';
   gs_ANCESTROWEB_Search = 'Recherche';
   gs_ANCESTROWEB_SearchLong = 'Rechercher sur le site';
   gs_ANCESTROWEB_Ages   = 'Âges';
@@ -49,10 +51,13 @@ resourcestring
   gs_ANCESTROWEB_WomanBornOn = 'Née le ';
   gs_ANCESTROWEB_ManBornOn = 'Né le ';
   gs_ANCESTROWEB_Map = 'Carte';
+  gs_ANCESTROWEB_Map_To = 'à';
   gs_ANCESTROWEB_MapMaxZoom = '13';
+  gs_ANCESTROWEB_MapCaptions = 'Évaluation visuelle du nombre de membres de la famille';
   gs_ANCESTROWEB_Map_Long = 'Carte des patronymes';
   gs_ANCESTROWEB_MapCountry = 'FRANCE';
-  gs_ANCESTROWEB_MapProblemNoPostalCode = 'Problème pour la carte : Pas de code postal';
+  gs_ANCESTROWEB_MapProblemNoPostalCode = 'Problème : Pas de code postal';
+  gs_ANCESTROWEB_MapProblemNoCity = 'Problème : Pas de ville';
   gs_ANCESTROWEB_WomanDiedOn = 'Décédée le ';
   gs_ANCESTROWEB_ManDiedOn = 'Décédé le ';
   gs_ANCESTROWEB_Names = 'Patronymes';

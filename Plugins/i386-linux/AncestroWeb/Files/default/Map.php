@@ -6,7 +6,7 @@
 		var map = new L.Map('mapnames', { trackResize : true });
 
 		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/22677/256/{z}/{x}/{y}.png',
-			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2012 Liberlog',
 			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: [MaxZoom], attribution: cloudmadeAttribution, reuseTiles:true});
 
 var littleIcon = L.Icon.extend({
@@ -57,6 +57,10 @@ var bigMiddleDot = new bigMiddleIcon();
 var bigDot = new bigIcon();
 
 <?
+if ($_GET["name"]!="")
+	{
+	echo "document.title+=' ".$_GET["name"]."';\n";
+	}
 
 switch ($_GET["name"]) 
 {
@@ -64,4 +68,4 @@ switch ($_GET["name"])
 }
 ?>
 </script>
-
+<p><img src="Images/Map/littleDot.png" /> [To] <img src="Images/Map/bigDot.png" /> : [MapCaptions]</p>

@@ -143,6 +143,7 @@ const IBQ_NOM='NOM';
       I_CLEF      ='I_CLEF';
       I_PAYS      ='I_PAYS';
       I_CP        ='I_CP';
+      I_CITY      ='I_CITY';
       I_CLEF_MULTI='I_CLEF_MULTI';
       I_NIVEAU    ='I_NIVEAU';
       I_DOSSIER   ='I_DOSSIER';
@@ -150,8 +151,10 @@ const IBQ_NOM='NOM';
       I_CLEF_UNION      ='I_CLEF_UNION';
       CST_MAP_CASE            = 'MapCase';
       CST_MAP_NAME            = 'AName';
+      CST_MAP_CAPTIONS        = 'MapCaptions';
       CST_MAP_LINE            = 'MapLine';
       CST_MAP_N               = 'n';
+      CST_MAP_TO              = 'To';
       CST_MAP_MIN_LONGITUD    = 'MinLongitud';
       CST_MAP_MIN_LATITUD     = 'MinLatitud';
       CST_MAP_MAX_LONGITUD    = 'MaxLongitud';
@@ -260,6 +263,7 @@ type
   { TDMWeb }
 
   TDMWeb = class(TDataModule)
+    IBS_CityCPost: TIBSQL;
     IBS_Sources_Record: TIBSQL;
     IBS_Jobs: TIBSQL;
     IBS_Compte: TIBSQL;
