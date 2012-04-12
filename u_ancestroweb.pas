@@ -1571,6 +1571,7 @@ var
   lstl_HTMLAFolder: TStringList;
   ls_NewName, ls_Name, ls_destination: string;
 
+  // for map
   lt_Names : Array of Record
                         Name : String;
                         Minlatitude  ,
@@ -1582,6 +1583,8 @@ var
 
 const CST_DUMMY_COORD = 2000000;
       CST_NB_DOTS     = 5;
+  // function fs_GetNameLink
+  // Creates a link from a name and a showed info
   function fs_GetNameLink ( const as_name, as_Showed : String ):String ;
   Begin
     Result := CST_HTML_AHREF + CST_SUBDIR_HTML_FILES + CST_HTML_DIR_SEPARATOR
@@ -1589,6 +1592,8 @@ const CST_DUMMY_COORD = 2000000;
             + as_Showed + CST_HTML_A_END ;
   End;
 
+  //  function fi_findName
+  // search a name in the array lt_names
   function fi_findName ( const as_Name : string ): Integer;
   var li_i : LongInt;
   Begin
@@ -1744,6 +1749,9 @@ const CST_DUMMY_COORD = 2000000;
           Next;
         end;
     end;
+
+  // function fs_MapZoom
+  // creating zoom for map
   function fs_MapZoom ( const ad_Minlatitude, ad_Maxlatitude, ad_Minlongitude , ad_Maxlongitude  : Double ): String;
   var ld_Longitude, ld_Zoom : Double;
   Begin
@@ -1751,11 +1759,15 @@ const CST_DUMMY_COORD = 2000000;
     ld_Longitude := ( 180 + ad_Maxlongitude - ad_Minlongitude ) / 2 ;
     if ld_Longitude > ld_Zoom Then
      ld_Zoom:=ld_Longitude;
+    ld_Zoom := 1.25 - ld_Zoom / 180;
     try
-      Result := IntToStr ( trunc ( StrToInt(gs_ANCESTROWEB_MapMaxZoom) * ld_Zoom / 180 ));
+      // apating initial zoom to max lattitud and longitud
+      Result := IntToStr ( trunc ( StrToInt(gs_ANCESTROWEB_MapMaxZoom) * ld_Zoom ));
     except
     end;
   End;
+  // procedure p_setACase
+  // creating a now switching case
   procedure p_setACase ( const astl_ACase, astl_ACaseSource : TStringList; var ai_Name : Integer);
   Begin
     ai_Name := fi_findName(ls_NewName);
@@ -1780,6 +1792,8 @@ const CST_DUMMY_COORD = 2000000;
 
   end;
 
+  // procedure p_setAline
+  // creating a new case line
   procedure p_setAline ( const astl_Aline, astl_Line : TStringList; const IBS_MapFiltered :TIBSQL; const ai_MaxCounter : Int64 ; const ab_IsNamedMap : Boolean );
   var li_i, li_dot : Integer ;
       ld_latitude, ld_longitude : Double;
@@ -1822,6 +1836,8 @@ const CST_DUMMY_COORD = 2000000;
     with IBS_MapFiltered do
   end;
 
+  // procedure p_createAMap
+  // creating a map with persons frpm IBS_MapFiltered
   procedure p_createAMap ( const IBS_MapFiltered :TIBSQL);
   var ld_MinLatitude, ld_MaxLatitude, ld_MinLongitude, ld_MaxLongitude : Double;
     li_MaxCounter : Int64;
@@ -1913,6 +1929,8 @@ const CST_DUMMY_COORD = 2000000;
     p_IncProgressBar;
   end;
 
+  // procedure p_createMap
+  // create filtered map ?
   procedure p_createMap;
   Begin
     if ch_genMap.Checked Then
@@ -1997,7 +2015,8 @@ begin
   p_IncProgressBar; // growing the counter
 end;
 
-
+// procedure TF_AncestroWeb.p_genHtmlList
+// creating persons' list
 procedure TF_AncestroWeb.p_genHtmlList(const IBQ_FilesFiltered: TIBQuery);
 var
   ls_Name, ls_destination: string;
