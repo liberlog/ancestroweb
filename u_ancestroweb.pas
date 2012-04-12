@@ -3090,6 +3090,7 @@ var
   fbddpath:String;
 {$IFDEF WINDOWS}
   lb_Logie : Boolean ;
+  gs_Ancestro : String;
   lreg_Registry : TRegistry;
   fKeyRegistry,s: string;
   i:Integer;
@@ -3154,9 +3155,13 @@ begin
   try
     RootKey := HKEY_CURRENT_USER;
     if not fb_ReadAncestroKey (CST_MANIA) Then
-     if fb_ReadAncestroKey (CST_LOGIE ) Then
-       lb_Logie:=True;
-    fKeyRegistry:='\SOFTWARE\'+CST_MANIA+'\Settings';
+     Begin
+       gs_Ancestro := CST_LOGIE;
+       if fb_ReadAncestroKey (CST_LOGIE ) Then
+         lb_Logie:=True;
+     End
+     else gs_Ancestro := CST_MANIA;
+    fKeyRegistry:='\SOFTWARE\'+gs_Ancestro+'\Settings';
     if OpenKeyReadOnly(fKeyRegistry) then
     begin
       for i:=0 to edNomBase.DropDownCount-1 do
