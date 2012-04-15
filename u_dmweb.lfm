@@ -96,17 +96,17 @@ object DMWeb: TDMWeb
       item
         DataType = ftUnknown
         Name = 'I_CLEF'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_NIVEAU'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_PARQUI'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end>
     left = 192
     top = 136
@@ -114,17 +114,17 @@ object DMWeb: TDMWeb
       item
         DataType = ftUnknown
         Name = 'I_CLEF'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_NIVEAU'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_PARQUI'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end>
   end
   object IBQ_TreeByNames: TIBQuery
@@ -142,27 +142,29 @@ object DMWeb: TDMWeb
       '              NOM,'
       '              SEXE,'
       '              PRENOM,'
+      '              b.EV_IND_VILLE as VILLE_BIRTH,'
+      '              d.EV_IND_VILLE as VILLE_DEATH,'
       '              ANNEE_NAISSANCE,'
       '              ANNEE_DECES'
       '         FROM PROC_TQ_ASCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,0) t'
-      '              inner join individu i on i.cle_fiche=t.tq_cle_fiche'
+      '              inner join individu i on i.cle_fiche=t.tq_cle_fiche left join EVENEMENTS_IND b on b.EV_IND_KLE_FICHE=cle_fiche and b.EV_IND_TYPE=''BIRT'' left join EVENEMENTS_IND d on d.EV_IND_KLE_FICHE=cle_fiche and d.EV_IND_TYPE=''DEAT'''
       'ORDER BY NOM,PRENOM,ANNEE_NAISSANCE DESC,ANNEE_DECES DESC'
     )
     Params = <    
       item
         DataType = ftUnknown
         Name = 'I_CLEF'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_NIVEAU'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_PARQUI'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end>
     left = 256
     top = 136
@@ -170,17 +172,17 @@ object DMWeb: TDMWeb
       item
         DataType = ftUnknown
         Name = 'I_CLEF'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_NIVEAU'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_PARQUI'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end>
   end
   object IBQ_TreeAsc: TIBQuery
@@ -363,7 +365,11 @@ object DMWeb: TDMWeb
       '     (case char_length(extract(day from ev_fam_date)) when 1 then LPAD(extract(day from ev_fam_date),2,''0'') ELSE extract(day from ev_fam_date) end)'
       '       from evenements_fam'
       '       where ev_fam_kle_famille=u.union_clef and ev_fam_date_year is not null'
-      '       order by ev_fam_date_year,ev_fam_date_mois,ev_fam_date) as date_prem_fam'
+      '       order by ev_fam_date_year,ev_fam_date_mois,ev_fam_date) as date_prem_fam,'
+      '(select first(1) ev_fam_date_writen'
+      '       from evenements_fam'
+      '       where ev_fam_kle_famille=u.union_clef and ev_fam_date_year is not null'
+      '       order by ev_fam_date_year,ev_fam_date_mois,ev_fam_date) as date_prem_fam_writen'
       '     FROM t_union u'
       '      left join individu c on (c.cle_fiche is not distinct from u.union_mari or c.cle_fiche is not distinct from u.union_femme) and cle_fiche<>:I_CLEF left join evenements_fam as f on union_clef=EV_FAM_CLEF'
       '     Where :I_CLEF in (u.union_mari,u.union_femme)'
@@ -497,27 +503,29 @@ object DMWeb: TDMWeb
       '              NOM,'
       '              SEXE,'
       '              PRENOM,'
+      '              b.EV_IND_VILLE as VILLE_BIRTH,'
+      '              d.EV_IND_VILLE as VILLE_DEATH,              '
       '              ANNEE_NAISSANCE,'
       '              ANNEE_DECES'
       '         FROM PROC_TQ_DESCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,0) t'
-      '              inner join individu i on i.cle_fiche=t.tq_cle_fiche'
+      '              inner join individu i on i.cle_fiche=t.tq_cle_fiche left join EVENEMENTS_IND b on b.EV_IND_KLE_FICHE=cle_fiche and b.EV_IND_TYPE=''BIRT'' left join EVENEMENTS_IND d on d.EV_IND_KLE_FICHE=cle_fiche and d.EV_IND_TYPE=''DEAT'''
       'ORDER BY NOM,PRENOM,ANNEE_NAISSANCE DESC,ANNEE_DECES DESC'
     )
     Params = <    
       item
         DataType = ftUnknown
         Name = 'I_CLEF'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_NIVEAU'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_PARQUI'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end>
     left = 384
     top = 136
@@ -525,17 +533,17 @@ object DMWeb: TDMWeb
       item
         DataType = ftUnknown
         Name = 'I_CLEF'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_NIVEAU'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_PARQUI'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end>
   end
   object Execute: TProcess

@@ -37,7 +37,8 @@ uses
 {$IFNDEF FPC}
   fonctions_system,
 {$ENDIF}
-  IBQuery, IBSQLMonitor, IBSQL, Dialogs, Forms, functions_html;
+  IBQuery, IBSQLMonitor, IBSQL, Dialogs, Forms, functions_html,
+  fonctions_images;
 
 var gt_TabSheets : TaHTMLULTabSheet;
     gi_FilesPerPage : Integer = 15 ;
@@ -74,6 +75,8 @@ const IBQ_NOM='NOM';
       IBQ_CLE_MERE='CLE_MERE';
       IBQ_ANNEE_NAISSANCE='ANNEE_NAISSANCE';
       IBQ_ANNEE_DECES    ='ANNEE_DECES';
+      IBQ_VILLE_NAISSANCE='VILLE_BIRTH';
+      IBQ_VILLE_DECES    ='VILLE_DEATH';
       IBQ_SOSA       = 'NUM_SOSA' ;
       IBQ_SEXE       = 'SEXE' ;
       IBQ_SEXE_MAN   = 1 ;
@@ -93,6 +96,7 @@ const IBQ_NOM='NOM';
       IBQ_COUNTER = 'COUNTER' ;
 
       UNION_DATE_MARIAGE = 'date_prem_fam' ;
+      UNION_MARIAGE_WRITEN = 'date_prem_fam_writen';
       UNION_CP           = 'EV_FAM_CP' ;
       UNION_CITY         = 'EV_FAM_VILLE' ;
 
@@ -186,6 +190,8 @@ const IBQ_NOM='NOM';
       CST_SUBDIR_HTML_TREE    = 'Tree' ;
       KLE_DOSSIER = 'KLE_DOSSIER';
       CST_FILE_Home         = 'index';
+      CST_FILE_BIRTH        = 'birth'+CST_EXTENSION_GIF;
+      CST_FILE_DEATH        = 'death'+CST_EXTENSION_GIF;
       CST_FILE_Button       = 'Button';
       CST_FILE_Contact      = 'Contact';
       CST_FILE_ContactInBody= 'ContactInsideBody';

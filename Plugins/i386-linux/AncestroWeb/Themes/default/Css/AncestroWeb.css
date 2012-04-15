@@ -54,6 +54,7 @@ li.Job{
 	list-style:none;
 	background:url(../Images/job.gif) top left no-repeat;
 }
+#list #title td { text-align: center }
 
 .button {
    border-top: 1px solid #96d1f8;
