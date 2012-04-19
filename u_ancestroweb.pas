@@ -53,7 +53,8 @@ uses
                                                FileUnit : 'U_AncestroWeb' ;
                                                Owner : 'Matthieu Giroux' ;
                                                Comment : 'Composant de copie multi-platformes.' ;
-                                               BugsStory : '1.2.1.0 : Better look and interactivity' +#13#10
+                                               BugsStory : '1.2.1.1 : Hide dates lesser than 100 years' +#13#10
+                                                         + '1.2.1.0 : Better look and interactivity' +#13#10
                                                          + '1.2.0.0 : Adding Map' +#13#10
                                                          + '1.1.5.0 : Adding versioning' +#13#10
                                                          + '1.1.4.0 : More of TIBSQL, copy original media, less bugs' +#13#10
@@ -63,7 +64,7 @@ uses
                                                          + '1.0.0.0 : Integrating in Freelogy' +#13#10
                                                          + '0.9.9.0 : First published version' ;
                                                UnitType : CST_TYPE_UNITE_APPLI ;
-                                               Major : 1 ; Minor : 2 ; Release : 1 ; Build : 0 );
+                                               Major : 1 ; Minor : 2 ; Release : 1 ; Build : 1 );
 
 
 type
@@ -79,6 +80,7 @@ type
     ch_Comptage: TJvXPCheckbox;
     ch_ContactIdentify: TJvXPCheckbox;
     ch_Filtered: TJvXPCheckBox;
+    ch_HideLessThan100: TJvXPCheckbox;
     ch_genages: TJvXPCheckbox;
     ch_genContact: TJvXPCheckbox;
     ch_genjobs: TJvXPCheckbox;
@@ -277,6 +279,8 @@ type
     PremiereOuverture:boolean;
     procedure DoAfterInit( const ab_Ini : Boolean = True );
     function DoOpenBase(sBase: string):boolean;
+    function fb_Showdate(const adt_Date: TDateTime): Boolean;
+    function fb_ShowYear(const ai_Year: Integer): Boolean;
     function fs_GetNameLink( as_name : String ; const as_Showed : String ; const as_SubDir : String = ''):String ;
     function OuvreDossier(NumDossier:integer):boolean;
     function fb_getMediaFile ( const IBQ_Media : TIBQuery;
@@ -389,10 +393,12 @@ uses  fonctions_init,
 
 {$IFNDEF FPC}
   {$R *.dfm}
-
 {$ELSE}
   {$R *.lfm}
 {$ENDIF}
+
+var lw_CurrentYear  : Word = 0;
+    ldt_100YearData : TDateTime = 0;
 
 function fs_AddComma ( const as_Chaine : String ) : String ;
 Begin
@@ -400,6 +406,45 @@ Begin
    Then  Result := ' (' +as_Chaine+')'
    Else  Result := '';
 End;
+
+// function GetCurrentYear
+// Get Current Year
+function GetCurrentYear: word;
+var
+  d,m,y: word;
+begin
+  if lw_CurrentYear = 0 Then
+    DecodeDate(Now, lw_CurrentYear, m, d);
+  Result := lw_CurrentYear;
+end;
+
+// function Get100YearDated
+// Get now - 100 Year
+function Get100YearDated: TDateTime;
+var
+  d,m,y: word;
+begin
+  if ldt_100YearData = 0 Then
+    ldt_100YearData := EncodeDate(GetCurrentYear-100,1,1);
+  Result:=ldt_100YearData;
+end;
+
+// function TF_AncestroWeb.fb_ShowYear
+// show date or not
+function TF_AncestroWeb.fb_ShowYear ( const ai_Year : Integer ): Boolean ;
+Begin
+  Result :=  not ch_HideLessThan100.Checked
+    or ( ai_Year <  GetCurrentYear - 100 );
+//  ShowMessage ( IntToStr(GetCurrentYear) + ' ' + FormatDateTime( 'yyyy', Get100YearDated)  + ' ' + DateToStr( Get100YearDated)) ;
+end;
+
+// function TF_AncestroWeb.fb_Showdate
+// show date or not
+function TF_AncestroWeb.fb_Showdate ( const adt_Date : TDateTime ): Boolean ;
+Begin
+  Result :=  not ch_HideLessThan100.Checked
+    or ( adt_Date < Get100YearDated );
+end;
 // procedure TF_AncestroWeb.FormDestroy
 // Freeing data objects on destroy event
 procedure TF_AncestroWeb.FormDestroy(Sender: TObject);
@@ -1009,6 +1054,7 @@ Begin
     Else AppendStr(Result, ( gs_AnceSTROWEB_Generations ) + ')');
 end;
 
+
 // procedure TF_AncestroWeb.p_CreateHTMLTree
 // Création de l'arbre dans une TStringList puis Sauvegarde
 function TF_AncestroWeb.fi_CreateHTMLTree(const IBQ_Tree: TIBQuery;
@@ -1026,16 +1072,21 @@ var
   function fs_getText: string;
   begin
     Result := '';
-    if not IBQ_Tree.FieldByName(IBQ_DATE_NAISSANCE).IsNull then
-      AppendStr(Result, ' ' + fs_Create_Image ( '..'+CST_HTML_DIR_SEPARATOR+CST_SUBDIR_HTML_IMAGES+CST_HTML_DIR_SEPARATOR+CST_FILE_BIRTH, gs_AnceSTROWEB_EXPORT_WEB_BORN ) +
-      ' ' + IBQ_Tree.FieldByName( IBQ_DATE_NAISSANCE).AsString);
-    if not IBQ_Tree.FieldByName(IBQ_DATE_DECES).IsNull then
-      AppendStr(Result, ' ' + fs_Create_Image ( '..'+CST_HTML_DIR_SEPARATOR+CST_SUBDIR_HTML_IMAGES+CST_HTML_DIR_SEPARATOR+CST_FILE_DEATH, gs_AnceSTROWEB_EXPORT_WEB_DIED ) +
-        ' ' + IBQ_Tree.FieldByName(IBQ_DATE_DECES).AsString);
-    if not IBQ_Tree.FieldByName(IBQ_AGE_AU_DECES).IsNull then
-      AppendStr(Result, fs_AddComma( IBQ_Tree.FieldByName(IBQ_AGE_AU_DECES).AsString + gs_AnceSTROWEB_Years ));
-    p_addKeyWord(IBQ_Tree.FieldByName(IBQ_NOM).AsString, '-'); // adding a head's meta keyword
-    p_addKeyWord(IBQ_Tree.FieldByName(IBQ_PRENOM).AsString); // adding a head's meta keyword
+    with IBQ_Tree do
+      Begin
+        if not FieldByName(IBQ_DATE_NAISSANCE).IsNull
+        and fb_ShowYear(FieldByName(IBQ_ANNEE_NAISSANCE).AsInteger)  then
+          AppendStr(Result, ' ' + fs_Create_Image ( '..'+CST_HTML_DIR_SEPARATOR+CST_SUBDIR_HTML_IMAGES+CST_HTML_DIR_SEPARATOR+CST_FILE_BIRTH, gs_AnceSTROWEB_EXPORT_WEB_BORN ) +
+          ' ' + FieldByName( IBQ_DATE_NAISSANCE).AsString);
+        if not FieldByName(IBQ_DATE_DECES).IsNull
+        and fb_ShowYear(FieldByName(IBQ_ANNEE_DECES).AsInteger)  then
+          AppendStr(Result, ' ' + fs_Create_Image ( '..'+CST_HTML_DIR_SEPARATOR+CST_SUBDIR_HTML_IMAGES+CST_HTML_DIR_SEPARATOR+CST_FILE_DEATH, gs_AnceSTROWEB_EXPORT_WEB_DIED ) +
+            ' ' + FieldByName(IBQ_DATE_DECES).AsString);
+        if not FieldByName(IBQ_AGE_AU_DECES).IsNull then
+          AppendStr(Result, fs_AddComma( FieldByName(IBQ_AGE_AU_DECES).AsString + gs_AnceSTROWEB_Years ));
+        p_addKeyWord(FieldByName(IBQ_NOM).AsString, '-'); // adding a head's meta keyword
+        p_addKeyWord(FieldByName(IBQ_PRENOM).AsString); // adding a head's meta keyword
+      end;
   end;
 
 
@@ -2069,6 +2120,17 @@ var
   ls_ImagesDir: string;
   li_CounterPages : Longint;
 
+  function fs_addYear ( const as_yearField, as_CityField : String ) : String;
+  Begin
+    with IBQ_FilesFiltered do
+      if fb_ShowYear(FieldByName(as_yearField).AsInteger)
+       then
+        Begin
+          Result := FieldByName(as_yearField).AsString+fs_AddComma ( Trim (  FieldByName(as_CityField).AsString ));
+        end
+       Else Result := '';
+  end;
+
   procedure p_AddAList;
   var
     lstl_HTMLAList: TStringList;
@@ -2094,45 +2156,45 @@ var
                         CST_HTML_TD_BEGIN+CST_HTML_H2_BEGIN+ ( gs_AnceSTROWEB_Died ) +CST_HTML_H2_END+CST_HTML_TD_END+
                         CST_HTML_TR_END);
     for li_i := 1 to gi_FilesPerList do
-    begin
-      p_IncProgressInd; // growing the second counter
-      p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString, '-'); // adding a head's meta keyword
-      p_addKeyWord(IBQ_FilesFiltered.FieldByName(IBQ_PRENOM).AsString); // adding a head's meta keyword
-      li_CleFiche := IBQ_FilesFiltered.FieldByName(IBQ_CLE_FICHE).AsInteger;
-      ls_NewName := IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString;
-      case IBQ_FilesFiltered.FieldByName(IBQ_SEXE).AsInteger of
-       IBQ_SEXE_MAN   : ls_Sexe := CST_FILE_MAN;
-       IBQ_SEXE_WOMAN : ls_Sexe := CST_FILE_WOMAN;
-       else
-         ls_Sexe := 'file';
-      end;
+    with IBQ_FilesFiltered do
+      begin
+        p_IncProgressInd; // growing the second counter
+        p_addKeyWord( FieldByName(IBQ_NOM).AsString, '-'); // adding a head's meta keyword
+        p_addKeyWord( FieldByName(IBQ_PRENOM).AsString); // adding a head's meta keyword
+        li_CleFiche :=  FieldByName(IBQ_CLE_FICHE).AsInteger;
+        ls_NewName :=  FieldByName(IBQ_NOM).AsString;
+        case  FieldByName(IBQ_SEXE).AsInteger of
+         IBQ_SEXE_MAN   : ls_Sexe := CST_FILE_MAN;
+         IBQ_SEXE_WOMAN : ls_Sexe := CST_FILE_WOMAN;
+         else
+           ls_Sexe := 'file';
+        end;
 
-      lstl_HTMLAList.Add( fs_CreateElementWithId ( CST_HTML_TR, ls_Sexe + CST_FILE_Number + IntToStr(li_i), CST_HTML_CLASS_EQUAL ) + CST_HTML_TD_BEGIN );
-      if (ls_NewName <> ls_Name) Then
-       Begin
-        if (ls_name = '') or ((length(ls_NewName) > 0) and
-          (ls_NewName[1] <> ls_Name[1])) then
-          lstl_HTMLAList.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + ls_NewName[1] + '" />');
-       end;
-      ls_Name := ls_NewName;
-      ls_Name:= ls_Name + ' ' + IBQ_FilesFiltered.FieldByName(IBQ_PRENOM).AsString ; // showed name
-      lstl_HTMLAList.Add(   fs_AddPhoto(li_CleFiche, fs_getaltPhoto(IBQ_FilesFiltered), ls_ImagesDir, 24) +   // mini photo
-                            CST_HTML_TD_END + CST_HTML_TD_BEGIN +
-                            CST_HTML_IMAGE_SRC + '../' + CST_SUBDIR_HTML_IMAGES + '/' + ls_Sexe + CST_EXTENSION_GIF + '" />' +
-                            CST_HTML_TD_END + CST_HTML_TD_BEGIN +
-                            fs_GetNameLink ( fs_RemplaceChar ( ls_Name, ' ', '_' ), ls_name, '../' + CST_SUBDIR_HTML_FILES + '/' ) +
-                            CST_HTML_TD_END + fs_Create_TD(CST_TABLE_CENTER) + IBQ_FilesFiltered.FieldByName(IBQ_ANNEE_NAISSANCE).AsString + // birth
-                            fs_AddComma ( Trim ( IBQ_FilesFiltered.FieldByName(IBQ_VILLE_NAISSANCE).AsString )) + // city of birth
-                            CST_HTML_TD_END + fs_Create_TD(CST_TABLE_CENTER) + ' ' + IBQ_FilesFiltered.FieldByName(IBQ_ANNEE_DECES).AsString+   // death
-                            fs_AddComma ( Trim ( IBQ_FilesFiltered.FieldByName(IBQ_VILLE_DECES    ).AsString )) + CST_HTML_TR_END); // city of death
-      ls_NameEnd := IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString;
-      IBQ_FilesFiltered.Next;
-      if IBQ_FilesFiltered.EOF then
-       Begin
-        lb_next:=False;
-        Break;
-       end ;
-    end;
+        lstl_HTMLAList.Add( fs_CreateElementWithId ( CST_HTML_TR, ls_Sexe + CST_FILE_Number + IntToStr(li_i), CST_HTML_CLASS_EQUAL ) + CST_HTML_TD_BEGIN );
+        if (ls_NewName <> ls_Name) Then
+         Begin
+          if (ls_name = '') or ((length(ls_NewName) > 0) and
+            (ls_NewName[1] <> ls_Name[1])) then
+            lstl_HTMLAList.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + ls_NewName[1] + '" />');
+         end;
+        ls_Name := ls_NewName;
+        ls_Name:= ls_Name + ' ' +  FieldByName(IBQ_PRENOM).AsString ; // showed name
+        lstl_HTMLAList.Add(   fs_AddPhoto(li_CleFiche, fs_getaltPhoto(IBQ_FilesFiltered), ls_ImagesDir, 24) +   // mini photo
+                              CST_HTML_TD_END + CST_HTML_TD_BEGIN +
+                              CST_HTML_IMAGE_SRC + '../' + CST_SUBDIR_HTML_IMAGES + '/' + ls_Sexe + CST_EXTENSION_GIF + '" />' +
+                              CST_HTML_TD_END + CST_HTML_TD_BEGIN +
+                              fs_GetNameLink ( fs_RemplaceChar ( ls_Name, ' ', '_' ), ls_name, '../' + CST_SUBDIR_HTML_FILES + '/' ) +
+                              CST_HTML_TD_END + fs_Create_TD(CST_TABLE_CENTER) +  fs_addYear (IBQ_ANNEE_NAISSANCE,IBQ_VILLE_NAISSANCE) + // birth
+                              CST_HTML_TD_END + fs_Create_TD(CST_TABLE_CENTER) +  fs_addYear (IBQ_ANNEE_DECES,IBQ_VILLE_DECES)+   // death
+                              CST_HTML_TR_END); // city of death
+        ls_NameEnd :=  FieldByName(IBQ_NOM).AsString;
+         Next;
+        if  EOF then
+         Begin
+          lb_next:=False;
+          Break;
+         end ;
+      end;
     lstl_HTMLAList.Add( CST_HTML_TABLE_END + CST_HTML_BR);
     if li_CounterPages - 1 > 0 Then
       lstl_HTMLAList.Add ( fs_CreatePrevNext ( li_CounterPages - 1, CST_PAGE_PREVIOUS, '../', ed_ListsBeginName.Text ));
@@ -2245,6 +2307,7 @@ var
   function fs_CreateMarried (  const as_Date, as_dateWriten : String ; const ai_ClefUnion : Longint ): String;
   var ls_FileName, ls_FileNameBegin : String ;
       li_i : Integer ;
+      lb_showdate : Boolean;
   Begin
     if ( as_Date = '' ) Then
       Begin
@@ -2255,48 +2318,59 @@ var
     DMWeb.IBQ_ConjointSources.Close;
     DMWeb.IBQ_ConjointSources.ParamByName ( I_CLEF_UNION  ).AsInteger:=ai_ClefUnion;
     DMWeb.IBQ_ConjointSources.Open;
-    Result := ' (' + ( gs_ANCESTROWEB_Family_On )+ as_dateWriten ;
-    if ch_Images.Checked
-    and not DMWeb.IBQ_ConjointSources.EOF Then
+    Result := ' (' ;
+    try
+      lb_showdate := fb_Showdate(StrToDate(as_Date,'yyyy-mm-dd', '-')) ;
+    except
+      lb_showdate := False;
+    end;
+    if lb_Showdate
+      Then
       Begin
-         // adding source
-        if DMWeb.IBS_Conjoint.FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN
-        Then ls_FileNameBegin := fs_getNameAndSurName (IBQ_FilesFiltered )+'&'+fs_getNameAndSurName (DMWeb.IBS_Conjoint)
-        Else ls_FileNameBegin := fs_getNameAndSurName (DMWeb.IBS_Conjoint)+'&'+fs_getNameAndSurName (IBQ_FilesFiltered);
-        ls_FileNameBegin := as_Date + '_ID'+fs_TextToFileName(DMWeb.IBS_Conjoint.FieldByName(UNION_CLEF).AsString + '_' + ls_FileNameBegin+'_'+
-                            DMWeb.IBS_Conjoint.FieldByName(UNION_CP).AsString+'_'+DMWeb.IBS_Conjoint.FieldByName(UNION_CITY).AsString )+ '_';
-        li_i := 1 ;
-
-        // medias
-        while not DMWeb.IBQ_ConjointSources.EOF do
+        AppendStr ( Result, gs_ANCESTROWEB_Family_On + as_dateWriten );
+        if ch_Images.Checked
+        and not DMWeb.IBQ_ConjointSources.EOF Then
           Begin
-            ls_FileName := ls_FileNameBegin + IntToStr(li_i);
-            if fb_getMediaFile ( DMWeb.IBQ_ConjointSources, ls_ArchivesDir, ls_FileName ) Then
-              Begin
-                AppendStr( Result, ' - ' +fs_Create_Link ( CST_HTML_OUTDIR_SEPARATOR + CST_SUBDIR_HTML_ARCHIVE + CST_HTML_DIR_SEPARATOR + ls_FileName +CST_EXTENSION_JPEG,
-                                                           gs_ANCESTROWEB_ArchiveLinkBegin + IntToStr(li_i),CST_HTML_TARGET_BLANK ));
-                inc ( li_i );
-              End;
+             // adding source
+            if DMWeb.IBS_Conjoint.FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN
+            Then ls_FileNameBegin := fs_getNameAndSurName (IBQ_FilesFiltered )+'&'+fs_getNameAndSurName (DMWeb.IBS_Conjoint)
+            Else ls_FileNameBegin := fs_getNameAndSurName (DMWeb.IBS_Conjoint)+'&'+fs_getNameAndSurName (IBQ_FilesFiltered);
+            ls_FileNameBegin := as_Date + '_ID'+fs_TextToFileName(DMWeb.IBS_Conjoint.FieldByName(UNION_CLEF).AsString + '_' + ls_FileNameBegin+'_'+
+                                DMWeb.IBS_Conjoint.FieldByName(UNION_CP).AsString+'_'+DMWeb.IBS_Conjoint.FieldByName(UNION_CITY).AsString )+ '_';
+            li_i := 1 ;
 
-            DMWeb.IBQ_ConjointSources.Next;
-          End
+            // medias
+            while not DMWeb.IBQ_ConjointSources.EOF do
+              Begin
+                ls_FileName := ls_FileNameBegin + IntToStr(li_i);
+                if fb_getMediaFile ( DMWeb.IBQ_ConjointSources, ls_ArchivesDir, ls_FileName ) Then
+                  Begin
+                    AppendStr( Result, ' - ' +fs_Create_Link ( CST_HTML_OUTDIR_SEPARATOR + CST_SUBDIR_HTML_ARCHIVE + CST_HTML_DIR_SEPARATOR + ls_FileName +CST_EXTENSION_JPEG,
+                                                               gs_ANCESTROWEB_ArchiveLinkBegin + IntToStr(li_i),CST_HTML_TARGET_BLANK ));
+                    inc ( li_i );
+                  End;
+
+                DMWeb.IBQ_ConjointSources.Next;
+              End
+          end;
       end;
      AppendStr( Result, ')' );
   end;
 
   // add an event date with city
-  function fs_addDateAndCity ( const IBQ_FicheInfos : TIBSQL ; const as_date, as_City, as_manon, as_womanon : String ):String ;
+  function fs_addDateAndCity ( const IBQ_FicheInfos : TIBSQL ; const as_date,as_year, as_City, as_manon, as_womanon : String ):String ;
   begin
 
     // is there an info
-    if not IBQ_FicheInfos.FieldByName(as_date).IsNull Then
+    with IBQ_FicheInfos do
+    if not FieldByName(as_date).IsNull and fb_ShowYear(FieldByName(as_year).AsInteger) Then
       Begin
-        if IBQ_FicheInfos.FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN
+        if FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN
          Then Result := as_womanon
          Else Result := as_manon   ;
-        AppendStr ( Result, IBQ_FicheInfos.FieldByName(as_date).AsString ) ;
-        if IBQ_FicheInfos.FieldByName(as_City).AsString <> '' Then
-          AppendStr ( Result, ( gs_AnceSTROWEB_At ) + IBQ_FicheInfos.FieldByName(as_City).AsString );
+        AppendStr ( Result, FieldByName(as_date).AsString ) ;
+        if FieldByName(as_City).AsString <> '' Then
+          AppendStr ( Result, ( gs_AnceSTROWEB_At ) + FieldByName(as_City).AsString );
         AppendStr ( Result, CST_HTML_BR );
         End
        Else Result := '';
@@ -2330,16 +2404,16 @@ var
            astl_HTMLAFolder.Add ( ' ' + gs_ANCESTROWEB_At + ' '
                                 + FieldByName(IBQ_EV_IND_VILLE).AsString );
            if ( FieldByName(IBQ_EV_IND_PAYS).AsString <> '' )
-           or ( FieldByName(IBQ_EV_IND_DATE).AsString <> '' )
+           or (( FieldByName(IBQ_EV_IND_DATE).AsString <> '' ) and fb_Showdate(FieldByName(IBQ_EV_IND_DATE).AsDateTime))
              Then
               Begin
                ls_Line := '(' ;
                if FieldByName(IBQ_EV_IND_PAYS).AsString <> '' Then
                 AppendStr ( ls_line, FieldByName(IBQ_EV_IND_PAYS).AsString );
                if  ( FieldByName(IBQ_EV_IND_PAYS).AsString <> '' )
-               and ( FieldByName(IBQ_EV_IND_DATE).AsString <> '' ) Then
+               and (( FieldByName(IBQ_EV_IND_DATE).AsString <> '' ) and fb_Showdate(FieldByName(IBQ_EV_IND_DATE).AsDateTime)) Then
                  AppendStr ( ls_line,  ' - ' );
-               if not FieldByName(IBQ_EV_IND_DATE).IsNull Then
+               if not FieldByName(IBQ_EV_IND_DATE).IsNull and fb_Showdate(FieldByName(IBQ_EV_IND_DATE).AsDateTime) Then
                 AppendStr ( ls_line, FormatDateTime(gs_ANCESTROWEB_LittleDateFormat,FieldByName(IBQ_EV_IND_DATE).AsDateTime));
                astl_HTMLAFolder.Add ( ls_line + ')' );
               end;
@@ -2365,9 +2439,9 @@ var
       DMWeb.IBS_Conjoint.ExecQuery;
       // Jobs ?
       // birthday
-      astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBS_Fiche, FICHE_DATE_NAISSANCE, FICHE_LIEU_NAISSANCE, ( gs_ANCESTROWEB_ManBornOn ), ( gs_ANCESTROWEB_WomanBornOn )));
+      astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBS_Fiche, IBQ_DATE_NAISSANCE, IBQ_ANNEE_NAISSANCE, IBQ_LIEU_NAISSANCE, ( gs_ANCESTROWEB_ManBornOn ), ( gs_ANCESTROWEB_WomanBornOn )));
       // deathday
-      astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBS_Fiche, FICHE_DATE_DECES, FICHE_LIEU_DECES, ( gs_ANCESTROWEB_ManDiedOn ), ( gs_ANCESTROWEB_WomanDiedOn )) + CST_HTML_BR);
+      astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBS_Fiche, IBQ_DATE_DECES, IBQ_ANNEE_DECES, IBQ_LIEU_DECES, ( gs_ANCESTROWEB_ManDiedOn ), ( gs_ANCESTROWEB_WomanDiedOn )) + CST_HTML_BR);
       p_AddJobs ( astl_HTMLAFolder, ai_CleFiche, ai_NoInPage );
       if not DMWeb.IBS_Conjoint.Eof Then  // Husband
         Begin
@@ -2381,15 +2455,16 @@ var
          astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_UL, CST_FILE_UNION + 's'
                                                             + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL));
          while not DMWeb.IBS_Conjoint.EOF do  // adding all husbands
+         with DMWeb.IBS_Conjoint do
           Begin
-           ls_Name := DMWeb.IBS_Conjoint.FieldByName(IBQ_NOM).AsString + ' ' + DMWeb.IBS_Conjoint.FieldByName(IBQ_PRENOM).AsString;
+           ls_Name := FieldByName(IBQ_NOM).AsString + ' ' + FieldByName(IBQ_PRENOM).AsString;
            astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_UNION + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
                                 + fs_GetNameLink ( fs_RemplaceChar(ls_Name,' ', '_'), ls_Name));
-           astl_HTMLAFolder.Add ( fs_CreateMarried ( DMWeb.IBS_Conjoint.FieldByName(UNION_DATE_MARIAGE).AsString ,
-                                                     DMWeb.IBS_Conjoint.FieldByName(UNION_MARIAGE_WRITEN).AsString ,
-                                                     DMWeb.IBS_Conjoint.FieldByName(UNION_CLEF).AsInteger ));
+           astl_HTMLAFolder.Add ( fs_CreateMarried ( FieldByName(UNION_DATE_MARIAGE).AsString ,
+                                                     FieldByName(UNION_MARIAGE_WRITEN).AsString ,
+                                                     FieldByName(UNION_CLEF).AsInteger));
            astl_HTMLAFolder.Add ( CST_HTML_LI_END);
-           DMWeb.IBS_Conjoint.Next;
+           Next;
           end;
 
          astl_HTMLAFolder.Add ( CST_HTML_UL_END );  // list end
