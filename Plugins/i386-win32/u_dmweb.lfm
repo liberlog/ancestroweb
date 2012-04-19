@@ -96,17 +96,17 @@ object DMWeb: TDMWeb
       item
         DataType = ftUnknown
         Name = 'I_CLEF'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_NIVEAU'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_PARQUI'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end>
     left = 192
     top = 136
@@ -114,17 +114,17 @@ object DMWeb: TDMWeb
       item
         DataType = ftUnknown
         Name = 'I_CLEF'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_NIVEAU'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_PARQUI'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end>
   end
   object IBQ_TreeByNames: TIBQuery
@@ -142,27 +142,29 @@ object DMWeb: TDMWeb
       '              NOM,'
       '              SEXE,'
       '              PRENOM,'
+      '              b.EV_IND_VILLE as VILLE_BIRTH,'
+      '              d.EV_IND_VILLE as VILLE_DEATH,'
       '              ANNEE_NAISSANCE,'
       '              ANNEE_DECES'
       '         FROM PROC_TQ_ASCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,0) t'
-      '              inner join individu i on i.cle_fiche=t.tq_cle_fiche'
+      '              inner join individu i on i.cle_fiche=t.tq_cle_fiche left join EVENEMENTS_IND b on b.EV_IND_KLE_FICHE=cle_fiche and b.EV_IND_TYPE=''BIRT'' left join EVENEMENTS_IND d on d.EV_IND_KLE_FICHE=cle_fiche and d.EV_IND_TYPE=''DEAT'''
       'ORDER BY NOM,PRENOM,ANNEE_NAISSANCE DESC,ANNEE_DECES DESC'
     )
     Params = <    
       item
         DataType = ftUnknown
         Name = 'I_CLEF'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_NIVEAU'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_PARQUI'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end>
     left = 256
     top = 136
@@ -170,17 +172,17 @@ object DMWeb: TDMWeb
       item
         DataType = ftUnknown
         Name = 'I_CLEF'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_NIVEAU'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_PARQUI'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end>
   end
   object IBQ_TreeAsc: TIBQuery
@@ -363,7 +365,11 @@ object DMWeb: TDMWeb
       '     (case char_length(extract(day from ev_fam_date)) when 1 then LPAD(extract(day from ev_fam_date),2,''0'') ELSE extract(day from ev_fam_date) end)'
       '       from evenements_fam'
       '       where ev_fam_kle_famille=u.union_clef and ev_fam_date_year is not null'
-      '       order by ev_fam_date_year,ev_fam_date_mois,ev_fam_date) as date_prem_fam'
+      '       order by ev_fam_date_year,ev_fam_date_mois,ev_fam_date) as date_prem_fam,'
+      '(select first(1) ev_fam_date_writen'
+      '       from evenements_fam'
+      '       where ev_fam_kle_famille=u.union_clef and ev_fam_date_year is not null'
+      '       order by ev_fam_date_year,ev_fam_date_mois,ev_fam_date) as date_prem_fam_writen'
       '     FROM t_union u'
       '      left join individu c on (c.cle_fiche is not distinct from u.union_mari or c.cle_fiche is not distinct from u.union_femme) and cle_fiche<>:I_CLEF left join evenements_fam as f on union_clef=EV_FAM_CLEF'
       '     Where :I_CLEF in (u.union_mari,u.union_femme)'
@@ -417,9 +423,13 @@ object DMWeb: TDMWeb
     ParamCheck = True
     SQL.Strings = (
       'select NOM,PRENOM,'
-      'DATE_NAISSANCE,LIEU_NAISSANCE,'
-      'DATE_DECES,LIEU_DECES,'
-      'SEXE FROM PROC_ETAT_FICHE ( :I_CLEF )'
+      'b.EV_IND_DATE_WRITEN as DATE_NAISSANCE,b.EV_IND_DATE_YEAR'
+      ' as ANNEE_NAISSANCE,b.EV_IND_VILLE'
+      ' as LIEU_NAISSANCE,'
+      'd.EV_IND_DATE_WRITEN as DATE_DECES,d.EV_IND_DATE_YEAR'
+      ' as ANNEE_DECES,d.EV_IND_VILLE'
+      ' as LIEU_DECES,'
+      'SEXE FROM INDIVIDU i LEFT JOIN EVENEMENTS_IND b ON b.EV_IND_KLE_FICHE = i.CLE_FICHE AND b.EV_IND_TYPE=''BIRT'' LEFT JOIN EVENEMENTS_IND d ON d.EV_IND_KLE_FICHE = i.CLE_FICHE AND d.EV_IND_TYPE=''DEAT'' WHERE i.CLE_FICHE =  :I_CLEF'
       ''
     )
     Transaction = IBT_BASE
@@ -497,27 +507,29 @@ object DMWeb: TDMWeb
       '              NOM,'
       '              SEXE,'
       '              PRENOM,'
+      '              b.EV_IND_VILLE as VILLE_BIRTH,'
+      '              d.EV_IND_VILLE as VILLE_DEATH,              '
       '              ANNEE_NAISSANCE,'
       '              ANNEE_DECES'
       '         FROM PROC_TQ_DESCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,0) t'
-      '              inner join individu i on i.cle_fiche=t.tq_cle_fiche'
+      '              inner join individu i on i.cle_fiche=t.tq_cle_fiche left join EVENEMENTS_IND b on b.EV_IND_KLE_FICHE=cle_fiche and b.EV_IND_TYPE=''BIRT'' left join EVENEMENTS_IND d on d.EV_IND_KLE_FICHE=cle_fiche and d.EV_IND_TYPE=''DEAT'''
       'ORDER BY NOM,PRENOM,ANNEE_NAISSANCE DESC,ANNEE_DECES DESC'
     )
     Params = <    
       item
         DataType = ftUnknown
         Name = 'I_CLEF'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_NIVEAU'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_PARQUI'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end>
     left = 384
     top = 136
@@ -525,17 +537,17 @@ object DMWeb: TDMWeb
       item
         DataType = ftUnknown
         Name = 'I_CLEF'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_NIVEAU'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end    
       item
         DataType = ftUnknown
         Name = 'I_PARQUI'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end>
   end
   object Execute: TProcess
@@ -580,12 +592,12 @@ object DMWeb: TDMWeb
     Database = ibd_BASE
     ParamCheck = True
     SQL.Strings = (
-      'SELECT NOM,EV_IND_CP,EV_IND_PAYS,COUNT (*) AS COUNTER'
+      'SELECT NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS,COUNT (*) AS COUNTER'
       'FROM PROC_TQ_ASCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,0) t'
       'inner join individu i on i.cle_fiche=t.tq_cle_fiche'
       'left join EVENEMENTS_IND e on i.cle_fiche=e.EV_IND_KLE_FICHE'
-      'GROUP BY NOM,EV_IND_CP,EV_IND_PAYS'
-      'ORDER BY NOM,EV_IND_CP,EV_IND_PAYS'
+      'GROUP BY NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS'
+      'ORDER BY NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS'
       ''
     )
     Transaction = IBT_BASE
@@ -596,12 +608,15 @@ object DMWeb: TDMWeb
     Database = ibd_BASE
     ParamCheck = True
     SQL.Strings = (
-      'SELECT FIRST 1 CP_LATITUDE,CP_LONGITUDE,CP_VILLE'
+      'SELECT CP_LATITUDE,CP_LONGITUDE,CP_VILLE'
       'FROM REF_CP_VILLE INNER JOIN REF_PAYS '
       'ON ( CP_PAYS = RPA_CODE ) '
       'WHERE RPA_LIBELLE=:I_PAYS '
-      'AND CP_CP= :I_CP'
-      'AND CP_VILLE <> '''''
+      'AND CP_VILLE= :I_CITY'
+      'AND CP_LATITUDE >= -90'
+      'AND CP_LATITUDE <= 90'
+      'AND CP_LONGITUDE >= -180'
+      'AND CP_LONGITUDE <= 180'
     )
     Transaction = IBT_BASE
     left = 304
@@ -611,12 +626,13 @@ object DMWeb: TDMWeb
     Database = ibd_BASE
     ParamCheck = True
     SQL.Strings = (
-      'SELECT NOM,EV_IND_CP,EV_IND_PAYS,COUNT (*) AS COUNTER'
+      'SELECT NOM,EV_IND_CP,EV_IND_PAYS,EV_IND_VILLE,COUNT (*) AS COUNTER'
       'FROM individu i'
       'left join EVENEMENTS_IND e on i.cle_fiche=e.EV_IND_KLE_FICHE'
       'WHERE KLE_DOSSIER=:I_DOSSIER'
-      'GROUP BY NOM,EV_IND_CP,EV_IND_PAYS'
-      'ORDER BY NOM,EV_IND_CP,EV_IND_PAYS'
+      'GROUP BY NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS'
+      'ORDER BY NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS'
+      ''
       ''
     )
     Transaction = IBT_BASE
@@ -627,16 +643,36 @@ object DMWeb: TDMWeb
     Database = ibd_BASE
     ParamCheck = True
     SQL.Strings = (
-      'SELECT NOM,EV_IND_CP,EV_IND_PAYS,COUNT (*) AS COUNTER'
+      'SELECT NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS,COUNT (*) AS COUNTER'
       'FROM PROC_TQ_DESCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,0) t'
       'inner join individu i on i.cle_fiche=t.tq_cle_fiche'
       'left join EVENEMENTS_IND e on i.cle_fiche=e.EV_IND_KLE_FICHE'
-      'GROUP BY NOM,EV_IND_CP,EV_IND_PAYS'
-      'ORDER BY NOM,EV_IND_CP,EV_IND_PAYS'
+      'GROUP BY NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS'
+      'ORDER BY NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS'
+      ''
       ''
     )
     Transaction = IBT_BASE
     left = 192
     top = 264
   end
-end
+  object IBS_CityCPost: TIBSQL
+    Database = ibd_BASE
+    ParamCheck = True
+    SQL.Strings = (
+      'SELECT CP_LATITUDE,CP_LONGITUDE,CP_VILLE'
+      'FROM REF_CP_VILLE INNER JOIN REF_PAYS '
+      'ON ( CP_PAYS = RPA_CODE ) '
+      'WHERE RPA_LIBELLE=:I_PAYS '
+      'AND CP_CP= :I_CP'
+      'AND CP_LATITUDE >= -90'
+      'AND CP_LATITUDE <= 90'
+      'AND CP_LONGITUDE >= -180'
+      'AND CP_LONGITUDE <= 180'
+      'AND CP_VILLE <> '''''
+    )
+    Transaction = IBT_BASE
+    left = 304
+    top = 336
+  end
+end

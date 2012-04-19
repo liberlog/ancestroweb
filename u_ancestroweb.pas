@@ -3180,7 +3180,7 @@ var
   fbddpath:String;
 {$IFDEF WINDOWS}
   lb_Logie : Boolean ;
-  gs_Ancestro : String;
+  gs_Ancestro : String;
   lreg_Registry : TRegistry;
   fKeyRegistry,s: string;
   i:Integer;
@@ -3250,7 +3250,7 @@ begin
        if fb_ReadAncestroKey (CST_LOGIE ) Then
          lb_Logie:=True;
      End
-     else gs_Ancestro := CST_MANIA;
+     else gs_Ancestro := CST_MANIA;
     fKeyRegistry:='\SOFTWARE\'+gs_Ancestro+'\Settings';
     if OpenKeyReadOnly(fKeyRegistry) then
     begin
