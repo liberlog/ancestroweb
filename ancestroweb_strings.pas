@@ -60,8 +60,8 @@ resourcestring
   gs_ANCESTROWEB_MapProblemNoCity = 'Problème : Pas de ville';
   gs_ANCESTROWEB_WomanDiedOn = 'Décédée le ';
   gs_ANCESTROWEB_ManDiedOn = 'Décédé le ';
-  gs_ANCESTROWEB_Names = 'Patronymes';
-  gs_ANCESTROWEB_Names_Long = 'Scruter les patronymes';
+  gs_ANCESTROWEB_Surnames = 'Patronymes';
+  gs_ANCESTROWEB_Surnames_Long = 'Scruter les patronymes';
   gs_ANCESTROWEB_Contact = 'Contact';
   gs_ANCESTROWEB_Files = 'Fiches';
   gs_ANCESTROWEB_Files_Long = 'Trouver un individu';

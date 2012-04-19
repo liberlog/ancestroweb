@@ -127,7 +127,7 @@ object DMWeb: TDMWeb
         ParamType = ptInput
       end>
   end
-  object IBQ_TreeByNames: TIBQuery
+  object IBQ_TreeBySurnames: TIBQuery
     Database = ibd_BASE
     Transaction = IBT_BASE
     BufferChunks = 1000
@@ -390,7 +390,7 @@ object DMWeb: TDMWeb
     left = 256
     top = 16
   end
-  object IBS_Names: TIBSQL
+  object IBS_Surnames: TIBSQL
     Database = ibd_BASE
     ParamCheck = True
     SQL.Strings = (
@@ -403,7 +403,7 @@ object DMWeb: TDMWeb
     left = 328
     top = 16
   end
-  object IBS_TreeNames: TIBSQL
+  object IBS_TreeSurnames: TIBSQL
     Database = ibd_BASE
     ParamCheck = True
     SQL.Strings = (
@@ -477,7 +477,7 @@ object DMWeb: TDMWeb
     left = 424
     top = 264
   end
-  object IBS_TreeNamesDesc: TIBSQL
+  object IBS_TreeSurnamesDesc: TIBSQL
     Database = ibd_BASE
     ParamCheck = True
     SQL.Strings = (
@@ -492,7 +492,7 @@ object DMWeb: TDMWeb
     left = 512
     top = 16
   end
-  object IBQ_TreeDescByNames: TIBQuery
+  object IBQ_TreeDescBySurnames: TIBQuery
     Database = ibd_BASE
     Transaction = IBT_BASE
     BufferChunks = 1000
