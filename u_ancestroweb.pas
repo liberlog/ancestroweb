@@ -2337,43 +2337,42 @@ var
     DMWeb.IBQ_ConjointSources.Close;
     DMWeb.IBQ_ConjointSources.ParamByName ( I_CLEF_UNION  ).AsInteger:=ai_ClefUnion;
     DMWeb.IBQ_ConjointSources.Open;
-    Result := ' (' ;
     try
       lb_showdate := fb_Showdate(StrToDate(as_Date,'yyyy-mm-dd', '-')) ;
     except
       lb_showdate := False;
     end;
-    if lb_Showdate
+    if not lb_Showdate
       Then
+        Exit;
+    Result := ' (' ;
+    AppendStr ( Result, gs_ANCESTROWEB_Family_On + as_dateWriten );
+    if ch_Images.Checked
+    and not DMWeb.IBQ_ConjointSources.EOF Then
       Begin
-        AppendStr ( Result, gs_ANCESTROWEB_Family_On + as_dateWriten );
-        if ch_Images.Checked
-        and not DMWeb.IBQ_ConjointSources.EOF Then
+         // adding source
+        if DMWeb.IBS_Conjoint.FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN
+        Then ls_FileNameBegin := fs_getNameAndSurName (IBQ_FilesFiltered )+'&'+fs_getNameAndSurName (DMWeb.IBS_Conjoint)
+        Else ls_FileNameBegin := fs_getNameAndSurName (DMWeb.IBS_Conjoint)+'&'+fs_getNameAndSurName (IBQ_FilesFiltered);
+        ls_FileNameBegin := as_Date + '_ID'+fs_TextToFileName(DMWeb.IBS_Conjoint.FieldByName(UNION_CLEF).AsString + '_' + ls_FileNameBegin+'_'+
+                            DMWeb.IBS_Conjoint.FieldByName(UNION_CP).AsString+'_'+DMWeb.IBS_Conjoint.FieldByName(UNION_CITY).AsString )+ '_';
+        li_i := 1 ;
+
+        // medias
+        while not DMWeb.IBQ_ConjointSources.EOF do
           Begin
-             // adding source
-            if DMWeb.IBS_Conjoint.FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN
-            Then ls_FileNameBegin := fs_getNameAndSurName (IBQ_FilesFiltered )+'&'+fs_getNameAndSurName (DMWeb.IBS_Conjoint)
-            Else ls_FileNameBegin := fs_getNameAndSurName (DMWeb.IBS_Conjoint)+'&'+fs_getNameAndSurName (IBQ_FilesFiltered);
-            ls_FileNameBegin := as_Date + '_ID'+fs_TextToFileName(DMWeb.IBS_Conjoint.FieldByName(UNION_CLEF).AsString + '_' + ls_FileNameBegin+'_'+
-                                DMWeb.IBS_Conjoint.FieldByName(UNION_CP).AsString+'_'+DMWeb.IBS_Conjoint.FieldByName(UNION_CITY).AsString )+ '_';
-            li_i := 1 ;
-
-            // medias
-            while not DMWeb.IBQ_ConjointSources.EOF do
+            ls_FileName := ls_FileNameBegin + IntToStr(li_i);
+            if fb_getMediaFile ( DMWeb.IBQ_ConjointSources, ls_ArchivesDir, ls_FileName ) Then
               Begin
-                ls_FileName := ls_FileNameBegin + IntToStr(li_i);
-                if fb_getMediaFile ( DMWeb.IBQ_ConjointSources, ls_ArchivesDir, ls_FileName ) Then
-                  Begin
-                    AppendStr( Result, ' - ' +fs_Create_Link ( CST_HTML_OUTDIR_SEPARATOR + CST_SUBDIR_HTML_ARCHIVE + CST_HTML_DIR_SEPARATOR + ls_FileName +CST_EXTENSION_JPEG,
-                                                               gs_ANCESTROWEB_ArchiveLinkBegin + IntToStr(li_i),CST_HTML_TARGET_BLANK ));
-                    inc ( li_i );
-                  End;
+                AppendStr( Result, ' - ' +fs_Create_Link ( CST_HTML_OUTDIR_SEPARATOR + CST_SUBDIR_HTML_ARCHIVE + CST_HTML_DIR_SEPARATOR + ls_FileName +CST_EXTENSION_JPEG,
+                                                           gs_ANCESTROWEB_ArchiveLinkBegin + IntToStr(li_i),CST_HTML_TARGET_BLANK ));
+                inc ( li_i );
+              End;
 
-                DMWeb.IBQ_ConjointSources.Next;
-              End
-          end;
+            DMWeb.IBQ_ConjointSources.Next;
+          End
       end;
-     AppendStr( Result, ')' );
+    AppendStr( Result, ')' );
   end;
 
   // add an event date with city

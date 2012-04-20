@@ -68,6 +68,7 @@ a.leaflet-active {
 .leaflet-control {
 	position: relative;
 	z-index: 7;
+	top:360px;
 	}
 .leaflet-top,
 .leaflet-bottom {

@@ -92,8 +92,8 @@
         <UnitName Value="U_AncestroWeb"/>
         <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="2758"/>
-        <CursorPos X="154" Y="2800"/>
+        <TopLine Value="1815"/>
+        <CursorPos X="123" Y="1856"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -190,10 +190,11 @@
       <Unit11>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
         <UnitName Value="functions_html"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="413"/>
-        <CursorPos X="13" Y="447"/>
+        <TopLine Value="287"/>
+        <CursorPos X="1" Y="308"/>
         <UsageCount Value="177"/>
         <Loaded Value="True"/>
       </Unit11>
@@ -216,12 +217,11 @@
       <Unit14>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
         <UnitName Value="fonctions_string"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="47"/>
-        <CursorPos X="17" Y="88"/>
-        <UsageCount Value="19"/>
+        <TopLine Value="61"/>
+        <CursorPos X="114" Y="91"/>
+        <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit14>
       <Unit15>
@@ -373,7 +373,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="577"/>
         <CursorPos X="1" Y="604"/>
-        <UsageCount Value="33"/>
+        <UsageCount Value="34"/>
         <Loaded Value="True"/>
       </Unit31>
       <Unit32>
@@ -464,7 +464,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="24" Y="15"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="13"/>
         <Loaded Value="True"/>
       </Unit43>
       <Unit44>
@@ -472,132 +472,132 @@
         <UnitName Value="LConvEncoding"/>
         <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="4430"/>
-        <CursorPos X="1" Y="4467"/>
-        <UsageCount Value="12"/>
+        <TopLine Value="23"/>
+        <CursorPos X="1" Y="45"/>
+        <UsageCount Value="13"/>
         <Loaded Value="True"/>
       </Unit44>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="728" Column="1" TopLine="707"/>
+        <Caret Line="112" Column="1" TopLine="112"/>
       </Position1>
       <Position2>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="729" Column="1" TopLine="707"/>
+        <Caret Line="61" Column="13" TopLine="22"/>
       </Position2>
       <Position3>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="732" Column="1" TopLine="707"/>
+        <Caret Line="129" Column="40" TopLine="105"/>
       </Position3>
       <Position4>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="734" Column="1" TopLine="707"/>
+        <Caret Line="727" Column="43" TopLine="708"/>
       </Position4>
       <Position5>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="735" Column="49" TopLine="707"/>
+        <Caret Line="732" Column="1" TopLine="715"/>
       </Position5>
       <Position6>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="33" Column="17" TopLine="12"/>
+        <Caret Line="734" Column="22" TopLine="712"/>
       </Position6>
       <Position7>
-        <Filename Value="/usr/lib/lazarus/0.9.30.4/lcl/lconvencoding.pas"/>
-        <Caret Line="4442" Column="70" TopLine="4430"/>
+        <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
+        <Caret Line="732" Column="142" TopLine="713"/>
       </Position7>
       <Position8>
-        <Filename Value="/usr/lib/lazarus/0.9.30.4/lcl/lconvencoding.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
+        <Caret Line="729" Column="48" TopLine="713"/>
       </Position8>
       <Position9>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="708" Column="39" TopLine="703"/>
+        <Caret Line="133" Column="1" TopLine="127"/>
       </Position9>
       <Position10>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="734" Column="7" TopLine="711"/>
+        <Caret Line="62" Column="31" TopLine="43"/>
       </Position10>
       <Position11>
-        <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="708" Column="10" TopLine="699"/>
+        <Filename Value="/usr/lib/lazarus/0.9.30.4/lcl/lconvencoding.pas"/>
+        <Caret Line="4430" Column="67" TopLine="4430"/>
       </Position11>
       <Position12>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="763" Column="23" TopLine="729"/>
+        <Caret Line="107" Column="1" TopLine="87"/>
       </Position12>
       <Position13>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="769" Column="41" TopLine="733"/>
+        <Caret Line="40" Column="1" TopLine="1"/>
       </Position13>
       <Position14>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="801" Column="1" TopLine="773"/>
+        <Caret Line="30" Column="3" TopLine="8"/>
       </Position14>
       <Position15>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="2795" Column="1" TopLine="2782"/>
+        <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
+        <Caret Line="106" Column="3" TopLine="85"/>
       </Position15>
       <Position16>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="754" Column="1" TopLine="733"/>
+        <Caret Line="763" Column="19" TopLine="738"/>
       </Position16>
       <Position17>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="755" Column="1" TopLine="733"/>
+        <Caret Line="794" Column="51" TopLine="760"/>
       </Position17>
       <Position18>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="756" Column="1" TopLine="733"/>
+        <Caret Line="766" Column="129" TopLine="745"/>
       </Position18>
       <Position19>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="758" Column="1" TopLine="733"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position19>
       <Position20>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="759" Column="1" TopLine="733"/>
+        <Caret Line="847" Column="43" TopLine="816"/>
       </Position20>
       <Position21>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="760" Column="1" TopLine="733"/>
+        <Caret Line="821" Column="9" TopLine="806"/>
       </Position21>
       <Position22>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="762" Column="1" TopLine="733"/>
+        <Caret Line="840" Column="70" TopLine="824"/>
       </Position22>
       <Position23>
-        <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="763" Column="1" TopLine="733"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2761" Column="54" TopLine="2759"/>
       </Position23>
       <Position24>
-        <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="766" Column="1" TopLine="733"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position24>
       <Position25>
         <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="768" Column="1" TopLine="734"/>
+        <Caret Line="10" Column="93" TopLine="1"/>
       </Position25>
       <Position26>
-        <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="769" Column="1" TopLine="735"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2345" Column="50" TopLine="2337"/>
       </Position26>
       <Position27>
-        <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="770" Column="1" TopLine="736"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position27>
       <Position28>
-        <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="805" Column="48" TopLine="784"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1808" Column="15" TopLine="1774"/>
       </Position28>
       <Position29>
-        <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="790" Column="106" TopLine="784"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1815" Column="13" TopLine="1781"/>
       </Position29>
       <Position30>
-        <Filename Value="../Extended/fonctions/fonctions_string.pas"/>
-        <Caret Line="21" Column="21" TopLine="1"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1856" Column="123" TopLine="1815"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>
