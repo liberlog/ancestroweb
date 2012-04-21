@@ -106,7 +106,7 @@ type
     DBGrid1: TDBGrid;
     de_ExportWeb: TDirectoryEdit;
     ds_Individu: TDatasource;
-    edNomBase: TComboBox;
+    cb_Base: TComboBox;
     ed_AgesName: TEdit;
     ed_Author: TEdit;
     ed_BaseCities: TEdit;
@@ -266,7 +266,7 @@ type
     procedure DBGrid1CellClick(Column: TColumn);
     procedure de_ExportWebAcceptDirectory(Sender: TObject;{$IFDEF FPC} var Value: string{$ELSE} var Name: string;
     var Action: Boolean{$ENDIF});
-    procedure edNomBaseChange(Sender: TObject);
+    procedure cb_BaseChange(Sender: TObject);
     procedure edNomBaseOpen;
     procedure FileCopyDoEraseDir(Sender: TObject; var Continue: boolean);
     procedure FileCopyFailure(Sender: TObject; const ErrorCode: integer;
@@ -545,7 +545,7 @@ begin
   gb_EraseExport := False;
 end;
 
-procedure TF_AncestroWeb.edNomBaseChange(Sender: TObject);
+procedure TF_AncestroWeb.cb_BaseChange(Sender: TObject);
 begin
   edNomBaseOpen;
 end;
@@ -556,7 +556,7 @@ procedure TF_AncestroWeb.edNomBaseOpen;
 var
   NumDossier:Integer;
 begin
-  if  DoInitBase(edNomBase)
+  if  DoInitBase(cb_Base)
   and fb_AutoComboInit(cbDossier)
    then
     begin
@@ -867,24 +867,26 @@ begin
      end;
 end;
 
+// procedure TF_AncestroWeb.p_AddABase
+// add and set a database
 procedure TF_AncestroWeb.p_AddABase ( const as_Base : String ; const ab_SetIndex :Boolean = True);
 var li_i : Integer;
     lb_found : Boolean;
 Begin
   lb_found:=False;
-  for li_i := 0 to edNomBase.Items.Count - 1 do
-    if edNomBase.Items [ li_i ] = as_Base Then
+  for li_i := 0 to cb_Base.Items.Count - 1 do
+    if cb_Base.Items [ li_i ] = as_Base Then
       Begin
         lb_found:=True;
         if ab_SetIndex Then
-          edNomBase.ItemIndex:=li_i;
+          cb_Base.ItemIndex:=li_i;
         Break;
       end;
   if not lb_found  then
     Begin
-      edNomBase.Items.Add(as_Base);
+      cb_Base.Items.Add(as_Base);
       if ab_SetIndex Then
-        edNomBase.ItemIndex:=edNomBase.Items.Count-1;
+        cb_Base.ItemIndex:=cb_Base.Items.Count-1;
     end;
 End;
 
@@ -894,24 +896,24 @@ procedure TF_AncestroWeb.btnSelectBaseClick(Sender: TObject);
 begin
   OpenDialog.FileName:='';
   //préparation de la boite mOpenDialog
-  if DirectoryExistsUTF8(edNomBase.Text) then
+  if DirectoryExistsUTF8(cb_Base.Text) then
   begin
-    OpenDialog.InitialDir:=edNomBase.Text;
+    OpenDialog.InitialDir:=cb_Base.Text;
   end
   else
   begin
-    if DirectoryExistsUTF8(ExtractFilePath(edNomBase.Text)) then
+    if DirectoryExistsUTF8(ExtractFilePath(cb_Base.Text)) then
     begin
-      OpenDialog.InitialDir:=ExtractFilePath(edNomBase.Text);
-      if FileExistsUTF8(edNomBase.Text) then
-        OpenDialog.FileName:=edNomBase.Text;
+      OpenDialog.InitialDir:=ExtractFilePath(cb_Base.Text);
+      if FileExistsUTF8(cb_Base.Text) then
+        OpenDialog.FileName:=cb_Base.Text;
     end;
   end;
 
   if OpenDialog.Execute then
   begin
     p_AddABase(OpenDialog.FileName);
-    p_writeComboBoxItems(edNomBase,edNomBase.Items);
+    p_writeComboBoxItems(cb_Base,cb_Base.Items);
     edNomBaseOpen;
   end;
 end;
@@ -1930,12 +1932,13 @@ const CST_DUMMY_COORD = 2000000;
     ls_City:=StringReplace(ls_City, '''', '\\\''',[rfReplaceAll]);
     p_ReplaceLanguageString ( astl_Aline, CST_MAP_LINE, astl_Line.Text );
     p_addKeyWord(ls_City); // adding a head's meta keywords
-    ls_link := ls_City + ' - ' + IntToStr(li_counter) + ' ' ;
+    ls_City := fs_getLinkedCity(ls_City) + ' - ' ;
+    ls_link := IntToStr(li_counter) + ' ' ;
     if li_counter > 1
      Then AppendStr ( ls_link, gs_ANCESTROWEB_FamilyPersons )
      Else AppendStr ( ls_link, gs_ANCESTROWEB_FamilyPerson  );
     p_ReplaceLanguageString ( astl_Aline, CST_MAP_NAME_CITY ,
-                              StringReplace ( fs_GetNameLink ( IBS_MapFiltered.FieldByName(IBQ_NOM).AsString
+                              StringReplace ( ls_City + fs_GetNameLink ( IBS_MapFiltered.FieldByName(IBQ_NOM).AsString
                               , ls_link, CST_SUBDIR_HTML_FILES + CST_HTML_DIR_SEPARATOR), '"', '\"',[rfReplaceAll]),[rfReplaceAll]);
     p_ReplaceLanguageString ( astl_Aline, CST_MAP_LATITUD   , FloatToStr(ld_latitude ),[rfReplaceAll]);
     p_ReplaceLanguageString ( astl_Aline, CST_MAP_LONGITUD  , FloatToStr(ld_longitude),[rfReplaceAll]);
@@ -2789,12 +2792,13 @@ end;
 // Optional link to external site
 function TF_AncestroWeb.fs_getLinkedBase ( const as_Texte : String; const as_Link : String; const ai_ComboIndex : Integer ) : String;
 Begin
+  Result := StringReplace ( as_Texte, '"', '\"',[rfReplaceAll]);
 //  if pos ( 'Fran', as_Texte ) > 0 Then
 //         ShowMessage(as_Texte );
   case ai_ComboIndex of
-   0, 3 : Result:=fs_FormatText(as_Texte,ai_ComboIndex<3,False,False,True); // Sans accent ou avec accents avec une majuscule
-   1, 4 : Result:=fs_FormatText(as_Texte,ai_ComboIndex<3,False,True); // Sans accent ou avec accents sans majuscule
-   2, 5 : Result:=fs_FormatText(as_Texte,ai_ComboIndex<3,True); // Sans accent ou avec accents en majuscules
+   0, 3 : Result:=fs_FormatText(Result,ai_ComboIndex<3,False,False,True); // Sans accent ou avec accents avec une majuscule
+   1, 4 : Result:=fs_FormatText(Result,ai_ComboIndex<3,False,True); // Sans accent ou avec accents sans majuscule
+   2, 5 : Result:=fs_FormatText(Result,ai_ComboIndex<3,True); // Sans accent ou avec accents en majuscules
   end;
   Result := fs_Create_Link(as_Link+Result,as_Texte, CST_HTML_TARGET_BLANK );
 End;
@@ -3285,6 +3289,8 @@ begin
   p_iniReadKey;
 end;
 
+// procedure TF_AncestroWeb.FormCreate
+// initializing software and form
 procedure TF_AncestroWeb.FormCreate(Sender: TObject);
 var
   fbddpath:String;
@@ -3292,7 +3298,7 @@ var
   lb_Logie : Boolean ;
   gs_Ancestro : String;
   lreg_Registry : TRegistry;
-  fKeyRegistry,s: string;
+  fKeyRegistry,ls_base: string;
   i:Integer;
   function fb_ReadAncestroKey ( const as_Soft : String ): boolean;
     Begin
@@ -3302,36 +3308,16 @@ var
         begin
           Result := True;
           fbddpath:=ReadString('PathFileNameBdd');
-          edNomBase.Text:=fs_getCorrectString(fbddpath);
+          cb_Base.Text:=fs_getCorrectString(fbddpath);
           CloseKey;
           Exit;
         end;
       Result := False;
     end;
 {$ENDIF}
-  procedure p_updateBase ( const as_FileUpdate : String );
-  Begin
-    if FileExists (gs_Root + as_FileUpdate) then
-    with DMWeb do
-     Begin
-       if not IBT_BASE.Active
-        then IBT_BASE.StartTransaction;
-       IBS_Temp.SQL.LoadFromFile( gs_Root + as_FileUpdate);
-       ShowMessage(gs_ANCESTROWEB_StartUpdate
-          +gs_Root+as_FileUpdate);
-       try
-         IBS_Temp.ExecQuery;
-         IBT_BASE.CommitRetaining;
-         ShowMessage ( gs_ANCESTROWEB_Please_Restart );
-       Except
-         IBT_BASE.RollbackRetaining;
-       End;
-     End;
-  end;
 
 begin
   f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
-  OnFormInfoIni.p_ExecuteLecture(Self);
 {$IFDEF FPC}//à faire une version Delphi
   if InstanceRunning(CST_AncestroWeb) then
   begin
@@ -3345,9 +3331,6 @@ begin
   end;
 {$ENDIF}
   PremiereOuverture:=True;
-  f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
-
-
 {$IFDEF WINDOWS}
   lb_Logie := False;
   lreg_Registry := TRegistry.create;
@@ -3364,11 +3347,9 @@ begin
     fKeyRegistry:='\SOFTWARE\'+gs_Ancestro+'\Settings';
     if OpenKeyReadOnly(fKeyRegistry) then
     begin
-      for i:=0 to edNomBase.DropDownCount-1 do
+      for i:=0 to cb_Base.DropDownCount-1 do
       begin //bizarre, cette boucle ne fonctionne pas avec un TRegIniFile, ou il faudrait fermer la clé entre chaque lecture
-        s:=ReadString('NomBase'+IntToStr(i));
-        if s>'' then
-          p_AddABase(fs_getCorrectString(s), False);
+        ls_base:=ReadString('NomBase'+IntToStr(i));
       end;
     end;
   finally
@@ -3402,7 +3383,11 @@ begin
   PCPrincipal.ActivePage:=ts_Gen;
   Caption := fs_getCorrectString(CST_AncestroWeb_WithLicense+' : '+gs_AnceSTROWEB_FORM_CAPTION);
   p_AddABase(fbddpath);
-  DoInitBase(edNomBase);
+  DoInitBase(cb_Base);
+{$IFDEF WINDOWS}
+  if ls_base>'' then
+    p_AddABase(fs_getCorrectString(ls_base), False);
+{$ENDIF}
 end;
 
 procedure TF_AncestroWeb.JvXPButton1Click(Sender: TObject);
@@ -3413,14 +3398,14 @@ end;
 procedure TF_AncestroWeb.OnFormInfoIniIniLoad(const AInifile: TCustomInifile;
   var Continue: Boolean);
 begin
-  p_ReadComboBoxItems(edNomBase,edNomBase.Items);
+  p_ReadComboBoxItems(cb_Base,cb_Base.Items);
   p_iniReadKey;
 end;
 
 procedure TF_AncestroWeb.OnFormInfoIniIniWrite(const AInifile: TCustomInifile;
   var Continue: Boolean);
 begin
-  p_writeComboBoxItems(edNomBase,edNomBase.Items);
+  p_writeComboBoxItems(cb_Base,cb_Base.Items);
   p_iniWriteKey;
 end;
 
