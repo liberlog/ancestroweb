@@ -11,6 +11,7 @@ uses
 
 resourcestring
   gs_ANCESTROWEB_LittleDateFormat = 'dd-mm-yyyy';
+  gs_ANCESTROWEB_Language = 'Français';
   gs_ANCESTROWEB_DoEraseOldExport = 'Effacer le répertoire ';
   gs_ANCESTROWEB_FORM_CAPTION = 'Générer un Site Web Généalogique Statique';
   gs_ANCESTROWEB_EXPORT_WEB_BORN = ' - Naissance : ';

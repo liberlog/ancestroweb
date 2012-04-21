@@ -3170,7 +3170,7 @@ begin
     gs_Root, as_Describe, gstl_HeadKeyWords.Text, gs_HTMLTitle + ' - ' +
     as_Title, as_LongTitle, 'main', as_BeginingFile + '1' + as_ExtFile, as_BeginingFile + '2' +
     as_ExtFile, as_BeginingFile + '3' + as_ExtFile, as_BeginingFile +
-    '4' + as_ExtFile, as_Subdir, as_BeforeHTML, astl_Body );
+    '4' + as_ExtFile, as_Subdir, as_BeforeHTML, gs_ANCESTROWEB_Language, astl_Body );
   if as_LittleTitle <> '' then
     p_SelectTabSheet(gt_TabSheets, as_LittleTitle, '', False);  // reiniting for next page
 end;

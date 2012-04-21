@@ -159,7 +159,7 @@ function  fs_Create_Text            ( const as_Text        : String      ;
                                       const as_Option      : String = '' ):String ;
 function  fs_Format_Lines           ( const as_Text        : String      ;
                                       const ReplaceWith : String = CST_HTML_BR ):String ;
-function fs_createHead (const as_PathFiles,as_Describe, as_Keywords, as_title : String): String;
+function fs_createHead (const as_PathFiles,as_Describe, as_Keywords, as_title, as_language : String): String;
 procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
                              const astl_Destination : TStrings ;
                              const as_EndPage, as_PathFiles,
@@ -168,7 +168,7 @@ procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
                              const as_FileBeforeHead, as_FileAfterHead,
                                    as_FileAfterMenu  , as_FileAfterBody,
                                    as_Subdir ,
-                                   as_BeforeHTML : String  ; const astl_Body : TStringList = nil );
+                                   as_BeforeHTML, as_language : String  ; const astl_Body : TStringList = nil );
 function fs_GetSheetLink ( const at_TabSheets : TAHTMLULTabSheet ;
                            const as_Title : String ;
                            const as_KeyPage : String ):String;
@@ -530,7 +530,7 @@ Begin
   Else Result := '' ;
 end;
 
-function fs_createHead (const as_PathFiles,as_Describe, as_Keywords, as_title : String ): String;
+function fs_createHead (const as_PathFiles,as_Describe, as_Keywords, as_title, as_language : String ): String;
 var  lstl_Head : TStringList;
 Begin
   lstl_Head := TStringList.Create;
@@ -541,6 +541,7 @@ Begin
   p_ReplaceLanguageString(lstl_Head,CST_HTML_HEAD_CHARSET,gs_HtmlCharset);
   p_ReplaceLanguageString(lstl_Head,CST_HTML_HEAD_TITLE,as_title);
   p_ReplaceLanguageString(lstl_Head,CST_HTML_LANG,gs_Lang);
+  p_ReplaceLanguageString(lstl_Head,CST_HTML_LANGUAGE,as_language);
   p_ReplaceLanguageString(lstl_Head,CST_HTML_HEAD_AUTOKEYS,StringReplace (as_Keywords, CST_ENDOFLINE, ',', [rfReplaceAll]));
   Result := lstl_Head.Text;
 end;
@@ -553,7 +554,7 @@ procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
                              const as_FileBeforeHead, as_FileAfterHead,
                                    as_FileAfterMenu  , as_FileAfterBody,
                                    as_Subdir ,
-                                   as_BeforeHTML : String ; const astl_Body : TStringList = nil );
+                                   as_BeforeHTML, as_language : String ; const astl_Body : TStringList = nil );
 var  lstl_HTML : TStringList;
      ls_Text1, ls_Text2, ls_Text3, ls_Text4  : String ;
   procedure p_LoadText3 ( const astl_Strings : TStringList );
@@ -598,7 +599,7 @@ Begin
   p_ReplaceLanguageString(lstl_HTML,CST_HTML_HEAD_DESCRIBE,StringReplace (as_Describe, CST_ENDOFLINE, '', [rfReplaceAll]));
   p_ReplaceLanguageString(lstl_HTML,CST_HTML_HEAD_TITLE,as_title);
   p_ReplaceLanguageString(lstl_HTML,CST_HTML_HEAD_AUTOKEYS,StringReplace (as_Keywords, CST_ENDOFLINE, ',', [rfReplaceAll]));
-  astl_Destination.Text := as_BeforeHTML + CST_ENDOFLINE + ls_Text1 + CST_ENDOFLINE + fs_createHead(as_PathFiles,as_Describe, as_Keywords, as_title) + CST_ENDOFLINE + ls_Text2
+  astl_Destination.Text := as_BeforeHTML + CST_ENDOFLINE + ls_Text1 + CST_ENDOFLINE + fs_createHead(as_PathFiles,as_Describe, as_Keywords, as_title, as_language) + CST_ENDOFLINE + ls_Text2
                         +  fs_CreateElementWithId(CST_HTML_DIV, 'title', CST_HTML_CLASS_EQUAL )
                         +  CST_HTML_H1_BEGIN + as_title + CST_HTML_H1_END + CST_HTML_DIV_End
                         +  CST_ENDOFLINE + fs_CreateULTabsheets ( at_TabSheets, as_Subdir ) + CST_ENDOFLINE + ls_Text3
