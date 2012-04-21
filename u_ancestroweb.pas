@@ -76,15 +76,17 @@ type
   TF_AncestroWeb = class(TForm)
     btnSelectBase: TSpeedButton;
     bt_export: TFWSaveAs;
+    cb_CityAccents: TComboBox;
     cb_ContactSecurity: TComboBox;
     cb_ContactTool: TComboBox;
+    cb_NamesAccents: TComboBox;
+    cb_JobsAccents: TComboBox;
     cb_SurnamesAccents: TComboBox;
-    cb_CityAccents: TComboBox;
     ch_ancestors: TJvXPCheckBox;
+    ch_CitiesLink: TJvXPCheckbox;
     ch_Comptage: TJvXPCheckbox;
     ch_ContactIdentify: TJvXPCheckbox;
     ch_Filtered: TJvXPCheckBox;
-    ch_HideLessThan100: TJvXPCheckbox;
     ch_genages: TJvXPCheckbox;
     ch_genContact: TJvXPCheckbox;
     ch_genjobs: TJvXPCheckbox;
@@ -94,21 +96,22 @@ type
     ch_genMap: TJvXPCheckbox;
     ch_genSearch: TJvXPCheckbox;
     ch_genTree: TJvXPCheckbox;
+    ch_HideLessThan100: TJvXPCheckbox;
     ch_Images: TJvXPCheckbox;
     ch_NamesLink: TJvXPCheckbox;
+    ch_JobsLink: TJvXPCheckbox;
     ch_ShowMainFile: TJvXPCheckbox;
     ch_SurnamesLink: TJvXPCheckbox;
-    ch_CitiesLink: TJvXPCheckbox;
-    cb_NamesAccents: TComboBox;
     DBGrid1: TDBGrid;
     de_ExportWeb: TDirectoryEdit;
     ds_Individu: TDatasource;
     edNomBase: TComboBox;
     ed_AgesName: TEdit;
     ed_Author: TEdit;
-    ed_BaseNames: TEdit;
-    ed_BaseSurnames: TEdit;
     ed_BaseCities: TEdit;
+    ed_BaseNames: TEdit;
+    ed_BaseJobs: TEdit;
+    ed_BaseSurnames: TEdit;
     ed_ContactAuthor: TEdit;
     ed_ContactHost: TEdit;
     ed_ContactMail: TEdit;
@@ -193,6 +196,7 @@ type
     Label5: TLabel;
     Label50: TLabel;
     Label51: TLabel;
+    Label6: TLabel;
     Label8: TLabel;
     LabelBase: TLabel;
     lb_Comments: TLabel;
@@ -200,6 +204,7 @@ type
     Label9: TLabel;
     lb_DescribeMap: TLabel;
     lb_Images: TLabel;
+    me_Bottom: TMemo;
     me_ContactHead: TMemo;
     me_MapHead: TMemo;
     me_Description: TMemo;
@@ -216,6 +221,7 @@ type
     Panel12: TPanel;
     Panel13: TPanel;
     Panel14: TPanel;
+    Panel15: TPanel;
     Panel2: TPanel;
     Panel9: TPanel;
     pc_needed: TPageControl;
@@ -235,6 +241,7 @@ type
     Splitter1: TSplitter;
     Splitter2: TSplitter;
     spSkinPanel1: TPanel;
+    ts_global: TTabSheet;
     ts_ages: TTabSheet;
     ts_jobs: TTabSheet;
     ts_contact: TTabSheet;
@@ -248,8 +255,6 @@ type
     TraduceImage: TTraduceFile;
     ts_about: TTabSheet;
     ts_Gen: TTabSheet;
-    me_Bottom: TMemo;
-    Label6: TLabel;
     cb_Files: TComboBox;
     Label44: TLabel;
     procedure btnSelectBaseClick(Sender: TObject);
@@ -292,9 +297,10 @@ type
     function DoOpenBase(sBase: string):boolean;
     function fb_Showdate(const adt_Date: TDateTime): Boolean;
     function fb_ShowYear(const ai_Year: Integer): Boolean;
-    function fs_getLinkedBase(const ab_Link: Boolean; const as_Texte: String;
+    function fs_getLinkedBase(const as_Texte: String;
       const as_Link: String; const ai_ComboIndex: Integer ): String;
     function fs_getLinkedCity(const as_Texte: String ): String;
+    function fs_getLinkedJob(const as_Texte: String): String;
     function fs_getLinkedName(const as_Texte: String; var aa_listWords : TUArray ): String;
     function fs_getLinkedSurName(const as_Texte: String ): String;
     function fs_GetNameLink( as_name : String ; const as_Showed : String ; const as_SubDir : String = ''):String ;
@@ -2417,7 +2423,7 @@ var
          while not EOF do  // adding all jobs
           Begin
            astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_JOB + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
-                                + FieldByName(IBQ_EV_IND_DESCRIPTION).AsString );
+                                + fs_getLinkedJob( FieldByName(IBQ_EV_IND_DESCRIPTION).AsString ));
            if FieldByName(IBQ_EV_IND_VILLE).AsString <> '' Then
            astl_HTMLAFolder.Add ( ' ' + gs_ANCESTROWEB_At + ' '
                                 + fs_getLinkedCity(FieldByName(IBQ_EV_IND_VILLE).AsString));
@@ -2780,13 +2786,8 @@ end;
 
 // function TF_AncestroWeb.fs_getLinkedBase
 // Optional link to external site
-function TF_AncestroWeb.fs_getLinkedBase ( const ab_Link : Boolean ; const as_Texte : String; const as_Link : String; const ai_ComboIndex : Integer ) : String;
+function TF_AncestroWeb.fs_getLinkedBase ( const as_Texte : String; const as_Link : String; const ai_ComboIndex : Integer ) : String;
 Begin
-  if not ab_Link Then
-   Begin
-    Result := as_Texte;
-    Exit;
-   end;
 //  if pos ( 'Fran', as_Texte ) > 0 Then
 //         ShowMessage(as_Texte );
   case ai_ComboIndex of
@@ -2796,38 +2797,70 @@ Begin
   end;
   Result := fs_Create_Link(as_Link+Result,as_Texte, CST_HTML_TARGET_BLANK );
 End;
+
 // function TF_AncestroWeb.fs_getLinkedName
 // Optional link to Name site
 function TF_AncestroWeb.fs_getLinkedName ( const as_Texte : String ; var aa_listWords : TUArray ) :  String;
 var
     li_i : Integer;
 Begin
-    Result := '';
-    Finalize ( aa_listWords );
-    fb_stringConstruitListe(as_texte,aa_listWords);
-    for li_i := 0 to high ( aa_listWords ) do
-     Begin
-       AppendStr ( Result, fs_getLinkedBase (ch_NamesLink.Checked, Trim ( copy ( as_Texte, aa_listWords [ li_i ][0], aa_listWords [ li_i ][1] )), ed_BaseNames.Text, cb_NamesAccents.ItemIndex ));
+  if not ch_NamesLink.Checked
+  or ( Trim ( as_Texte ) = '' ) Then
+   Begin
+    Result := as_Texte;
+    Exit;
+   end;
+  Result := '';
+  Finalize ( aa_listWords );
+  fb_stringConstruitListe(as_texte,aa_listWords);
+  for li_i := 0 to high ( aa_listWords ) do
+   Begin
+     AppendStr ( Result, fs_getLinkedBase ( Trim ( copy ( as_Texte, aa_listWords [ li_i ][0], aa_listWords [ li_i ][1] )), ed_BaseNames.Text, cb_NamesAccents.ItemIndex ));
 //       if pos ( 'Fran', copy ( as_Texte, aa_listWords [ li_i ][0], aa_listWords [ li_i ][1] ) ) > 0 Then
-  //       ShowMessage( copy ( as_Texte, aa_listWords [ li_i ][0], aa_listWords [ li_i ][1] ));
-       if  ( aa_listWords [ li_i ][2] <> 0 )
-        Then AppendStr(Result, '-' )
-        Else AppendStr(Result, ' ' );
-     end;
+//       ShowMessage( copy ( as_Texte, aa_listWords [ li_i ][0], aa_listWords [ li_i ][1] ));
+     if  ( aa_listWords [ li_i ][2] <> 0 )
+      Then AppendStr(Result, '-' )
+      Else AppendStr(Result, ' ' );
+   end;
 End;
 
 // function TF_AncestroWeb.fs_getLinkedSurName
 // Optional link to SurName site
 function TF_AncestroWeb.fs_getLinkedSurName ( const as_Texte : String ) : String;
 Begin
-  Result := fs_getLinkedBase (ch_SurnamesLink.Checked, Trim ( as_Texte ), ed_BaseSurnames.Text, cb_SurnamesAccents.ItemIndex );
+  if not ch_SurNamesLink.Checked
+  or ( Trim ( as_Texte ) = '' ) Then
+   Begin
+    Result := as_Texte;
+    Exit;
+   end;
+  Result := fs_getLinkedBase (Trim ( as_Texte ), ed_BaseSurnames.Text, cb_SurnamesAccents.ItemIndex );
 End;
 
 // function TF_AncestroWeb.fs_getLinkedCity
 // Optional link to City site
 function TF_AncestroWeb.fs_getLinkedCity ( const as_Texte : String ) : String;
 Begin
-  Result := fs_getLinkedBase (ch_CitiesLink.Checked, Trim ( as_Texte ), ed_BaseCities.Text, cb_CityAccents.ItemIndex );
+  if not ch_CitiesLink.Checked
+  or ( Trim ( as_Texte ) = '' ) Then
+   Begin
+    Result := as_Texte;
+    Exit;
+   end;
+  Result := fs_getLinkedBase ( Trim ( as_Texte ), ed_BaseCities.Text, cb_CityAccents.ItemIndex );
+End;
+
+// function TF_AncestroWeb.fs_getLinkedJob
+// Optional link to job site
+function TF_AncestroWeb.fs_getLinkedJob ( const as_Texte : String ) : String;
+Begin
+  if not ch_JobsLink.Checked
+  or ( Trim ( as_Texte ) = '' ) Then
+   Begin
+    Result := as_Texte;
+    Exit;
+   end;
+  Result := fs_getLinkedBase ( Trim ( as_Texte ), ed_BaseJobs.Text, cb_JobsAccents.ItemIndex );
 End;
 
 // procedure TF_AncestroWeb.p_genHtmlAges
@@ -3000,7 +3033,12 @@ var
               p_addKeyWord(ls_Job); // adding a head's meta keyword
              end;
           ls_City:= FieldByName(IBQ_EV_IND_VILLE      ).AsString ;
-          if ls_City <> '' Then p_addKeyWord(ls_City); // adding a head's meta keyword
+          if ls_City <> '' Then
+            Begin
+              p_addKeyWord(ls_City); // adding a head's meta keyword
+              ls_City:=fs_getLinkedCity(ls_city);
+            end;
+          ls_Job:=fs_getLinkedJob(ls_Job);
           // growing
           li_Linecounter := FieldByName ( IBQ_COUNTER ).AsInteger ;
           // showing job ant city
