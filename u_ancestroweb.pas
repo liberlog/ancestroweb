@@ -54,7 +54,8 @@ uses
                                                FileUnit : 'U_AncestroWeb' ;
                                                Owner : 'Matthieu Giroux' ;
                                                Comment : 'Composant de copie multi-platformes.' ;
-                                               BugsStory : '1.2.2.0 : Link to base' +#13#10
+                                               BugsStory : '1.2.2.1 : Link to jobs'' base' +#13#10
+                                                         + '1.2.2.0 : Link to cities, names, surnames base' +#13#10
                                                          + '1.2.1.1 : Hide dates lesser than 100 years' +#13#10
                                                          + '1.2.1.0 : Better look and interactivity' +#13#10
                                                          + '1.2.0.0 : Adding Map' +#13#10
@@ -66,7 +67,7 @@ uses
                                                          + '1.0.0.0 : Integrating in Freelogy' +#13#10
                                                          + '0.9.9.0 : First published version' ;
                                                UnitType : CST_TYPE_UNITE_APPLI ;
-                                               Major : 1 ; Minor : 2 ; Release : 2 ; Build : 0 );
+                                               Major : 1 ; Minor : 2 ; Release : 2 ; Build : 1 );
 
 
 type
