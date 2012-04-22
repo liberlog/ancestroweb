@@ -67,7 +67,7 @@ uses
                                                          + '1.0.0.0 : Integrating in Freelogy' +#13#10
                                                          + '0.9.9.0 : First published version' ;
                                                UnitType : CST_TYPE_UNITE_APPLI ;
-                                               Major : 1 ; Minor : 2 ; Release : 2 ; Build : 1 );
+                                               Major : 1 ; Minor : 2 ; Release : 2 ; Build : 3 );
 
 
 type
@@ -3351,16 +3351,13 @@ begin
     fKeyRegistry:='\SOFTWARE\'+gs_Ancestro+'\Settings';
     if OpenKeyReadOnly(fKeyRegistry) then
     begin
-      if gs_Ancestro = CST_MANIA Then
+      if gs_Ancestro = CST_MANIA Then
         for i:=0 to cb_Base.DropDownCount-1 do
           begin //bizarre, cette boucle ne fonctionne pas avec un TRegIniFile, ou il faudrait fermer la clé entre chaque lecture
             ls_base:=ReadString('NomBase'+IntToStr(i));
             if ls_base>'' then
               p_AddToCombo(cb_base,fs_getCorrectString(ls_base), False);
-          end
-        ls_base:=ReadString('NomBase');
-        if ls_base>'' then
-          p_AddToCombo(cb_base,fs_getCorrectString(ls_base), False);
+          end;
     end;
   finally
     Free;
@@ -3397,6 +3394,7 @@ begin
   Height := 400;
   PCPrincipal.ActivePage:=ts_Gen;
   Caption := fs_getCorrectString(CST_AncestroWeb_WithLicense+' : '+gs_AnceSTROWEB_FORM_CAPTION);
+  p_AddToCombo(cb_Base,fbddpath);
   DoInitBase(cb_Base);
   p_AddToCombo(cb_Base,fbddpath, False);
 end;
