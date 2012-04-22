@@ -330,7 +330,7 @@ type
     function fs_getNameAndSurName(const ibq_Query: TIBSQL): String; virtual; overload;
     function fs_GetTitleTree(const as_NameOfTree: String;
                              const ai_generations: Longint): String;
-    procedure p_AddABase(const as_Base: String; const ab_SetIndex :Boolean = True);
+    procedure p_AddToCombo ( const acb_combo : TComboBox;const as_Base: String; const ab_SetIndex :Boolean = True);
     procedure p_CopyStructure;
     procedure p_CreateAHtmlFile(const astl_Destination: TStringList;
       const as_BeginingFile, as_Describe, as_Title, as_LittleTitle, as_LongTitle: string;
@@ -384,6 +384,10 @@ var
   gs_HTMLTitle: string = '';
   gb_EraseExport: boolean = True;
   gb_Generate : boolean = False;
+  {$IFDEF WINDOWS}
+  gb_Logie : Boolean ;
+  gs_Ancestro : String;
+  {$ENDIF}
   gi_CleFiche: integer = 0;
   gs_LinkGedcom: string;
   gs_RootPathForExport: string;
@@ -869,24 +873,24 @@ end;
 
 // procedure TF_AncestroWeb.p_AddABase
 // add and set a database
-procedure TF_AncestroWeb.p_AddABase ( const as_Base : String ; const ab_SetIndex :Boolean = True);
+procedure TF_AncestroWeb.p_AddToCombo ( const acb_combo : TComboBox; const as_Base : String ; const ab_SetIndex :Boolean = True);
 var li_i : Integer;
     lb_found : Boolean;
 Begin
   lb_found:=False;
-  for li_i := 0 to cb_Base.Items.Count - 1 do
-    if cb_Base.Items [ li_i ] = as_Base Then
+  for li_i := 0 to acb_combo.Items.Count - 1 do
+    if acb_combo.Items [ li_i ] = as_Base Then
       Begin
         lb_found:=True;
         if ab_SetIndex Then
-          cb_Base.ItemIndex:=li_i;
+          acb_combo.ItemIndex:=li_i;
         Break;
       end;
   if not lb_found  then
     Begin
-      cb_Base.Items.Add(as_Base);
+      acb_combo.Items.Add(as_Base);
       if ab_SetIndex Then
-        cb_Base.ItemIndex:=cb_Base.Items.Count-1;
+        acb_combo.ItemIndex:=acb_combo.Items.Count-1;
     end;
 End;
 
@@ -912,7 +916,7 @@ begin
 
   if OpenDialog.Execute then
   begin
-    p_AddABase(OpenDialog.FileName);
+    p_AddToCombo(cb_base,OpenDialog.FileName);
     p_writeComboBoxItems(cb_Base,cb_Base.Items);
     edNomBaseOpen;
   end;
@@ -1037,7 +1041,9 @@ begin
   end;
   if (cb_Themes.ItemIndex = -1) then
     cb_Themes.ItemIndex := 0;
-  FileCopy.Source := gs_Root + CST_SUBDIR_THEMES +DirectorySeparator+cb_Themes.Items[cb_Themes.ItemIndex];
+  if DirectoryExistsUTF8(fSoftUserPath + CST_SUBDIR_THEMES +DirectorySeparator+cb_Themes.Items[cb_Themes.ItemIndex])
+   Then FileCopy.Source := fSoftUserPath + CST_SUBDIR_THEMES +DirectorySeparator+cb_Themes.Items[cb_Themes.ItemIndex]
+   Else FileCopy.Source := gs_Root + CST_SUBDIR_THEMES +DirectorySeparator+cb_Themes.Items[cb_Themes.ItemIndex];
   FileCopy.Destination := gs_RootPathForExport;
   FileCopy.CopySourceToDestination;
   FileCopy.Source := gs_Root + CST_SUBDIR_CLASSES;
@@ -1601,11 +1607,11 @@ Begin
       // simple copy ?
       if not IBQ_Media.FieldByName ( MEDIAS_NOM ).IsNull
       and (   FileExistsUTF8(fFolderBasePath+ls_Path)
-           or FileExistsUTF8(fSoftUserPath  +ls_Path))
+           or FileExistsUTF8(fSoftUserPath+ fNom_Dossier  +ls_Path))
        Then
          Begin
-           if FileExistsUTF8(fSoftUserPath+ls_Path)
-            Then FileCopy.Source:=fSoftUserPath  +ls_Path
+           if FileExistsUTF8(fSoftUserPath+ fNom_Dossier+ls_Path)
+            Then FileCopy.Source:=fSoftUserPath+ fNom_Dossier  +ls_Path
             Else FileCopy.Source:=fFolderBasePath+ls_Path;
            AppendStr ( as_FileNameBegin, gs_ANCESTROWEB_FileName_NotACopy );
            FileCopy.Destination:=as_FilePath + as_FileNameBegin + CST_EXTENSION_JPEG;
@@ -3269,17 +3275,15 @@ end;
 procedure TF_AncestroWeb.DoAfterInit( const ab_Ini : Boolean = True );
 begin
   fNom_Dossier:=fs_TextToFileName(fNom_Dossier);
-  fSoftUserPath := GetUserDir;
   {$IFNDEF FPC}
   de_ExportWeb.RootDir:=GetWindowsSpecialDir(CSIDL_DESKTOPDIRECTORY);
   {$ENDIF}
-  fSoftUserPath:=fSoftUserPath+CST_AncestroWeb+DirectorySeparator+fNom_Dossier;
-  FileCopy.Destination := fSoftUserPath + DirectorySeparator + CST_SUBDIR_EXPORT ;
+  FileCopy.Destination := fSoftUserPath+ fNom_Dossier + DirectorySeparator + CST_SUBDIR_EXPORT ;
   fb_CreateDirectoryStructure( FileCopy.Destination );
-  fb_CreateDirectoryStructure( fSoftUserPath + DirectorySeparator + CST_SUBDIR_SAVE );
-  de_ExportWeb.Directory := fSoftUserPath+DirectorySeparator+CST_SUBDIR_EXPORT;
-  fne_Import.FileName := fSoftUserPath + DirectorySeparator + CST_SUBDIR_SAVE ;
-  fne_Export.FileName := fSoftUserPath + DirectorySeparator + CST_SUBDIR_SAVE ;
+  fb_CreateDirectoryStructure( fSoftUserPath+ fNom_Dossier + DirectorySeparator + CST_SUBDIR_SAVE );
+  de_ExportWeb.Directory := fSoftUserPath+ fNom_Dossier+DirectorySeparator+CST_SUBDIR_EXPORT;
+  fne_Import.FileName := fSoftUserPath+ fNom_Dossier + DirectorySeparator + CST_SUBDIR_SAVE ;
+  fne_Export.FileName := fSoftUserPath+ fNom_Dossier + DirectorySeparator + CST_SUBDIR_SAVE ;
 
   // Reading ini
   if not ab_Ini Then
@@ -3295,8 +3299,6 @@ procedure TF_AncestroWeb.FormCreate(Sender: TObject);
 var
   fbddpath:String;
 {$IFDEF WINDOWS}
-  lb_Logie : Boolean ;
-  gs_Ancestro : String;
   lreg_Registry : TRegistry;
   fKeyRegistry,ls_base: string;
   i:Integer;
@@ -3318,7 +3320,9 @@ var
 
 begin
   f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
-{$IFDEF FPC}//à faire une version Delphi
+  fSoftUserPath := GetUserDir;
+  fSoftUserPath:=fSoftUserPath+CST_AncestroWeb+DirectorySeparator;
+  {$IFDEF FPC}//à faire une version Delphi
   if InstanceRunning(CST_AncestroWeb) then
   begin
     ShowMessage('Vous ne devez exécuter qu''une seule session d''AncestroWeb');
@@ -3332,7 +3336,7 @@ begin
 {$ENDIF}
   PremiereOuverture:=True;
 {$IFDEF WINDOWS}
-  lb_Logie := False;
+  gb_Logie := False;
   lreg_Registry := TRegistry.create;
   with lreg_Registry do
   try
@@ -3341,16 +3345,22 @@ begin
      Begin
        gs_Ancestro := CST_LOGIE;
        if fb_ReadAncestroKey (CST_LOGIE ) Then
-         lb_Logie:=True;
+         gb_Logie:=True;
      End
      else gs_Ancestro := CST_MANIA;
     fKeyRegistry:='\SOFTWARE\'+gs_Ancestro+'\Settings';
     if OpenKeyReadOnly(fKeyRegistry) then
     begin
-      for i:=0 to cb_Base.DropDownCount-1 do
-      begin //bizarre, cette boucle ne fonctionne pas avec un TRegIniFile, ou il faudrait fermer la clé entre chaque lecture
-        ls_base:=ReadString('NomBase'+IntToStr(i));
-      end;
+      if gs_Ancestro = CST_MANIA Then
+        for i:=0 to cb_Base.DropDownCount-1 do
+          begin //bizarre, cette boucle ne fonctionne pas avec un TRegIniFile, ou il faudrait fermer la clé entre chaque lecture
+            ls_base:=ReadString('NomBase'+IntToStr(i));
+            if ls_base>'' then
+              p_AddToCombo(cb_base,fs_getCorrectString(ls_base), False);
+          end
+        ls_base:=ReadString('NomBase');
+        if ls_base>'' then
+          p_AddToCombo(cb_base,fs_getCorrectString(ls_base), False);
     end;
   finally
     Free;
@@ -3367,6 +3377,11 @@ begin
   try
     cb_Themes.Items.Clear;
     fb_FindFiles(cb_Themes.Items, gs_Root + CST_SUBDIR_THEMES, False);
+    if not DirectoryExistsUTF8(fSoftUserPath + CST_SUBDIR_THEMES)
+     Then
+      fb_CreateDirectoryStructure(fSoftUserPath + CST_SUBDIR_THEMES);
+    fb_FindFiles(cb_Themes.Items, fSoftUserPath + CST_SUBDIR_THEMES, False);
+
   except
 
   end;
@@ -3382,12 +3397,8 @@ begin
   Height := 400;
   PCPrincipal.ActivePage:=ts_Gen;
   Caption := fs_getCorrectString(CST_AncestroWeb_WithLicense+' : '+gs_AnceSTROWEB_FORM_CAPTION);
-  p_AddABase(fbddpath);
   DoInitBase(cb_Base);
-{$IFDEF WINDOWS}
-  if ls_base>'' then
-    p_AddABase(fs_getCorrectString(ls_base), False);
-{$ENDIF}
+  p_AddToCombo(cb_Base,fbddpath, False);
 end;
 
 procedure TF_AncestroWeb.JvXPButton1Click(Sender: TObject);
@@ -3398,6 +3409,9 @@ end;
 procedure TF_AncestroWeb.OnFormInfoIniIniLoad(const AInifile: TCustomInifile;
   var Continue: Boolean);
 begin
+  {$IFDEF WINDOWS}
+  if gb_logie Then
+  {$ENDIF}
   p_ReadComboBoxItems(cb_Base,cb_Base.Items);
   p_iniReadKey;
 end;
