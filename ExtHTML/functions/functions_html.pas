@@ -177,7 +177,7 @@ function fb_FindTabSheet ( const at_TabSheets : TAHTMLULTabSheet ;
                            const as_KeyPage : String ;
                            var   ai_Main, ai_Page : Longint):Boolean;
 procedure p_FreeKeyWords;
-procedure p_addKeyWord ( const as_KeyWord : String; const ach_Separator : Char = ' ' );
+procedure p_addKeyWord ( as_KeyWord : String; const ach_Separator : Char = ' ' );
 procedure p_CreateKeyWords;
 procedure p_AddTabSheet ( var  at_TabSheets : TAHTMLULTabSheet ;
                           const as_Title, as_link : String );
@@ -295,12 +295,13 @@ begin
   end;
 end;
 
-procedure p_addKeyWord ( const as_KeyWord : String; const ach_Separator : Char = ' ' );
+procedure p_addKeyWord ( as_KeyWord : String; const ach_Separator : Char = ' ' );
 var lstl_Keywords : TStringList;
     ls_KeyWord    : String;
     li_i          : Integer;
 Begin
   lstl_Keywords := nil;
+  as_KeyWord:=StringReplace(Trim(as_KeyWord),'"', '\"', [rfReplaceAll]);
   p_ChampsVersListe ( lstl_Keywords, as_KeyWord, ach_Separator );
   for li_i:= 0 to lstl_Keywords.Count-1 do
     Begin

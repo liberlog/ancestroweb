@@ -267,7 +267,7 @@ type
     procedure de_ExportWebAcceptDirectory(Sender: TObject;{$IFDEF FPC} var Value: string{$ELSE} var Name: string;
     var Action: Boolean{$ENDIF});
     procedure cb_BaseChange(Sender: TObject);
-    procedure edNomBaseOpen;
+    procedure p_BaseOpen;
     procedure FileCopyDoEraseDir(Sender: TObject; var Continue: boolean);
     procedure FileCopyFailure(Sender: TObject; const ErrorCode: integer;
       var ErrorMessage: string; var ContinueCopy: boolean);
@@ -371,6 +371,7 @@ type
       const ai_Niveau: integer = 0;const ai_Sexe: integer = 0): boolean; virtual; overload;
     function fb_OpenTree(const AIBQ_Tree: TIBSQL; const ai_Cle: longint;
       const ai_Niveau: integer = 0;const ai_Sexe: integer = 0): boolean; virtual; overload;
+    procedure p_setBaseToIniFile ( const as_Base : String );
     procedure p_Setcomments(const as_Comment: String);
     procedure ListerDossiers;
   public
@@ -549,14 +550,23 @@ begin
   gb_EraseExport := False;
 end;
 
+procedure TF_AncestroWeb.p_setBaseToIniFile ( const as_Base : String );
+Begin
+  if ( as_Base <> '' ) Then
+   Begin
+    fbddpath := as_Base;
+   end;
+end;
+
 procedure TF_AncestroWeb.cb_BaseChange(Sender: TObject);
 begin
-  edNomBaseOpen;
+  p_setBaseToIniFile ( cb_Base.Text );
+  p_BaseOpen;
 end;
 
 // procedure TF_AncestroWeb.edNomBaseExit
 // Database's folder opening on Nombaseedit's Exit
-procedure TF_AncestroWeb.edNomBaseOpen;
+procedure TF_AncestroWeb.p_BaseOpen;
 var
   NumDossier:Integer;
 begin
@@ -918,7 +928,8 @@ begin
   begin
     p_AddToCombo(cb_base,OpenDialog.FileName);
     p_writeComboBoxItems(cb_Base,cb_Base.Items);
-    edNomBaseOpen;
+    p_BaseOpen;
+    p_setBaseToIniFile(OpenDialog.FileName);
   end;
 end;
 
@@ -1923,28 +1934,34 @@ const CST_DUMMY_COORD = 2000000;
   var li_i, li_dot : Integer ;
       ld_latitude, ld_longitude : Double;
       li_counter : Int64;
-      ls_City, ls_link : String;
+      ls_CitySurname, ls_link : String;
   Begin
     with IBS_MapFiltered do
      Begin
-       ls_City:=Trim(FieldByName(IBQ_EV_IND_VILLE).AsString);
-       p_getCityInfos ( FieldByName(IBQ_EV_IND_CP).AsString, FieldByName(IBQ_EV_IND_PAYS).AsString, ls_City, ld_latitude, ld_longitude );
-       if not ab_IsNamedMap Then
-         ls_City:=FieldByName(IBQ_NOM).AsString + ' - ' + ls_City;
+       ls_CitySurname:=Trim(FieldByName(IBQ_EV_IND_VILLE).AsString);
+       p_getCityInfos ( FieldByName(IBQ_EV_IND_CP).AsString, FieldByName(IBQ_EV_IND_PAYS).AsString, ls_CitySurname, ld_latitude, ld_longitude );
+       if ab_IsNamedMap
+        Then // just set the link
+         ls_CitySurname:=fs_getLinkedCity(ls_CitySurname)
+        else // adding keywords and set the link
+         Begin
+           p_addKeyWord(ls_CitySurname); // adding a head's meta keywords
+           p_addKeyWord(FieldByName(IBQ_NOM).AsString); // adding a head's meta keywords
+           ls_CitySurname:=fs_getLinkedSurName(FieldByName(IBQ_NOM).AsString) + ' - ' + fs_getLinkedCity(ls_CitySurname);
+         end;
        li_counter:= FieldByName(IBQ_COUNTER).AsInt64;
      end;
     if ( ld_latitude  = CST_DUMMY_COORD) Then
      Exit;
-    ls_City:=StringReplace(ls_City, '''', '\\\''',[rfReplaceAll]);
+    ls_CitySurname:=StringReplace(ls_CitySurname, '''', '\\\''',[rfReplaceAll]);
     p_ReplaceLanguageString ( astl_Aline, CST_MAP_LINE, astl_Line.Text );
-    p_addKeyWord(ls_City); // adding a head's meta keywords
-    ls_City := fs_getLinkedCity(ls_City) + ' - ' ;
+    ls_CitySurname := ls_CitySurname + ' - ' ;
     ls_link := IntToStr(li_counter) + ' ' ;
     if li_counter > 1
      Then AppendStr ( ls_link, gs_ANCESTROWEB_FamilyPersons )
      Else AppendStr ( ls_link, gs_ANCESTROWEB_FamilyPerson  );
     p_ReplaceLanguageString ( astl_Aline, CST_MAP_NAME_CITY ,
-                              StringReplace ( ls_City + fs_GetNameLink ( IBS_MapFiltered.FieldByName(IBQ_NOM).AsString
+                              StringReplace ( ls_CitySurname + fs_GetNameLink ( IBS_MapFiltered.FieldByName(IBQ_NOM).AsString
                               , ls_link, CST_SUBDIR_HTML_FILES + CST_HTML_DIR_SEPARATOR), '"', '\"',[rfReplaceAll]),[rfReplaceAll]);
     p_ReplaceLanguageString ( astl_Aline, CST_MAP_LATITUD   , FloatToStr(ld_latitude ),[rfReplaceAll]);
     p_ReplaceLanguageString ( astl_Aline, CST_MAP_LONGITUD  , FloatToStr(ld_longitude),[rfReplaceAll]);
@@ -1993,7 +2010,7 @@ const CST_DUMMY_COORD = 2000000;
     lstl_ACase    := TStringList.Create;
     lstl_ALine    := TStringList.Create;
     ls_NewSurname := '';
-    ls_ASurname := 'Z123><';  // for a good test
+    ls_ASurname := 'Z1È~23><';  // for a good test
     // loading files
     p_LoadStringList(lstl_HTMLAFolder, gs_Root, CST_FILE_MAP     + CST_EXTENSION_PHP);
     p_LoadStringList(lstl_AllSurnames   , gs_Root, CST_FILE_MapCase + CST_EXTENSION_PHP);
@@ -3209,13 +3226,20 @@ begin
 end;
 
 function TF_AncestroWeb.DoInitBase(const AedNomBase: TCustomComboBox): Boolean;
+var li_i : Integer;
 begin
+  Result := False;
   if fb_AutoComboInit(AedNomBase)
   and (   (DMWeb=nil)
        or (aedNomBase.Text<>DMWeb.ibd_BASE.DatabaseName)
-       or (DMWeb.ibd_BASE.Connected=false))
-   Then Result := DoInit(AedNomBase.Text)
-   Else Result := False;
+       or (DMWeb.ibd_BASE.Connected=false)) Then
+   Begin
+    if FileExistsUTF8(AedNomBase.Text)
+     Then Result := DoInit(AedNomBase.Text)
+     Else for li_i := 0 to AedNomBase.Items.Count - 1 do
+      if AedNomBase.Items [ li_i ] = AedNomBase.Text Then
+       AedNomBase.Items.Delete(li_i);
+   end;
 end;
 
 // function TF_AncestroWeb.DoOpenBase
@@ -3296,9 +3320,8 @@ end;
 // procedure TF_AncestroWeb.FormCreate
 // initializing software and form
 procedure TF_AncestroWeb.FormCreate(Sender: TObject);
-var
-  fbddpath:String;
 {$IFDEF WINDOWS}
+var
   lreg_Registry : TRegistry;
   fKeyRegistry,ls_base: string;
   i:Integer;
@@ -3309,7 +3332,7 @@ var
         if OpenKeyReadOnly(fKeyRegistry) then
         begin
           Result := True;
-          fbddpath:=ReadString('PathFileNameBdd');
+          fbddpath:=ReadString(CST_INI_PATH_BDD);
           cb_Base.Text:=fs_getCorrectString(fbddpath);
           CloseKey;
           Exit;
@@ -3364,10 +3387,10 @@ begin
   end;
   gs_Root:=ExtractFilePath(Application.ExeName); //l'application doit être dans le même répertoire qu'Ancestromania pour utiliser le même gds32.dll
 {$ELSE}
-  gs_Root:=f_IniReadSectionStr('Path','PathAppli','')+DirectorySeparator;
+  gs_Root:=f_IniReadSectionStr(CST_INI_PATH,'PathAppli','')+DirectorySeparator;
   if Length(gs_Root)<=1 then
     gs_Root:=ExtractFilePath(Application.ExeName);
-  fbddpath := '/var/lib/firebird/2.5/data/Ancestro.fdb'; //valable pour tests, mais il faudra trouver autre chose
+  fbddpath := f_IniReadSectionStr(CST_INI_PATH,CST_INI_PATH_BDD, ''); // on linux
 {$ENDIF}
   gs_Root:=gs_Root+CST_AncestroWeb+DirectorySeparator;//pas dans plugins pour l'exe
 
@@ -3394,9 +3417,14 @@ begin
   Height := 400;
   PCPrincipal.ActivePage:=ts_Gen;
   Caption := fs_getCorrectString(CST_AncestroWeb_WithLicense+' : '+gs_AnceSTROWEB_FORM_CAPTION);
-  p_AddToCombo(cb_Base,fbddpath);
-  DoInitBase(cb_Base);
-  p_AddToCombo(cb_Base,fbddpath, False);
+  if fbddpath <> '' Then
+    Begin
+      p_AddToCombo(cb_Base,fbddpath);
+      DoInitBase(cb_Base);
+      p_AddToCombo(cb_Base,fbddpath, False);
+    end
+   else
+   OnFormInfoIni.p_ExecuteLecture(Self);
 end;
 
 procedure TF_AncestroWeb.JvXPButton1Click(Sender: TObject);
@@ -3412,6 +3440,14 @@ begin
   {$ENDIF}
   p_ReadComboBoxItems(cb_Base,cb_Base.Items);
   p_iniReadKey;
+  {$IFDEF LINUX}
+  if fbddpath <> f_IniReadSectionStr(CST_INI_PATH,CST_INI_PATH_BDD, fbddpath) Then
+    Begin
+      fbddpath := f_IniReadSectionStr(CST_INI_PATH,CST_INI_PATH_BDD, fbddpath); // on linux
+      p_AddToCombo(cb_Base,fbddpath);
+      DoInitBase(cb_Base);
+    end;
+  {$ENDIF}
 end;
 
 procedure TF_AncestroWeb.OnFormInfoIniIniWrite(const AInifile: TCustomInifile;
@@ -3419,6 +3455,7 @@ procedure TF_AncestroWeb.OnFormInfoIniIniWrite(const AInifile: TCustomInifile;
 begin
   p_writeComboBoxItems(cb_Base,cb_Base.Items);
   p_iniWriteKey;
+  p_IniWriteSectionStr(CST_INI_PATH,CST_INI_PATH_BDD,fbddpath);
 end;
 
 procedure TF_AncestroWeb.PCPrincipalChange(Sender: TObject);
