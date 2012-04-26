@@ -1,4 +1,4 @@
-library AncestroWebPlugin;
+﻿library AncestroWebPlugin;
 
 { Remarque importante concernant la gestion de mémoire de DLL : ShareMem doit
   être la première unité de la clause USES de votre bibliothèque ET de votre projet 

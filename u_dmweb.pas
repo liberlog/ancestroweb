@@ -33,12 +33,14 @@ A partir de la vous pouvez faire toutes vos requetes sur la base
 interface
 
 uses
-  SysUtils, Classes, process, IBDatabase,
-{$IFNDEF FPC}
+  SysUtils, Classes, IBDatabase,
+{$IFDEF FPC}
+  process,
+{$ELSE}
   fonctions_system,
 {$ENDIF}
   IBQuery, IBSQLMonitor, IBSQL, Dialogs, Forms, functions_html,
-  fonctions_images, IBIntf;
+  fonctions_images, IBIntf, DB, IBCustomDataSet;
 
 var
   gt_TabSheets: TaHTMLULTabSheet;
@@ -181,6 +183,7 @@ const
   CST_SUBDIR_SAVE = 'Sauve';
   CST_SUBDIR_SOURCES = 'Files';
   CST_SUBDIR_HTML_FILES = 'Files';
+  CST_SUBDIR_HTML_FILES_DIR = CST_SUBDIR_HTML_FILES+'/';
   CST_SUBDIR_HTML_LISTS = 'Lists';
   CST_SUBDIR_HTML_ARCHIVE = 'Archive';
   CST_SUBDIR_HTML_IMAGES = 'Images';
@@ -301,7 +304,6 @@ type
     ibd_BASE: TIBDatabase;
     IBS_DLL: TIBSQL;
     IBS_UpdateDLL: TIBSQL;
-    Execute: TProcess;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure p_setCledossier(const AValue: integer);

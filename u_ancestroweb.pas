@@ -1,7 +1,10 @@
-unit U_AncestroWeb;
+﻿unit U_AncestroWeb;
 
 {$IFDEF FPC}
+{$R *.lfm}
 {$mode objfpc}{$H+}
+{$ELSE}
+{$R *.dfm}
 {$ENDIF}
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -33,7 +36,7 @@ uses
 {$IFNDEF FPC}
   Mask,  rxToolEdit, JvExControls,  Windows,
 {$ELSE}
-  LCLIntf, LCLType, EditBtn,
+  LCLIntf, LCLType, EditBtn,FileUtil,
 {$ENDIF}
   fonctions_string,
 {$ifdef windows}
@@ -45,10 +48,11 @@ uses
   fonctions_version,
   U_DMWeb, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, StdCtrls, DB,
   IBQuery, DBCtrls, ExtCtrls, Buttons, ComCtrls, DBGrids,
-  functions_html, JvXPCheckCtrls, Spin, FileUtil, U_OnFormInfoIni,
+  functions_html, JvXPCheckCtrls, Spin, U_OnFormInfoIni,
   U_ExtImage, u_buttons_appli, IBSQL, U_ExtFileCopy, u_traducefile,
   JvXPButtons, IniFiles,TFlatComboBoxUnit, TFlatEditUnit,TFlatGaugeUnit,
-  TFlatCheckBoxUnit, TFlatMemoUnit,TFlatSpinEditUnit;
+  TFlatCheckBoxUnit, TFlatMemoUnit, u_extabscopy, IBCustomDataSet, Grids,
+  ImagingComponents, JvXPCore;
 
   const
     gVer_AncestroWeb : T_Version = ( Component : 'Application Ancestroweb' ;
@@ -105,7 +109,6 @@ type
     ch_ShowMainFile: TFlatCheckbox;
     ch_SurnamesLink: TFlatCheckbox;
     DBGrid1: TDBGrid;
-    de_ExportWeb: TDirectoryEdit;
     ds_Individu: TDatasource;
     cb_Base: TFlatComboBox;
     ed_AgesName: TFlatEdit;
@@ -259,6 +262,7 @@ type
     ts_Gen: TTabSheet;
     cb_Files: TFlatComboBox;
     Label44: TLabel;
+    de_ExportWeb: TDirectoryEdit;
     procedure btnSelectBaseClick(Sender: TObject);
     procedure bt_exportClick(Sender: TObject);
     procedure bt_genClick(Sender: TObject);
@@ -324,11 +328,11 @@ type
     function fs_CreatePrevNext ( const ai_PreviousNext: Longint;
                                  const as_PreviousNext: String=CST_PAGE_PREVIOUS;
                                  const as_Subdir: String='';
-                                       as_BeginLinkFiles: String=CST_SUBDIR_HTML_FILES+'/'): String;
-    function fs_getaltPhoto(const IBQ_IndividuFiltered: TIBQuery): String; virtual; overload;
-    function fs_getaltPhoto(const IBQ_IndividuFiltered: TIBSQL): String; virtual; overload;
-    function fs_getNameAndSurName(const ibq_Query: TIBQuery): String; virtual; overload;
-    function fs_getNameAndSurName(const ibq_Query: TIBSQL): String; virtual; overload;
+                                       as_BeginLinkFiles: String=CST_SUBDIR_HTML_FILES_DIR): String;
+    function fs_getaltPhoto(const IBQ_IndividuFiltered: TIBQuery): String;overload; virtual;
+    function fs_getaltPhoto(const IBQ_IndividuFiltered: TIBSQL): String;overload; virtual;
+    function fs_getNameAndSurName(const ibq_Query: TIBQuery): String;overload; virtual;
+    function fs_getNameAndSurName(const ibq_Query: TIBSQL): String;overload; virtual;
     function fs_GetTitleTree(const as_NameOfTree: String;
                              const ai_generations: Longint): String;
     procedure p_AddToCombo ( const acb_combo : TFlatComboBox;const as_Base: String; const ab_SetIndex :Boolean = True);
@@ -369,9 +373,9 @@ type
     procedure p_iniReadKey;
     procedure p_iniWriteKey;
     function fb_OpenTree(const AIBQ_Tree: TIBQuery; const ai_Cle: longint;
-      const ai_Niveau: integer = 0;const ai_Sexe: integer = 0): boolean; virtual; overload;
+      const ai_Niveau: integer = 0;const ai_Sexe: integer = 0): boolean; overload; virtual;
     function fb_OpenTree(const AIBQ_Tree: TIBSQL; const ai_Cle: longint;
-      const ai_Niveau: integer = 0;const ai_Sexe: integer = 0): boolean; virtual; overload;
+      const ai_Niveau: integer = 0;const ai_Sexe: integer = 0): boolean; overload; virtual;
     procedure p_setBaseToIniFile ( const as_Base : String );
     procedure p_Setcomments(const as_Comment: String);
     procedure ListerDossiers;
@@ -402,12 +406,12 @@ implementation
 
 uses  fonctions_init,
   functions_html_tree,
-  u_extabscopy,
 {$IFNDEF FPC}
   AncestroWeb_strings_delphi,
   windirs,
 {$ELSE}
   AncestroWeb_strings,UniqueInstanceRaw,
+  u_extabscopy,
 {$ENDIF}
 {$IFDEF WIN32}
 //  windirs,
@@ -419,11 +423,6 @@ uses  fonctions_init,
   fonctions_components,
   fonctions_file;
 
-{$IFNDEF FPC}
-  {$R *.dfm}
-{$ELSE}
-  {$R *.lfm}
-{$ENDIF}
 
 var lw_CurrentYear  : Word = 0;
     ldt_100YearData : TDateTime = 0;
@@ -3500,7 +3499,7 @@ begin
         if cbDossier.Items.Count=1 then
         begin
           DMWeb.CleDossier:=Fields[0].AsInteger;
-          with F_AncestroWeb.cbDossier do
+          with cbDossier do
             Caption:=Items[0];
         end;
         Next;
