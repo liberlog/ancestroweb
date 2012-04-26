@@ -1,0 +1,455 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="9"/>
+    <General>
+      <Flags>
+        <MainUnitHasUsesSectionForAllUnits Value="False"/>
+        <MainUnitHasCreateFormStatements Value="False"/>
+        <MainUnitHasTitleStatement Value="False"/>
+      </Flags>
+      <MainUnit Value="0"/>
+      <Title Value="AncestroWebPlugin"/>
+      <ResourceType Value="res"/>
+      <UseXPManifest Value="True"/>
+      <Icon Value="0"/>
+      <ActiveWindowIndexAtStart Value="0"/>
+    </General>
+    <i18n>
+      <EnableI18N LFM="False"/>
+    </i18n>
+    <VersionInfo>
+      <UseVersionInfo Value="True"/>
+      <MajorVersionNr Value="1"/>
+      <StringTable ProductVersion=""/>
+    </VersionInfo>
+    <BuildModes Count="1" Active="Default">
+      <Item1 Name="Default" Default="True"/>
+    </BuildModes>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IncludeFileFilter Value="*.(pas|pp|inc|lfm|lpr|lrs|lpi|lpk|sh|xml)"/>
+      <ExcludeFileFilter Value="*.(bak|ppu|o|so);*~;backup"/>
+    </PublishOptions>
+    <RunParams>
+      <local>
+        <FormatVersion Value="1"/>
+        <LaunchingApplication PathPlusParams="/usr/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+      </local>
+    </RunParams>
+    <RequiredPackages Count="7">
+      <Item1>
+        <PackageName Value="lazfonctions"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="JvXPBarLaz"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="ExtHTML"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="ExtCopy"/>
+      </Item4>
+      <Item5>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item5>
+      <Item6>
+        <PackageName Value="LCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item6>
+      <Item7>
+        <PackageName Value="ibexpress"/>
+      </Item7>
+    </RequiredPackages>
+    <Units Count="30">
+      <Unit0>
+        <Filename Value="AncestroWebPlugin.dpr"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="AncestroWebPlugin"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="16" Y="33"/>
+        <UsageCount Value="23"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="DefObjet.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DefObjet"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="12"/>
+        <CursorPos X="29" Y="42"/>
+        <UsageCount Value="23"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="U_Form_Main.pas"/>
+        <ComponentName Value="FMain"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="U_Form_Main"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="3" Y="1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="U_DM.pas"/>
+        <ComponentName Value="DM"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="DataModule"/>
+        <UnitName Value="U_DM"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="28" Y="1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="U_Form_Main.lfm"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="U_DM.lfm"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="8"/>
+        <CursorPos X="1" Y="36"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="../ARBRE/Load_Tree.pas"/>
+        <UnitName Value="Load_Tree"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="52"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="../ARBRE/F_Tree.pas"/>
+        <HasResources Value="True"/>
+        <UnitName Value="F_Tree"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="281"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="../extended/fonctions/fonctions_languages.pas"/>
+        <UnitName Value="fonctions_languages"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="6" Y="1"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="../xmlframes/fonctions/fonctions_ObjetsXML.pas"/>
+        <UnitName Value="fonctions_ObjetsXML"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="54"/>
+        <CursorPos X="131" Y="55"/>
+        <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="u_ancestroweb.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="F_AncestroWeb"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="U_AncestroWeb"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="762"/>
+        <CursorPos X="20" Y="776"/>
+        <UsageCount Value="23"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="u_dmweb.pas"/>
+        <IsPartOfProject Value="True"/>
+        <HasResources Value="True"/>
+        <UnitName Value="U_DMWeb"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="236"/>
+        <CursorPos X="6" Y="258"/>
+        <UsageCount Value="23"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="ancestroweb_strings.pas"/>
+        <UnitName Value="AncestroWeb_strings"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="126" Y="12"/>
+        <UsageCount Value="12"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="AncestroWebExe.lpi"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="XML"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="AncestroWebExe.lpr"/>
+        <UnitName Value="demo"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="5"/>
+        <CursorPos X="24" Y="20"/>
+        <UsageCount Value="12"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="../extended/fonctions/fonctions_string.pas"/>
+        <UnitName Value="fonctions_string"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="727"/>
+        <CursorPos X="23" Y="728"/>
+        <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="../extended/composants/U_OnFormInfoIni.pas"/>
+        <UnitName Value="U_OnFormInfoIni"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="318"/>
+        <CursorPos X="3" Y="327"/>
+        <UsageCount Value="10"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="ExtHTML/functions/functions_html.pas"/>
+        <UnitName Value="functions_html"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="161"/>
+        <CursorPos X="117" Y="167"/>
+        <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="../ExtCopy/composants/u_extractfile.pas"/>
+        <UnitName Value="u_extractfile"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="19"/>
+        <CursorPos X="4" Y="35"/>
+        <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="../ExtCopy/composants/u_extabscopy.pas"/>
+        <UnitName Value="u_extabscopy"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="12"/>
+        <CursorPos X="23" Y="72"/>
+        <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="../ExtCopy/fonctions/fonctions_file.pas"/>
+        <UnitName Value="fonctions_file"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="4"/>
+        <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="../ExtCopy/fonctions/unit_messagescopy.pas"/>
+        <UnitName Value="unit_messagescopy"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="9"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="../ExtCopy/composants/u_traducefile.pas"/>
+        <UnitName Value="u_traducefile"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="459"/>
+        <CursorPos X="82" Y="459"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="../ExtCopy/composants/U_ExtFileCopy.pas"/>
+        <UnitName Value="U_ExtFileCopy"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="38"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="../Extended/composants/U_DBListView.pas"/>
+        <UnitName Value="U_DBListView"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="23"/>
+        <CursorPos X="40" Y="32"/>
+        <UsageCount Value="10"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="../Extended/composants/u_framework_dbcomponents.pas"/>
+        <UnitName Value="u_framework_dbcomponents"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="87"/>
+        <CursorPos X="42" Y="96"/>
+        <UsageCount Value="10"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="../Extended/composants/U_FormMainIni.pas"/>
+        <UnitName Value="U_FormMainIni"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="304"/>
+        <CursorPos X="38" Y="326"/>
+        <UsageCount Value="10"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="../Extended/composants/U_ExtDBNavigator.pas"/>
+        <UnitName Value="U_ExtDBNavigator"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="113"/>
+        <CursorPos X="67" Y="135"/>
+        <UsageCount Value="10"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="/usr/lib/lazarus/0.9.30/lcl/dbctrls.pp"/>
+        <UnitName Value="DbCtrls"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1085"/>
+        <CursorPos X="7" Y="1107"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="/usr/lib/lazarus/0.9.30/lcl/controls.pp"/>
+        <UnitName Value="Controls"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1000"/>
+        <CursorPos X="15" Y="1022"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit29>
+    </Units>
+    <JumpHistory Count="13" HistoryIndex="12">
+      <Position1>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="338" Column="52" TopLine="320"/>
+      </Position1>
+      <Position2>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position2>
+      <Position3>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1790" Column="36" TopLine="1769"/>
+      </Position3>
+      <Position4>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="32" Column="47" TopLine="11"/>
+      </Position4>
+      <Position5>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="677" Column="3" TopLine="655"/>
+      </Position5>
+      <Position6>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="285" Column="1" TopLine="268"/>
+      </Position6>
+      <Position7>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1122" Column="8" TopLine="1100"/>
+      </Position7>
+      <Position8>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1265" Column="41" TopLine="1243"/>
+      </Position8>
+      <Position9>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1122" Column="9" TopLine="1100"/>
+      </Position9>
+      <Position10>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1121" Column="24" TopLine="1100"/>
+      </Position10>
+      <Position11>
+        <Filename Value="u_dmweb.pas"/>
+        <Caret Line="40" Column="3" TopLine="18"/>
+      </Position11>
+      <Position12>
+        <Filename Value="u_dmweb.pas"/>
+        <Caret Line="36" Column="22" TopLine="14"/>
+      </Position12>
+      <Position13>
+        <Filename Value="u_dmweb.pas"/>
+        <Caret Line="279" Column="1" TopLine="259"/>
+      </Position13>
+    </JumpHistory>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="9"/>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+      <UnitOutputDirectory Value="Plugins/$(TargetCPU)-$(TargetOS)"/>
+    </SearchPaths>
+    <Parsing>
+      <SyntaxOptions>
+        <SyntaxMode Value="Delphi"/>
+      </SyntaxOptions>
+    </Parsing>
+    <CodeGeneration>
+      <Optimizations>
+        <OptimizationLevel Value="3"/>
+      </Optimizations>
+    </CodeGeneration>
+    <Linking>
+      <Debugging>
+        <UseLineInfoUnit Value="False"/>
+      </Debugging>
+      <Options>
+        <ExecutableType Value="Library"/>
+      </Options>
+    </Linking>
+    <Other>
+      <CompilerMessages>
+        <UseMsgFile Value="True"/>
+      </CompilerMessages>
+      <CompilerPath Value="$(CompPath)"/>
+    </Other>
+  </CompilerOptions>
+  <Debugging>
+    <BreakPoints Count="1">
+      <Item1>
+        <Source Value="../extended/fonctions/fonctions_string.pas"/>
+        <Line Value="735"/>
+      </Item1>
+    </BreakPoints>
+    <Exceptions Count="3">
+      <Item1>
+        <Name Value="EAbort"/>
+      </Item1>
+      <Item2>
+        <Name Value="ECodetoolError"/>
+      </Item2>
+      <Item3>
+        <Name Value="EFOpenError"/>
+      </Item3>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

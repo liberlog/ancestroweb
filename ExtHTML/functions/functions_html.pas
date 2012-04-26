@@ -303,12 +303,13 @@ Begin
   lstl_Keywords := nil;
   as_KeyWord:=StringReplace(Trim(as_KeyWord),'"', '\"', [rfReplaceAll]);
   p_ChampsVersListe ( lstl_Keywords, as_KeyWord, ach_Separator );
-  for li_i:= 0 to lstl_Keywords.Count-1 do
-    Begin
-      ls_KeyWord := Trim ( lstl_Keywords [ li_i ] );
-      if gstl_HeadKeyWords.IndexOf(ls_KeyWord)<0 Then
-        gstl_HeadKeyWords.add (ls_KeyWord);
-    end;
+  if assigned ( gstl_HeadKeyWords ) Then
+    for li_i:= 0 to lstl_Keywords.Count-1 do
+      Begin
+        ls_KeyWord := Trim ( lstl_Keywords [ li_i ] );
+        if gstl_HeadKeyWords.IndexOf(ls_KeyWord)<0 Then
+          gstl_HeadKeyWords.add (ls_KeyWord);
+      end;
 end;
 
 procedure p_FreeKeyWords;

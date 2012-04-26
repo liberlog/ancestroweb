@@ -47,7 +47,8 @@ uses
   IBQuery, DBCtrls, ExtCtrls, Buttons, ComCtrls, DBGrids,
   functions_html, JvXPCheckCtrls, Spin, FileUtil, U_OnFormInfoIni,
   U_ExtImage, u_buttons_appli, IBSQL, U_ExtFileCopy, u_traducefile,
-  JvXPButtons, IniFiles;
+  JvXPButtons, IniFiles,TFlatComboBoxUnit, TFlatEditUnit,TFlatGaugeUnit,
+  TFlatCheckBoxUnit, TFlatMemoUnit,TFlatSpinEditUnit;
 
   const
     gVer_AncestroWeb : T_Version = ( Component : 'Application Ancestroweb' ;
@@ -77,60 +78,60 @@ type
   TF_AncestroWeb = class(TForm)
     btnSelectBase: TSpeedButton;
     bt_export: TFWSaveAs;
-    cb_CityAccents: TComboBox;
-    cb_ContactSecurity: TComboBox;
-    cb_ContactTool: TComboBox;
-    cb_NamesAccents: TComboBox;
-    cb_JobsAccents: TComboBox;
-    cb_SurnamesAccents: TComboBox;
-    ch_ancestors: TJvXPCheckBox;
-    ch_CitiesLink: TJvXPCheckbox;
-    ch_Comptage: TJvXPCheckbox;
-    ch_ContactIdentify: TJvXPCheckbox;
-    ch_Filtered: TJvXPCheckBox;
-    ch_genages: TJvXPCheckbox;
-    ch_genContact: TJvXPCheckbox;
-    ch_genjobs: TJvXPCheckbox;
-    ch_gensurnames: TJvXPCheckbox;
-    cb_Themes: TComboBox;
-    cbDossier: TComboBox;
-    ch_genMap: TJvXPCheckbox;
-    ch_genSearch: TJvXPCheckbox;
-    ch_genTree: TJvXPCheckbox;
-    ch_HideLessThan100: TJvXPCheckbox;
-    ch_Images: TJvXPCheckbox;
-    ch_NamesLink: TJvXPCheckbox;
-    ch_JobsLink: TJvXPCheckbox;
-    ch_ShowMainFile: TJvXPCheckbox;
-    ch_SurnamesLink: TJvXPCheckbox;
+    cb_CityAccents: TFlatComboBox;
+    cb_ContactSecurity: TFlatComboBox;
+    cb_ContactTool: TFlatComboBox;
+    cb_NamesAccents: TFlatComboBox;
+    cb_JobsAccents: TFlatComboBox;
+    cb_SurnamesAccents: TFlatComboBox;
+    ch_ancestors: TFlatCheckbox;
+    ch_CitiesLink: TFlatCheckbox;
+    ch_Comptage: TFlatCheckbox;
+    ch_ContactIdentify: TFlatCheckbox;
+    ch_Filtered: TFlatCheckbox;
+    ch_genages: TFlatCheckbox;
+    ch_genContact: TFlatCheckbox;
+    ch_genjobs: TFlatCheckbox;
+    ch_gensurnames: TFlatCheckbox;
+    cb_Themes: TFlatComboBox;
+    cbDossier: TFlatComboBox;
+    ch_genMap: TFlatCheckbox;
+    ch_genSearch: TFlatCheckbox;
+    ch_genTree: TFlatCheckbox;
+    ch_HideLessThan100: TFlatCheckbox;
+    ch_Images: TFlatCheckbox;
+    ch_NamesLink: TFlatCheckbox;
+    ch_JobsLink: TFlatCheckbox;
+    ch_ShowMainFile: TFlatCheckbox;
+    ch_SurnamesLink: TFlatCheckbox;
     DBGrid1: TDBGrid;
     de_ExportWeb: TDirectoryEdit;
     ds_Individu: TDatasource;
-    cb_Base: TComboBox;
-    ed_AgesName: TEdit;
-    ed_Author: TEdit;
-    ed_BaseCities: TEdit;
-    ed_BaseNames: TEdit;
-    ed_BaseJobs: TEdit;
-    ed_BaseSurnames: TEdit;
-    ed_ContactAuthor: TEdit;
-    ed_ContactHost: TEdit;
-    ed_ContactMail: TEdit;
-    ed_ContactName: TEdit;
-    ed_ContactPassword: TEdit;
-    ed_ContactPassword2: TEdit;
-    ed_ContactUser: TEdit;
-    ed_FileBeginName: TEdit;
-    ed_IndexName: TEdit;
-    ed_JobsName: TEdit;
-    ed_ListsBeginName: TEdit;
-    ed_SurnamesFileName: TEdit;
-    ed_MapFileName: TEdit;
-    ed_SearchName: TEdit;
-    ed_SearchQuery: TEdit;
-    ed_SearchSite: TEdit;
-    ed_SearchTool: TEdit;
-    ed_TreeName: TEdit;
+    cb_Base: TFlatComboBox;
+    ed_AgesName: TFlatEdit;
+    ed_Author: TFlatEdit;
+    ed_BaseCities: TFlatEdit;
+    ed_BaseNames: TFlatEdit;
+    ed_BaseJobs: TFlatEdit;
+    ed_BaseSurnames: TFlatEdit;
+    ed_ContactAuthor: TFlatEdit;
+    ed_ContactHost: TFlatEdit;
+    ed_ContactMail: TFlatEdit;
+    ed_ContactName: TFlatEdit;
+    ed_ContactPassword: TFlatEdit;
+    ed_ContactPassword2: TFlatEdit;
+    ed_ContactUser: TFlatEdit;
+    ed_FileBeginName: TFlatEdit;
+    ed_IndexName: TFlatEdit;
+    ed_JobsName: TFlatEdit;
+    ed_ListsBeginName: TFlatEdit;
+    ed_SurnamesFileName: TFlatEdit;
+    ed_MapFileName: TFlatEdit;
+    ed_SearchName: TFlatEdit;
+    ed_SearchQuery: TFlatEdit;
+    ed_SearchSite: TFlatEdit;
+    ed_SearchTool: TFlatEdit;
+    ed_TreeName: TFlatEdit;
     ExtImage1: TExtImage;
     ExtImage2: TExtImage;
     ExtImage3: TExtImage;
@@ -205,16 +206,16 @@ type
     Label9: TLabel;
     lb_DescribeMap: TLabel;
     lb_Images: TLabel;
-    me_Bottom: TMemo;
-    me_ContactHead: TMemo;
-    me_MapHead: TMemo;
-    me_Description: TMemo;
-    me_FilesHead: TMemo;
-    me_HeadAges: TMemo;
-    me_HeadJobs: TMemo;
-    me_HeadTree: TMemo;
-    me_surnamesHead: TMemo;
-    me_searchHead: TMemo;
+    me_Bottom: TFlatMemo;
+    me_ContactHead: TFlatMemo;
+    me_MapHead: TFlatMemo;
+    me_Description: TFlatMemo;
+    me_FilesHead: TFlatMemo;
+    me_HeadAges: TFlatMemo;
+    me_HeadJobs: TFlatMemo;
+    me_HeadTree: TFlatMemo;
+    me_surnamesHead: TFlatMemo;
+    me_searchHead: TFlatMemo;
     OnFormInfoIni: TOnFormInfoIni;
     OpenDialog: TOpenDialog;
     PageControl1: TPageControl;
@@ -236,8 +237,8 @@ type
     Panel5: TPanel;
     Panel6: TPanel;
     Panel7: TPanel;
-    pb_ProgressInd: TProgressBar;
-    pb_ProgressAll: TProgressBar;
+    pb_ProgressInd: TFlatGauge;
+    pb_ProgressAll: TFlatGauge;
     se_ContactPort: TSpinEdit;
     Splitter1: TSplitter;
     Splitter2: TSplitter;
@@ -256,7 +257,7 @@ type
     TraduceImage: TTraduceFile;
     ts_about: TTabSheet;
     ts_Gen: TTabSheet;
-    cb_Files: TComboBox;
+    cb_Files: TFlatComboBox;
     Label44: TLabel;
     procedure btnSelectBaseClick(Sender: TObject);
     procedure bt_exportClick(Sender: TObject);
@@ -330,7 +331,7 @@ type
     function fs_getNameAndSurName(const ibq_Query: TIBSQL): String; virtual; overload;
     function fs_GetTitleTree(const as_NameOfTree: String;
                              const ai_generations: Longint): String;
-    procedure p_AddToCombo ( const acb_combo : TComboBox;const as_Base: String; const ab_SetIndex :Boolean = True);
+    procedure p_AddToCombo ( const acb_combo : TFlatComboBox;const as_Base: String; const ab_SetIndex :Boolean = True);
     procedure p_CopyStructure;
     procedure p_CreateAHtmlFile(const astl_Destination: TStringList;
       const as_BeginingFile, as_Describe, as_Title, as_LittleTitle, as_LongTitle: string;
@@ -760,9 +761,9 @@ begin
   gs_RootPathForExport := de_ExportWeb.Directory + DirectorySeparator;
   gb_Generate := True;
   IBQ_Individu.DisableControls;
-  pb_ProgressAll.Position := 0;
-  pb_ProgressInd.Position := 0; // initing not needed user value
-  pb_ProgressAll.Max := CST_PROGRESS_COUNTER_COPY + CST_PROGRESS_COUNTER_TITLE + fi_CreateSheets;
+  pb_ProgressAll.Progress := 0;
+  pb_ProgressInd.Progress := 0; // initing not needed user value
+  pb_ProgressAll.MaxValue := CST_PROGRESS_COUNTER_COPY + CST_PROGRESS_COUNTER_TITLE + fi_CreateSheets;
 
   try
     p_CopyStructure;
@@ -883,7 +884,7 @@ end;
 
 // procedure TF_AncestroWeb.p_AddABase
 // add and set a database
-procedure TF_AncestroWeb.p_AddToCombo ( const acb_combo : TComboBox; const as_Base : String ; const ab_SetIndex :Boolean = True);
+procedure TF_AncestroWeb.p_AddToCombo ( const acb_combo : TFlatComboBox; const as_Base : String ; const ab_SetIndex :Boolean = True);
 var li_i : Integer;
     lb_found : Boolean;
 Begin
@@ -945,7 +946,7 @@ end;
 // setting the main progress bar total
 function TF_AncestroWeb.fi_CreateSheets: integer;
 
-  procedure p_setCorrectFileName(const aed_NameFile: TEdit;
+  procedure p_setCorrectFileName(const aed_NameFile: TFlatEdit;
   const as_NameFile: string);
   begin
     if aed_NameFile.Text = '' then
@@ -1073,7 +1074,7 @@ end;
 // increments main progress bar
 procedure TF_AncestroWeb.p_IncProgressBar;
 begin
-  pb_ProgressAll.Position := pb_ProgressAll.Position + 1; // growing
+  pb_ProgressAll.Progress := pb_ProgressAll.Progress + 1; // growing
   Application.ProcessMessages;
 end;
 
@@ -1081,7 +1082,7 @@ end;
 // increments specialized progress bar
 procedure TF_AncestroWeb.p_IncProgressInd;
 begin
-  pb_ProgressInd.Position := pb_ProgressInd.Position + 1; // growing
+  pb_ProgressInd.Progress := pb_ProgressInd.Progress + 1; // growing
   Application.ProcessMessages;
 end;
 
@@ -1359,11 +1360,11 @@ begin
   p_Setcomments (( gs_AnceSTROWEB_FamilyTree )); // advert for user
   lstl_HTMLTree := TStringList.Create;
   p_CreateKeyWords;
-  pb_ProgressInd.Position := 0; // initing not needed user value
+  pb_ProgressInd.Progress := 0; // initing not needed user value
   if fb_OpenTree(IBQ_Tree, gi_CleFiche)
    then
     try
-      pb_ProgressInd.Max := IBQ_Tree.RecordCount;
+      pb_ProgressInd.MaxValue := IBQ_Tree.RecordCount;
       p_IncProgressBar; // growing the counter
       if not ch_Filtered.Checked and not
         IBQ_Tree.Locate(IBQ_CLE_FICHE, gi_CleFiche, []) then
@@ -1505,7 +1506,7 @@ begin
   p_AddCounting ( lstl_HTMLHome );
   lstl_HTMLHome.Add(CST_HTML_CENTER_END);
   p_CreateKeyWords;
-  pb_ProgressInd.Position := 0; // initing not needed user value
+  pb_ProgressInd.Progress := 0; // initing not needed user value
   p_CreateAHtmlFile(lstl_HTMLHome, CST_FILE_Home, me_Description.Lines.Text,
     ( gs_AnceSTROWEB_Home ), ( gs_AnceSTROWEB_Home ), gs_ANCESTROWEB_Welcome, gs_LinkGedcom);
   p_IncProgressBar; // growing the counter
@@ -2004,8 +2005,8 @@ const CST_DUMMY_COORD = 2000000;
     p_CreateKeyWords;
     ls_ASurname := '';
     li_Name := -1;
-    pb_ProgressInd.Position:=0;  // initing user value
-    pb_ProgressInd.Max:=IBS_FilesFiltered.RecordCount;
+    pb_ProgressInd.Progress:=0;  // initing user value
+    pb_ProgressInd.MaxValue:=IBS_FilesFiltered.RecordCount;
     lstl_AllSurnames := TStringList.Create;
     lstl_ACase    := TStringList.Create;
     lstl_ALine    := TStringList.Create;
@@ -2107,8 +2108,8 @@ begin
   p_createMap;
   p_CreateKeyWords;
   ls_ASurname := '';
-  pb_ProgressInd.Position:=0;  // initing user value
-  pb_ProgressInd.Max:=IBS_FilesFiltered.RecordCount;
+  pb_ProgressInd.Progress:=0;  // initing user value
+  pb_ProgressInd.MaxValue:=IBS_FilesFiltered.RecordCount;
   lstl_HTMLAFolder.Add ( fs_CreateULTabsheets ( gt_SheetsLetters, '', CST_HTML_SUBMENU, False, True ));
   lstl_HTMLAFolder.Add ( fs_CreateElementWithId(CST_HTML_TABLE, 'Surnames') + CST_HTML_TR_BEGIN + CST_HTML_TD_BEGIN  );
   while not IBS_FilesFiltered.EOF do
@@ -2274,11 +2275,11 @@ begin
     Finalize ( lt_SheetsLists );
     p_createLettersSheets ( lt_SheetsLists, IBQ_FilesFiltered, gi_FilesPerList, ed_ListsBeginName.Text );
     li_CounterPages := 0;
-    pb_ProgressInd.Position := 0; // initing user value
+    pb_ProgressInd.Progress := 0; // initing user value
     ls_ImagesDir := gs_RootPathForExport + CST_SUBDIR_HTML_LISTS + DirectorySeparator + CST_SUBDIR_HTML_IMAGES + DirectorySeparator ;
     fb_CreateDirectoryStructure(ls_ImagesDir);
     fb_CreateDirectoryStructure(gs_RootPathForExport + CST_SUBDIR_HTML_LISTS);
-    pb_ProgressInd.Max := IBQ_FilesFiltered.RecordCount;
+    pb_ProgressInd.MaxValue := IBQ_FilesFiltered.RecordCount;
     IBQ_FilesFiltered.First;
     p_SelectTabSheet(gt_TabSheets, ( gs_AnceSTROWEB_List ), ''); // current page sheet
     ls_ASurname := '';
@@ -2661,14 +2662,14 @@ begin
   p_IncProgressBar; // growing the counter
   p_Setcomments (( gs_AnceSTROWEB_Files )); // advert for user
   li_CounterPages := 0;
-  pb_ProgressInd.Position := 0; // initing not needed user value
+  pb_ProgressInd.Progress := 0; // initing not needed user value
   ls_ImagesDir := gs_RootPathForExport + CST_SUBDIR_HTML_FILES +
     DirectorySeparator + CST_SUBDIR_HTML_IMAGES + DirectorySeparator;
   ls_ArchivesDir := gs_RootPathForExport + CST_SUBDIR_HTML_ARCHIVE +
     DirectorySeparator ;
   fb_CreateDirectoryStructure(ls_ImagesDir);
   fb_CreateDirectoryStructure(ls_ArchivesDir);
-  pb_ProgressInd.Max := IBQ_FilesFiltered.RecordCount;
+  pb_ProgressInd.MaxValue := IBQ_FilesFiltered.RecordCount;
   IBQ_FilesFiltered.First;
   p_SelectTabSheet(gt_TabSheets, ( gs_AnceSTROWEB_Files ), '', False); // current page sheet
   ls_ASurname := '';
@@ -2688,7 +2689,7 @@ begin
     me_FilesHead.Text) + CST_HTML_Paragraph_END;
   lstl_HTMLPersons.Add(CST_HTML_CENTER_END);
   p_CreateKeyWords;
-  pb_ProgressInd.Position := 0; // initing not needed user value
+  pb_ProgressInd.Progress := 0; // initing not needed user value
   p_IncProgressBar; // growing the counter
   p_CreateAHtmlFile(lstl_HTMLPersons, CST_FILE_FILES, me_FilesHead.Lines.Text,
     ( gs_AnceSTROWEB_Files ), gs_AnceSTROWEB_Files, gs_ANCESTROWEB_Files_Long, gs_LinkGedcom);
@@ -2747,7 +2748,7 @@ begin
 
   // Head key words
   p_CreateKeyWords;
-  pb_ProgressInd.Position := 0; // initing not needed user value
+  pb_ProgressInd.Progress := 0; // initing not needed user value
 
   // finishing creating the page
   p_CreateAHtmlFile(lstl_HTMLContact, CST_FILE_Contact, me_ContactHead.Lines.Text,
@@ -2780,7 +2781,7 @@ var
   ls_destination: string;
 begin
   p_Setcomments (( gs_AnceSTROWEB_Search )); // advert for user
-  pb_ProgressInd.Position := 0; // initing not needed user value
+  pb_ProgressInd.Progress := 0; // initing not needed user value
   lstl_HTMLSearch := TStringList.Create;
   p_CreateAHtmlFile(lstl_HTMLSearch, CST_FILE_SEARCH, me_searchHead.Lines.Text,
         ( gs_AnceSTROWEB_Search ), gs_AnceSTROWEB_Search, gs_ANCESTROWEB_SearchLong, gs_LinkGedcom, '');
@@ -2987,7 +2988,7 @@ var
 
 begin
   p_Setcomments ( gs_ANCESTROWEB_Ages ); // advert for user
-  pb_ProgressInd.Position := 0; // initing not needed user value
+  pb_ProgressInd.Progress := 0; // initing not needed user value
   // strings from files
   lstl_HTMLAges  := TStringList.Create;
   lstl_HTMLAges2 := TStringList.Create;
@@ -3123,7 +3124,7 @@ var
 
 begin
   p_Setcomments ( gs_ANCESTROWEB_Jobs ); // advert for user
-  pb_ProgressInd.Position := 0; // initing not needed user value
+  pb_ProgressInd.Progress := 0; // initing not needed user value
   // strings from files
   lstl_HTMLJobs  := TStringList.Create;
   lstl_HTMLJobs2 := TStringList.Create;
@@ -3175,6 +3176,8 @@ procedure TF_AncestroWeb.p_CreateAHtmlFile(const astl_Destination: TStringList;
   CST_EXTENSION_HTML;
   const as_BeforeHTML: string = ''; const astl_Body : TStringList = nil );
 begin
+  if not assigned ( gstl_HeadKeyWords ) Then
+    Abort;       // can quit while creating
   if as_BottomHTML <> '' then
     as_BottomHTML := '<' + CST_HTML_Paragraph + CST_HTML_ID_EQUAL + '"gedcom">' +
       CST_HTML_AHREF + as_Subdir + as_BottomHTML + '">' + ( gs_AnceSTROWEB_DownloadGedcom ) +
@@ -3386,6 +3389,11 @@ begin
     Free;
   end;
   gs_Root:=ExtractFilePath(Application.ExeName); //l'application doit être dans le même répertoire qu'Ancestromania pour utiliser le même gds32.dll
+  if gb_Logie Then
+   Begin
+     cb_Base.Hide;
+     btnSelectBase.Hide;
+   End;
 {$ELSE}
   gs_Root:=f_IniReadSectionStr(CST_INI_PATH,'PathAppli','')+DirectorySeparator;
   if Length(gs_Root)<=1 then
