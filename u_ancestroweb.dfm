@@ -216,6 +216,15 @@ object F_AncestroWeb: TF_AncestroWeb
             ParentColor = False
             ParentFont = False
           end
+          object de_ExportWeb: TDirectoryEdit
+            Left = 3
+            Top = 100
+            Width = 240
+            Height = 21
+            NumGlyphs = 1
+            ButtonWidth = 23
+            TabOrder = 2
+          end
           object cb_Themes: TFlatComboBox
             Left = 67
             Top = 128
@@ -223,7 +232,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Height = 21
             Color = clDefault
             ItemHeight = 13
-            TabOrder = 2
+            TabOrder = 3
             Text = 'default'
             ItemIndex = -1
           end
@@ -236,14 +245,14 @@ object F_AncestroWeb: TF_AncestroWeb
             DialogOptions = []
             ButtonWidth = 23
             NumGlyphs = 1
-            TabOrder = 4
+            TabOrder = 5
           end
           object FWEraseGedcom: TJvXPButton
             Left = 246
             Top = 193
             Width = 22
             Height = 22
-            TabOrder = 5
+            TabOrder = 6
             Glyph.Data = {
               0E54496D6167696E674269746D617046050000424D4605000000000000360000
               00280000001200000012000000010020000000000010050000130B0000130B00
@@ -303,7 +312,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Height = 21
             Color = clDefault
             ItemHeight = 13
-            TabOrder = 3
+            TabOrder = 4
             Text = 'default'
             ItemIndex = -1
           end
@@ -330,15 +339,6 @@ object F_AncestroWeb: TF_AncestroWeb
             TabOrder = 1
             ItemIndex = -1
             OnChange = cbDossierChange
-          end
-          object de_ExportWeb: TDirectoryEdit
-            Left = 3
-            Top = 100
-            Width = 240
-            Height = 21
-            NumGlyphs = 1
-            ButtonWidth = 23
-            TabOrder = 6
           end
         end
         object Panel4: TPanel
@@ -536,7 +536,7 @@ object F_AncestroWeb: TF_AncestroWeb
         Top = 0
         Width = 632
         Height = 338
-        ActivePage = ts_home
+        ActivePage = ts_global
         Align = alClient
         TabOrder = 0
         object ts_home: TTabSheet

@@ -408,7 +408,8 @@ uses  fonctions_init,
   functions_html_tree,
 {$IFNDEF FPC}
   AncestroWeb_strings_delphi,
-  windirs,
+  ShellApi, ShlObj,
+  //windirs,
 {$ELSE}
   AncestroWeb_strings,UniqueInstanceRaw,
   u_extabscopy,
@@ -574,10 +575,10 @@ begin
   and fb_AutoComboInit(cbDossier)
    then
     begin
-      NumDossier:=StrToInt(trim(copy(cbDossier.Caption,1,2)));
+      NumDossier:=StrToInt(trim(copy(cbDossier.Text,1,2)));
       if OuvreDossier(NumDossier) then
       begin
-       fNom_Dossier:=fs_getCorrectString(copy(cbDossier.Caption,5,250));
+       fNom_Dossier:=fs_getCorrectString(copy(cbDossier.Text,5,250));
        DoAfterInit ( False );
       end;
     end;
@@ -659,7 +660,8 @@ end;
 
 procedure TF_AncestroWeb.FWPreview1Click(Sender: TObject);
 begin
-  with DMWeb.Execute do
+{$IFDEF FPC}
+  with DMWeb.process do
     Begin
       CommandLine :=
       {$IFDEF LINUX}
@@ -670,7 +672,9 @@ begin
       +' "' + de_ExportWeb.Directory + '"';
       Execute;
     end;
-
+{$ELSE}
+  ShellExecute(Handle,'open', PChar(de_ExportWeb.Text), nil, nil, SW_SHOWNORMAL) ;
+{$ENDIF}
 end;
 
 // procedure TF_AncestroWeb.ImageEdit2Change
@@ -757,7 +761,7 @@ begin
   or gb_Generate then
     Exit;
 
-  gs_RootPathForExport := de_ExportWeb.Directory + DirectorySeparator;
+  gs_RootPathForExport := de_ExportWeb.{$IFDEF FPC}Directory{$ELSE}Text{$ENDIF} + DirectorySeparator;
   gb_Generate := True;
   IBQ_Individu.DisableControls;
   pb_ProgressAll.Progress := 0;
@@ -854,11 +858,11 @@ procedure TF_AncestroWeb.cbDossierChange(Sender: TObject);
 var
   NumDossier:integer;
 begin
-  NumDossier:=StrToInt(trim(copy(cbDossier.Caption,1,2)));
+  NumDossier:=StrToInt(trim(copy(cbDossier.Text,1,2)));
   if NumDossier<>DMWeb.CleDossier then
     if OuvreDossier(NumDossier) then
     begin
-      fNom_Dossier:=fs_getCorrectString(copy(cbDossier.Caption,5,250));
+      fNom_Dossier:=fs_getCorrectString(copy(cbDossier.Text,5,250));
       DoAfterInit;
     end;
 end;
@@ -2371,7 +2375,11 @@ var
     DMWeb.IBQ_ConjointSources.ParamByName ( I_CLEF_UNION  ).AsInteger:=ai_ClefUnion;
     DMWeb.IBQ_ConjointSources.Open;
     try
+      {$IFDEF FPC}
       lb_showdate := fb_Showdate(StrToDate(as_Date,'yyyy-mm-dd', '-')) ;
+      {$ELSE}
+      lb_showdate := fb_Showdate(StrToDate(as_Date)) ;
+      {$ENDIF}
     except
       lb_showdate := False;
     end;
@@ -3229,17 +3237,19 @@ end;
 
 function TF_AncestroWeb.DoInitBase(const AedNomBase: TCustomComboBox): Boolean;
 var li_i : Integer;
+    ls_bddpath : String ;
 begin
   Result := False;
   if fb_AutoComboInit(AedNomBase)
   and (   (DMWeb=nil)
-       or (aedNomBase.Text<>DMWeb.ibd_BASE.DatabaseName)
+       or ((aedNomBase.ItemIndex > 0 ) and (aedNomBase.ItemIndex < aedNomBase.items.Count ) and (aedNomBase.Items [ aedNomBase.ItemIndex ]<>DMWeb.ibd_BASE.DatabaseName))
        or (DMWeb.ibd_BASE.Connected=false)) Then
    Begin
-    if FileExistsUTF8(AedNomBase.Text)
-     Then Result := DoInit(AedNomBase.Text)
+    ls_bddpath := aedNomBase.Items [ aedNomBase.ItemIndex ];
+    if FileExistsUTF8(ls_bddpath)
+     Then Result := DoInit(ls_bddpath)
      Else for li_i := 0 to AedNomBase.Items.Count - 1 do
-      if AedNomBase.Items [ li_i ] = AedNomBase.Text Then
+      if AedNomBase.Items [ li_i ] = ls_bddpath Then
        AedNomBase.Items.Delete(li_i);
    end;
 end;
@@ -3262,7 +3272,7 @@ begin
         s:=IntToStr(DMWeb.CleDossier);
         if Length(s)<2 then
           s:=s+' ';
-        cbDossier.Caption:=s+', '+fNom_Dossier;
+        cbDossier.Text:=s+', '+fNom_Dossier;
       end;
     end;
   end;
@@ -3302,12 +3312,12 @@ procedure TF_AncestroWeb.DoAfterInit( const ab_Ini : Boolean = True );
 begin
   fNom_Dossier:=fs_TextToFileName(fNom_Dossier);
   {$IFNDEF FPC}
-  de_ExportWeb.RootDir:=GetWindowsSpecialDir(CSIDL_DESKTOPDIRECTORY);
+  de_ExportWeb.InitialDir:=GetWindir(CSIDL_DESKTOPDIRECTORY);
   {$ENDIF}
   FileCopy.Destination := fSoftUserPath+ fNom_Dossier + DirectorySeparator + CST_SUBDIR_EXPORT ;
   fb_CreateDirectoryStructure( FileCopy.Destination );
   fb_CreateDirectoryStructure( fSoftUserPath+ fNom_Dossier + DirectorySeparator + CST_SUBDIR_SAVE );
-  de_ExportWeb.Directory := fSoftUserPath+ fNom_Dossier+DirectorySeparator+CST_SUBDIR_EXPORT;
+  de_ExportWeb.{$IFDEF FPC}Directory{$ELSE}Text{$ENDIF}:= fSoftUserPath+ fNom_Dossier+DirectorySeparator+CST_SUBDIR_EXPORT;
   fne_Import.FileName := fSoftUserPath+ fNom_Dossier + DirectorySeparator + CST_SUBDIR_SAVE ;
   fne_Export.FileName := fSoftUserPath+ fNom_Dossier + DirectorySeparator + CST_SUBDIR_SAVE ;
 

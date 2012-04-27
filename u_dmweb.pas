@@ -444,6 +444,8 @@ begin
   end;
 end;
 
+{$IFDEF FPC}
 initialization
   OnGetLibraryName := p_setLibrary;
+{$ENDIF}
 end.
