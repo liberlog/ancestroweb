@@ -5,7 +5,7 @@
 			<Option Name="Personality">Delphi.Personality</Option>
 			<Option Name="ProjectType"></Option>
 			<Option Name="Version">1.0</Option>
-			<Option Name="GUID">{7E46861E-5A5D-4C61-93EE-A9D7DFB18C21}</Option>
+			<Option Name="GUID">{EF370FFC-FE4C-4633-B6C4-8FB8A28ABCE6}</Option>
 		</Option>
 	</PersonalityInfo>
 	<Delphi.Personality>
@@ -119,12 +119,12 @@
 			<Linker Name="ExeDescription"></Linker>
 		</Linker>
 		<Directories>
-			<Directories Name="OutputDir">Plugins</Directories>
-			<Directories Name="UnitOutputDir">bin</Directories>
+			<Directories Name="OutputDir">Plugins\i386-win32</Directories>
+			<Directories Name="UnitOutputDir"></Directories>
 			<Directories Name="PackageDLLOutputDir"></Directories>
 			<Directories Name="PackageDCPOutputDir"></Directories>
 			<Directories Name="SearchPath">ExtHTML\functions</Directories>
-			<Directories Name="Packages">vclx;vcl;rtl;dbrtl;vcldb;adortl;dbxcds;dbexpress;vclib;ibxpress;vclactnband;xmlrtl;inet;vclie;IndyCore;IndySystem;VclSmp;dsnap;IndyProtocols;bdertl;teeui;teedb;tee;vcldbx;BrowseDirPak;CadSys42_10;rxctl;dedsPrint;DelphiX_for7;dxPack2D10;ExpertSuperForm;FlatStyle_D6;FreeRep9;GR32_D7;LibGraphicEx;MicrosoftAgent;PNGLib;RichViewPak;smoothshow;SuperLookPak;SynEdit_R2006;uibD10Win32R;ZComponent;ZDbc;ZPlain;ZCore;ZParseSql;FlatStyle_AddOn;acommon;Jcl;JclVcl;JvXPCtrlsD10R;JvCoreD10R;JvStdCtrlsD10R;JvDockingD10R;PCK_ALCINOE;JvSystemD10R;sggraphicex;virtualdbtreeexD10;VirtualTreesD10;VampyreImagingPackage;PCM_Perso;XMLComponents;TntUnicodeVcl_R90;tdbf_d2006d;tdbf_d2006r;ccrexifD;dfdtreeview;ExtToolbarReg;dmenutoolbar;Fonctions;JvDBD10R;JvCustomD10R;JvCtrlsD10R;JvDlgsD10R;ExtCopyD10;DExtHTML</Directories>
+			<Directories Name="Packages"></Directories>
 			<Directories Name="Conditionals"></Directories>
 			<Directories Name="DebugSourceDirs"></Directories>
 			<Directories Name="UsePackages">False</Directories>
@@ -145,24 +145,24 @@
 			<Language Name="RootDir"></Language>
 		</Language>
 		<VersionInfo>
-			<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+			<VersionInfo Name="IncludeVerInfo">False</VersionInfo>
 			<VersionInfo Name="AutoIncBuild">False</VersionInfo>
 			<VersionInfo Name="MajorVer">1</VersionInfo>
-			<VersionInfo Name="MinorVer">2</VersionInfo>
-			<VersionInfo Name="Release">2</VersionInfo>
-			<VersionInfo Name="Build">5</VersionInfo>
+			<VersionInfo Name="MinorVer">0</VersionInfo>
+			<VersionInfo Name="Release">0</VersionInfo>
+			<VersionInfo Name="Build">0</VersionInfo>
 			<VersionInfo Name="Debug">False</VersionInfo>
 			<VersionInfo Name="PreRelease">False</VersionInfo>
 			<VersionInfo Name="Special">False</VersionInfo>
 			<VersionInfo Name="Private">False</VersionInfo>
 			<VersionInfo Name="DLL">False</VersionInfo>
-			<VersionInfo Name="Locale">1033</VersionInfo>
+			<VersionInfo Name="Locale">1036</VersionInfo>
 			<VersionInfo Name="CodePage">1252</VersionInfo>
 		</VersionInfo>
 		<VersionInfoKeys>
 			<VersionInfoKeys Name="CompanyName"></VersionInfoKeys>
 			<VersionInfoKeys Name="FileDescription"></VersionInfoKeys>
-			<VersionInfoKeys Name="FileVersion">1.2.2.5</VersionInfoKeys>
+			<VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys>
 			<VersionInfoKeys Name="InternalName"></VersionInfoKeys>
 			<VersionInfoKeys Name="LegalCopyright"></VersionInfoKeys>
 			<VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys>
@@ -172,9 +172,8 @@
 			<VersionInfoKeys Name="Comments"></VersionInfoKeys>
 		</VersionInfoKeys>  
     <Excluded_Packages>
-      <Excluded_Packages Name="C:\Users\Matthieu\Documents\Projets Borland Studio\Bpl\ManFrames.bpl">Composants ManFrames : FrameWork amélioré</Excluded_Packages>
       <Excluded_Packages Name="C:\Users\Matthieu\Documents\Projets Borland Studio\Bpl\ManSoft.bpl">(sans titre)</Excluded_Packages>
-      <Excluded_Packages Name="C:\Users\Matthieu\Documents\Projets Borland Studio\Bpl\DExtHTML.bpl">(sans titre)</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\Matthieu\Documents\Projets Borland Studio\Bpl\dGJLSoftwareD10.bpl">GJL Software ExDBGrid Components</Excluded_Packages>
     </Excluded_Packages>
   </Delphi.Personality>
 </BorlandProject>

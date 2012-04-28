@@ -1,6 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>2011/09/03 14:53:28.576.bdsproj,C:\Users\Matthieu\Documents\Projets Borland Studio\Project1.bdsproj=C:\Users\Matthieu\Documents\Lazarus Delphi\AncestroWeb\AncestroWeb.bdsproj</Transaction>
+    <Transaction>2011/09/03 16:35:58.118.pas,C:\Users\Matthieu\Documents\Projets Borland Studio\Unit1.pas=C:\Users\Matthieu\Documents\Lazarus Delphi\AncestroWeb\Unit1.pas</Transaction>
+    <Transaction>2011/09/03 16:35:58.118.dfm,C:\Users\Matthieu\Documents\Projets Borland Studio\Unit1.dfm=C:\Users\Matthieu\Documents\Lazarus Delphi\AncestroWeb\Unit1.dfm</Transaction>
+    <Transaction>2011/09/03 16:36:40.832.bdsproj,C:\Users\Matthieu\Documents\Projets Borland Studio\Project1.bdsproj=C:\Users\Matthieu\Documents\Lazarus Delphi\AncestroWeb\AncestroWebExe.bdsproj</Transaction>
+    <Transaction>2011/09/03 16:36:51.463.pas,C:\Users\Matthieu\Documents\Lazarus Delphi\AncestroWeb\Unit1.pas=</Transaction>
+    <Transaction>2011/09/03 16:36:51.463.dfm,C:\Users\Matthieu\Documents\Lazarus Delphi\AncestroWeb\Unit1.dfm=</Transaction>
+    <Transaction>2011/09/11 15:53:33.424.pas,C:\Users\Matthieu\Documents\Lazarus Delphi\AncestroWeb\ancestroweb_strings.pas=C:\Users\Matthieu\Documents\Lazarus Delphi\AncestroWeb\ancestroweb_strings_delphi.pas</Transaction>
+    <Transaction>2012/04/28 07:34:08.642.bdsproj,C:\Matthieu\Programmation\Lazarus Delphi\AncestroWeb\AncestroWebExe.bdsproj=C:\Matthieu\Programmation\Lazarus Delphi\AncestroWeb\AncestroWeb.bdsproj</Transaction>
+    <Transaction>2012/04/28 07:36:01.719.pas,C:\Matthieu\Programmation\Lazarus Delphi\AncestroWeb\u_ancestroweb.pas=</Transaction>
+    <Transaction>2012/04/28 07:36:01.719.dfm,C:\Matthieu\Programmation\Lazarus Delphi\AncestroWeb\u_ancestroweb.dfm=</Transaction>
   </Transactions>
 </BorlandProject>

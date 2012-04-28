@@ -159,6 +159,7 @@ function  fs_Create_Text            ( const as_Text        : String      ;
                                       const as_Option      : String = '' ):String ;
 function  fs_Format_Lines           ( const as_Text        : String      ;
                                       const ReplaceWith : String = CST_HTML_BR ):String ;
+
 function fs_createHead (const as_PathFiles,as_Describe, as_Keywords, as_title, as_language : String): String;
 procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
                              const astl_Destination : TStrings ;
