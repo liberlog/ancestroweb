@@ -3344,7 +3344,8 @@ var
         if OpenKeyReadOnly(fKeyRegistry) then
         begin
           Result := True;
-          fbddpath:=ReadString(CST_INI_PATH_BDD);
+          if gb_isDLL Then
+            fbddpath:=ReadString(CST_INI_PATH_BDD);
           cb_Base.Text:=fs_getCorrectString(fbddpath);
           CloseKey;
           Exit;

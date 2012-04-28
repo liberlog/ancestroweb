@@ -22,6 +22,7 @@ function InitTitreDll: Pchar;
 function RetourDll: PInteger;
 
 var gb_updateBase : Boolean = False ;
+    gb_isDLL : Boolean = False ;
 
 implementation
 uses U_AncestroWeb,
@@ -55,6 +56,7 @@ grave, celui ci recoit le nom et chemin de la base de donnée D ancestrologie
 var aFMain: TF_AncestroWeb;
   sBase: string;
 begin
+  gb_isDLL := True;
   sbase := value;
   aFMain := TF_AncestroWeb.create(Application);
   aFMain.DoInit(sbase);
