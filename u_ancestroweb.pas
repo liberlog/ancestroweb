@@ -91,7 +91,7 @@ type
     cb_SurnamesAccents: TFlatComboBox;
     ch_ancestors: TFlatCheckbox;
     ch_CitiesLink: TFlatCheckbox;
-    ch_Comptage: TFlatCheckbox;
+    ch_Comptage: TFlatCheckBox;
     ch_ContactIdentify: TFlatCheckbox;
     ch_Filtered: TFlatCheckbox;
     ch_genages: TFlatCheckbox;
