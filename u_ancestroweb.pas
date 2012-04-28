@@ -412,7 +412,6 @@ uses  fonctions_init,
   //windirs,
 {$ELSE}
   AncestroWeb_strings,UniqueInstanceRaw,
-  u_extabscopy,
 {$ENDIF}
 {$IFDEF WIN32}
 //  windirs,
@@ -661,7 +660,7 @@ end;
 procedure TF_AncestroWeb.FWPreview1Click(Sender: TObject);
 begin
 {$IFDEF FPC}
-  with DMWeb.process do
+  with DMWeb.Execute do
     Begin
       CommandLine :=
       {$IFDEF LINUX}

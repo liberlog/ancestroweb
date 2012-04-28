@@ -304,6 +304,9 @@ type
     ibd_BASE: TIBDatabase;
     IBS_DLL: TIBSQL;
     IBS_UpdateDLL: TIBSQL;
+    {$IFDEF FPC}
+    Execute:TProcess;
+    {$ENDIF}
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure p_setCledossier(const AValue: integer);
