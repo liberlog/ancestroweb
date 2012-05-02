@@ -419,6 +419,7 @@ uses  fonctions_init,
 {$ENDIF}
   fonctions_system,
   fonctions_db,
+  DefObjet,
   fonctions_languages,
   fonctions_images,
   fonctions_components,
