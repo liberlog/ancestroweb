@@ -80,7 +80,7 @@
         <Filename Value="AncestroWeb.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AncestroWeb"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="54" Y="22"/>
@@ -111,7 +111,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="U_DMWeb"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="277"/>
         <CursorPos X="108" Y="280"/>
@@ -124,7 +124,7 @@
         <Filename Value="DefObjet.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DefObjet"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
         <TopLine Value="20"/>
         <CursorPos X="3" Y="59"/>
@@ -135,12 +135,10 @@
       <Unit4>
         <Filename Value="../ibx/runtime/IB.pas"/>
         <UnitName Value="IB"/>
-        <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
         <TopLine Value="355"/>
         <CursorPos X="32" Y="363"/>
         <UsageCount Value="35"/>
-        <Loaded Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="../ExtHTML/functions/functions_html_tree.pas"/>
@@ -172,7 +170,7 @@
         <Filename Value="ancestroweb_strings.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AncestroWeb_strings"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
         <TopLine Value="75"/>
         <CursorPos X="35" Y="100"/>
@@ -199,7 +197,7 @@
       <Unit11>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
         <UnitName Value="functions_html"/>
-        <EditorIndex Value="13"/>
+        <EditorIndex Value="9"/>
         <WindowIndex Value="0"/>
         <TopLine Value="313"/>
         <CursorPos X="1" Y="313"/>
@@ -616,7 +614,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="25"/>
+        <UsageCount Value="26"/>
         <DefaultSyntaxHighlighter Value="XML"/>
       </Unit60>
       <Unit61>
@@ -641,7 +639,7 @@
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="337"/>
-        <CursorPos X="46" Y="348"/>
+        <CursorPos X="1" Y="372"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>
       </Unit63>
@@ -650,29 +648,25 @@
         <UnitName Value="TFlatComboBoxUnit"/>
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="398"/>
-        <CursorPos X="3" Y="400"/>
+        <TopLine Value="13"/>
+        <CursorPos X="3" Y="462"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>
       </Unit64>
       <Unit65>
         <Filename Value="../../../../lazarus/lcl/controls.pp"/>
         <UnitName Value="Controls"/>
-        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1946"/>
         <CursorPos X="15" Y="1965"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit65>
       <Unit66>
         <Filename Value="../../../../lazarus/lcl/include/wincontrol.inc"/>
-        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
         <TopLine Value="6592"/>
         <CursorPos X="3" Y="6610"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit66>
       <Unit67>
         <Filename Value="../../../../lazarus/lcl/stdctrls.pp"/>
@@ -680,8 +674,8 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="355"/>
-        <CursorPos X="15" Y="392"/>
+        <TopLine Value="279"/>
+        <CursorPos X="15" Y="298"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>
       </Unit67>
@@ -689,142 +683,140 @@
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
         <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="969"/>
-        <CursorPos X="32" Y="985"/>
+        <TopLine Value="1004"/>
+        <CursorPos X="3" Y="1008"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>
       </Unit68>
       <Unit69>
         <Filename Value="../../../../lazarus/lcl/graphics.pp"/>
         <UnitName Value="Graphics"/>
-        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="652"/>
         <CursorPos X="3" Y="671"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit69>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="../Extended/composants/U_ExtPictCombo.pas"/>
-        <Caret Line="372" Column="1" TopLine="337"/>
+        <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
+        <Caret Line="306" Column="19" TopLine="275"/>
       </Position1>
       <Position2>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
-        <Caret Line="512" Column="14" TopLine="499"/>
+        <Caret Line="340" Column="18" TopLine="309"/>
       </Position2>
       <Position3>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="357" Column="3" TopLine="320"/>
       </Position3>
       <Position4>
-        <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
-        <Caret Line="306" Column="19" TopLine="275"/>
+        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
+        <Caret Line="26" Column="38" TopLine="22"/>
       </Position4>
       <Position5>
-        <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
-        <Caret Line="340" Column="18" TopLine="309"/>
+        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position5>
       <Position6>
-        <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
-        <Caret Line="357" Column="3" TopLine="320"/>
+        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
+        <Caret Line="121" Column="35" TopLine="90"/>
       </Position6>
       <Position7>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="26" Column="38" TopLine="22"/>
+        <Caret Line="593" Column="53" TopLine="562"/>
       </Position7>
       <Position8>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="596" Column="25" TopLine="565"/>
       </Position8>
       <Position9>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="121" Column="35" TopLine="90"/>
+        <Caret Line="598" Column="11" TopLine="567"/>
       </Position9>
       <Position10>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="593" Column="53" TopLine="562"/>
+        <Caret Line="61" Column="40" TopLine="58"/>
       </Position10>
       <Position11>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="596" Column="25" TopLine="565"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position11>
       <Position12>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="598" Column="11" TopLine="567"/>
+        <Caret Line="100" Column="27" TopLine="69"/>
       </Position12>
       <Position13>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="61" Column="40" TopLine="58"/>
+        <Caret Line="105" Column="12" TopLine="74"/>
       </Position13>
       <Position14>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="106" Column="35" TopLine="75"/>
       </Position14>
       <Position15>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="100" Column="27" TopLine="69"/>
+        <Caret Line="789" Column="28" TopLine="758"/>
       </Position15>
       <Position16>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="105" Column="12" TopLine="74"/>
+        <Caret Line="790" Column="25" TopLine="759"/>
       </Position16>
       <Position17>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="106" Column="35" TopLine="75"/>
+        <Caret Line="815" Column="10" TopLine="784"/>
       </Position17>
       <Position18>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="789" Column="28" TopLine="758"/>
+        <Caret Line="816" Column="10" TopLine="785"/>
       </Position18>
       <Position19>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="790" Column="25" TopLine="759"/>
+        <Caret Line="987" Column="12" TopLine="956"/>
       </Position19>
       <Position20>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="815" Column="10" TopLine="784"/>
+        <Caret Line="989" Column="14" TopLine="958"/>
       </Position20>
       <Position21>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="816" Column="10" TopLine="785"/>
+        <Caret Line="991" Column="14" TopLine="960"/>
       </Position21>
       <Position22>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="987" Column="12" TopLine="956"/>
+        <Caret Line="994" Column="14" TopLine="963"/>
       </Position22>
       <Position23>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="989" Column="14" TopLine="958"/>
+        <Caret Line="995" Column="14" TopLine="964"/>
       </Position23>
       <Position24>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="991" Column="14" TopLine="960"/>
+        <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
+        <Caret Line="328" Column="40" TopLine="317"/>
       </Position24>
       <Position25>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="994" Column="14" TopLine="963"/>
+        <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
+        <Caret Line="328" Column="40" TopLine="317"/>
       </Position25>
       <Position26>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="995" Column="14" TopLine="964"/>
+        <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
+        <Caret Line="420" Column="3" TopLine="406"/>
       </Position26>
       <Position27>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
-        <Caret Line="328" Column="40" TopLine="317"/>
+        <Caret Line="401" Column="22" TopLine="398"/>
       </Position27>
       <Position28>
-        <Filename Value="../../../../lazarus/lcl/stdctrls.pp"/>
-        <Caret Line="307" Column="26" TopLine="323"/>
+        <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position28>
       <Position29>
-        <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
-        <Caret Line="328" Column="40" TopLine="317"/>
+        <Filename Value="u_dmweb.pas"/>
+        <Caret Line="280" Column="108" TopLine="277"/>
       </Position29>
       <Position30>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
-        <Caret Line="420" Column="3" TopLine="406"/>
+        <Caret Line="462" Column="3" TopLine="13"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>
