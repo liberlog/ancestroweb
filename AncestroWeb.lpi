@@ -75,15 +75,15 @@
         <PackageName Value="LCL"/>
       </Item11>
     </RequiredPackages>
-    <Units Count="70">
+    <Units Count="73">
       <Unit0>
         <Filename Value="AncestroWeb.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AncestroWeb"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
-        <CursorPos X="54" Y="22"/>
+        <CursorPos X="10" Y="12"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -98,7 +98,7 @@
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="403"/>
-        <CursorPos X="13" Y="409"/>
+        <CursorPos X="78" Y="420"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -111,10 +111,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="U_DMWeb"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="277"/>
-        <CursorPos X="108" Y="280"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -124,7 +124,7 @@
         <Filename Value="DefObjet.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DefObjet"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="20"/>
         <CursorPos X="3" Y="59"/>
@@ -170,7 +170,7 @@
         <Filename Value="ancestroweb_strings.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AncestroWeb_strings"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="75"/>
         <CursorPos X="35" Y="100"/>
@@ -197,7 +197,7 @@
       <Unit11>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
         <UnitName Value="functions_html"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="11"/>
         <WindowIndex Value="0"/>
         <TopLine Value="313"/>
         <CursorPos X="1" Y="313"/>
@@ -424,7 +424,6 @@
         <TopLine Value="94"/>
         <CursorPos X="10" Y="115"/>
         <UsageCount Value="15"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit37>
       <Unit38>
         <Filename Value="/usr/share/fpcsrc/2.6.0/rtl/unix/sysutils.pp"/>
@@ -594,11 +593,12 @@
       <Unit58>
         <Filename Value="/usr/lib/lazarus/0.9.30.4/lcl/graphics.pp"/>
         <UnitName Value="Graphics"/>
+        <EditorIndex Value="9"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1069"/>
-        <CursorPos X="15" Y="1102"/>
+        <TopLine Value="256"/>
+        <CursorPos X="3" Y="277"/>
         <UsageCount Value="12"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
+        <Loaded Value="True"/>
       </Unit58>
       <Unit59>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatMemoUnit.pas"/>
@@ -614,7 +614,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="27"/>
         <DefaultSyntaxHighlighter Value="XML"/>
       </Unit60>
       <Unit61>
@@ -671,22 +671,17 @@
       <Unit67>
         <Filename Value="../../../../lazarus/lcl/stdctrls.pp"/>
         <UnitName Value="StdCtrls"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="279"/>
         <CursorPos X="15" Y="298"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit67>
       <Unit68>
         <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1004"/>
         <CursorPos X="3" Y="1008"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit68>
       <Unit69>
         <Filename Value="../../../../lazarus/lcl/graphics.pp"/>
@@ -696,132 +691,147 @@
         <CursorPos X="3" Y="671"/>
         <UsageCount Value="11"/>
       </Unit69>
+      <Unit70>
+        <Filename Value="/usr/lib/lazarus/0.9.30.4/packager/packagedefs.pas"/>
+        <UnitName Value="PackageDefs"/>
+        <EditorIndex Value="10"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="978"/>
+        <CursorPos X="65" Y="999"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit70>
+      <Unit71>
+        <Filename Value="../../Lazarus/composants/jvXP/JvXPCore.pas"/>
+        <UnitName Value="JvXPCore"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="7"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="49"/>
+        <CursorPos X="33" Y="80"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit71>
+      <Unit72>
+        <Filename Value="../../Lazarus/composants/jvXP/JvXPButtons.pas"/>
+        <UnitName Value="JvXPButtons"/>
+        <EditorIndex Value="8"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="609"/>
+        <CursorPos X="65" Y="642"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit72>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="26" HistoryIndex="25">
       <Position1>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
-        <Caret Line="306" Column="19" TopLine="275"/>
+        <Caret Line="340" Column="18" TopLine="309"/>
       </Position1>
       <Position2>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
-        <Caret Line="340" Column="18" TopLine="309"/>
+        <Caret Line="357" Column="3" TopLine="320"/>
       </Position2>
       <Position3>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
-        <Caret Line="357" Column="3" TopLine="320"/>
+        <Caret Line="328" Column="40" TopLine="317"/>
       </Position3>
       <Position4>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="26" Column="38" TopLine="22"/>
+        <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
+        <Caret Line="328" Column="40" TopLine="317"/>
       </Position4>
       <Position5>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position5>
-      <Position6>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="121" Column="35" TopLine="90"/>
-      </Position6>
-      <Position7>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="593" Column="53" TopLine="562"/>
-      </Position7>
-      <Position8>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="596" Column="25" TopLine="565"/>
-      </Position8>
-      <Position9>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="598" Column="11" TopLine="567"/>
-      </Position9>
-      <Position10>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="61" Column="40" TopLine="58"/>
-      </Position10>
-      <Position11>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position11>
-      <Position12>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="100" Column="27" TopLine="69"/>
-      </Position12>
-      <Position13>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="105" Column="12" TopLine="74"/>
-      </Position13>
-      <Position14>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="106" Column="35" TopLine="75"/>
-      </Position14>
-      <Position15>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="789" Column="28" TopLine="758"/>
-      </Position15>
-      <Position16>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="790" Column="25" TopLine="759"/>
-      </Position16>
-      <Position17>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="815" Column="10" TopLine="784"/>
-      </Position17>
-      <Position18>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="816" Column="10" TopLine="785"/>
-      </Position18>
-      <Position19>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="987" Column="12" TopLine="956"/>
-      </Position19>
-      <Position20>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="989" Column="14" TopLine="958"/>
-      </Position20>
-      <Position21>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="991" Column="14" TopLine="960"/>
-      </Position21>
-      <Position22>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="994" Column="14" TopLine="963"/>
-      </Position22>
-      <Position23>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
-        <Caret Line="995" Column="14" TopLine="964"/>
-      </Position23>
-      <Position24>
-        <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
-        <Caret Line="328" Column="40" TopLine="317"/>
-      </Position24>
-      <Position25>
-        <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
-        <Caret Line="328" Column="40" TopLine="317"/>
-      </Position25>
-      <Position26>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
         <Caret Line="420" Column="3" TopLine="406"/>
-      </Position26>
-      <Position27>
+      </Position5>
+      <Position6>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
         <Caret Line="401" Column="22" TopLine="398"/>
-      </Position27>
-      <Position28>
+      </Position6>
+      <Position7>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
         <Caret Line="1" Column="1" TopLine="1"/>
-      </Position28>
-      <Position29>
+      </Position7>
+      <Position8>
         <Filename Value="u_dmweb.pas"/>
         <Caret Line="280" Column="108" TopLine="277"/>
-      </Position29>
-      <Position30>
+      </Position8>
+      <Position9>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatComboBoxUnit.pas"/>
         <Caret Line="462" Column="3" TopLine="13"/>
-      </Position30>
+      </Position9>
+      <Position10>
+        <Filename Value="AncestroWeb.lpr"/>
+        <Caret Line="23" Column="40" TopLine="1"/>
+      </Position10>
+      <Position11>
+        <Filename Value="AncestroWeb.lpr"/>
+        <Caret Line="12" Column="19" TopLine="1"/>
+      </Position11>
+      <Position12>
+        <Filename Value="/usr/lib/lazarus/0.9.30.4/packager/packagedefs.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position12>
+      <Position13>
+        <Filename Value="/usr/lib/lazarus/0.9.30.4/packager/packagedefs.pas"/>
+        <Caret Line="999" Column="65" TopLine="978"/>
+      </Position13>
+      <Position14>
+        <Filename Value="AncestroWeb.lpr"/>
+        <Caret Line="23" Column="17" TopLine="1"/>
+      </Position14>
+      <Position15>
+        <Filename Value="u_dmweb.pas"/>
+        <Caret Line="280" Column="108" TopLine="277"/>
+      </Position15>
+      <Position16>
+        <Filename Value="AncestroWeb.lpr"/>
+        <Caret Line="12" Column="34" TopLine="1"/>
+      </Position16>
+      <Position17>
+        <Filename Value="../../Lazarus/composants/jvXP/JvXPCore.pas"/>
+        <Caret Line="60" Column="45" TopLine="37"/>
+      </Position17>
+      <Position18>
+        <Filename Value="../../Lazarus/composants/jvXP/JvXPButtons.pas"/>
+        <Caret Line="675" Column="30" TopLine="653"/>
+      </Position18>
+      <Position19>
+        <Filename Value="../../Lazarus/composants/jvXP/JvXPButtons.pas"/>
+        <Caret Line="74" Column="16" TopLine="53"/>
+      </Position19>
+      <Position20>
+        <Filename Value="../../Lazarus/composants/jvXP/JvXPButtons.pas"/>
+        <Caret Line="380" Column="14" TopLine="346"/>
+      </Position20>
+      <Position21>
+        <Filename Value="../../Lazarus/composants/jvXP/JvXPButtons.pas"/>
+        <Caret Line="388" Column="14" TopLine="354"/>
+      </Position21>
+      <Position22>
+        <Filename Value="../../Lazarus/composants/jvXP/JvXPButtons.pas"/>
+        <Caret Line="642" Column="65" TopLine="609"/>
+      </Position22>
+      <Position23>
+        <Filename Value="../../Lazarus/composants/jvXP/JvXPCore.pas"/>
+        <Caret Line="60" Column="41" TopLine="46"/>
+      </Position23>
+      <Position24>
+        <Filename Value="../../Lazarus/composants/jvXP/JvXPCore.pas"/>
+        <Caret Line="61" Column="41" TopLine="46"/>
+      </Position24>
+      <Position25>
+        <Filename Value="../../Lazarus/composants/jvXP/JvXPCore.pas"/>
+        <Caret Line="938" Column="1" TopLine="897"/>
+      </Position25>
+      <Position26>
+        <Filename Value="../../Lazarus/composants/jvXP/JvXPCore.pas"/>
+        <Caret Line="59" Column="48" TopLine="49"/>
+      </Position26>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
-    <Version Value="11"/>
+    <Version Value="9"/>
     <Target>
       <Filename Value="Plugins/$(TargetCPU)-$(TargetOS)/AncestrowebExe"/>
     </Target>
@@ -864,37 +874,22 @@
   <Debugging>
     <BreakPoints Count="5">
       <Item1>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsGlobal"/>
-        <WatchKind Value="wpkWrite"/>
         <Source Value="/usr/lib/lazarus/0.9.30/lcl/include/customcombobox.inc"/>
         <Line Value="308"/>
       </Item1>
       <Item2>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsGlobal"/>
-        <WatchKind Value="wpkWrite"/>
         <Source Value="/usr/lib/lazarus/0.9.30/lcl/include/customcombobox.inc"/>
         <Line Value="514"/>
       </Item2>
       <Item3>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsGlobal"/>
-        <WatchKind Value="wpkWrite"/>
         <Source Value="/usr/lib/lazarus/0.9.30/lcl/include/customcombobox.inc"/>
         <Line Value="625"/>
       </Item3>
       <Item4>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsGlobal"/>
-        <WatchKind Value="wpkWrite"/>
         <Source Value="../Extended/composants/U_ExtPictCombo.pas"/>
         <Line Value="270"/>
       </Item4>
       <Item5>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsGlobal"/>
-        <WatchKind Value="wpkWrite"/>
         <Source Value="../Extended/forms/u_about.pas"/>
         <Line Value="419"/>
       </Item5>

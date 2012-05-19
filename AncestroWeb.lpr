@@ -7,7 +7,7 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, uniqueinstance_package, fortes324forlaz, lazflatstyle,
+  Forms, uniqueinstance_package, lazflatstyle,
   lazextcomponents, extcopy, U_AncestroWeb, U_DMWeb, DefObjet, ibexpress,
   exthtml;
 
@@ -23,4 +23,4 @@ begin
   Application.CreateForm(TF_AncestroWeb,F_AncestroWeb);
   Application.Run;
 end.
-
+
