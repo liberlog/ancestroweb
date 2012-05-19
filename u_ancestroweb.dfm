@@ -158,7 +158,7 @@ object F_AncestroWeb: TF_AncestroWeb
             ParentColor = False
             ParentFont = False
           end
-          object btnSelectBase: TSpeedButton
+          object btnSelectBase: TFWLoad
             Left = 250
             Top = 22
             Width = 23
@@ -1926,4 +1926,4 @@ object F_AncestroWeb: TF_AncestroWeb
     Left = 312
     Top = 104
   end
-end
+end

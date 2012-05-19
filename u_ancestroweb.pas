@@ -50,7 +50,7 @@ uses
   IBQuery, DBCtrls, ExtCtrls, Buttons, ComCtrls, DBGrids,
   functions_html, JvXPCheckCtrls, Spin, U_OnFormInfoIni,
   U_ExtImage, u_buttons_appli, IBSQL, U_ExtFileCopy, u_traducefile,
-  JvXPButtons, IniFiles,TFlatComboBoxUnit, TFlatEditUnit,TFlatGaugeUnit,
+  JvXPButtons, IniFiles, TFlatEditUnit,TFlatGaugeUnit,
   TFlatCheckBoxUnit, TFlatMemoUnit, u_extabscopy, IBCustomDataSet, Grids,
   ImagingComponents, JvXPCore;
 
@@ -59,7 +59,8 @@ uses
                                                FileUnit : 'U_AncestroWeb' ;
                                                Owner : 'Matthieu Giroux' ;
                                                Comment : 'Composant de copie multi-platformes.' ;
-                                               BugsStory : '1.2.2.5 : Delphi compatible' +#13#10
+                                               BugsStory : '1.2.2.6 : No Flat Combo' +#13#10
+                                                         + '1.2.2.5 : Delphi compatible' +#13#10
                                                          + '1.2.2.1 : Link to jobs'' base' +#13#10
                                                          + '1.2.2.0 : Link to cities, names, surnames base' +#13#10
                                                          + '1.2.1.1 : Hide dates lesser than 100 years' +#13#10
@@ -81,14 +82,14 @@ type
   { TF_AncestroWeb }
 
   TF_AncestroWeb = class(TForm)
-    btnSelectBase: TSpeedButton;
+    btnSelectBase: TFWLoad;
     bt_export: TFWSaveAs;
-    cb_CityAccents: TFlatComboBox;
-    cb_ContactSecurity: TFlatComboBox;
-    cb_ContactTool: TFlatComboBox;
-    cb_NamesAccents: TFlatComboBox;
-    cb_JobsAccents: TFlatComboBox;
-    cb_SurnamesAccents: TFlatComboBox;
+    cb_CityAccents: TComboBox;
+    cb_ContactSecurity: TComboBox;
+    cb_ContactTool: TComboBox;
+    cb_NamesAccents: TComboBox;
+    cb_JobsAccents: TComboBox;
+    cb_SurnamesAccents: TComboBox;
     ch_ancestors: TFlatCheckbox;
     ch_CitiesLink: TFlatCheckbox;
     ch_Comptage: TFlatCheckBox;
@@ -98,8 +99,8 @@ type
     ch_genContact: TFlatCheckbox;
     ch_genjobs: TFlatCheckbox;
     ch_gensurnames: TFlatCheckbox;
-    cb_Themes: TFlatComboBox;
-    cbDossier: TFlatComboBox;
+    cb_Themes: TComboBox;
+    cbDossier: TComboBox;
     ch_genMap: TFlatCheckbox;
     ch_genSearch: TFlatCheckbox;
     ch_genTree: TFlatCheckbox;
@@ -111,7 +112,7 @@ type
     ch_SurnamesLink: TFlatCheckbox;
     DBGrid1: TDBGrid;
     ds_Individu: TDatasource;
-    cb_Base: TFlatComboBox;
+    cb_Base: TComboBox;
     ed_AgesName: TFlatEdit;
     ed_Author: TFlatEdit;
     ed_BaseCities: TFlatEdit;
@@ -261,7 +262,7 @@ type
     TraduceImage: TTraduceFile;
     ts_about: TTabSheet;
     ts_Gen: TTabSheet;
-    cb_Files: TFlatComboBox;
+    cb_Files: TComboBox;
     Label44: TLabel;
     de_ExportWeb: TDirectoryEdit;
     procedure btnSelectBaseClick(Sender: TObject);
@@ -336,7 +337,7 @@ type
     function fs_getNameAndSurName(const ibq_Query: TIBSQL): String;overload; virtual;
     function fs_GetTitleTree(const as_NameOfTree: String;
                              const ai_generations: Longint): String;
-    procedure p_AddToCombo ( const acb_combo : TFlatComboBox;const as_Base: String; const ab_SetIndex :Boolean = True);
+    procedure p_AddToCombo ( const acb_combo : TComboBox;const as_Base: String; const ab_SetIndex :Boolean = True);
     procedure p_CopyStructure;
     procedure p_CreateAHtmlFile(const astl_Destination: TStringList;
       const as_BeginingFile, as_Describe, as_Title, as_LittleTitle, as_LongTitle: string;
@@ -629,7 +630,7 @@ begin
       DoAfterInit;
       FIniFile.Free;
       FIniFile:=nil;
-      f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
+      f_GetMainMemIniFile(nil,nil,nil,False,CST_AncestroWeb);
       OnFormInfoIni.p_ExecuteEcriture(Self);
     Except
       On E:Exception do
@@ -872,7 +873,7 @@ end;
 // Export ini click event
 procedure TF_AncestroWeb.bt_exportClick(Sender: TObject);
 begin
-  f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
+  f_GetMainMemIniFile(nil,nil,nil,False,CST_AncestroWeb);
   OnFormInfoIni.p_ExecuteEcriture(Self);
   if fb_iniWriteFile(FIniFile,True)
    Then
@@ -888,7 +889,7 @@ end;
 
 // procedure TF_AncestroWeb.p_AddABase
 // add and set a database
-procedure TF_AncestroWeb.p_AddToCombo ( const acb_combo : TFlatComboBox; const as_Base : String ; const ab_SetIndex :Boolean = True);
+procedure TF_AncestroWeb.p_AddToCombo ( const acb_combo : TComboBox; const as_Base : String ; const ab_SetIndex :Boolean = True);
 var li_i : Integer;
     lb_found : Boolean;
 Begin
@@ -2828,9 +2829,9 @@ Begin
 //  if pos ( 'Fran', as_Texte ) > 0 Then
 //         ShowMessage(as_Texte );
   case ai_ComboIndex of
-   0, 3 : Result:=fs_FormatText(Result,ai_ComboIndex<3,False,False,True); // Sans accent ou avec accents avec une majuscule
-   1, 4 : Result:=fs_FormatText(Result,ai_ComboIndex<3,False,True); // Sans accent ou avec accents sans majuscule
-   2, 5 : Result:=fs_FormatText(Result,ai_ComboIndex<3,True); // Sans accent ou avec accents en majuscules
+   0, 3 : Result:=fs_FormatText(Result,mftFirstIsMaj,ai_ComboIndex<3); // Sans accent ou avec accents avec une majuscule
+   1, 4 : Result:=fs_FormatText(Result,mftLower,ai_ComboIndex<3); // Sans accent ou avec accents sans majuscule
+   2, 5 : Result:=fs_FormatText(Result,mftUpper,ai_ComboIndex<3); // Sans accent ou avec accents en majuscules
   end;
   Result := fs_Create_Link(as_Link+Result,as_Texte, CST_HTML_TARGET_BLANK );
 End;
@@ -3325,7 +3326,7 @@ begin
   // Reading ini
   if not ab_Ini Then
     Exit;
-  f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
+  f_GetMainMemIniFile(nil,nil,nil,False,CST_AncestroWeb);
   OnFormInfoIni.p_ExecuteLecture(Self);
   p_iniReadKey;
 end;
@@ -3356,7 +3357,7 @@ var
 {$ENDIF}
 
 begin
-  f_GetMainMemIniFile(nil,nil,nil,CST_AncestroWeb);
+  f_GetMainMemIniFile(nil,nil,nil,False,CST_AncestroWeb);
   fSoftUserPath := GetUserDir;
   fSoftUserPath:=fSoftUserPath+CST_AncestroWeb+DirectorySeparator;
   {$IFDEF FPC}//à faire une version Delphi
