@@ -1823,13 +1823,8 @@ object F_AncestroWeb: TF_AncestroWeb
     top = 48
   end
   object OnFormInfoIni: TOnFormInfoIni
-    AutoLoad = False
-    SauvePosObjects = True
-    SauveEditObjets = [feTEdit, feTCheck, feTComboValue, feTDirectoryEdit, feTFileNameEdit, feTMemo, feTPageControl, feTRadio, feTSpinEdit]
-    SauvePosForm = True
     OnIniLoad = OnFormInfoIniIniLoad
     OnIniWrite = OnFormInfoIniIniWrite
-    Freeini = False
     left = 320
     top = 48
   end

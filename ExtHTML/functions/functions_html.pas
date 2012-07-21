@@ -193,7 +193,6 @@ procedure p_SelectTabSheet ( const at_TabSheets : TAHTMLULTabSheet ;
 
 var gs_html_source_file : String = 'Files' + DirectorySeparator;
     gstl_HeadKeyWords             : TStringlist = nil ;
-    gs_HtmlCharset : String ={$IFDEF FPC}'utf-8'{$ELSE}'iso-8859-1'{$ENDIF};
 
 
 

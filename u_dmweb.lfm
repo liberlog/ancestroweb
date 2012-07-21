@@ -166,7 +166,7 @@ object DMWeb: TDMWeb
         Name = 'I_PARQUI'
         ParamType = ptInput
       end>
-    left = 256
+    left = 272
     top = 136
     ParamData = <    
       item
