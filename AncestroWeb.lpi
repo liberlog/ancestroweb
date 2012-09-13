@@ -423,6 +423,7 @@
         <TopLine Value="94"/>
         <CursorPos X="10" Y="115"/>
         <UsageCount Value="15"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit37>
       <Unit38>
         <Filename Value="/usr/share/fpcsrc/2.6.0/rtl/unix/sysutils.pp"/>
@@ -531,6 +532,7 @@
         <TopLine Value="89"/>
         <CursorPos X="75" Y="111"/>
         <UsageCount Value="12"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit50>
       <Unit51>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatPanelUnit.pas"/>
@@ -539,6 +541,7 @@
         <TopLine Value="6"/>
         <CursorPos X="15" Y="27"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit51>
       <Unit52>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatTabControlUnit.pas"/>
@@ -547,6 +550,7 @@
         <TopLine Value="488"/>
         <CursorPos X="3" Y="529"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit52>
       <Unit53>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatSpinEditUnit.pas"/>
@@ -555,6 +559,7 @@
         <TopLine Value="37"/>
         <CursorPos X="39" Y="16"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit53>
       <Unit54>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatSpinButtonUnit.pas"/>
@@ -563,6 +568,7 @@
         <TopLine Value="95"/>
         <CursorPos X="16" Y="97"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit54>
       <Unit55>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatEditUnit.pas"/>
@@ -571,6 +577,7 @@
         <TopLine Value="13"/>
         <CursorPos X="3" Y="17"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit55>
       <Unit56>
         <Filename Value="/usr/lib/lazarus/0.9.30.4/lcl/controls.pp"/>
@@ -605,6 +612,7 @@
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
         <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit59>
       <Unit60>
         <Filename Value="AncestroWebExe.lpi"/>
@@ -648,9 +656,10 @@
         <TopLine Value="13"/>
         <CursorPos X="3" Y="462"/>
         <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit64>
       <Unit65>
-        <Filename Value="../../../../lazarus/lcl/controls.pp"/>
+        <Filename Value="../../../lazarus/lcl/controls.pp"/>
         <UnitName Value="Controls"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1946"/>
@@ -658,14 +667,14 @@
         <UsageCount Value="11"/>
       </Unit65>
       <Unit66>
-        <Filename Value="../../../../lazarus/lcl/include/wincontrol.inc"/>
+        <Filename Value="../../../lazarus/lcl/include/wincontrol.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="6592"/>
         <CursorPos X="3" Y="6610"/>
         <UsageCount Value="11"/>
       </Unit66>
       <Unit67>
-        <Filename Value="../../../../lazarus/lcl/stdctrls.pp"/>
+        <Filename Value="../../../lazarus/lcl/stdctrls.pp"/>
         <UnitName Value="StdCtrls"/>
         <WindowIndex Value="0"/>
         <TopLine Value="279"/>
@@ -673,14 +682,14 @@
         <UsageCount Value="11"/>
       </Unit67>
       <Unit68>
-        <Filename Value="../../../../lazarus/lcl/include/customcombobox.inc"/>
+        <Filename Value="../../../lazarus/lcl/include/customcombobox.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1004"/>
         <CursorPos X="3" Y="1008"/>
         <UsageCount Value="11"/>
       </Unit68>
       <Unit69>
-        <Filename Value="../../../../lazarus/lcl/graphics.pp"/>
+        <Filename Value="../../../lazarus/lcl/graphics.pp"/>
         <UnitName Value="Graphics"/>
         <WindowIndex Value="0"/>
         <TopLine Value="652"/>
@@ -703,6 +712,7 @@
         <TopLine Value="49"/>
         <CursorPos X="33" Y="80"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit71>
       <Unit72>
         <Filename Value="../../Lazarus/composants/jvXP/JvXPButtons.pas"/>
@@ -711,6 +721,7 @@
         <TopLine Value="691"/>
         <CursorPos X="1" Y="727"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit72>
     </Units>
     <JumpHistory Count="6" HistoryIndex="5">
@@ -758,10 +769,13 @@
     <CodeGeneration>
       <SmallerCode Value="True"/>
       <Optimizations>
-        <OptimizationLevel Value="0"/>
+        <OptimizationLevel Value="3"/>
       </Optimizations>
     </CodeGeneration>
     <Linking>
+      <Debugging>
+        <GenerateDebugInfo Value="False"/>
+      </Debugging>
       <LinkSmart Value="True"/>
       <Options>
         <Win32>

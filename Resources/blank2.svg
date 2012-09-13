@@ -11,13 +11,13 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.2 r9819"
+   inkscape:version="0.48.3.1 r9886"
    width="25.224417"
    height="28.906582"
    sodipodi:docname="blank2.svg"
    inkscape:export-filename="/home/matthieu/Bureau/Matthieu/Programmation/Lazarus Delphi/AncestroWeb/Resources/blank2.png"
-   inkscape:export-xdpi="286.43994"
-   inkscape:export-ydpi="286.43994">
+   inkscape:export-xdpi="3926.0955"
+   inkscape:export-ydpi="3926.0955">
   <metadata
      id="metadata8">
     <rdf:RDF>
@@ -42,14 +42,14 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1000"
+     inkscape:window-height="997"
      id="namedview4"
      showgrid="false"
      inkscape:zoom="28.105634"
-     inkscape:cx="2.4939359"
-     inkscape:cy="17.422294"
+     inkscape:cx="2.565096"
+     inkscape:cy="15.999092"
      inkscape:window-x="0"
-     inkscape:window-y="25"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:current-layer="a3783"
      fit-margin-top="0"
@@ -60,16 +60,21 @@
      id="a3783"
      transform="translate(-19.775583,-10.59375)">
     <path
-       style="fill:#f69532;fill-opacity:1;stroke:#00d7ff;stroke-width:0.48495135;stroke-miterlimit:2.20000005;stroke-opacity:1"
-       d="m 20.989199,11.775076 c 7.39235,-0.950027 9.886097,-0.528815 22.461687,-0.938272 l 1.316941,13.113252 -0.30259,15.315106 C 37.388924,39.280019 29.350791,38.767339 21.14963,38.837853 20.573277,36.34578 20.519534,33.102134 20.338289,29.903791 20.002681,23.981476 19.921222,17.88283 20.150025,14.660036 c 0.283492,-3.993117 0.455718,-1.38678 0.839174,-2.88496 z"
+       style="fill:#f69532;fill-opacity:1;stroke:#00d7ff;stroke-width:0.45297447;stroke-miterlimit:2.20000005;stroke-opacity:1"
+       d="m 20.989199,15.280854 c 7.39235,-0.828871 9.886097,-0.461376 22.461687,-0.818615 l 1.316941,11.440934 -0.30259,13.361989 C 37.388924,39.278124 29.350791,38.830826 21.14963,38.892347 20.573277,36.718085 20.519534,33.888098 20.338289,31.097636 20.002681,25.930587 19.921222,20.609694 20.150025,17.797899 c 0.283492,-3.48388 0.455718,-1.209926 0.839174,-2.517045 z"
        id="rect3003"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccccssc" />
+       sodipodi:nodetypes="cccccssc"
+       inkscape:export-filename="/home/matthieu/Bureau/Matthieu/Programmation/Lazarus Delphi/AncestroWeb/Resources/rect3005.png"
+       inkscape:export-xdpi="3926.0955"
+       inkscape:export-ydpi="3926.0955" />
     <path
        style="fill:#b7732d;fill-opacity:1;stroke:none"
-       d="m 43.270101,11.051965 c 0.366273,-0.0205 0.09423,0.798176 0.105797,1.152366 l 1.110886,12.223481 -0.237699,14.5077 c -0.0058,0.354321 -0.423254,0.106155 -0.789527,0.126651 -0.366274,0.0205 -0.525233,0.02668 -0.532761,-0.327588 L 43.619413,24.586694 42.338265,11.041151 c -0.03338,-0.352896 0.565573,0.03131 0.931846,0.01082 z"
+       d="m 43.270101,14.649961 c 0.366273,-0.01789 0.09423,0.696385 0.105797,1.005406 l 1.110886,10.664635 -0.237699,12.65755 c -0.0058,0.309135 -0.423254,0.09262 -0.789527,0.110499 -0.366274,0.01789 -0.525233,0.02328 -0.532761,-0.285811 L 43.619413,26.458622 42.338265,14.640526 c -0.03338,-0.307892 0.565573,0.02732 0.931846,0.0094 z"
        id="rect3005"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cscssscssc" />
+       sodipodi:nodetypes="cscssscssc"
+       inkscape:export-xdpi="3926.0955"
+       inkscape:export-ydpi="3926.0955" />
   </a>
 </svg>
