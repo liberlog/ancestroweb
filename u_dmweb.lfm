@@ -1,11 +1,11 @@
 object DMWeb: TDMWeb
+  Left = 109
+  Height = 408
+  Top = 155
+  Width = 572
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
-  OldCreateOrder = False
-  Height = 408
-  HorizontalOffset = 402
-  VerticalOffset = 142
-  Width = 572
+  LCLVersion = '0.9.31'
   object IBT_BASE: TIBTransaction
     Active = False
     DefaultDatabase = ibd_BASE
@@ -675,4 +675,4 @@ object DMWeb: TDMWeb
     left = 304
     top = 336
   end
-end
+end

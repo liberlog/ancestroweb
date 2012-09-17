@@ -59,7 +59,6 @@ begin
   gb_isDLL := True;
   sbase := value;
   aFMain := TF_AncestroWeb.create(Application);
-  aFMain.DoInit(sbase);
   aFMain.ShowModal;
   aFMain.Free;
 end;

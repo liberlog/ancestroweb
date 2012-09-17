@@ -37,54 +37,56 @@
         <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="11">
+    <RequiredPackages Count="12">
       <Item1>
-        <PackageName Value="lazflatstyle"/>
-        <MinVersion Release="1" Valid="True"/>
+        <PackageName Value="lazextbuttons"/>
       </Item1>
       <Item2>
-        <PackageName Value="uniqueinstance_package"/>
+        <PackageName Value="lazflatstyle"/>
+        <MinVersion Release="1" Valid="True"/>
       </Item2>
       <Item3>
-        <PackageName Value="VampyreImagingPackage"/>
+        <PackageName Value="uniqueinstance_package"/>
       </Item3>
       <Item4>
-        <PackageName Value="JvXPBarLaz"/>
+        <PackageName Value="VampyreImagingPackage"/>
       </Item4>
       <Item5>
-        <PackageName Value="ExtCopy"/>
+        <PackageName Value="JvXPBarLaz"/>
       </Item5>
       <Item6>
-        <PackageName Value="lazfonctions"/>
+        <PackageName Value="ExtCopy"/>
       </Item6>
       <Item7>
-        <PackageName Value="ExtHTML"/>
+        <PackageName Value="lazfonctions"/>
       </Item7>
       <Item8>
-        <PackageName Value="lazextcomponents"/>
-        <MinVersion Minor="9" Build="4" Valid="True"/>
+        <PackageName Value="ExtHTML"/>
       </Item8>
       <Item9>
-        <PackageName Value="ibexpress"/>
+        <PackageName Value="lazextcomponents"/>
+        <MinVersion Minor="9" Build="4" Valid="True"/>
       </Item9>
       <Item10>
-        <PackageName Value="FCL"/>
-        <MinVersion Major="1" Valid="True"/>
+        <PackageName Value="ibexpress"/>
       </Item10>
       <Item11>
-        <PackageName Value="LCL"/>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
       </Item11>
+      <Item12>
+        <PackageName Value="LCL"/>
+      </Item12>
     </RequiredPackages>
     <Units Count="73">
       <Unit0>
         <Filename Value="AncestroWeb.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AncestroWeb"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
-        <CursorPos X="10" Y="12"/>
+        <CursorPos X="70" Y="11"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -98,8 +100,8 @@
         <UnitName Value="U_AncestroWeb"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="403"/>
-        <CursorPos X="78" Y="420"/>
+        <TopLine Value="33"/>
+        <CursorPos X="21" Y="36"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -118,7 +120,6 @@
         <CursorPos X="1" Y="1"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit2>
       <Unit3>
@@ -169,7 +170,7 @@
         <Filename Value="ancestroweb_strings.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AncestroWeb_strings"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="75"/>
         <CursorPos X="35" Y="100"/>
@@ -186,17 +187,19 @@
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit9>
       <Unit10>
-        <Filename Value="../extended/fonctions/fonctions_images.pas"/>
+        <Filename Value="../Extended/fonctions/fonctions_images.pas"/>
         <UnitName Value="fonctions_images"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="5"/>
-        <CursorPos X="7" Y="26"/>
+        <TopLine Value="717"/>
+        <CursorPos X="22" Y="736"/>
         <UsageCount Value="14"/>
+        <Loaded Value="True"/>
       </Unit10>
       <Unit11>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
         <UnitName Value="functions_html"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
         <TopLine Value="313"/>
         <CursorPos X="1" Y="313"/>
@@ -205,10 +208,17 @@
       </Unit11>
       <Unit12>
         <Filename Value="u_dmweb.lfm"/>
+        <ComponentName Value="DMWeb"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="461"/>
-        <CursorPos X="32" Y="495"/>
-        <UsageCount Value="8"/>
+        <TopLine Value="581"/>
+        <CursorPos X="11" Y="610"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit12>
       <Unit13>
@@ -620,7 +630,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="27"/>
+        <UsageCount Value="28"/>
         <DefaultSyntaxHighlighter Value="XML"/>
       </Unit60>
       <Unit61>
@@ -724,7 +734,7 @@
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit72>
     </Units>
-    <JumpHistory Count="6" HistoryIndex="5">
+    <JumpHistory Count="12" HistoryIndex="11">
       <Position1>
         <Filename Value="u_dmweb.pas"/>
         <Caret Line="280" Column="108" TopLine="277"/>
@@ -749,6 +759,30 @@
         <Filename Value="AncestroWeb.lpr"/>
         <Caret Line="12" Column="34" TopLine="1"/>
       </Position6>
+      <Position7>
+        <Filename Value="../Extended/fonctions/fonctions_images.pas"/>
+        <Caret Line="26" Column="7" TopLine="5"/>
+      </Position7>
+      <Position8>
+        <Filename Value="../Extended/fonctions/fonctions_images.pas"/>
+        <Caret Line="31" Column="71" TopLine="11"/>
+      </Position8>
+      <Position9>
+        <Filename Value="../Extended/fonctions/fonctions_images.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position9>
+      <Position10>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="420" Column="78" TopLine="403"/>
+      </Position10>
+      <Position11>
+        <Filename Value="u_dmweb.lfm"/>
+        <Caret Line="474" Column="27" TopLine="460"/>
+      </Position11>
+      <Position12>
+        <Filename Value="u_dmweb.lfm"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position12>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

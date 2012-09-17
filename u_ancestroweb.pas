@@ -52,7 +52,7 @@ uses
   U_ExtImage, u_buttons_appli, IBSQL, U_ExtFileCopy, u_traducefile,
   JvXPButtons, IniFiles, TFlatEditUnit,TFlatGaugeUnit,
   TFlatCheckBoxUnit, TFlatMemoUnit, u_extabscopy, IBCustomDataSet, Grids,
-  ImagingComponents, JvXPCore;
+  ImagingComponents, JvXPCore, TFlatComboBoxUnit;
 
   const
     gVer_AncestroWeb : T_Version = ( Component : 'Application Ancestroweb' ;
@@ -84,12 +84,12 @@ type
   TF_AncestroWeb = class(TForm)
     btnSelectBase: TFWLoad;
     bt_export: TFWSaveAs;
-    cb_CityAccents: TComboBox;
-    cb_ContactSecurity: TComboBox;
-    cb_ContactTool: TComboBox;
-    cb_NamesAccents: TComboBox;
-    cb_JobsAccents: TComboBox;
-    cb_SurnamesAccents: TComboBox;
+    cb_CityAccents: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
+    cb_ContactSecurity: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
+    cb_ContactTool: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
+    cb_NamesAccents: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
+    cb_JobsAccents: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
+    cb_SurnamesAccents: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
     ch_ancestors: TFlatCheckbox;
     ch_CitiesLink: TFlatCheckbox;
     ch_Comptage: TFlatCheckBox;
@@ -99,8 +99,8 @@ type
     ch_genContact: TFlatCheckbox;
     ch_genjobs: TFlatCheckbox;
     ch_gensurnames: TFlatCheckbox;
-    cb_Themes: TComboBox;
-    cbDossier: TComboBox;
+    cb_Themes: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
+    cbDossier: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
     ch_genMap: TFlatCheckbox;
     ch_genSearch: TFlatCheckbox;
     ch_genTree: TFlatCheckbox;
@@ -112,7 +112,7 @@ type
     ch_SurnamesLink: TFlatCheckbox;
     DBGrid1: TDBGrid;
     ds_Individu: TDatasource;
-    cb_Base: TComboBox;
+    cb_Base: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
     ed_AgesName: TFlatEdit;
     ed_Author: TFlatEdit;
     ed_BaseCities: TFlatEdit;
@@ -262,7 +262,7 @@ type
     TraduceImage: TTraduceFile;
     ts_about: TTabSheet;
     ts_Gen: TTabSheet;
-    cb_Files: TComboBox;
+    cb_Files: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
     Label44: TLabel;
     de_ExportWeb: TDirectoryEdit;
     procedure btnSelectBaseClick(Sender: TObject);
@@ -337,7 +337,7 @@ type
     function fs_getNameAndSurName(const ibq_Query: TIBSQL): String;overload; virtual;
     function fs_GetTitleTree(const as_NameOfTree: String;
                              const ai_generations: Longint): String;
-    procedure p_AddToCombo ( const acb_combo : TComboBox;const as_Base: String; const ab_SetIndex :Boolean = True);
+    procedure p_AddToCombo ( const acb_combo : {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};const as_Base: String; const ab_SetIndex :Boolean = True);
     procedure p_CopyStructure;
     procedure p_CreateAHtmlFile(const astl_Destination: TStringList;
       const as_BeginingFile, as_Describe, as_Title, as_LittleTitle, as_LongTitle: string;
@@ -889,7 +889,7 @@ end;
 
 // procedure TF_AncestroWeb.p_AddABase
 // add and set a database
-procedure TF_AncestroWeb.p_AddToCombo ( const acb_combo : TComboBox; const as_Base : String ; const ab_SetIndex :Boolean = True);
+procedure TF_AncestroWeb.p_AddToCombo ( const acb_combo : {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF}; const as_Base : String ; const ab_SetIndex :Boolean = True);
 var li_i : Integer;
     lb_found : Boolean;
 Begin

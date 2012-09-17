@@ -7,9 +7,8 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, uniqueinstance_package, lazflatstyle,
-  lazextcomponents, extcopy, U_AncestroWeb, U_DMWeb, DefObjet, ibexpress,
-  exthtml;
+  Forms, uniqueinstance_package, lazflatstyle, lazextcomponents, extcopy,
+  lazextbuttons, U_AncestroWeb, U_DMWeb, DefObjet, ibexpress, exthtml;
 
 {$IFDEF WIN32}
 {$R *.res}
