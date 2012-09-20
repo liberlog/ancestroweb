@@ -221,7 +221,6 @@ const
   CST_FILE_MAN = 'man';
   CST_FILE_WOMAN = 'woman';
   CST_FILE_PERSON = 'person';
-  CST_FILE_UPDATE = 'script_update';
   CST_PAGE_PREVIOUS = 'previous';
   CST_PAGE_NEXT = 'next';
 
@@ -354,6 +353,9 @@ uses
   U_AncestroWeb;
 
 procedure p_setLibrary(var libname: string);
+{$IFDEF LINUX}
+var AProcess : TProcess;
+{$ENDIF}
 begin
   libname := ExtractFileDir(Application.ExeName) + DirectorySeparator + 'fbclient.dll';
   {$IFDEF LINUX}
