@@ -78,12 +78,12 @@
         <PackageName Value="LCL"/>
       </Item12>
     </RequiredPackages>
-    <Units Count="73">
+    <Units Count="74">
       <Unit0>
         <Filename Value="AncestroWeb.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AncestroWeb"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="70" Y="11"/>
@@ -98,10 +98,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="U_AncestroWeb"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="33"/>
-        <CursorPos X="21" Y="36"/>
+        <TopLine Value="821"/>
+        <CursorPos X="16" Y="830"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -116,10 +117,11 @@
         <UnitName Value="U_DMWeb"/>
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="1" Y="1"/>
+        <TopLine Value="73"/>
+        <CursorPos X="62" Y="99"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit2>
       <Unit3>
@@ -170,7 +172,7 @@
         <Filename Value="ancestroweb_strings.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AncestroWeb_strings"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="75"/>
         <CursorPos X="35" Y="100"/>
@@ -181,25 +183,25 @@
       <Unit9>
         <Filename Value="u_ancestroweb.lfm"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="13"/>
-        <CursorPos X="40" Y="21"/>
+        <TopLine Value="1044"/>
+        <CursorPos X="1" Y="1080"/>
         <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit9>
       <Unit10>
         <Filename Value="../Extended/fonctions/fonctions_images.pas"/>
         <UnitName Value="fonctions_images"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="717"/>
         <CursorPos X="22" Y="736"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="15"/>
         <Loaded Value="True"/>
       </Unit10>
       <Unit11>
         <Filename Value="ExtHTML/functions/functions_html.pas"/>
         <UnitName Value="functions_html"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
         <TopLine Value="313"/>
         <CursorPos X="1" Y="313"/>
@@ -211,14 +213,10 @@
         <ComponentName Value="DMWeb"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="581"/>
-        <CursorPos X="11" Y="610"/>
+        <CursorPos X="15" Y="611"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit12>
       <Unit13>
@@ -542,7 +540,6 @@
         <TopLine Value="89"/>
         <CursorPos X="75" Y="111"/>
         <UsageCount Value="12"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit50>
       <Unit51>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatPanelUnit.pas"/>
@@ -551,7 +548,6 @@
         <TopLine Value="6"/>
         <CursorPos X="15" Y="27"/>
         <UsageCount Value="10"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit51>
       <Unit52>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatTabControlUnit.pas"/>
@@ -560,7 +556,6 @@
         <TopLine Value="488"/>
         <CursorPos X="3" Y="529"/>
         <UsageCount Value="10"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit52>
       <Unit53>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatSpinEditUnit.pas"/>
@@ -569,7 +564,6 @@
         <TopLine Value="37"/>
         <CursorPos X="39" Y="16"/>
         <UsageCount Value="10"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit53>
       <Unit54>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatSpinButtonUnit.pas"/>
@@ -578,7 +572,6 @@
         <TopLine Value="95"/>
         <CursorPos X="16" Y="97"/>
         <UsageCount Value="10"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit54>
       <Unit55>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatEditUnit.pas"/>
@@ -587,7 +580,6 @@
         <TopLine Value="13"/>
         <CursorPos X="3" Y="17"/>
         <UsageCount Value="10"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit55>
       <Unit56>
         <Filename Value="/usr/lib/lazarus/0.9.30.4/lcl/controls.pp"/>
@@ -622,7 +614,6 @@
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
         <UsageCount Value="11"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit59>
       <Unit60>
         <Filename Value="AncestroWebExe.lpi"/>
@@ -630,7 +621,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="28"/>
+        <UsageCount Value="30"/>
         <DefaultSyntaxHighlighter Value="XML"/>
       </Unit60>
       <Unit61>
@@ -654,9 +645,9 @@
         <UnitName Value="U_ExtPictCombo"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="337"/>
-        <CursorPos X="1" Y="372"/>
-        <UsageCount Value="11"/>
+        <TopLine Value="350"/>
+        <CursorPos X="54" Y="370"/>
+        <UsageCount Value="12"/>
         <Loaded Value="True"/>
       </Unit63>
       <Unit64>
@@ -666,7 +657,6 @@
         <TopLine Value="13"/>
         <CursorPos X="3" Y="462"/>
         <UsageCount Value="11"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit64>
       <Unit65>
         <Filename Value="../../../lazarus/lcl/controls.pp"/>
@@ -675,6 +665,7 @@
         <TopLine Value="1946"/>
         <CursorPos X="15" Y="1965"/>
         <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit65>
       <Unit66>
         <Filename Value="../../../lazarus/lcl/include/wincontrol.inc"/>
@@ -682,6 +673,7 @@
         <TopLine Value="6592"/>
         <CursorPos X="3" Y="6610"/>
         <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit66>
       <Unit67>
         <Filename Value="../../../lazarus/lcl/stdctrls.pp"/>
@@ -690,6 +682,7 @@
         <TopLine Value="279"/>
         <CursorPos X="15" Y="298"/>
         <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit67>
       <Unit68>
         <Filename Value="../../../lazarus/lcl/include/customcombobox.inc"/>
@@ -697,6 +690,7 @@
         <TopLine Value="1004"/>
         <CursorPos X="3" Y="1008"/>
         <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit68>
       <Unit69>
         <Filename Value="../../../lazarus/lcl/graphics.pp"/>
@@ -705,6 +699,7 @@
         <TopLine Value="652"/>
         <CursorPos X="3" Y="671"/>
         <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit69>
       <Unit70>
         <Filename Value="/usr/lib/lazarus/0.9.30.4/packager/packagedefs.pas"/>
@@ -722,7 +717,6 @@
         <TopLine Value="49"/>
         <CursorPos X="33" Y="80"/>
         <UsageCount Value="10"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit71>
       <Unit72>
         <Filename Value="../../Lazarus/composants/jvXP/JvXPButtons.pas"/>
@@ -731,58 +725,137 @@
         <TopLine Value="691"/>
         <CursorPos X="1" Y="727"/>
         <UsageCount Value="10"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit72>
+      <Unit73>
+        <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatCheckBoxUnit.pas"/>
+        <UnitName Value="TFlatCheckBoxUnit"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="123"/>
+        <CursorPos X="1" Y="154"/>
+        <UsageCount Value="10"/>
+      </Unit73>
     </Units>
-    <JumpHistory Count="12" HistoryIndex="11">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="u_dmweb.pas"/>
-        <Caret Line="280" Column="108" TopLine="277"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="3278" Column="19" TopLine="3267"/>
       </Position1>
       <Position2>
-        <Filename Value="AncestroWeb.lpr"/>
-        <Caret Line="23" Column="40" TopLine="1"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position2>
       <Position3>
-        <Filename Value="AncestroWeb.lpr"/>
-        <Caret Line="12" Column="19" TopLine="1"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1790" Column="55" TopLine="1759"/>
       </Position3>
       <Position4>
-        <Filename Value="AncestroWeb.lpr"/>
-        <Caret Line="23" Column="17" TopLine="1"/>
+        <Filename Value="u_dmweb.pas"/>
+        <Caret Line="96" Column="30" TopLine="73"/>
       </Position4>
       <Position5>
         <Filename Value="u_dmweb.pas"/>
-        <Caret Line="280" Column="108" TopLine="277"/>
+        <Caret Line="99" Column="62" TopLine="73"/>
       </Position5>
       <Position6>
-        <Filename Value="AncestroWeb.lpr"/>
-        <Caret Line="12" Column="34" TopLine="1"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1865" Column="7" TopLine="1864"/>
       </Position6>
       <Position7>
-        <Filename Value="../Extended/fonctions/fonctions_images.pas"/>
-        <Caret Line="26" Column="7" TopLine="5"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position7>
       <Position8>
-        <Filename Value="../Extended/fonctions/fonctions_images.pas"/>
-        <Caret Line="31" Column="71" TopLine="11"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="93" Column="28" TopLine="62"/>
       </Position8>
       <Position9>
-        <Filename Value="../Extended/fonctions/fonctions_images.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="66" Column="15" TopLine="62"/>
       </Position9>
       <Position10>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="420" Column="78" TopLine="403"/>
+        <Caret Line="98" Column="11" TopLine="67"/>
       </Position10>
       <Position11>
-        <Filename Value="u_dmweb.lfm"/>
-        <Caret Line="474" Column="27" TopLine="460"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="99" Column="11" TopLine="68"/>
       </Position11>
       <Position12>
-        <Filename Value="u_dmweb.lfm"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="100" Column="11" TopLine="69"/>
       </Position12>
+      <Position13>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="101" Column="11" TopLine="70"/>
+      </Position13>
+      <Position14>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="104" Column="11" TopLine="73"/>
+      </Position14>
+      <Position15>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="105" Column="11" TopLine="74"/>
+      </Position15>
+      <Position16>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="106" Column="11" TopLine="75"/>
+      </Position16>
+      <Position17>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="153" Column="11" TopLine="122"/>
+      </Position17>
+      <Position18>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="264" Column="11" TopLine="233"/>
+      </Position18>
+      <Position19>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="852" Column="23" TopLine="827"/>
+      </Position19>
+      <Position20>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="526" Column="17" TopLine="522"/>
+      </Position20>
+      <Position21>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position21>
+      <Position22>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="399" Column="7" TopLine="399"/>
+      </Position22>
+      <Position23>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="781" Column="63" TopLine="750"/>
+      </Position23>
+      <Position24>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="790" Column="66" TopLine="759"/>
+      </Position24>
+      <Position25>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="829" Column="63" TopLine="798"/>
+      </Position25>
+      <Position26>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="834" Column="68" TopLine="803"/>
+      </Position26>
+      <Position27>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="852" Column="51" TopLine="821"/>
+      </Position27>
+      <Position28>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1285" Column="16" TopLine="1254"/>
+      </Position28>
+      <Position29>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position29>
+      <Position30>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="544" Column="24" TopLine="513"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

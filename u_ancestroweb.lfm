@@ -47,6 +47,7 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object FWClose1: TFWClose
       Left = 534
+      Height = 25
       Top = 2
       Width = 98
       Caption = 'Fermer'
@@ -257,7 +258,6 @@ object F_AncestroWeb: TF_AncestroWeb
             Height = 22
             Top = 22
             Width = 23
-            Caption = 'Ouvrir'
             TabOrder = 7
             Anchors = [akTop, akRight]
             Font.Color = clMaroon
@@ -368,6 +368,7 @@ object F_AncestroWeb: TF_AncestroWeb
                 Width = 333
                 Caption = 'Ascendance'
                 Checked = True
+                ColorCheck = clWindowText
                 TabOrder = 0
                 TabStop = True
               end
@@ -377,6 +378,7 @@ object F_AncestroWeb: TF_AncestroWeb
                 Top = 1
                 Width = 344
                 Caption = 'Filtrer par l''individu :'
+                ColorCheck = clWindowText
                 TabOrder = 1
                 TabStop = True
                 OnClick = ch_FilteredClick
@@ -479,8 +481,8 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_needed: TTabSheet
       Caption = 'Général'
-      ClientHeight = 332
-      ClientWidth = 636
+      ClientHeight = 340
+      ClientWidth = 632
       object pc_needed: TPageControl
         Left = 0
         Height = 340
@@ -492,8 +494,8 @@ object F_AncestroWeb: TF_AncestroWeb
         TabOrder = 0
         object ts_home: TTabSheet
           Caption = 'Accueil'
-          ClientHeight = 336
-          ClientWidth = 628
+          ClientHeight = 314
+          ClientWidth = 624
           object Panel8: TPanel
             Left = 0
             Height = 314
@@ -669,8 +671,8 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ts_Files: TTabSheet
           Caption = 'Fiches'
-          ClientHeight = 336
-          ClientWidth = 628
+          ClientHeight = 314
+          ClientWidth = 624
           object Panel10: TPanel
             Left = 0
             Height = 314
@@ -723,6 +725,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 161
               Caption = 'Joindre les images'
               Checked = True
+              ColorCheck = clWindowText
               TabOrder = 2
               TabStop = True
             end
@@ -750,6 +753,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Top = 129
               Width = 161
               Caption = 'Montrer l''onglet Fiches'
+              ColorCheck = clWindowText
               TabOrder = 4
               TabStop = True
             end
@@ -805,6 +809,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 200
               Caption = 'Lier à une base de villes :'
               Checked = True
+              ColorCheck = clWindowText
               TabOrder = 2
               TabStop = True
             end
@@ -815,6 +820,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 200
               Caption = 'Lier à une base de noms :'
               Checked = True
+              ColorCheck = clWindowText
               TabOrder = 3
               TabStop = True
             end
@@ -825,6 +831,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 200
               Caption = 'Lier à une base de prénoms :'
               Checked = True
+              ColorCheck = clWindowText
               TabOrder = 4
               TabStop = True
             end
@@ -895,6 +902,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 253
               Caption = 'Cacher les dates de moins de 100 ans'
               Checked = True
+              ColorCheck = clWindowText
               TabOrder = 9
               TabStop = True
               OnClick = ch_FilteredClick
@@ -925,6 +933,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 200
               Caption = 'Lier à une base de métiers :'
               Checked = True
+              ColorCheck = clWindowText
               TabOrder = 11
               TabStop = True
             end
@@ -965,6 +974,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 223
               Caption = 'Statistiques sur les individus'
               Checked = True
+              ColorCheck = clWindowText
               TabOrder = 14
               TabStop = True
             end
@@ -1006,6 +1016,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 256
               Caption = 'Générer l''arbre'
               Checked = True
+              ColorCheck = clWindowText
               TabOrder = 0
               TabStop = True
             end
@@ -1067,6 +1078,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 320
               Caption = 'Générer les patronymes'
               Checked = True
+              ColorCheck = clWindowText
               TabOrder = 0
               TabStop = True
             end
@@ -1827,7 +1839,7 @@ object F_AncestroWeb: TF_AncestroWeb
     top = 48
   end
   object OnFormInfoIni: TOnFormInfoIni
-    SaveEdits = [feTEdit, feTCheck, feTComboValue, feTFileNameEdit, feTMemo, feTRadio, feTRadioGroup, feTSpinEdit]
+    SaveEdits = [feTEdit, feTCheck, feTComboValue, feTDirectoryEdit, feTFileNameEdit, feTMemo, feTRadio, feTRadioGroup, feTSpinEdit]
     SaveForm = [sfSavePos, sfSaveSizes]
     Options = [loAutoUpdate]
     OnIniLoad = OnFormInfoIniIniLoad

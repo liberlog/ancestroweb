@@ -849,7 +849,7 @@ begin
   finally
     gb_Generate := False;
     p_Setcomments (( gs_AnceSTROWEB_Finished )); // advert for user
-    IBQ_Individu.Locate(IBQ_CLE_FICHE, gi_CleFiche, []);
+    IBQ_Individu.Locate(IBQ_CLE_FICHE, fCleFiche, []);
     IBQ_Individu.EnableControls;
   end;
 end;
@@ -1767,71 +1767,6 @@ const CST_DUMMY_COORD = 2000000;
       end;
   End;
 
-  // procedure p_getCityLastInfos
-  // last try to get correct city infos
-  procedure p_getCityLastInfos ( const as_Pays : String; as_city : String; var ad_latitude , ad_longitude : Double);
-  Begin
-    ad_latitude :=CST_DUMMY_COORD;
-    ad_longitude:=CST_DUMMY_COORD;
-    as_city     := Trim ( as_city );
-    if ( as_city = '' ) Then
-      Begin
-        p_Setcomments(gs_ANCESTROWEB_MapProblemNoCity);
-        Exit;
-      end;
-    with DMWeb.IBS_City do
-      Begin
-        Close;
-        ParamByName(I_CITY).AsString:=as_city;
-        ParamByName(I_PAYS).AsString:=as_Pays;
-        ExecQuery;
-        if Bof Then
-          Exit;
-        ad_latitude := FieldByName(IBQ_CP_LATITUDE ).AsFloat;
-        ad_longitude:= FieldByName(IBQ_CP_LONGITUDE).AsFloat;
-        Close;
-      end;
-  end;
-  // procedure p_getCityInfos
-  // try to get correct city infos
-  procedure p_getCityInfos ( as_codepostal, as_Pays, as_city : String; var ad_latitude , ad_longitude : Double);
-  Begin
-    ad_latitude :=CST_DUMMY_COORD;
-    ad_longitude:=CST_DUMMY_COORD;
-    as_codepostal := Trim ( as_codepostal );
-    as_Pays       := Trim ( as_Pays       );
-    if ( as_pays = '' ) Then
-     as_pays := gs_ANCESTROWEB_MapCountry;
-    if ( as_codepostal = '' )
-    or ( Length(as_codepostal)>8) Then
-      Begin
-        p_getCityLastInfos ( as_Pays, as_city, ad_latitude , ad_longitude );
-        p_Setcomments(gs_ANCESTROWEB_MapProblemNoPostalCode);
-        Exit;
-      end;
-    with DMWeb.IBS_CityCPost do
-      Begin
-        Close;
-        ParamByName(I_CP  ).AsString:=as_codepostal;
-        ParamByName(I_PAYS).AsString:=as_Pays;
-        ExecQuery;
-        if RecordCount = 0 Then
-         if as_Pays = gs_ANCESTROWEB_MapCountry
-          Then Exit
-          Else p_getCityInfos ( as_codepostal, gs_ANCESTROWEB_MapCountry, as_city, ad_latitude, ad_longitude );
-        as_city:=UpperCase(as_city);
-        while not eof do
-         Begin
-           if Trim(UpperCase(FieldByName(IBQ_CP_VILLE).AsString))=as_city Then Break;
-           Next;
-         end;
-        ad_latitude := FieldByName(IBQ_CP_LATITUDE ).AsFloat;
-        ad_longitude:= FieldByName(IBQ_CP_LONGITUDE).AsFloat;
-        Close;
-      end;
-  end;
-
-
     // procedure p_createMinMaxMap
     // creating min and max on Surnames
     procedure p_createMinMaxMap ( const IBS_MapFiltered :TIBSQL);
@@ -1853,7 +1788,8 @@ const CST_DUMMY_COORD = 2000000;
           if ls_AName <> '' Then
             Begin
               ls_City:= Trim ( FieldByName(IBQ_EV_IND_VILLE).AsString );
-              p_getCityInfos ( FieldByName(IBQ_EV_IND_CP).AsString, FieldByName(IBQ_EV_IND_PAYS).AsString, ls_City, ld_latitude, ld_longitude );
+              ld_latitude :=FieldByName(IBQ_EV_IND_LATITUDE ).AsDouble;
+              ld_longitude:=FieldByName(IBQ_EV_IND_LONGITUDE).AsDouble;
               ld_counter :=  FieldByName(IBQ_COUNTER ).AsInt64;
               if  ( ld_latitude <> CST_DUMMY_COORD ) Then
                 begin
@@ -1945,7 +1881,8 @@ const CST_DUMMY_COORD = 2000000;
     with IBS_MapFiltered do
      Begin
        ls_CitySurname:=Trim(FieldByName(IBQ_EV_IND_VILLE).AsString);
-       p_getCityInfos ( FieldByName(IBQ_EV_IND_CP).AsString, FieldByName(IBQ_EV_IND_PAYS).AsString, ls_CitySurname, ld_latitude, ld_longitude );
+       ld_latitude :=FieldByName(IBQ_EV_IND_LATITUDE ).AsDouble;
+       ld_longitude:=FieldByName(IBQ_EV_IND_LONGITUDE).AsDouble;
        if ab_IsNamedMap
         Then // just set the link
          ls_CitySurname:=fs_getLinkedCity(ls_CitySurname)
@@ -3390,12 +3327,17 @@ begin
     if OpenKeyReadOnly(fKeyRegistry) then
     begin
       if gs_Ancestro = CST_MANIA Then
+       Begin
         for i:=0 to cb_Base.DropDownCount-1 do
           begin //bizarre, cette boucle ne fonctionne pas avec un TRegIniFile, ou il faudrait fermer la clé entre chaque lecture
             ls_base:=ReadString('NomBase'+IntToStr(i));
             if ls_base>'' then
               p_AddToCombo(cb_base,fs_getCorrectString(ls_base), False);
           end;
+        fKeyRegistry:='\SOFTWARE\'+gs_Ancestro+'\Path';
+        if OpenKeyReadOnly(fKeyRegistry) then
+         fbddpath:=ReadString(CST_INI_PATH_BDD);
+       end;
     end;
   finally
     Free;
@@ -3455,9 +3397,6 @@ end;
 procedure TF_AncestroWeb.OnFormInfoIniIniLoad(const AInifile: TCustomInifile;
   var Continue: Boolean);
 begin
-  {$IFDEF WINDOWS}
-  if gb_logie Then
-  {$ENDIF}
   p_ReadComboBoxItems(cb_Base,cb_Base.Items);
   p_iniReadKey;
   {$IFDEF LINUX}

@@ -89,6 +89,8 @@ const
   IBQ_EV_IND_DESCRIPTION = 'EV_IND_DESCRIPTION';
   IBQ_EV_IND_CP = 'EV_IND_CP';
   IBQ_EV_IND_VILLE = 'EV_IND_VILLE';
+  IBQ_EV_IND_LATITUDE = 'EV_IND_LATITUDE';
+  IBQ_EV_IND_LONGITUDE = 'EV_IND_LONGITUDE';
   IBQ_EV_IND_DATE = 'EV_IND_DATE';
   IBQ_EV_IND_PAYS = 'EV_IND_PAYS';
 
@@ -277,7 +279,6 @@ type
   { TDMWeb }
 
   TDMWeb = class(TDataModule)
-    IBS_CityCPost: TIBSQL;
     IBS_Sources_Record: TIBSQL;
     IBS_Jobs: TIBSQL;
     IBS_Compte: TIBSQL;
@@ -292,7 +293,6 @@ type
     IBQ_TreeAsc: TIBQuery;
     IBQ_TreeBySurnames: TIBQuery;
     IBQ_TreeDescBySurnames: TIBQuery;
-    IBS_City: TIBSQL;
     IBS_MapAll: TIBSQL;
     IBS_TreeMapDes: TIBSQL;
     IBS_TreeSurnames: TIBSQL;

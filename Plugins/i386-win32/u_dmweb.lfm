@@ -2,9 +2,11 @@ object DMWeb: TDMWeb
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
   OldCreateOrder = False
+  left = 109
+  top = 155
   Height = 408
-  HorizontalOffset = 402
-  VerticalOffset = 142
+  HorizontalOffset = 309
+  VerticalOffset = 132
   Width = 572
   object IBT_BASE: TIBTransaction
     Active = False
@@ -592,46 +594,40 @@ object DMWeb: TDMWeb
     Database = ibd_BASE
     ParamCheck = True
     SQL.Strings = (
-      'SELECT NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS,COUNT (*) AS COUNTER'
+      'SELECT '
+      'NOM,EV_IND_CP,EV_IND_LATITUDE,EV_IND_LONGITUDE,'
+      'EV_IND_VILLE,EV_IND_PAYS,COUNT (*) AS COUNTER'
       'FROM PROC_TQ_ASCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,0) t'
       'inner join individu i on i.cle_fiche=t.tq_cle_fiche'
       'left join EVENEMENTS_IND e on i.cle_fiche=e.EV_IND_KLE_FICHE'
-      'GROUP BY NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS'
-      'ORDER BY NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS'
+      'GROUP BY '
+      'NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS,'
+      'EV_IND_LATITUDE,EV_IND_LONGITUDE'
+      'ORDER BY '
+      'NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS,'
+      'EV_IND_LATITUDE,EV_IND_LONGITUDE'
       ''
     )
     Transaction = IBT_BASE
     left = 40
     top = 264
   end
-  object IBS_City: TIBSQL
-    Database = ibd_BASE
-    ParamCheck = True
-    SQL.Strings = (
-      'SELECT CP_LATITUDE,CP_LONGITUDE,CP_VILLE'
-      'FROM REF_CP_VILLE INNER JOIN REF_PAYS '
-      'ON ( CP_PAYS = RPA_CODE ) '
-      'WHERE RPA_LIBELLE=:I_PAYS '
-      'AND CP_VILLE= :I_CITY'
-      'AND CP_LATITUDE >= -90'
-      'AND CP_LATITUDE <= 90'
-      'AND CP_LONGITUDE >= -180'
-      'AND CP_LONGITUDE <= 180'
-    )
-    Transaction = IBT_BASE
-    left = 304
-    top = 264
-  end
   object IBS_MapAll: TIBSQL
     Database = ibd_BASE
     ParamCheck = True
     SQL.Strings = (
-      'SELECT NOM,EV_IND_CP,EV_IND_PAYS,EV_IND_VILLE,COUNT (*) AS COUNTER'
+      'SELECT '
+      'NOM,EV_IND_CP,EV_IND_PAYS,EV_IND_LATITUDE,'
+      'EV_IND_LONGITUDE,EV_IND_VILLE,COUNT (*) AS COUNTER'
       'FROM individu i'
       'left join EVENEMENTS_IND e on i.cle_fiche=e.EV_IND_KLE_FICHE'
       'WHERE KLE_DOSSIER=:I_DOSSIER'
-      'GROUP BY NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS'
-      'ORDER BY NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS'
+      'GROUP BY '
+      'NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS,'
+      'EV_IND_LATITUDE,EV_IND_LONGITUDE'
+      'ORDER BY '
+      'NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS,'
+      'EV_IND_LATITUDE,EV_IND_LONGITUDE'
       ''
       ''
     )
@@ -643,36 +639,22 @@ object DMWeb: TDMWeb
     Database = ibd_BASE
     ParamCheck = True
     SQL.Strings = (
-      'SELECT NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS,COUNT (*) AS COUNTER'
+      'SELECT '
+      'NOM,EV_IND_CP,EV_IND_LATITUDE,EV_IND_LONGITUDE,EV_IND_VILLE,'
+      'EV_IND_PAYS,COUNT (*) AS COUNTER'
       'FROM PROC_TQ_DESCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,0) t'
       'inner join individu i on i.cle_fiche=t.tq_cle_fiche'
       'left join EVENEMENTS_IND e on i.cle_fiche=e.EV_IND_KLE_FICHE'
-      'GROUP BY NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS'
-      'ORDER BY NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS'
-      ''
+      'GROUP BY '
+      'NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS,'
+      'EV_IND_LATITUDE,EV_IND_LONGITUDE'
+      'ORDER BY '
+      'NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS,'
+      'EV_IND_LATITUDE,EV_IND_LONGITUDE'
       ''
     )
     Transaction = IBT_BASE
     left = 192
     top = 264
   end
-  object IBS_CityCPost: TIBSQL
-    Database = ibd_BASE
-    ParamCheck = True
-    SQL.Strings = (
-      'SELECT CP_LATITUDE,CP_LONGITUDE,CP_VILLE'
-      'FROM REF_CP_VILLE INNER JOIN REF_PAYS '
-      'ON ( CP_PAYS = RPA_CODE ) '
-      'WHERE RPA_LIBELLE=:I_PAYS '
-      'AND CP_CP= :I_CP'
-      'AND CP_LATITUDE >= -90'
-      'AND CP_LATITUDE <= 90'
-      'AND CP_LONGITUDE >= -180'
-      'AND CP_LONGITUDE <= 180'
-      'AND CP_VILLE <> '''''
-    )
-    Transaction = IBT_BASE
-    left = 304
-    top = 336
-  end
-end
+end
