@@ -258,6 +258,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Height = 22
             Top = 22
             Width = 23
+            Caption = 'Ouvrir'
             TabOrder = 7
             Anchors = [akTop, akRight]
             Font.Color = clMaroon
@@ -361,26 +362,25 @@ object F_AncestroWeb: TF_AncestroWeb
               ClientHeight = 43
               ClientWidth = 356
               TabOrder = 1
-              object ch_ancestors: TFlatCheckBox
+              object ch_ancestors: TJvXPCheckbox
                 Left = 5
                 Height = 17
                 Top = 25
                 Width = 333
                 Caption = 'Ascendance'
-                Checked = True
-                ColorCheck = clWindowText
                 TabOrder = 0
-                TabStop = True
+                Checked = True
+                State = cbChecked
+                UseDockManager = False
               end
-              object ch_Filtered: TFlatCheckBox
+              object ch_Filtered: TJvXPCheckbox
                 Left = 5
                 Height = 17
                 Top = 1
                 Width = 344
                 Caption = 'Filtrer par l''individu :'
-                ColorCheck = clWindowText
                 TabOrder = 1
-                TabStop = True
+                UseDockManager = False
                 OnClick = ch_FilteredClick
               end
             end
@@ -523,12 +523,11 @@ object F_AncestroWeb: TF_AncestroWeb
               ParentColor = True
               TabOrder = 0
             end
-            object me_Description: TFlatMemo
+            object me_Description: TMemo
               Left = 4
               Height = 74
               Top = 41
               Width = 622
-              ColorFlat = clBtnFace
               ParentColor = True
               ScrollBars = ssAutoBoth
               TabOrder = 1
@@ -700,12 +699,11 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 0
               Text = 'Files'
             end
-            object me_FilesHead: TFlatMemo
+            object me_FilesHead: TMemo
               Left = 4
               Height = 74
               Top = 49
               Width = 622
-              ColorFlat = clBtnFace
               ParentColor = True
               ScrollBars = ssAutoBoth
               TabOrder = 1
@@ -718,16 +716,16 @@ object F_AncestroWeb: TF_AncestroWeb
               Caption = 'Description :'
               ParentColor = False
             end
-            object ch_Images: TFlatCheckBox
+            object ch_Images: TJvXPCheckbox
               Left = 4
               Height = 17
               Top = 129
               Width = 161
               Caption = 'Joindre les images'
-              Checked = True
-              ColorCheck = clWindowText
               TabOrder = 2
-              TabStop = True
+              Checked = True
+              State = cbChecked
+              UseDockManager = False
             end
             object ed_ListsBeginName: TFlatEdit
               Left = 404
@@ -747,15 +745,14 @@ object F_AncestroWeb: TF_AncestroWeb
               Caption = 'Nom du début des fichiers listes :'
               ParentColor = False
             end
-            object ch_ShowMainFile: TFlatCheckBox
+            object ch_ShowMainFile: TJvXPCheckbox
               Left = 211
               Height = 17
               Top = 129
               Width = 161
               Caption = 'Montrer l''onglet Fiches'
-              ColorCheck = clWindowText
               TabOrder = 4
-              TabStop = True
+              UseDockManager = False
             end
           end
         end
@@ -802,38 +799,38 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 1
               Text = 'http://fr.wikipedia.org/wiki/'
             end
-            object ch_CitiesLink: TFlatCheckBox
+            object ch_CitiesLink: TJvXPCheckbox
               Left = 4
               Height = 17
               Top = 108
               Width = 200
               Caption = 'Lier à une base de villes :'
-              Checked = True
-              ColorCheck = clWindowText
               TabOrder = 2
-              TabStop = True
+              Checked = True
+              State = cbChecked
+              UseDockManager = False
             end
-            object ch_SurnamesLink: TFlatCheckBox
+            object ch_SurnamesLink: TJvXPCheckbox
               Left = 4
               Height = 17
               Top = 82
               Width = 200
               Caption = 'Lier à une base de noms :'
-              Checked = True
-              ColorCheck = clWindowText
               TabOrder = 3
-              TabStop = True
+              Checked = True
+              State = cbChecked
+              UseDockManager = False
             end
-            object ch_NamesLink: TFlatCheckBox
+            object ch_NamesLink: TJvXPCheckbox
               Left = 4
               Height = 17
               Top = 54
               Width = 200
               Caption = 'Lier à une base de prénoms :'
-              Checked = True
-              ColorCheck = clWindowText
               TabOrder = 4
-              TabStop = True
+              Checked = True
+              State = cbChecked
+              UseDockManager = False
             end
             object ed_BaseNames: TFlatEdit
               Left = 212
@@ -895,28 +892,27 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 8
               Text = 'Sans accent sans majuscule'
             end
-            object ch_HideLessThan100: TFlatCheckBox
+            object ch_HideLessThan100: TJvXPCheckbox
               Left = 4
               Height = 17
               Top = 3
               Width = 253
               Caption = 'Cacher les dates de moins de 100 ans'
-              Checked = True
-              ColorCheck = clWindowText
               TabOrder = 9
-              TabStop = True
+              Checked = True
+              State = cbChecked
+              UseDockManager = False
               OnClick = ch_FilteredClick
             end
-            object me_Bottom: TFlatMemo
+            object me_Bottom: TMemo
               Left = 4
               Height = 57
               Top = 256
               Width = 616
-              ColorFlat = clBtnFace
+              Anchors = [akTop, akLeft, akRight, akBottom]
               ParentColor = True
               ScrollBars = ssAutoBoth
               TabOrder = 10
-              Anchors = [akTop, akLeft, akRight, akBottom]
             end
             object Label6: TLabel
               Left = 4
@@ -926,16 +922,16 @@ object F_AncestroWeb: TF_AncestroWeb
               Caption = 'En bas de chaque page :'
               ParentColor = False
             end
-            object ch_JobsLink: TFlatCheckBox
+            object ch_JobsLink: TJvXPCheckbox
               Left = 4
               Height = 17
               Top = 27
               Width = 200
               Caption = 'Lier à une base de métiers :'
-              Checked = True
-              ColorCheck = clWindowText
               TabOrder = 11
-              TabStop = True
+              Checked = True
+              State = cbChecked
+              UseDockManager = False
             end
             object ed_BaseJobs: TFlatEdit
               Left = 212
@@ -967,16 +963,16 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 13
               Text = 'Sans accent avec une majuscule'
             end
-            object ch_Comptage: TFlatCheckBox
+            object ch_Comptage: TJvXPCheckbox
               Left = 4
               Height = 13
               Top = 128
               Width = 223
               Caption = 'Statistiques sur les individus'
-              Checked = True
-              ColorCheck = clWindowText
               TabOrder = 14
-              TabStop = True
+              Checked = True
+              State = cbChecked
+              UseDockManager = False
             end
           end
         end
@@ -984,8 +980,8 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_options: TTabSheet
       Caption = 'Options'
-      ClientHeight = 332
-      ClientWidth = 636
+      ClientHeight = 340
+      ClientWidth = 632
       object PageControl1: TPageControl
         Left = 0
         Height = 340
@@ -997,8 +993,8 @@ object F_AncestroWeb: TF_AncestroWeb
         TabOrder = 0
         object ts_tree: TTabSheet
           Caption = 'Arbre'
-          ClientHeight = 336
-          ClientWidth = 628
+          ClientHeight = 314
+          ClientWidth = 624
           object Panel2: TPanel
             Left = 0
             Height = 314
@@ -1009,23 +1005,22 @@ object F_AncestroWeb: TF_AncestroWeb
             ClientHeight = 314
             ClientWidth = 624
             TabOrder = 0
-            object ch_genTree: TFlatCheckBox
+            object ch_genTree: TJvXPCheckbox
               Left = 4
               Height = 17
               Top = 6
               Width = 256
               Caption = 'Générer l''arbre'
-              Checked = True
-              ColorCheck = clWindowText
               TabOrder = 0
-              TabStop = True
+              Checked = True
+              State = cbChecked
+              UseDockManager = False
             end
-            object me_HeadTree: TFlatMemo
+            object me_HeadTree: TMemo
               Left = 4
               Height = 74
               Top = 41
               Width = 622
-              ColorFlat = clBtnFace
               ParentColor = True
               ScrollBars = ssAutoVertical
               TabOrder = 1
@@ -1071,16 +1066,16 @@ object F_AncestroWeb: TF_AncestroWeb
             ClientHeight = 314
             ClientWidth = 624
             TabOrder = 0
-            object ch_genSurnames: TFlatCheckBox
+            object ch_genSurnames: TJvXPCheckbox
               Left = 4
               Height = 17
               Top = 6
               Width = 320
               Caption = 'Générer les patronymes'
-              Checked = True
-              ColorCheck = clWindowText
               TabOrder = 0
-              TabStop = True
+              Checked = True
+              State = cbChecked
+              UseDockManager = False
             end
             object Label29: TLabel
               Left = 340
@@ -1100,12 +1095,11 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 1
               Text = 'Surnames'
             end
-            object me_SurnamesHead: TFlatMemo
+            object me_SurnamesHead: TMemo
               Left = 4
               Height = 74
               Top = 41
               Width = 622
-              ColorFlat = clBtnFace
               ParentColor = True
               ScrollBars = ssAutoBoth
               TabOrder = 2
@@ -1118,15 +1112,16 @@ object F_AncestroWeb: TF_AncestroWeb
               Caption = 'Description :'
               ParentColor = False
             end
-            object ch_genMap: TFlatCheckBox
+            object ch_genMap: TJvXPCheckbox
               Left = 4
               Height = 17
               Top = 120
               Width = 328
               Caption = 'Générer la carte des patronymes (nécessite PHP)'
-              Checked = True
               TabOrder = 3
-              TabStop = True
+              Checked = True
+              State = cbChecked
+              UseDockManager = False
             end
             object Label50: TLabel
               Left = 340
@@ -1146,12 +1141,11 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 4
               Text = 'Map'
             end
-            object me_MapHead: TFlatMemo
+            object me_MapHead: TMemo
               Left = 4
               Height = 74
               Top = 160
               Width = 622
-              ColorFlat = clBtnFace
               ParentColor = True
               ScrollBars = ssAutoBoth
               TabOrder = 5
@@ -1188,14 +1182,14 @@ object F_AncestroWeb: TF_AncestroWeb
             ClientHeight = 314
             ClientWidth = 624
             TabOrder = 0
-            object ch_genSearch: TFlatCheckBox
+            object ch_genSearch: TJvXPCheckbox
               Left = 4
               Height = 17
               Top = 25
               Width = 257
               Caption = 'Générer la recherche'
               TabOrder = 0
-              TabStop = True
+              UseDockManager = False
             end
             object Label15: TLabel
               Left = 4
@@ -1223,12 +1217,11 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 1
               Text = 'Recherche'
             end
-            object me_searchHead: TFlatMemo
+            object me_searchHead: TMemo
               Left = 4
               Height = 74
               Top = 65
               Width = 622
-              ColorFlat = clBtnFace
               ParentColor = True
               ScrollBars = ssAutoVertical
               TabOrder = 2
@@ -1326,12 +1319,11 @@ object F_AncestroWeb: TF_AncestroWeb
               Caption = 'Cette fiche utilise le langage PHP, afin de cacher votre mail des publicités du web.'
               ParentColor = False
             end
-            object me_ContactHead: TFlatMemo
+            object me_ContactHead: TMemo
               Left = 4
               Height = 74
               Top = 65
               Width = 622
-              ColorFlat = clBtnFace
               ParentColor = True
               ScrollBars = ssAutoVertical
               TabOrder = 0
@@ -1344,15 +1336,16 @@ object F_AncestroWeb: TF_AncestroWeb
               Caption = 'Entête :'
               ParentColor = False
             end
-            object ch_genContact: TFlatCheckBox
+            object ch_genContact: TJvXPCheckbox
               Left = 4
               Height = 17
               Top = 25
               Width = 265
               Caption = 'Générer la fiche de contact'
-              Checked = True
               TabOrder = 1
-              TabStop = True
+              Checked = True
+              State = cbChecked
+              UseDockManager = False
             end
             object ed_ContactName: TFlatEdit
               Left = 402
@@ -1464,15 +1457,16 @@ object F_AncestroWeb: TF_AncestroWeb
               Caption = 'Mot de passe :'
               ParentColor = False
             end
-            object ch_ContactIdentify: TFlatCheckBox
+            object ch_ContactIdentify: TJvXPCheckbox
               Left = 4
               Height = 17
               Top = 225
               Width = 233
               Caption = 'S''identifier sur ce serveur :'
-              Checked = True
               TabOrder = 8
-              TabStop = True
+              Checked = True
+              State = cbChecked
+              UseDockManager = False
             end
             object Label39: TLabel
               Left = 324
@@ -1566,22 +1560,22 @@ object F_AncestroWeb: TF_AncestroWeb
             ClientHeight = 314
             ClientWidth = 624
             TabOrder = 0
-            object ch_genjobs: TFlatCheckBox
+            object ch_genjobs: TJvXPCheckbox
               Left = 4
               Height = 17
               Top = 6
               Width = 288
               Caption = 'Générer les statistiques sur les professions'
-              Checked = True
               TabOrder = 0
-              TabStop = True
+              Checked = True
+              State = cbChecked
+              UseDockManager = False
             end
-            object me_HeadJobs: TFlatMemo
+            object me_HeadJobs: TMemo
               Left = 4
               Height = 74
               Top = 41
               Width = 622
-              ColorFlat = clBtnFace
               ParentColor = True
               ScrollBars = ssAutoVertical
               TabOrder = 1
@@ -1628,22 +1622,22 @@ object F_AncestroWeb: TF_AncestroWeb
             ClientHeight = 314
             ClientWidth = 624
             TabOrder = 0
-            object ch_genages: TFlatCheckBox
+            object ch_genages: TJvXPCheckbox
               Left = 4
               Height = 17
               Top = 6
               Width = 288
               Caption = 'Générer les statistiques sur les âges'
-              Checked = True
               TabOrder = 0
-              TabStop = True
+              Checked = True
+              State = cbChecked
+              UseDockManager = False
             end
-            object me_HeadAges: TFlatMemo
+            object me_HeadAges: TMemo
               Left = 4
               Height = 74
               Top = 41
               Width = 622
-              ColorFlat = clBtnFace
               ParentColor = True
               ScrollBars = ssAutoVertical
               TabOrder = 1
@@ -1680,15 +1674,15 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_about: TTabSheet
       Caption = 'À propos'
-      ClientHeight = 332
-      ClientWidth = 636
+      ClientHeight = 340
+      ClientWidth = 632
       object pa_About: TScrollBox
         Left = 0
         Height = 340
         Top = 0
         Width = 632
-        HorzScrollBar.Page = 611
-        VertScrollBar.Page = 319
+        HorzScrollBar.Page = 628
+        VertScrollBar.Page = 336
         Align = alClient
         ClientHeight = 336
         ClientWidth = 628
@@ -1870,6 +1864,6 @@ object F_AncestroWeb: TF_AncestroWeb
     FileOptions = [cpUseFilter, cpDestinationIsFile, cpCreateDestination]
     DoEraseDir = FileCopyDoEraseDir
     left = 312
-    top = 104
+    top = 120
   end
 end

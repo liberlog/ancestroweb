@@ -4,13 +4,13 @@ object F_AncestroWeb: TF_AncestroWeb
   ActiveControl = PCPrincipal
   BorderIcons = []
   Caption = 'AncestroWeb :'#160'G'#233'n'#233'rer un Site Web G'#233'n'#233'alogique Statique'
-  ClientHeight = 396
-  ClientWidth = 640
+  ClientHeight = 487
+  ClientWidth = 788
   Color = clBtnFace
   DefaultMonitor = dmPrimary
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = True
@@ -18,20 +18,20 @@ object F_AncestroWeb: TF_AncestroWeb
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object spSkinPanel1: TPanel
     Left = 0
-    Top = 366
-    Width = 640
-    Height = 30
+    Top = 450
+    Width = 788
+    Height = 37
     Align = alBottom
     TabOrder = 0
     object pb_ProgressInd: TFlatGauge
-      Left = 144
+      Left = 177
       Top = 1
-      Width = 144
-      Height = 28
+      Width = 177
+      Height = 35
       AdvColorBorder = 0
       ColorBorder = 8623776
       Progress = 25
@@ -40,31 +40,31 @@ object F_AncestroWeb: TF_AncestroWeb
     object pb_ProgressAll: TFlatGauge
       Left = 1
       Top = 1
-      Width = 143
-      Height = 28
+      Width = 176
+      Height = 35
       AdvColorBorder = 0
       ColorBorder = 8623776
       Progress = 25
       Align = alLeft
     end
     object lb_Comments: TLabel
-      Left = 296
-      Top = 10
+      Left = 364
+      Top = 12
       Width = 3
-      Height = 13
+      Height = 16
       Color = clBtnFace
       ParentColor = False
     end
     object FWClose1: TFWClose
-      Left = 534
+      Left = 657
       Top = 2
-      Width = 98
-      Height = 26
+      Width = 121
+      Height = 32
       Caption = 'Fermer'
       TabOrder = 0
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 2171169
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
@@ -73,9 +73,9 @@ object F_AncestroWeb: TF_AncestroWeb
   object PCPrincipal: TPageControl
     Left = 0
     Top = 0
-    Width = 640
-    Height = 366
-    ActivePage = ts_Gen
+    Width = 788
+    Height = 450
+    ActivePage = ts_options
     Align = alClient
     TabOrder = 1
     OnChange = PCPrincipalChange
@@ -84,142 +84,142 @@ object F_AncestroWeb: TF_AncestroWeb
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 632
-        Height = 338
+        Width = 780
+        Height = 419
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Splitter1: TSplitter
-          Left = 275
+          Left = 338
           Top = 0
-          Width = 1
-          Height = 338
-          ExplicitHeight = 340
+          Width = 2
+          Height = 419
+          ExplicitHeight = 412
         end
         object Panel3: TPanel
           Left = 0
           Top = 0
-          Width = 275
-          Height = 338
+          Width = 338
+          Height = 419
           Align = alLeft
           BevelOuter = bvNone
           TabOrder = 0
           DesignSize = (
-            275
-            338)
+            338
+            419)
           object Label1: TLabel
-            Left = 3
-            Top = 80
-            Width = 215
-            Height = 13
+            Left = 4
+            Top = 98
+            Width = 272
+            Height = 16
             Caption = 'R'#233'pertoire du site web g'#233'n'#233'alogique '#224' cr'#233'er :'
             Color = clBtnFace
             ParentColor = False
           end
           object Label7: TLabel
-            Left = 8
-            Top = 133
-            Width = 39
-            Height = 13
+            Left = 10
+            Top = 164
+            Width = 49
+            Height = 16
             Caption = 'Th'#232'me :'
             Color = clBtnFace
             ParentColor = False
           end
           object Label9: TLabel
-            Left = 8
-            Top = 197
-            Width = 53
-            Height = 13
+            Left = 10
+            Top = 242
+            Width = 65
+            Height = 16
             Caption = 'GEDCOM :'
             Color = clBtnFace
             ParentColor = False
           end
           object Label44: TLabel
-            Left = 9
-            Top = 163
-            Width = 45
-            Height = 13
+            Left = 11
+            Top = 201
+            Width = 56
+            Height = 16
             Caption = 'Sources :'
             Color = clBtnFace
             ParentColor = False
           end
           object LabelBase: TLabel
-            Left = 4
-            Top = 5
-            Width = 98
-            Height = 13
+            Left = 5
+            Top = 6
+            Width = 122
+            Height = 17
             Caption = 'Base de donn'#233'es:'
             Color = clBtnFace
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
-            Font.Height = 13
+            Font.Height = 17
             Font.Name = 'Tahoma'
             Font.Style = [fsBold]
             ParentColor = False
             ParentFont = False
           end
           object Label45: TLabel
-            Left = 4
-            Top = 51
-            Width = 47
-            Height = 13
+            Left = 5
+            Top = 63
+            Width = 59
+            Height = 16
             Caption = 'Dossier:'
             Color = clBtnFace
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
-            Font.Height = -11
+            Font.Height = -15
             Font.Name = 'MS Sans Serif'
             Font.Style = [fsBold]
             ParentColor = False
             ParentFont = False
           end
           object btnSelectBase: TFWLoad
-            Left = 250
-            Top = 22
-            Width = 23
-            Height = 22
+            Left = 308
+            Top = 27
+            Width = 28
+            Height = 27
             TabOrder = 7
             Anchors = [akTop, akRight]
             OnClick = btnSelectBaseClick
           end
           object de_ExportWeb: TDirectoryEdit
-            Left = 3
-            Top = 100
-            Width = 240
-            Height = 21
+            Left = 4
+            Top = 123
+            Width = 295
+            Height = 24
             Color = clBtnFace
             NumGlyphs = 1
-            ButtonWidth = 23
+            ButtonWidth = 28
             TabOrder = 2
           end
           object cb_Themes: TFlatComboBox
-            Left = 67
-            Top = 128
-            Width = 199
-            Height = 21
+            Left = 82
+            Top = 158
+            Width = 245
+            Height = 24
             Color = clBtnFace
-            ItemHeight = 13
+            ItemHeight = 16
             TabOrder = 3
             Text = 'default'
             ItemIndex = -1
           end
           object GedcomEdit: TFilenameEdit
-            Left = 67
-            Top = 193
-            Width = 173
-            Height = 21
+            Left = 82
+            Top = 238
+            Width = 213
+            Height = 24
             FilterIndex = 0
             DialogOptions = []
             Color = clBtnFace
-            ButtonWidth = 23
+            ButtonWidth = 28
             NumGlyphs = 1
             TabOrder = 5
           end
           object FWEraseGedcom: TJvXPButton
-            Left = 246
-            Top = 193
-            Width = 22
-            Height = 22
+            Left = 303
+            Top = 238
+            Width = 27
+            Height = 27
             TabOrder = 6
             Glyph.Data = {
               0E54496D6167696E674269746D617046050000424D4605000000000000360000
@@ -267,85 +267,86 @@ object F_AncestroWeb: TF_AncestroWeb
               FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWhite
-            Font.Height = -11
+            Font.Height = -15
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
             OnClick = FWEraseImage2Click
           end
           object cb_Files: TFlatComboBox
-            Left = 67
-            Top = 160
-            Width = 199
-            Height = 21
+            Left = 82
+            Top = 197
+            Width = 245
+            Height = 24
             Color = clBtnFace
-            ItemHeight = 13
+            ItemHeight = 16
             TabOrder = 4
             Text = 'default'
             ItemIndex = -1
           end
           object cb_Base: TFlatComboBox
-            Left = 4
-            Top = 21
-            Width = 244
-            Height = 21
+            Left = 5
+            Top = 26
+            Width = 300
+            Height = 24
             Color = clBtnFace
             DropDownCount = 10
-            ItemHeight = 13
+            ItemHeight = 16
             TabOrder = 0
             ItemIndex = -1
             OnChange = cb_BaseChange
           end
           object cbDossier: TFlatComboBox
-            Left = 60
-            Top = 48
-            Width = 206
-            Height = 21
+            Left = 74
+            Top = 59
+            Width = 253
+            Height = 24
             Style = csDropDownList
             Color = clBtnFace
-            ItemHeight = 13
+            ItemHeight = 16
             TabOrder = 1
             ItemIndex = -1
             OnChange = cbDossierChange
           end
         end
         object Panel4: TPanel
-          Left = 276
+          Left = 340
           Top = 0
-          Width = 356
-          Height = 338
+          Width = 440
+          Height = 419
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 1
           object Splitter2: TSplitter
             Left = 0
-            Top = 252
-            Width = 356
-            Height = 5
+            Top = 313
+            Width = 440
+            Height = 7
             Cursor = crVSplit
             Align = alBottom
-            ExplicitTop = 254
+            ExplicitTop = 306
+            ExplicitWidth = 438
           end
           object Panel5: TPanel
             Left = 0
             Top = 0
-            Width = 356
-            Height = 252
+            Width = 440
+            Height = 313
             Align = alClient
             BevelOuter = bvNone
             TabOrder = 0
             object DBGrid1: TDBGrid
               Left = 0
-              Top = 43
-              Width = 356
-              Height = 209
+              Top = 53
+              Width = 440
+              Height = 260
               Align = alClient
               DataSource = ds_Individu
               ReadOnly = True
               TabOrder = 0
               TitleFont.Charset = DEFAULT_CHARSET
               TitleFont.Color = clWindowText
-              TitleFont.Height = -11
+              TitleFont.Height = -14
               TitleFont.Name = 'MS Sans Serif'
               TitleFont.Style = []
               OnCellClick = DBGrid1CellClick
@@ -382,26 +383,26 @@ object F_AncestroWeb: TF_AncestroWeb
             object Panel7: TPanel
               Left = 0
               Top = 0
-              Width = 356
-              Height = 43
+              Width = 440
+              Height = 53
               Align = alTop
               BevelOuter = bvNone
               TabOrder = 1
               object ch_ancestors: TFlatCheckBox
-                Left = 5
-                Top = 25
-                Width = 333
-                Height = 17
+                Left = 6
+                Top = 31
+                Width = 410
+                Height = 21
                 Caption = 'Ascendance'
                 Checked = True
                 TabOrder = 0
                 TabStop = True
               end
               object ch_Filtered: TFlatCheckBox
-                Left = 5
+                Left = 6
                 Top = 1
-                Width = 344
-                Height = 17
+                Width = 424
+                Height = 21
                 Caption = 'Filtrer par l'#39'individu :'
                 TabOrder = 1
                 TabStop = True
@@ -411,85 +412,85 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object Panel6: TPanel
             Left = 0
-            Top = 257
-            Width = 356
-            Height = 81
+            Top = 320
+            Width = 440
+            Height = 99
             Align = alBottom
             BevelOuter = bvNone
             TabOrder = 1
             object Label43: TLabel
-              Left = 4
-              Top = 3
-              Width = 44
-              Height = 13
+              Left = 5
+              Top = 4
+              Width = 55
+              Height = 16
               Caption = 'Importer :'
               Color = clBtnFace
               ParentColor = False
             end
             object bt_gen: TFWSaveAs
-              Left = 250
-              Top = 50
-              Width = 96
-              Height = 29
+              Left = 308
+              Top = 62
+              Width = 118
+              Height = 35
               Caption = 'G'#233'n'#233'rer'
               TabOrder = 0
               Font.Charset = DEFAULT_CHARSET
               Font.Color = 2171169
-              Font.Height = -11
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
               OnClick = bt_genClick
             end
             object fne_Export: TFilenameEdit
-              Left = 98
-              Top = 26
-              Width = 225
-              Height = 21
+              Left = 121
+              Top = 32
+              Width = 277
+              Height = 24
               FilterIndex = 0
               DialogOptions = [ofCreatePrompt]
               Color = clBtnFace
-              ButtonWidth = 23
+              ButtonWidth = 28
               NumGlyphs = 1
               TabOrder = 1
             end
             object fne_import: TFilenameEdit
-              Left = 98
+              Left = 121
               Top = 0
-              Width = 226
-              Height = 21
+              Width = 278
+              Height = 24
               FilterIndex = 0
               DialogOptions = [ofFileMustExist]
               Color = clBtnFace
-              ButtonWidth = 23
+              ButtonWidth = 28
               NumGlyphs = 1
               TabOrder = 2
             end
             object bt_export: TFWSaveAs
               Left = 2
-              Top = 26
-              Width = 90
-              Height = 22
+              Top = 32
+              Width = 111
+              Height = 27
               Caption = 'Exporter'
               TabOrder = 3
               Font.Charset = DEFAULT_CHARSET
               Font.Color = 2171169
-              Font.Height = -11
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
               OnClick = bt_exportClick
             end
             object FWPreview1: TFWPreview
-              Left = 144
-              Top = 50
-              Width = 97
-              Height = 29
+              Left = 177
+              Top = 62
+              Width = 120
+              Height = 35
               Caption = 'Voir'
               TabOrder = 4
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clMaroon
-              Font.Height = -15
+              Font.Height = -18
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
@@ -504,8 +505,8 @@ object F_AncestroWeb: TF_AncestroWeb
       object pc_needed: TPageControl
         Left = 0
         Top = 0
-        Width = 632
-        Height = 338
+        Width = 780
+        Height = 419
         ActivePage = ts_home
         Align = alClient
         TabOrder = 0
@@ -514,180 +515,183 @@ object F_AncestroWeb: TF_AncestroWeb
           object Panel8: TPanel
             Left = 0
             Top = 0
-            Width = 624
-            Height = 310
+            Width = 772
+            Height = 388
             Align = alClient
             BevelOuter = bvNone
             TabOrder = 0
             object Label2: TLabel
-              Left = 4
-              Top = 5
-              Width = 37
-              Height = 13
+              Left = 5
+              Top = 6
+              Width = 44
+              Height = 16
               Caption = 'Auteur :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label3: TLabel
-              Left = 4
-              Top = 25
-              Width = 59
-              Height = 13
+              Left = 5
+              Top = 31
+              Width = 74
+              Height = 16
               Caption = 'Description :'
               Color = clBtnFace
               ParentColor = False
             end
             object lb_Images: TLabel
-              Left = 4
-              Top = 145
-              Width = 40
-              Height = 13
+              Left = 5
+              Top = 178
+              Width = 51
+              Height = 16
               Caption = 'Images :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label10: TLabel
-              Left = 300
-              Top = 5
-              Width = 74
-              Height = 13
+              Left = 369
+              Top = 6
+              Width = 91
+              Height = 16
               Caption = 'Nom du fichier :'
               Color = clBtnFace
               ParentColor = False
             end
             object ExtImage1: TExtImage
-              Left = 6
-              Top = 168
-              Width = 194
-              Height = 162
+              Left = 7
+              Top = 207
+              Width = 239
+              Height = 199
               Center = True
               Proportional = True
             end
             object ExtImage2: TExtImage
-              Left = 214
-              Top = 168
-              Width = 194
-              Height = 162
+              Left = 263
+              Top = 207
+              Width = 239
+              Height = 199
               Center = True
               Proportional = True
             end
             object ExtImage3: TExtImage
-              Left = 422
-              Top = 168
-              Width = 194
-              Height = 162
+              Left = 519
+              Top = 207
+              Width = 239
+              Height = 199
               Center = True
               Proportional = True
             end
             object ed_Author: TFlatEdit
-              Left = 60
+              Left = 74
               Top = 1
-              Width = 224
-              Height = 19
+              Width = 276
+              Height = 24
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 0
             end
             object me_Description: TFlatMemo
-              Left = 4
-              Top = 41
-              Width = 622
-              Height = 74
+              Left = 5
+              Top = 50
+              Width = 765
+              Height = 92
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 1
             end
             object ImageEdit1: TFilenameEdit
-              Left = 60
-              Top = 137
-              Width = 96
-              Height = 21
+              Left = 74
+              Top = 169
+              Width = 118
+              Height = 24
               Filter = '*'
               FilterIndex = 0
               DialogOptions = []
-              ButtonWidth = 23
+              ButtonWidth = 28
               NumGlyphs = 1
               TabOrder = 2
               OnChange = ImageEdit1Change
             end
             object ImageEdit2: TFilenameEdit
-              Left = 212
-              Top = 136
-              Width = 152
-              Height = 21
+              Left = 261
+              Top = 167
+              Width = 187
+              Height = 24
               FilterIndex = 0
               DialogOptions = []
-              ButtonWidth = 23
+              ButtonWidth = 28
               NumGlyphs = 1
               TabOrder = 3
               OnChange = ImageEdit2Change
             end
             object ImageEdit3: TFilenameEdit
-              Left = 420
-              Top = 137
-              Width = 152
-              Height = 21
+              Left = 517
+              Top = 169
+              Width = 187
+              Height = 24
               FilterIndex = 0
               DialogOptions = []
-              ButtonWidth = 23
+              ButtonWidth = 28
               NumGlyphs = 1
               TabOrder = 4
               OnChange = ImageEdit3Change
             end
             object FWEraseImage: TFWErase
-              Left = 184
-              Top = 137
-              Width = 20
+              Left = 226
+              Top = 169
+              Width = 25
+              Height = 30
               TabOrder = 5
               Font.Charset = DEFAULT_CHARSET
               Font.Color = 2171169
-              Font.Height = -11
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
               OnClick = FWEraseImageClick
             end
             object FWEraseImage2: TFWErase
-              Left = 392
-              Top = 137
-              Width = 20
+              Left = 482
+              Top = 169
+              Width = 25
+              Height = 30
               TabOrder = 6
               Font.Charset = DEFAULT_CHARSET
               Font.Color = 2171169
-              Font.Height = -11
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
               OnClick = FWEraseImage2Click
             end
             object FWEraseImage3: TFWErase
-              Left = 600
-              Top = 136
-              Width = 20
+              Left = 738
+              Top = 167
+              Width = 25
+              Height = 31
               TabOrder = 7
               Font.Charset = DEFAULT_CHARSET
               Font.Color = 2171169
-              Font.Height = -11
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
               OnClick = FWEraseImage3Click
             end
             object ed_IndexName: TFlatEdit
-              Left = 402
+              Left = 495
               Top = 1
-              Width = 224
-              Height = 19
+              Width = 275
+              Height = 24
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 8
               Text = 'index'
             end
             object ch_Comptage: TFlatCheckBox
-              Left = 4
-              Top = 120
-              Width = 223
-              Height = 13
+              Left = 5
+              Top = 148
+              Width = 274
+              Height = 16
               Caption = 'Statistiques sur les individus'
               Checked = True
               TabOrder = 9
@@ -700,81 +704,81 @@ object F_AncestroWeb: TF_AncestroWeb
           object Panel10: TPanel
             Left = 0
             Top = 0
-            Width = 624
-            Height = 310
+            Width = 772
+            Height = 388
             Align = alClient
             TabOrder = 0
             object Label13: TLabel
-              Left = 244
-              Top = 6
-              Width = 129
-              Height = 13
+              Left = 300
+              Top = 7
+              Width = 161
+              Height = 16
               Caption = 'Nom du d'#233'but des fichiers :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label14: TLabel
-              Left = 4
-              Top = 29
-              Width = 59
-              Height = 13
+              Left = 5
+              Top = 36
+              Width = 74
+              Height = 16
               Caption = 'Description :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label31: TLabel
-              Left = 211
-              Top = 29
-              Width = 155
-              Height = 13
+              Left = 260
+              Top = 36
+              Width = 195
+              Height = 16
               Caption = 'Nom du d'#233'but des fichiers listes :'
               Color = clBtnFace
               ParentColor = False
             end
             object ed_FileBeginName: TFlatEdit
-              Left = 404
+              Left = 497
               Top = 1
-              Width = 224
-              Height = 19
+              Width = 276
+              Height = 24
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 0
               Text = 'Files'
             end
             object me_FilesHead: TFlatMemo
-              Left = 4
-              Top = 49
-              Width = 622
-              Height = 74
+              Left = 5
+              Top = 60
+              Width = 765
+              Height = 91
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 1
             end
             object ch_Images: TFlatCheckBox
-              Left = 4
-              Top = 129
-              Width = 161
-              Height = 17
+              Left = 5
+              Top = 159
+              Width = 198
+              Height = 21
               Caption = 'Joindre les images'
               Checked = True
               TabOrder = 2
               TabStop = True
             end
             object ed_ListsBeginName: TFlatEdit
-              Left = 404
-              Top = 25
-              Width = 224
-              Height = 19
+              Left = 497
+              Top = 31
+              Width = 276
+              Height = 23
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 3
               Text = 'List'
             end
             object ch_ShowMainFile: TFlatCheckBox
-              Left = 211
-              Top = 129
-              Width = 161
-              Height = 17
+              Left = 260
+              Top = 159
+              Width = 198
+              Height = 21
               Caption = 'Montrer l'#39'onglet Fiches'
               TabOrder = 4
               TabStop = True
@@ -786,26 +790,26 @@ object F_AncestroWeb: TF_AncestroWeb
           object Panel15: TPanel
             Left = 0
             Top = 0
-            Width = 624
-            Height = 310
+            Width = 772
+            Height = 388
             Align = alClient
             TabOrder = 0
             object Label6: TLabel
-              Left = 4
-              Top = 240
-              Width = 120
-              Height = 13
+              Left = 5
+              Top = 295
+              Width = 150
+              Height = 16
               Caption = 'En bas de chaque page :'
               Color = clBtnFace
               ParentColor = False
             end
             object cb_CityAccents: TFlatComboBox
-              Left = 412
-              Top = 102
-              Width = 204
-              Height = 21
+              Left = 507
+              Top = 126
+              Width = 251
+              Height = 24
               Color = clBtnFace
-              ItemHeight = 13
+              ItemHeight = 16
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -819,72 +823,72 @@ object F_AncestroWeb: TF_AncestroWeb
               ItemIndex = 0
             end
             object ed_BaseCities: TFlatEdit
-              Left = 212
-              Top = 103
-              Width = 194
-              Height = 19
+              Left = 261
+              Top = 127
+              Width = 239
+              Height = 23
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 1
               Text = 'http://fr.wikipedia.org/wiki/'
             end
             object ch_CitiesLink: TFlatCheckBox
-              Left = 4
-              Top = 108
-              Width = 200
-              Height = 17
+              Left = 5
+              Top = 133
+              Width = 246
+              Height = 21
               Caption = 'Lier '#224' une base de villes :'
               Checked = True
               TabOrder = 2
               TabStop = True
             end
             object ch_SurnamesLink: TFlatCheckBox
-              Left = 4
-              Top = 82
-              Width = 200
-              Height = 17
+              Left = 5
+              Top = 101
+              Width = 246
+              Height = 21
               Caption = 'Lier '#224' une base de noms :'
               Checked = True
               TabOrder = 3
               TabStop = True
             end
             object ch_NamesLink: TFlatCheckBox
-              Left = 4
-              Top = 54
-              Width = 200
-              Height = 17
+              Left = 5
+              Top = 66
+              Width = 246
+              Height = 21
               Caption = 'Lier '#224' une base de pr'#233'noms :'
               Checked = True
               TabOrder = 4
               TabStop = True
             end
             object ed_BaseNames: TFlatEdit
-              Left = 212
-              Top = 49
-              Width = 194
-              Height = 19
+              Left = 261
+              Top = 60
+              Width = 239
+              Height = 24
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 5
               Text = 'http://www.behindthename.com/name/'
             end
             object ed_BaseSurnames: TFlatEdit
-              Left = 212
-              Top = 77
-              Width = 194
-              Height = 19
+              Left = 261
+              Top = 95
+              Width = 239
+              Height = 23
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 6
               Text = 'http://www.geneanet.org/nom-de-famille/'
             end
             object cb_SurnamesAccents: TFlatComboBox
-              Left = 412
-              Top = 75
-              Width = 204
-              Height = 21
+              Left = 507
+              Top = 92
+              Width = 251
+              Height = 24
               Color = clBtnFace
-              ItemHeight = 13
+              ItemHeight = 16
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -898,12 +902,12 @@ object F_AncestroWeb: TF_AncestroWeb
               ItemIndex = 1
             end
             object cb_NamesAccents: TFlatComboBox
-              Left = 412
-              Top = 48
-              Width = 204
-              Height = 21
+              Left = 507
+              Top = 59
+              Width = 251
+              Height = 24
               Color = clBtnFace
-              ItemHeight = 13
+              ItemHeight = 16
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -917,10 +921,10 @@ object F_AncestroWeb: TF_AncestroWeb
               ItemIndex = 1
             end
             object ch_HideLessThan100: TFlatCheckBox
-              Left = 4
-              Top = 3
-              Width = 253
-              Height = 17
+              Left = 5
+              Top = 4
+              Width = 311
+              Height = 21
               Caption = 'Cacher les dates de moins de 100'#160'ans'
               Checked = True
               TabOrder = 9
@@ -928,41 +932,41 @@ object F_AncestroWeb: TF_AncestroWeb
               OnClick = ch_FilteredClick
             end
             object me_Bottom: TFlatMemo
-              Left = 4
-              Top = 256
-              Width = 620
-              Height = 37
+              Left = 5
+              Top = 315
+              Width = 763
+              Height = 46
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 10
             end
             object ch_JobsLink: TFlatCheckBox
-              Left = 4
-              Top = 27
-              Width = 200
-              Height = 17
+              Left = 5
+              Top = 33
+              Width = 246
+              Height = 21
               Caption = 'Lier '#224' une base de m'#233'tiers :'
               Checked = True
               TabOrder = 11
               TabStop = True
             end
             object ed_BaseJobs: TFlatEdit
-              Left = 212
-              Top = 23
-              Width = 194
-              Height = 19
+              Left = 261
+              Top = 28
+              Width = 239
+              Height = 24
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 12
               Text = 'http://fr.wikipedia.org/wiki/'
             end
             object cb_JobsAccents: TFlatComboBox
-              Left = 412
-              Top = 21
-              Width = 204
-              Height = 21
+              Left = 507
+              Top = 26
+              Width = 251
+              Height = 24
               Color = clBtnFace
-              ItemHeight = 13
+              ItemHeight = 16
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -984,8 +988,8 @@ object F_AncestroWeb: TF_AncestroWeb
       object PageControl1: TPageControl
         Left = 0
         Top = 0
-        Width = 632
-        Height = 338
+        Width = 780
+        Height = 419
         ActivePage = ts_tree
         Align = alClient
         TabOrder = 0
@@ -994,53 +998,53 @@ object F_AncestroWeb: TF_AncestroWeb
           object Panel2: TPanel
             Left = 0
             Top = 0
-            Width = 624
-            Height = 310
+            Width = 772
+            Height = 388
             Align = alClient
             BevelOuter = bvNone
             TabOrder = 0
             object Label8: TLabel
-              Left = 4
-              Top = 25
-              Width = 37
-              Height = 13
+              Left = 5
+              Top = 31
+              Width = 44
+              Height = 16
               Caption = 'Ent'#234'te :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label11: TLabel
-              Left = 300
-              Top = 5
-              Width = 74
-              Height = 13
+              Left = 369
+              Top = 6
+              Width = 91
+              Height = 16
               Caption = 'Nom du fichier :'
               Color = clBtnFace
               ParentColor = False
             end
             object ch_genTree: TFlatCheckBox
-              Left = 4
-              Top = 6
-              Width = 256
-              Height = 17
+              Left = 5
+              Top = 7
+              Width = 315
+              Height = 21
               Caption = 'G'#233'n'#233'rer l'#39'arbre'
               Checked = True
               TabOrder = 0
               TabStop = True
             end
             object me_HeadTree: TFlatMemo
-              Left = 4
-              Top = 41
-              Width = 622
-              Height = 74
+              Left = 5
+              Top = 50
+              Width = 765
+              Height = 92
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 1
             end
             object ed_TreeName: TFlatEdit
-              Left = 404
+              Left = 497
               Top = 1
-              Width = 224
-              Height = 19
+              Width = 276
+              Height = 24
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 2
@@ -1053,109 +1057,109 @@ object F_AncestroWeb: TF_AncestroWeb
           object Panel12: TPanel
             Left = 0
             Top = 0
-            Width = 624
-            Height = 310
+            Width = 772
+            Height = 388
             Align = alClient
             TabOrder = 0
             object Label29: TLabel
-              Left = 340
-              Top = 6
-              Width = 119
-              Height = 13
+              Left = 418
+              Top = 7
+              Width = 146
+              Height = 16
               Caption = 'Nom du d'#233'but du fichier :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label30: TLabel
-              Left = 4
-              Top = 24
-              Width = 59
-              Height = 13
+              Left = 5
+              Top = 30
+              Width = 74
+              Height = 16
               Caption = 'Description :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label50: TLabel
-              Left = 340
-              Top = 120
-              Width = 119
-              Height = 13
+              Left = 418
+              Top = 148
+              Width = 146
+              Height = 16
               Caption = 'Nom du d'#233'but du fichier :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label51: TLabel
-              Left = 32
-              Top = 53
-              Width = 59
-              Height = 13
+              Left = 39
+              Top = 65
+              Width = 74
+              Height = 16
               Caption = 'Description :'
               Color = clBtnFace
               ParentColor = False
             end
             object lb_DescribeMap: TLabel
-              Left = 4
-              Top = 144
-              Width = 59
-              Height = 13
+              Left = 5
+              Top = 177
+              Width = 74
+              Height = 16
               Caption = 'Description :'
               Color = clBtnFace
               ParentColor = False
             end
             object ch_genSurnames: TFlatCheckBox
-              Left = 4
-              Top = 6
-              Width = 320
-              Height = 17
+              Left = 5
+              Top = 7
+              Width = 394
+              Height = 21
               Caption = 'G'#233'n'#233'rer les patronymes'
               Checked = True
               TabOrder = 0
               TabStop = True
             end
             object ed_SurnamesFileName: TFlatEdit
-              Left = 492
+              Left = 606
               Top = 1
-              Width = 136
-              Height = 19
+              Width = 167
+              Height = 24
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 1
               Text = 'Surnames'
             end
             object me_SurnamesHead: TFlatMemo
-              Left = 4
-              Top = 41
-              Width = 622
-              Height = 74
+              Left = 5
+              Top = 50
+              Width = 765
+              Height = 92
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 2
             end
             object ch_genMap: TFlatCheckBox
-              Left = 4
-              Top = 120
-              Width = 328
-              Height = 17
+              Left = 5
+              Top = 148
+              Width = 404
+              Height = 21
               Caption = 'G'#233'n'#233'rer la carte des patronymes (n'#233'cessite PHP)'
               Checked = True
               TabOrder = 3
               TabStop = True
             end
             object ed_MapFileName: TFlatEdit
-              Left = 492
-              Top = 116
-              Width = 134
-              Height = 19
+              Left = 606
+              Top = 143
+              Width = 164
+              Height = 23
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 4
               Text = 'Map'
             end
             object me_MapHead: TFlatMemo
-              Left = 4
-              Top = 160
-              Width = 622
-              Height = 74
+              Left = 5
+              Top = 197
+              Width = 765
+              Height = 91
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 5
@@ -1167,16 +1171,16 @@ object F_AncestroWeb: TF_AncestroWeb
           object Panel11: TPanel
             Left = 0
             Top = 0
-            Width = 624
-            Height = 310
+            Width = 772
+            Height = 388
             Align = alClient
             BevelOuter = bvNone
             TabOrder = 0
             object Label15: TLabel
-              Left = 4
+              Left = 5
               Top = 1
-              Width = 492
-              Height = 13
+              Width = 609
+              Height = 16
               Caption = 
                 'Cette fiche g'#233'n'#232're une recherche, qui fontionne 1 mois apr'#232's avo' +
                 'ir inscrit votre site sur un site r'#233'f'#233'renc'#233'.'
@@ -1184,114 +1188,114 @@ object F_AncestroWeb: TF_AncestroWeb
               ParentColor = False
             end
             object Label16: TLabel
-              Left = 298
-              Top = 27
-              Width = 74
-              Height = 13
+              Left = 367
+              Top = 33
+              Width = 91
+              Height = 16
               Caption = 'Nom du fichier :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label17: TLabel
-              Left = 4
-              Top = 49
-              Width = 37
-              Height = 13
+              Left = 5
+              Top = 60
+              Width = 44
+              Height = 16
               Caption = 'Ent'#234'te :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label18: TLabel
-              Left = 4
-              Top = 149
-              Width = 301
-              Height = 13
+              Left = 5
+              Top = 183
+              Width = 380
+              Height = 16
               Caption = 'Domaine de votre site web (compte et fin d'#39'adresse h'#233'bergeur) :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label32: TLabel
-              Left = 268
-              Top = 177
-              Width = 90
-              Height = 13
+              Left = 330
+              Top = 218
+              Width = 111
+              Height = 16
               Caption = 'Site de recherche :'
               Color = clBtnFace
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
-              Font.Height = -11
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentColor = False
               ParentFont = False
             end
             object Label33: TLabel
-              Left = 4
-              Top = 177
-              Width = 106
-              Height = 13
+              Left = 5
+              Top = 218
+              Width = 130
+              Height = 16
               Caption = 'Identifiant de requ'#234'te :'
               Color = clBtnFace
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
-              Font.Height = -11
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentColor = False
               ParentFont = False
             end
             object ch_genSearch: TFlatCheckBox
-              Left = 4
-              Top = 25
-              Width = 257
-              Height = 17
+              Left = 5
+              Top = 31
+              Width = 316
+              Height = 21
               Caption = 'G'#233'n'#233'rer la recherche'
               TabOrder = 0
               TabStop = True
             end
             object ed_SearchName: TFlatEdit
-              Left = 402
-              Top = 23
-              Width = 224
-              Height = 19
+              Left = 495
+              Top = 28
+              Width = 275
+              Height = 24
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 1
               Text = 'Recherche'
             end
             object me_searchHead: TFlatMemo
-              Left = 4
-              Top = 65
-              Width = 622
-              Height = 74
+              Left = 5
+              Top = 80
+              Width = 765
+              Height = 91
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 2
             end
             object ed_SearchSite: TFlatEdit
-              Left = 380
-              Top = 145
-              Width = 248
-              Height = 19
+              Left = 468
+              Top = 178
+              Width = 305
+              Height = 24
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 3
             end
             object ed_SearchTool: TFlatEdit
-              Left = 380
-              Top = 173
-              Width = 248
-              Height = 19
+              Left = 468
+              Top = 213
+              Width = 305
+              Height = 23
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 4
               Text = 'http://www.google.fr/search'
             end
             object ed_SearchQuery: TFlatEdit
-              Left = 140
-              Top = 173
-              Width = 112
-              Height = 19
+              Left = 172
+              Top = 213
+              Width = 138
+              Height = 23
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 5
@@ -1304,16 +1308,16 @@ object F_AncestroWeb: TF_AncestroWeb
           object Panel9: TPanel
             Left = 0
             Top = 0
-            Width = 624
-            Height = 310
+            Width = 772
+            Height = 388
             Align = alClient
             BevelOuter = bvNone
             TabOrder = 0
             object Label4: TLabel
-              Left = 4
+              Left = 5
               Top = 1
-              Width = 387
-              Height = 13
+              Width = 483
+              Height = 16
               Caption = 
                 'Cette fiche utilise le langage PHP, afin de cacher votre mail de' +
                 's publicit'#233's du web.'
@@ -1321,140 +1325,140 @@ object F_AncestroWeb: TF_AncestroWeb
               ParentColor = False
             end
             object Label5: TLabel
-              Left = 4
-              Top = 49
-              Width = 37
-              Height = 13
+              Left = 5
+              Top = 60
+              Width = 44
+              Height = 16
               Caption = 'Ent'#234'te :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label12: TLabel
-              Left = 298
-              Top = 27
-              Width = 74
-              Height = 13
+              Left = 367
+              Top = 33
+              Width = 91
+              Height = 16
               Caption = 'Nom du fichier :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label34: TLabel
-              Left = 322
-              Top = 177
-              Width = 59
-              Height = 13
+              Left = 396
+              Top = 218
+              Width = 73
+              Height = 16
               Caption = 'Sa s'#233'curit'#233' :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label35: TLabel
-              Left = 4
-              Top = 149
-              Width = 25
-              Height = 13
+              Left = 5
+              Top = 183
+              Width = 31
+              Height = 16
               Caption = 'Mail :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label36: TLabel
-              Left = 4
-              Top = 176
-              Width = 67
-              Height = 13
+              Left = 5
+              Top = 217
+              Width = 82
+              Height = 16
               Caption = 'Serveur h'#244'te :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label37: TLabel
-              Left = 4
-              Top = 245
-              Width = 52
-              Height = 13
+              Left = 5
+              Top = 302
+              Width = 65
+              Height = 16
               Caption = 'Utilisateur :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label38: TLabel
-              Left = 322
-              Top = 245
-              Width = 70
-              Height = 13
+              Left = 396
+              Top = 302
+              Width = 88
+              Height = 16
               Caption = 'Mot de passe :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label39: TLabel
-              Left = 324
-              Top = 273
-              Width = 79
-              Height = 13
+              Left = 399
+              Top = 336
+              Width = 98
+              Height = 16
               Caption = 'Mot de passe 2 :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label40: TLabel
-              Left = 4
-              Top = 204
-              Width = 78
-              Height = 13
+              Left = 5
+              Top = 251
+              Width = 96
+              Height = 16
               Caption = 'Port du serveur :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label41: TLabel
-              Left = 322
-              Top = 149
-              Width = 37
-              Height = 13
+              Left = 396
+              Top = 183
+              Width = 44
+              Height = 16
               Caption = 'Auteur :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label42: TLabel
-              Left = 322
-              Top = 205
-              Width = 68
-              Height = 13
+              Left = 396
+              Top = 252
+              Width = 86
+              Height = 16
               Caption = 'Outil de mails :'
               Color = clBtnFace
               ParentColor = False
             end
             object me_ContactHead: TFlatMemo
-              Left = 4
-              Top = 65
-              Width = 622
-              Height = 74
+              Left = 5
+              Top = 80
+              Width = 765
+              Height = 91
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 0
             end
             object ch_genContact: TFlatCheckBox
-              Left = 4
-              Top = 25
-              Width = 265
-              Height = 17
+              Left = 5
+              Top = 31
+              Width = 326
+              Height = 21
               Caption = 'G'#233'n'#233'rer la fiche de contact'
               Checked = True
               TabOrder = 1
               TabStop = True
             end
             object ed_ContactName: TFlatEdit
-              Left = 402
-              Top = 23
-              Width = 224
-              Height = 19
+              Left = 495
+              Top = 28
+              Width = 275
+              Height = 24
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 2
               Text = 'Contact'
             end
             object cb_ContactSecurity: TFlatComboBox
-              Left = 418
-              Top = 169
-              Width = 208
-              Height = 21
+              Left = 514
+              Top = 208
+              Width = 256
+              Height = 24
               Color = clBtnFace
-              ItemHeight = 13
+              ItemHeight = 16
               Items.Strings = (
                 'ssl')
               TabOrder = 3
@@ -1462,89 +1466,89 @@ object F_AncestroWeb: TF_AncestroWeb
               ItemIndex = 0
             end
             object ed_ContactMail: TFlatEdit
-              Left = 100
-              Top = 145
-              Width = 208
-              Height = 19
+              Left = 123
+              Top = 178
+              Width = 256
+              Height = 24
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 4
             end
             object ed_ContactHost: TFlatEdit
-              Left = 100
-              Top = 172
-              Width = 208
-              Height = 19
+              Left = 123
+              Top = 212
+              Width = 256
+              Height = 23
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 5
               Text = 'localhost'
             end
             object ed_ContactUser: TFlatEdit
-              Left = 100
-              Top = 241
-              Width = 208
-              Height = 19
+              Left = 123
+              Top = 297
+              Width = 256
+              Height = 23
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 6
             end
             object ed_ContactPassword: TFlatEdit
-              Left = 418
-              Top = 241
-              Width = 208
-              Height = 19
+              Left = 514
+              Top = 297
+              Width = 256
+              Height = 23
               ColorFlat = clBtnFace
               ParentColor = True
               PasswordChar = '*'
               TabOrder = 7
             end
             object ch_ContactIdentify: TFlatCheckBox
-              Left = 4
-              Top = 225
-              Width = 233
-              Height = 17
+              Left = 5
+              Top = 277
+              Width = 287
+              Height = 21
               Caption = 'S'#39'identifier sur ce serveur :'
               Checked = True
               TabOrder = 8
               TabStop = True
             end
             object ed_ContactPassword2: TFlatEdit
-              Left = 418
-              Top = 269
-              Width = 208
-              Height = 19
+              Left = 514
+              Top = 331
+              Width = 256
+              Height = 23
               ColorFlat = clBtnFace
               ParentColor = True
               PasswordChar = '*'
               TabOrder = 9
             end
             object se_ContactPort: TSpinEdit
-              Left = 100
-              Top = 201
-              Width = 210
-              Height = 22
+              Left = 123
+              Top = 247
+              Width = 259
+              Height = 26
               MaxValue = 65536
               MinValue = 0
               TabOrder = 10
               Value = 25
             end
             object ed_ContactAuthor: TFlatEdit
-              Left = 418
-              Top = 145
-              Width = 208
-              Height = 19
+              Left = 514
+              Top = 178
+              Width = 256
+              Height = 24
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 11
             end
             object cb_ContactTool: TFlatComboBox
-              Left = 418
-              Top = 198
-              Width = 208
-              Height = 21
+              Left = 514
+              Top = 244
+              Width = 256
+              Height = 24
               Color = clBtnFace
-              ItemHeight = 13
+              ItemHeight = 16
               Items.Strings = (
                 'qmail'
                 'sendmail'
@@ -1560,53 +1564,53 @@ object F_AncestroWeb: TF_AncestroWeb
           object Panel14: TPanel
             Left = 0
             Top = 0
-            Width = 624
-            Height = 310
+            Width = 772
+            Height = 388
             Align = alClient
             BevelOuter = bvNone
             TabOrder = 0
             object Label48: TLabel
-              Left = 4
-              Top = 25
-              Width = 37
-              Height = 13
+              Left = 5
+              Top = 31
+              Width = 44
+              Height = 16
               Caption = 'Ent'#234'te :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label49: TLabel
-              Left = 300
-              Top = 5
-              Width = 74
-              Height = 13
+              Left = 369
+              Top = 6
+              Width = 91
+              Height = 16
               Caption = 'Nom du fichier :'
               Color = clBtnFace
               ParentColor = False
             end
             object ch_genjobs: TFlatCheckBox
-              Left = 4
-              Top = 6
-              Width = 288
-              Height = 17
+              Left = 5
+              Top = 7
+              Width = 354
+              Height = 21
               Caption = 'G'#233'n'#233'rer les statistiques sur les professions'
               Checked = True
               TabOrder = 0
               TabStop = True
             end
             object me_HeadJobs: TFlatMemo
-              Left = 4
-              Top = 41
-              Width = 622
-              Height = 74
+              Left = 5
+              Top = 50
+              Width = 765
+              Height = 92
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 1
             end
             object ed_JobsName: TFlatEdit
-              Left = 404
+              Left = 497
               Top = 1
-              Width = 224
-              Height = 19
+              Width = 276
+              Height = 24
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 2
@@ -1619,53 +1623,53 @@ object F_AncestroWeb: TF_AncestroWeb
           object Panel13: TPanel
             Left = 0
             Top = 0
-            Width = 624
-            Height = 310
+            Width = 772
+            Height = 388
             Align = alClient
             BevelOuter = bvNone
             TabOrder = 0
             object Label46: TLabel
-              Left = 4
-              Top = 25
-              Width = 37
-              Height = 13
+              Left = 5
+              Top = 31
+              Width = 44
+              Height = 16
               Caption = 'Ent'#234'te :'
               Color = clBtnFace
               ParentColor = False
             end
             object Label47: TLabel
-              Left = 300
-              Top = 5
-              Width = 74
-              Height = 13
+              Left = 369
+              Top = 6
+              Width = 91
+              Height = 16
               Caption = 'Nom du fichier :'
               Color = clBtnFace
               ParentColor = False
             end
             object ch_genages: TFlatCheckBox
-              Left = 4
-              Top = 6
-              Width = 288
-              Height = 17
+              Left = 5
+              Top = 7
+              Width = 354
+              Height = 21
               Caption = 'G'#233'n'#233'rer les statistiques sur les '#226'ges'
               Checked = True
               TabOrder = 0
               TabStop = True
             end
             object me_HeadAges: TFlatMemo
-              Left = 4
-              Top = 41
-              Width = 622
-              Height = 74
+              Left = 5
+              Top = 50
+              Width = 765
+              Height = 92
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 1
             end
             object ed_AgesName: TFlatEdit
-              Left = 404
+              Left = 497
               Top = 1
-              Width = 224
-              Height = 19
+              Width = 276
+              Height = 24
               ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 2
@@ -1680,15 +1684,15 @@ object F_AncestroWeb: TF_AncestroWeb
       object pa_About: TScrollBox
         Left = 0
         Top = 0
-        Width = 632
-        Height = 338
+        Width = 780
+        Height = 419
         Align = alClient
         TabOrder = 0
         object Label19: TLabel
-          Left = 17
-          Top = 35
-          Width = 438
-          Height = 13
+          Left = 21
+          Top = 43
+          Width = 549
+          Height = 16
           Caption = 
             'Le plugin AncestroWeb GPL permet de cr'#233'er un site Web sur Ancest' +
             'rologie et Freelogy GPL.'
@@ -1696,10 +1700,10 @@ object F_AncestroWeb: TF_AncestroWeb
           ParentColor = False
         end
         object Label20: TLabel
-          Left = 17
-          Top = 53
-          Width = 409
-          Height = 13
+          Left = 21
+          Top = 65
+          Width = 507
+          Height = 16
           Caption = 
             'La licence GPL est libre et permet '#224' Matthieu GIROUX, l'#39'auteur, ' +
             'de donner son logiciel.'
@@ -1707,10 +1711,10 @@ object F_AncestroWeb: TF_AncestroWeb
           ParentColor = False
         end
         object Label21: TLabel
-          Left = 17
-          Top = 69
-          Width = 479
-          Height = 13
+          Left = 21
+          Top = 85
+          Width = 607
+          Height = 16
           Caption = 
             'Une licence libre vous permet de participer au projet, mais elle' +
             ' demande de donner votre participation.'
@@ -1718,40 +1722,40 @@ object F_AncestroWeb: TF_AncestroWeb
           ParentColor = False
         end
         object Label22: TLabel
-          Left = 17
-          Top = 3
-          Width = 215
-          Height = 24
+          Left = 21
+          Top = 4
+          Width = 272
+          Height = 29
           Caption = 'AncestroWeb et Freelogy'
           Color = clBtnFace
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -19
+          Font.Height = -23
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentColor = False
           ParentFont = False
         end
         object Label23: TLabel
-          Left = 18
-          Top = 91
-          Width = 148
-          Height = 24
+          Left = 22
+          Top = 112
+          Width = 192
+          Height = 29
           Caption = 'Site Web Statique'
           Color = clBtnFace
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -19
+          Font.Height = -23
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentColor = False
           ParentFont = False
         end
         object Label24: TLabel
-          Left = 18
-          Top = 123
-          Width = 492
-          Height = 13
+          Left = 22
+          Top = 151
+          Width = 619
+          Height = 16
           Caption = 
             'Cr'#233'er un site web statique vous permet de gagner en rapidit'#233' sur' +
             ' les serveurs web gratuits sans publicit'#233'.'
@@ -1759,10 +1763,10 @@ object F_AncestroWeb: TF_AncestroWeb
           ParentColor = False
         end
         object Label25: TLabel
-          Left = 18
-          Top = 141
-          Width = 467
-          Height = 13
+          Left = 22
+          Top = 174
+          Width = 587
+          Height = 16
           Caption = 
             'Par contre un site web statique n'#233'cessite l'#39'utilsation r'#233'guli'#232're' +
             ' d'#39'un client FTP gratuit comme Filezilla.'
@@ -1770,10 +1774,10 @@ object F_AncestroWeb: TF_AncestroWeb
           ParentColor = False
         end
         object Label26: TLabel
-          Left = 17
-          Top = 170
-          Width = 486
-          Height = 13
+          Left = 21
+          Top = 209
+          Width = 610
+          Height = 16
           Caption = 
             'Des h'#233'bergeurs gratuits comme Free et son abonnement t'#233'l'#233'phone g' +
             'ratuit, vous permettent de diffuser.'
@@ -1781,10 +1785,10 @@ object F_AncestroWeb: TF_AncestroWeb
           ParentColor = False
         end
         object Label27: TLabel
-          Left = 17
-          Top = 184
-          Width = 493
-          Height = 13
+          Left = 21
+          Top = 226
+          Width = 615
+          Height = 16
           Caption = 
             'Pour diffuser le site web n'#39'est pas suffisant. T'#233'l'#233'chargez vos d' +
             'ocuments '#224' diffuser dans une zone priv'#233'e.'
@@ -1792,10 +1796,10 @@ object F_AncestroWeb: TF_AncestroWeb
           ParentColor = False
         end
         object Label28: TLabel
-          Left = 18
-          Top = 154
-          Width = 421
-          Height = 13
+          Left = 22
+          Top = 190
+          Width = 531
+          Height = 16
           Caption = 
             'Comme votre site web est '#224' 2 endroits, il est sauvegard'#233'. Cela p' +
             'ermet d'#39#234'tre ind'#233'pendant.'
@@ -1803,15 +1807,15 @@ object F_AncestroWeb: TF_AncestroWeb
           ParentColor = False
         end
         object JvXPButton1: TJvXPButton
-          Left = 220
-          Top = 238
-          Width = 176
-          Height = 32
+          Left = 271
+          Top = 293
+          Width = 216
+          Height = 39
           Caption = 'Composition de l'#39'application'
           TabOrder = 0
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clMaroon
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False

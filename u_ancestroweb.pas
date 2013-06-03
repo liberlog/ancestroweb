@@ -4,6 +4,7 @@
 {$R *.lfm}
 {$mode objfpc}{$H+}
 {$ELSE}
+{$DEFINE WINDOWS}
 {$R *.dfm}
 {$ENDIF}
 
@@ -34,7 +35,7 @@ uses
 {$endif}
 
 {$IFNDEF FPC}
-  Mask,  rxToolEdit, JvExControls,  Windows,
+  Mask,  rxToolEdit, JvExControls,
 {$ELSE}
   LCLIntf, LCLType, EditBtn,FileUtil,
 {$ENDIF}
@@ -51,8 +52,9 @@ uses
   functions_html, JvXPCheckCtrls, Spin, U_OnFormInfoIni,
   U_ExtImage, u_buttons_appli, IBSQL, U_ExtFileCopy, u_traducefile,
   JvXPButtons, IniFiles, TFlatEditUnit,TFlatGaugeUnit,
-  TFlatCheckBoxUnit, TFlatMemoUnit, u_extabscopy, IBCustomDataSet, Grids,
-  ImagingComponents, JvXPCore, TFlatComboBoxUnit;
+  u_extabscopy, IBCustomDataSet, Grids,
+  ImagingComponents, JvXPCore, TFlatComboBoxUnit, TFlatMemoUnit,
+  TFlatCheckBoxUnit, u_buttons_defs;
 
   const
     gVer_AncestroWeb : T_Version = ( Component : 'Application Ancestroweb' ;
@@ -90,26 +92,26 @@ type
     cb_NamesAccents: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
     cb_JobsAccents: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
     cb_SurnamesAccents: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
-    ch_ancestors: TFlatCheckbox;
-    ch_CitiesLink: TFlatCheckbox;
+    ch_ancestors: TFlatCheckBox;
+    ch_CitiesLink: TFlatCheckBox;
     ch_Comptage: TFlatCheckBox;
-    ch_ContactIdentify: TFlatCheckbox;
-    ch_Filtered: TFlatCheckbox;
-    ch_genages: TFlatCheckbox;
-    ch_genContact: TFlatCheckbox;
-    ch_genjobs: TFlatCheckbox;
-    ch_gensurnames: TFlatCheckbox;
+    ch_ContactIdentify: TFlatCheckBox;
+    ch_Filtered: TFlatCheckBox;
+    ch_genages: TFlatCheckBox;
+    ch_genContact: TFlatCheckBox;
+    ch_genjobs: TFlatCheckBox;
+    ch_gensurnames: TFlatCheckBox;
     cb_Themes: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
     cbDossier: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
-    ch_genMap: TFlatCheckbox;
-    ch_genSearch: TFlatCheckbox;
-    ch_genTree: TFlatCheckbox;
-    ch_HideLessThan100: TFlatCheckbox;
-    ch_Images: TFlatCheckbox;
-    ch_NamesLink: TFlatCheckbox;
-    ch_JobsLink: TFlatCheckbox;
-    ch_ShowMainFile: TFlatCheckbox;
-    ch_SurnamesLink: TFlatCheckbox;
+    ch_genMap: TFlatCheckBox;
+    ch_genSearch: TFlatCheckBox;
+    ch_genTree: TFlatCheckBox;
+    ch_HideLessThan100: TFlatCheckBox;
+    ch_Images: TFlatCheckBox;
+    ch_NamesLink: TFlatCheckBox;
+    ch_JobsLink: TFlatCheckBox;
+    ch_ShowMainFile: TFlatCheckBox;
+    ch_SurnamesLink: TFlatCheckBox;
     DBGrid1: TDBGrid;
     ds_Individu: TDatasource;
     cb_Base: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
@@ -1785,7 +1787,8 @@ const CST_DUMMY_COORD = 2000000;
       while not Eof do
         Begin
           ls_AName := FieldByName(IBQ_NOM).AsString;
-          if ls_AName <> '' Then
+          if  ( ls_AName <> '' )
+          and ( FieldAddress ( IBQ_EV_IND_LATITUDE ) <> nil ) Then
             Begin
               ls_City:= Trim ( FieldByName(IBQ_EV_IND_VILLE).AsString );
               ld_latitude :=FieldByName(IBQ_EV_IND_LATITUDE ).AsDouble;
@@ -3316,19 +3319,20 @@ begin
   with lreg_Registry do
   try
     RootKey := HKEY_CURRENT_USER;
-    if not fb_ReadAncestroKey (CST_MANIA) Then
-     Begin
+  {  if not fb_ReadAncestroKey (CST_MANIA) Then
+     Begin}
        gs_Ancestro := CST_LOGIE;
        if fb_ReadAncestroKey (CST_LOGIE ) Then
          gb_Logie:=True;
-     End
-     else gs_Ancestro := CST_MANIA;
+//     End
+//     else gs_Ancestro := CST_MANIA;
     fKeyRegistry:='\SOFTWARE\'+gs_Ancestro+'\Settings';
     if OpenKeyReadOnly(fKeyRegistry) then
     begin
       if gs_Ancestro = CST_MANIA Then
        Begin
-        for i:=0 to cb_Base.DropDownCount-1 do
+        for i:=0 to 9 do
+        if KeyExists('NomBase'+IntToStr(i)) Then
           begin //bizarre, cette boucle ne fonctionne pas avec un TRegIniFile, ou il faudrait fermer la clé entre chaque lecture
             ls_base:=ReadString('NomBase'+IntToStr(i));
             if ls_base>'' then

@@ -14,12 +14,7 @@ uses
   SysUtils,
   Classes,
   u_dmweb in 'u_dmweb.pas' {DMWeb: TDataModule},
-  {$IFDEF FPC}
-  ancestroweb_strings in 'ancestroweb_strings.pas', lazextcomponents, lazfonctions, exthtml,
-  extcopy, vampyreimagingpackage, JvXPBarLaz, Interfaces,
-  {$ELSE}
   ancestroweb_strings_delphi in 'ancestroweb_strings_delphi.pas',
-  {$ENDIF}
   DefObjet in 'DefObjet.pas',
   u_ancestroweb in 'u_ancestroweb.pas';
 
