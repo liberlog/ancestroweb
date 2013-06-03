@@ -46,7 +46,9 @@ uses
 {$IFDEF WIN32}
   Registry,
 {$ENDIF}
+{$IFNDEF FPC}
   fonctions_version,
+{$ENDIF}
   U_DMWeb, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, StdCtrls, DB,
   IBQuery, DBCtrls, ExtCtrls, Buttons, ComCtrls, DBGrids,
   functions_html, JvXPCheckCtrls, Spin, U_OnFormInfoIni,
@@ -56,27 +58,30 @@ uses
   ImagingComponents, JvXPCore, TFlatComboBoxUnit, TFlatMemoUnit,
   TFlatCheckBoxUnit, u_buttons_defs;
 
-  const
-    gVer_AncestroWeb : T_Version = ( Component : 'Application Ancestroweb' ;
-                                               FileUnit : 'U_AncestroWeb' ;
-                                               Owner : 'Matthieu Giroux' ;
-                                               Comment : 'Composant de copie multi-platformes.' ;
-                                               BugsStory : '1.2.2.6 : No Flat Combo' +#13#10
-                                                         + '1.2.2.5 : Delphi compatible' +#13#10
-                                                         + '1.2.2.1 : Link to jobs'' base' +#13#10
-                                                         + '1.2.2.0 : Link to cities, names, surnames base' +#13#10
-                                                         + '1.2.1.1 : Hide dates lesser than 100 years' +#13#10
-                                                         + '1.2.1.0 : Better look and interactivity' +#13#10
-                                                         + '1.2.0.0 : Adding Map' +#13#10
-                                                         + '1.1.5.0 : Adding versioning' +#13#10
-                                                         + '1.1.4.0 : More of TIBSQL, copy original media, less bugs' +#13#10
-                                                         + '1.1.3.1 : Jobs in Person''s file, Tree descending' +#13#10
-                                                         + '1.1.1.2 : More tests' +#13#10
-                                                         + '1.1.1.1 : Jobs and ages' +#13#10
-                                                         + '1.0.0.0 : Integrating in Freelogy' +#13#10
-                                                         + '0.9.9.0 : First published version' ;
-                                               UnitType : CST_TYPE_UNITE_APPLI ;
-                                               Major : 1 ; Minor : 2 ; Release : 2 ; Build : 6 );
+{$IFNDEF FPC}
+const
+  gVer_AncestroWeb : T_Version = ( Component : 'Application Ancestroweb' ;
+                                             FileUnit : 'U_AncestroWeb' ;
+                                             Owner : 'Matthieu Giroux' ;
+                                             Comment : 'Composant de copie multi-platformes.' ;
+                                             BugsStory : '1.2.3.0 : No Flat Check, only for ancestromania.' +#13#10
+                                                       + '1.2.2.6 : No Flat Combo' +#13#10
+                                                       + '1.2.2.5 : Delphi compatible' +#13#10
+                                                       + '1.2.2.1 : Link to jobs'' base' +#13#10
+                                                       + '1.2.2.0 : Link to cities, names, surnames base' +#13#10
+                                                       + '1.2.1.1 : Hide dates lesser than 100 years' +#13#10
+                                                       + '1.2.1.0 : Better look and interactivity' +#13#10
+                                                       + '1.2.0.0 : Adding Map' +#13#10
+                                                       + '1.1.5.0 : Adding versioning' +#13#10
+                                                       + '1.1.4.0 : More of TIBSQL, copy original media, less bugs' +#13#10
+                                                       + '1.1.3.1 : Jobs in Person''s file, Tree descending' +#13#10
+                                                       + '1.1.1.2 : More tests' +#13#10
+                                                       + '1.1.1.1 : Jobs and ages' +#13#10
+                                                       + '1.0.0.0 : Integrating in Freelogy' +#13#10
+                                                       + '0.9.9.0 : First published version' ;
+                                             UnitType : CST_TYPE_UNITE_APPLI ;
+                                             Major : 1 ; Minor : 2 ; Release : 3 ; Build : 0 );
+{$ENDIF}
 
 
 type
@@ -3347,11 +3352,6 @@ begin
     Free;
   end;
   gs_Root:=ExtractFilePath(Application.ExeName); //l'application doit être dans le même répertoire qu'Ancestromania pour utiliser le même gds32.dll
-  if gb_Logie Then
-   Begin
-     cb_Base.Hide;
-     btnSelectBase.Hide;
-   End;
 {$ELSE}
   gs_Root:=f_IniReadSectionStr(CST_INI_PATH,'PathAppli','')+DirectorySeparator;
   if Length(gs_Root)<=1 then
@@ -3395,7 +3395,9 @@ end;
 
 procedure TF_AncestroWeb.JvXPButton1Click(Sender: TObject);
 begin
+  {$IFNDEF FPC}
   fb_AfficheApropos ( True, CST_AncestroWeb, '' );
+  {$ENDIF}
 end;
 
 procedure TF_AncestroWeb.OnFormInfoIniIniLoad(const AInifile: TCustomInifile;
@@ -3466,7 +3468,9 @@ begin
   end;
 end;
 
+{$IFNDEF FPC}
 initialization
   p_ConcatVersion ( gVer_AncestroWeb );
+{$ENDIF}
 end.
 

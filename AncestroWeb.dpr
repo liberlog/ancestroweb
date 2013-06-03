@@ -25,7 +25,7 @@ var
 
 begin
 
-  fKeyRegistry := '\SOFTWARE\'+CST_MANIA;
+  fKeyRegistry := '\SOFTWARE\'+CST_LOGIE;
 
   with TRegIniFile.create do try
     RootKey := HKEY_CURRENT_USER;
