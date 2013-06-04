@@ -68,6 +68,7 @@ resourcestring
   gs_ANCESTROWEB_Files_Long = 'Trouver un individu';
   gs_ANCESTROWEB_List = 'Liste';
   gs_ANCESTROWEB_Person = 'Individu';
+  gs_ANCESTROWEB_Phase = 'Étape : ';
   gs_ANCESTROWEB_Born = 'Naissance';
   gs_ANCESTROWEB_Died = 'Décès';
   gs_ANCESTROWEB_Years = ' Ans';

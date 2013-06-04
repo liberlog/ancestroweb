@@ -320,7 +320,7 @@ type
     function fs_getLinkedName(const as_Texte: String; var aa_listWords : TUArray ): String;
     function fs_getLinkedSurName(const as_Texte: String ): String;
     function fs_GetNameLink( as_name : String ; const as_Showed : String ; const as_SubDir : String = ''):String ;
-    function OuvreDossier(NumDossier:integer):boolean;
+    function OuvreDossier(const as_Step : String ; const NumDossier:integer):boolean;
     function fb_getMediaFile ( const IBQ_Media : TIBQuery;
                                const as_FilePath: string ;
                                var as_FileNameBegin : String ): Boolean;
@@ -586,7 +586,7 @@ begin
    then
     begin
       NumDossier:=StrToInt(trim(copy(cbDossier.Text,1,2)));
-      if OuvreDossier(NumDossier) then
+      if OuvreDossier(gs_NomApp,NumDossier) then
       begin
        fNom_Dossier:=fs_getCorrectString(copy(cbDossier.Text,5,250));
        DoAfterInit ( False );
@@ -781,9 +781,7 @@ begin
   try
     p_CopyStructure;
     p_genHTMLTitle;
-    showmessage ( 'ok ' );
     p_genHtmlHome;
-    showmessage ( 'ok ' );
     if ch_Filtered.Checked then
     begin
       if ch_ancestors.Checked Then
@@ -810,18 +808,14 @@ begin
       p_createLettersSheets( gt_SheetsLetters, IBQ_Individu, gi_FilesPerPage, ed_FileBeginName.Text);
      end;
 
-    showmessage ( 'ok ' );
     if ch_genTree.Checked then
       if ch_ancestors.Checked
        Then p_genHTMLTree ( DMWeb.IBQ_TreeAsc  )
        Else p_genHTMLTree ( DMWeb.IBQ_TreeDesc );
-    showmessage ( 'ok ' );
     if ch_genages.Checked then
       p_genHtmlAges;
-    showmessage ( 'ok ' );
     if ch_genjobs.Checked then
       p_genHtmlJobs;
-    showmessage ( 'ok ' );
     if ch_genSearch.Checked then
       p_genHtmlSearch;
     if ch_Filtered.Checked
@@ -850,13 +844,18 @@ begin
            end;
        end
       else
-       Begin
+       try
          DmWeb.IBS_Surnames.Close;
          DmWeb.IBS_Surnames.ParamByName(I_DOSSIER).AsInteger:=DMWeb.CleDossier;
          DmWeb.IBS_Surnames.ExecQuery;
          p_genHtmlSurnames(DmWeb.IBS_Surnames);
-
-       end;
+       Except
+         on E : Exception do
+           Begin
+            ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Surnames + '(' + IntToStr ( DMWeb.CleDossier ) + ')' + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
+            Exit;
+           End;
+       End;
     end;
     if ch_genContact.Checked then
       p_genPhpContact;
@@ -876,7 +875,7 @@ var
 begin
   NumDossier:=StrToInt(trim(copy(cbDossier.Text,1,2)));
   if NumDossier<>DMWeb.CleDossier then
-    if OuvreDossier(NumDossier) then
+    if OuvreDossier(gs_NomApp,NumDossier) then
     begin
       fNom_Dossier:=fs_getCorrectString(copy(cbDossier.Text,5,250));
       DoAfterInit;
@@ -948,7 +947,7 @@ begin
   begin
     p_AddToCombo(cb_base,OpenDialog.FileName);
     p_writeComboBoxItems(cb_Base,cb_Base.Items);
-    p_BaseOpen;
+    p_BaseOpen ;
     p_setBaseToIniFile(OpenDialog.FileName);
   end;
 end;
@@ -1343,7 +1342,7 @@ begin
       Result := not AIBQ_Tree.IsEmpty;
     except
       On E: Exception do
-        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
+        ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_FullTree + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
     end;
 end;
 
@@ -1364,7 +1363,7 @@ begin
       Result := not Eof;
     except
       On E: Exception do
-        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
+        ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_FullTree + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
     end;
 end;
 
@@ -1397,7 +1396,7 @@ begin
       p_IncProgressBar; // growing the counter
     except
       On E: Exception do
-        ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantUseData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
+        ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_FullTree + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantUseData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
     end;
 
     // saving the page
@@ -1490,9 +1489,13 @@ var
 
          astl_HTML.Add ( CST_HTML_TABLE_END );
         end;
-    Except
-      ShowMessage(gs_ANCESTROWEB_Unset_Stats);
-    end;
+       Except
+         on E : Exception do
+           Begin
+            ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Home + CST_ENDOFLINE + E.Message);
+            Exit;
+           End;
+       End;
   end;
 
 
@@ -1537,7 +1540,7 @@ begin
   except
     On E: Exception do
     begin
-      ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
+      ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Home + #13#10 + #13#10 + fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
       Abort;
     end;
   end;
@@ -1668,12 +1671,13 @@ Begin
                                       + fs_stringDbQuote(copy ( ls_Path, length ( fFolderBasePath ) + 1, length ( ls_Path ) - length ( fFolderBasePath )))
                                       + ''' WHERE ' + MEDIAS_CLEF + '=' + IBQ_Media.FieldByName(MEDIAS_CLEF ).AsString;
               DMWeb.IBS_Temp.ExecQuery;
-            Except
-              on e:Exception do
-               Begin
-                writeln ( E.Message + ' : ' + #10 + DMWeb.IBS_Temp.SQL.Text );
-               end;
-            end;
+             Except
+               on E : Exception do
+                 Begin
+                  ShowMessage(gs_ANCESTROWEB_Phase + IBQ_Media.FieldByName ( MEDIAS_PATH ).AsString + CST_ENDOFLINE + E.Message);
+                  Exit;
+                 End;
+             End;
            Result:=True;
            Exit;
           end;
@@ -1950,8 +1954,16 @@ const CST_DUMMY_COORD = 2000000;
   Begin
     Finalize ( lt_Surnames );
     p_createMinMaxMap ( IBS_MapFiltered );
-    IBS_MapFiltered.Close;
-    IBS_MapFiltered.ExecQuery;
+    try
+      IBS_MapFiltered.Close;
+      IBS_MapFiltered.ExecQuery;
+     Except
+       on E : Exception do
+         Begin
+          ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Map  + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
+          Exit;
+         End;
+     End;
     // initing global values
     ld_Minlatitude := CST_DUMMY_COORD;
     ld_Maxlatitude := -CST_DUMMY_COORD;
@@ -2022,7 +2034,7 @@ const CST_DUMMY_COORD = 2000000;
     except
       On E: Exception do
       begin
-        ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
+        ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Map + #13#10 + #13#10 + fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
         Abort;
       end;
     end;
@@ -2052,9 +2064,17 @@ const CST_DUMMY_COORD = 2000000;
        end
       else
        Begin
-         DmWeb.IBS_MapAll.Close;
-         DmWeb.IBS_MapAll.ParamByName(I_DOSSIER).AsInteger:=DMWeb.CleDossier;
-         DmWeb.IBS_MapAll.ExecQuery;
+         try
+           DmWeb.IBS_MapAll.Close;
+           DmWeb.IBS_MapAll.ParamByName(I_DOSSIER).AsInteger:=DMWeb.CleDossier;
+           DmWeb.IBS_MapAll.ExecQuery;
+         Except
+           on E : Exception do
+             Begin
+              ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Map + '(' + IntToStr ( DMWeb.CleDossier ) + ')' + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
+              Exit;
+             End;
+         End;
          p_createAMap (DmWeb.IBS_MapAll);
 
        end;
@@ -2108,7 +2128,7 @@ begin
   except
     On E: Exception do
     begin
-      ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
+      ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Surnames + #13#10 + #13#10 + fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
       Abort;
     end;
   end;
@@ -2218,7 +2238,7 @@ var
     except
       On E: Exception do
       begin
-        ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
+        ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_List + #13#10 + #13#10 + fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
         Abort;
       end;
     end;
@@ -2324,9 +2344,17 @@ var
         Exit;
       end;
     // getting source
-    DMWeb.IBQ_ConjointSources.Close;
-    DMWeb.IBQ_ConjointSources.ParamByName ( I_CLEF_UNION  ).AsInteger:=ai_ClefUnion;
-    DMWeb.IBQ_ConjointSources.Open;
+    try
+      DMWeb.IBQ_ConjointSources.Close;
+      DMWeb.IBQ_ConjointSources.ParamByName ( I_CLEF_UNION  ).AsInteger:=ai_ClefUnion;
+      DMWeb.IBQ_ConjointSources.Open;
+    Except
+     on E : Exception do
+       Begin
+        ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Family_On + as_dateWriten + '(' + IntToStr ( ai_ClefUnion ) + ')' + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
+        Exit;
+       End;
+    End;
     if not ab_Showdate
       Then
         Exit;
@@ -2385,9 +2413,17 @@ var
   Begin
     with DMWeb.IBS_JobsInd do
      Begin
-      Close;
-      ParamByName ( IBQ_CLE_FICHE ).AsInteger:=ai_CleFiche;
-      ExecQuery;
+      try
+        Close;
+        ParamByName ( IBQ_CLE_FICHE ).AsInteger:=ai_CleFiche;
+        ExecQuery;
+       Except
+         on E : Exception do
+           Begin
+            ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Job + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
+            Exit;
+           End;
+       End;
       if not Eof Then  // Job(s) ?
         Begin
           // title
@@ -2440,41 +2476,46 @@ var
       DMWeb.IBS_Conjoint.Close;
       DMWeb.IBS_Conjoint.ParamByName ( I_CLEF    ).AsInteger:=ai_CleFiche;
       DMWeb.IBS_Conjoint.ExecQuery;
-      // Jobs ?
-      // birthday
-      astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBS_Fiche, IBQ_DATE_NAISSANCE, IBQ_ANNEE_NAISSANCE, IBQ_LIEU_NAISSANCE, ( gs_ANCESTROWEB_ManBornOn ), ( gs_ANCESTROWEB_WomanBornOn )));
-      // deathday
-      astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBS_Fiche, IBQ_DATE_DECES, IBQ_ANNEE_DECES, IBQ_LIEU_DECES, ( gs_ANCESTROWEB_ManDiedOn ), ( gs_ANCESTROWEB_WomanDiedOn )) + CST_HTML_BR);
-      p_AddJobs ( astl_HTMLAFolder, ai_CleFiche, ai_NoInPage );
-      if not DMWeb.IBS_Conjoint.Eof Then  // Husband
+     Except
+       on E : Exception do
+         Begin
+          ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Files + '(' + IntToStr ( ai_CleFiche ) + ')' + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
+          Exit;
+         End;
+     End;
+    // Jobs ?
+    // birthday
+    astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBS_Fiche, IBQ_DATE_NAISSANCE, IBQ_ANNEE_NAISSANCE, IBQ_LIEU_NAISSANCE, ( gs_ANCESTROWEB_ManBornOn ), ( gs_ANCESTROWEB_WomanBornOn )));
+    // deathday
+    astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBS_Fiche, IBQ_DATE_DECES, IBQ_ANNEE_DECES, IBQ_LIEU_DECES, ( gs_ANCESTROWEB_ManDiedOn ), ( gs_ANCESTROWEB_WomanDiedOn )) + CST_HTML_BR);
+    p_AddJobs ( astl_HTMLAFolder, ai_CleFiche, ai_NoInPage );
+    if not DMWeb.IBS_Conjoint.Eof Then  // Husband
+      Begin
+        // title
+       astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_H3    , CST_FILE_UNION + 's'
+                                                          + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL));
+       if DMWeb.IBS_Conjoint.RecordCount = 1  // 1 or more husbands and ex ?
+        Then astl_HTMLAFolder.Add (( gs_AnceSTROWEB_Union   ))
+        else astl_HTMLAFolder.Add (( gs_AnceSTROWEB_Unions  ));
+       astl_HTMLAFolder.Add ( CST_HTML_H3_END );  // title end
+       astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_UL, CST_FILE_UNION + 's'
+                                                          + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL));
+       while not DMWeb.IBS_Conjoint.EOF do  // adding all husbands
+       with DMWeb.IBS_Conjoint do
         Begin
-          // title
-         astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_H3    , CST_FILE_UNION + 's'
-                                                            + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL));
-         if DMWeb.IBS_Conjoint.RecordCount = 1  // 1 or more husbands and ex ?
-          Then astl_HTMLAFolder.Add (( gs_AnceSTROWEB_Union   ))
-          else astl_HTMLAFolder.Add (( gs_AnceSTROWEB_Unions  ));
-         astl_HTMLAFolder.Add ( CST_HTML_H3_END );  // title end
-         astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_UL, CST_FILE_UNION + 's'
-                                                            + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL));
-         while not DMWeb.IBS_Conjoint.EOF do  // adding all husbands
-         with DMWeb.IBS_Conjoint do
-          Begin
-           ls_ASurname := FieldByName(IBQ_NOM).AsString + ' ' + FieldByName(IBQ_PRENOM).AsString;
-           astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_UNION + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
-                                + fs_GetNameLink ( fs_RemplaceChar(ls_ASurname,' ', '_'), ls_ASurname));
-           astl_HTMLAFolder.Add ( fs_CreateMarried ( not FieldByName(UNION_DATE_MARIAGE).IsNull,
-                                                     FieldByName(UNION_DATE_MARIAGE).AsString,
-                                                     FieldByName(UNION_MARIAGE_WRITEN).AsString ,
-                                                     FieldByName(UNION_CLEF).AsInteger));
-           astl_HTMLAFolder.Add ( CST_HTML_LI_END);
-           Next;
-          end;
-
-         astl_HTMLAFolder.Add ( CST_HTML_UL_END );  // list end
+         ls_ASurname := FieldByName(IBQ_NOM).AsString + ' ' + FieldByName(IBQ_PRENOM).AsString;
+         astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_UNION + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
+                              + fs_GetNameLink ( fs_RemplaceChar(ls_ASurname,' ', '_'), ls_ASurname));
+         astl_HTMLAFolder.Add ( fs_CreateMarried ( not FieldByName(UNION_DATE_MARIAGE).IsNull,
+                                                   FieldByName(UNION_DATE_MARIAGE).AsString,
+                                                   FieldByName(UNION_MARIAGE_WRITEN).AsString ,
+                                                   FieldByName(UNION_CLEF).AsInteger));
+         astl_HTMLAFolder.Add ( CST_HTML_LI_END);
+         Next;
         end;
-    finally
-    end;
+
+       astl_HTMLAFolder.Add ( CST_HTML_UL_END );  // list end
+      end;
   end;
   // ancestry and descent trees
   procedure p_AddTrees ( const astl_HTMLAFolder : TStringList ; const ai_CleFiche, ai_NoInPage : LongInt );
@@ -2602,7 +2643,7 @@ var
     except
       On E: Exception do
       begin
-        ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
+        ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Files + #13#10 + #13#10 + fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
         Abort;
       end;
     end;
@@ -2655,7 +2696,7 @@ begin
   except
     On E: Exception do
     begin
-      ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
+      ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Files + #13#10 + #13#10 + fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
       Abort;
     end;
   end;
@@ -2717,7 +2758,7 @@ begin
   except
     On E: Exception do
     begin
-      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateContact ) + ls_destination + CST_ENDOFLINE + E.Message);
+      ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Contact + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantCreateContact ) + ls_destination + CST_ENDOFLINE + E.Message);
       Abort;
     end;
   end;
@@ -2922,7 +2963,7 @@ var
       except
         On E: Exception do
         begin
-          ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantOpenData ) + DMWeb.IBS_Ages.Database.DatabaseName + CST_ENDOFLINE + E.Message);
+          ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Ages + #13#10 + #13#10 + fs_getCorrectString ( gs_ANCESTROWEB_cantOpenData ) + DMWeb.IBS_Ages.Database.DatabaseName + CST_ENDOFLINE + E.Message);
           Abort;
         end;
       end;
@@ -2971,7 +3012,7 @@ begin
   except
     On E: Exception do
     begin
-      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateContact ) + ls_destination + CST_ENDOFLINE + E.Message);
+      ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Ages + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantCreateContact ) + ls_destination + CST_ENDOFLINE + E.Message);
       Abort;
     end;
   end;
@@ -3059,7 +3100,7 @@ var
       except
         On E: Exception do
         begin
-          ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_cantOpenData ) + DMWeb.IBS_Ages.Database.DatabaseName + CST_ENDOFLINE + E.Message);
+          ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Jobs + #13#10 + #13#10 + fs_getCorrectString ( gs_ANCESTROWEB_cantOpenData ) + DMWeb.IBS_Ages.Database.DatabaseName + CST_ENDOFLINE + E.Message);
           Abort;
         end;
       end;
@@ -3107,7 +3148,7 @@ begin
   except
     On E: Exception do
     begin
-      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateContact ) + ls_destination + CST_ENDOFLINE + E.Message);
+      ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Jobs + #13#10 + #13#10 + fs_getCorrectString ( gs_ANCESTROWEB_cantSaveFile ) + ls_destination + CST_ENDOFLINE + E.Message);
       Abort;
     end;
   end;
@@ -3171,7 +3212,7 @@ begin
     Result:=True;
     Result:=DoOpenBase(sBase);
     if Result then
-      Result:=OuvreDossier(DMWeb.CleDossier);
+      Result:=OuvreDossier(gs_NomApp,DMWeb.CleDossier);
     if Result then
       DoAfterInit;
     PremiereOuverture:=False;
@@ -3225,7 +3266,7 @@ end;
 
 // function TF_AncestroWeb.OuvreDossier
 // database folder opening
-function TF_AncestroWeb.OuvreDossier(NumDossier:integer):boolean;
+function TF_AncestroWeb.OuvreDossier(const as_Step : String ; const NumDossier:integer):boolean;
 begin
   Result:=True;
   try
@@ -3244,7 +3285,7 @@ begin
   except
     On E: Exception do
     begin
-      ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) +
+      ShowMessage(gs_ANCESTROWEB_Phase + as_Step + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) +
         sDataBaseName + CST_ENDOFLINE + E.Message);
       Result:=False;
     end;

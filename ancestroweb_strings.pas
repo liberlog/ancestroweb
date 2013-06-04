@@ -81,6 +81,7 @@ resourcestring
   gs_ANCESTROWEB_AnAge = 'Âge';
   gs_ANCESTROWEB_TotalAgeDead = 'Total des individus avec un âge au décès :';
   gs_ANCESTROWEB_Persons_Count = 'Nombre d''individus';
+  gs_ANCESTROWEB_Phase = 'Étape : ' ;
   gs_ANCESTROWEB_Men_Count = 'Hommes';
   gs_ANCESTROWEB_Women_Count = 'Femmes';
   gs_ANCESTROWEB_Ages_Long  = 'Statistiques de longévités';

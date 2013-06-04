@@ -380,6 +380,8 @@ object F_AncestroWeb: TF_AncestroWeb
                 Width = 344
                 Caption = 'Filtrer par l''individu :'
                 TabOrder = 1
+                Checked = True
+                State = cbChecked
                 UseDockManager = False
                 OnClick = ch_FilteredClick
               end
