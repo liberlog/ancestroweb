@@ -56,7 +56,7 @@ uses
   JvXPButtons, IniFiles, TFlatEditUnit,TFlatGaugeUnit,
   u_extabscopy, IBCustomDataSet, Grids,
   ImagingComponents, JvXPCore, TFlatComboBoxUnit, TFlatMemoUnit,
-  TFlatCheckBoxUnit, u_buttons_defs;
+  u_buttons_defs, TFlatCheckBoxUnit;
 
 {$IFNDEF FPC}
 const
@@ -64,7 +64,8 @@ const
                                              FileUnit : 'U_AncestroWeb' ;
                                              Owner : 'Matthieu Giroux' ;
                                              Comment : 'Composant de copie multi-platformes.' ;
-                                             BugsStory : '1.2.3.0 : No Flat Check, only for ancestromania.' +#13#10
+                                             BugsStory : '1.2.3.1 : No Flat Check, ini writing.' +#13#10
+                                                       + '1.2.3.0 : No Flat Check, only for ancestromania.' +#13#10
                                                        + '1.2.2.6 : No Flat Combo' +#13#10
                                                        + '1.2.2.5 : Delphi compatible' +#13#10
                                                        + '1.2.2.1 : Link to jobs'' base' +#13#10
@@ -80,7 +81,7 @@ const
                                                        + '1.0.0.0 : Integrating in Freelogy' +#13#10
                                                        + '0.9.9.0 : First published version' ;
                                              UnitType : CST_TYPE_UNITE_APPLI ;
-                                             Major : 1 ; Minor : 2 ; Release : 3 ; Build : 0 );
+                                             Major : 1 ; Minor : 2 ; Release : 3 ; Build : 1 );
 {$ENDIF}
 
 
@@ -97,26 +98,26 @@ type
     cb_NamesAccents: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
     cb_JobsAccents: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
     cb_SurnamesAccents: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
-    ch_ancestors: TFlatCheckBox;
-    ch_CitiesLink: TFlatCheckBox;
-    ch_Comptage: TFlatCheckBox;
-    ch_ContactIdentify: TFlatCheckBox;
-    ch_Filtered: TFlatCheckBox;
-    ch_genages: TFlatCheckBox;
-    ch_genContact: TFlatCheckBox;
-    ch_genjobs: TFlatCheckBox;
-    ch_gensurnames: TFlatCheckBox;
+    ch_ancestors: TJvXPCheckBox;
+    ch_CitiesLink: TJvXPCheckBox;
+    ch_Comptage: TJvXPCheckBox;
+    ch_ContactIdentify: TJvXPCheckBox;
+    ch_Filtered: TJvXPCheckBox;
+    ch_genages: TJvXPCheckBox;
+    ch_genContact: TJvXPCheckBox;
+    ch_genjobs: TJvXPCheckBox;
+    ch_gensurnames: TJvXPCheckBox;
     cb_Themes: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
     cbDossier: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
-    ch_genMap: TFlatCheckBox;
-    ch_genSearch: TFlatCheckBox;
-    ch_genTree: TFlatCheckBox;
-    ch_HideLessThan100: TFlatCheckBox;
-    ch_Images: TFlatCheckBox;
-    ch_NamesLink: TFlatCheckBox;
-    ch_JobsLink: TFlatCheckBox;
-    ch_ShowMainFile: TFlatCheckBox;
-    ch_SurnamesLink: TFlatCheckBox;
+    ch_genMap: TJvXPCheckBox;
+    ch_genSearch: TJvXPCheckBox;
+    ch_genTree: TJvXPCheckBox;
+    ch_HideLessThan100: TJvXPCheckBox;
+    ch_Images: TJvXPCheckBox;
+    ch_NamesLink: TJvXPCheckBox;
+    ch_JobsLink: TJvXPCheckBox;
+    ch_ShowMainFile: TJvXPCheckBox;
+    ch_SurnamesLink: TJvXPCheckBox;
     DBGrid1: TDBGrid;
     ds_Individu: TDatasource;
     cb_Base: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
@@ -218,16 +219,16 @@ type
     Label9: TLabel;
     lb_DescribeMap: TLabel;
     lb_Images: TLabel;
-    me_Bottom: TFlatMemo;
-    me_ContactHead: TFlatMemo;
-    me_MapHead: TFlatMemo;
-    me_Description: TFlatMemo;
-    me_FilesHead: TFlatMemo;
-    me_HeadAges: TFlatMemo;
-    me_HeadJobs: TFlatMemo;
-    me_HeadTree: TFlatMemo;
-    me_surnamesHead: TFlatMemo;
-    me_searchHead: TFlatMemo;
+    me_Bottom: TMemo;
+    me_ContactHead: TMemo;
+    me_MapHead: TMemo;
+    me_Description: TMemo;
+    me_FilesHead: TMemo;
+    me_HeadAges: TMemo;
+    me_HeadJobs: TMemo;
+    me_HeadTree: TMemo;
+    me_surnamesHead: TMemo;
+    me_searchHead: TMemo;
     OnFormInfoIni: TOnFormInfoIni;
     OpenDialog: TOpenDialog;
     PageControl1: TPageControl;
@@ -780,7 +781,9 @@ begin
   try
     p_CopyStructure;
     p_genHTMLTitle;
+    showmessage ( 'ok ' );
     p_genHtmlHome;
+    showmessage ( 'ok ' );
     if ch_Filtered.Checked then
     begin
       if ch_ancestors.Checked Then
@@ -807,14 +810,18 @@ begin
       p_createLettersSheets( gt_SheetsLetters, IBQ_Individu, gi_FilesPerPage, ed_FileBeginName.Text);
      end;
 
+    showmessage ( 'ok ' );
     if ch_genTree.Checked then
       if ch_ancestors.Checked
        Then p_genHTMLTree ( DMWeb.IBQ_TreeAsc  )
        Else p_genHTMLTree ( DMWeb.IBQ_TreeDesc );
+    showmessage ( 'ok ' );
     if ch_genages.Checked then
       p_genHtmlAges;
+    showmessage ( 'ok ' );
     if ch_genjobs.Checked then
       p_genHtmlJobs;
+    showmessage ( 'ok ' );
     if ch_genSearch.Checked then
       p_genHtmlSearch;
     if ch_Filtered.Checked
@@ -2307,12 +2314,11 @@ var
   lstl_listWords, lstl_listSeparat : TUArray;
 
   // Marriages with source
-  function fs_CreateMarried (  const as_Date, as_dateWriten : String ; const ai_ClefUnion : Longint ): String;
+  function fs_CreateMarried ( const ab_showdate : Boolean; const as_Date, as_dateWriten : String ; const ai_ClefUnion : Longint ): String;
   var ls_FileName, ls_FileNameBegin : String ;
       li_i : Integer ;
-      lb_showdate : Boolean;
   Begin
-    if ( as_Date = '' ) Then
+    if ( not ab_showdate ) Then
       Begin
         Result := '';
         Exit;
@@ -2321,16 +2327,7 @@ var
     DMWeb.IBQ_ConjointSources.Close;
     DMWeb.IBQ_ConjointSources.ParamByName ( I_CLEF_UNION  ).AsInteger:=ai_ClefUnion;
     DMWeb.IBQ_ConjointSources.Open;
-    try
-      {$IFDEF FPC}
-      lb_showdate := fb_Showdate(StrToDate(as_Date,'yyyy-mm-dd', '-')) ;
-      {$ELSE}
-      lb_showdate := fb_Showdate(StrToDate(as_Date)) ;
-      {$ENDIF}
-    except
-      lb_showdate := False;
-    end;
-    if not lb_Showdate
+    if not ab_Showdate
       Then
         Exit;
     Result := ' (' ;
@@ -2466,7 +2463,8 @@ var
            ls_ASurname := FieldByName(IBQ_NOM).AsString + ' ' + FieldByName(IBQ_PRENOM).AsString;
            astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_UNION + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
                                 + fs_GetNameLink ( fs_RemplaceChar(ls_ASurname,' ', '_'), ls_ASurname));
-           astl_HTMLAFolder.Add ( fs_CreateMarried ( FieldByName(UNION_DATE_MARIAGE).AsString ,
+           astl_HTMLAFolder.Add ( fs_CreateMarried ( not FieldByName(UNION_DATE_MARIAGE).IsNull,
+                                                     FieldByName(UNION_DATE_MARIAGE).AsString,
                                                      FieldByName(UNION_MARIAGE_WRITEN).AsString ,
                                                      FieldByName(UNION_CLEF).AsInteger));
            astl_HTMLAFolder.Add ( CST_HTML_LI_END);

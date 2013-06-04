@@ -18,8 +18,8 @@
 		<Compiler>
 			<Compiler Name="A">8</Compiler>
 			<Compiler Name="B">0</Compiler>
-			<Compiler Name="C">0</Compiler>
-			<Compiler Name="D">0</Compiler>
+			<Compiler Name="C">1</Compiler>
+			<Compiler Name="D">1</Compiler>
 			<Compiler Name="E">0</Compiler>
 			<Compiler Name="F">0</Compiler>
 			<Compiler Name="G">1</Compiler>
@@ -27,20 +27,20 @@
 			<Compiler Name="I">1</Compiler>
 			<Compiler Name="J">0</Compiler>
 			<Compiler Name="K">0</Compiler>
-			<Compiler Name="L">0</Compiler>
+			<Compiler Name="L">1</Compiler>
 			<Compiler Name="M">0</Compiler>
 			<Compiler Name="N">1</Compiler>
 			<Compiler Name="O">0</Compiler>
 			<Compiler Name="P">1</Compiler>
-			<Compiler Name="Q">0</Compiler>
-			<Compiler Name="R">0</Compiler>
+			<Compiler Name="Q">1</Compiler>
+			<Compiler Name="R">1</Compiler>
 			<Compiler Name="S">0</Compiler>
 			<Compiler Name="T">0</Compiler>
 			<Compiler Name="U">0</Compiler>
 			<Compiler Name="V">1</Compiler>
 			<Compiler Name="W">1</Compiler>
 			<Compiler Name="X">1</Compiler>
-			<Compiler Name="Y">0</Compiler>
+			<Compiler Name="Y">1</Compiler>
 			<Compiler Name="Z">1</Compiler>
 			<Compiler Name="ShowHints">True</Compiler>
 			<Compiler Name="ShowWarnings">True</Compiler>
@@ -106,11 +106,11 @@
 			<Compiler Name="CodePage"></Compiler>
 		</Compiler>
 		<Linker>
-			<Linker Name="MapFile">0</Linker>
+			<Linker Name="MapFile">1</Linker>
 			<Linker Name="OutputObjs">0</Linker>
 			<Linker Name="GenerateHpps">False</Linker>
-			<Linker Name="ConsoleApp">0</Linker>
-			<Linker Name="DebugInfo">False</Linker>
+			<Linker Name="ConsoleApp">1</Linker>
+			<Linker Name="DebugInfo">True</Linker>
 			<Linker Name="RemoteSymbols">False</Linker>
 			<Linker Name="GenerateDRC">False</Linker>
 			<Linker Name="MinStackSize">16384</Linker>
@@ -123,7 +123,7 @@
 			<Directories Name="UnitOutputDir"></Directories>
 			<Directories Name="PackageDLLOutputDir"></Directories>
 			<Directories Name="PackageDCPOutputDir"></Directories>
-			<Directories Name="SearchPath">ExtHTML\functions</Directories>
+			<Directories Name="SearchPath">$(BDS)\lib\Debug;$(BDS)\Lib\Debug\Indy10;C:\Matthieu\PROGRA~1\Delphi\COMPOS~1\jedi\jcl\lib\d10\debug;ExtHTML\functions</Directories>
 			<Directories Name="Packages"></Directories>
 			<Directories Name="Conditionals"></Directories>
 			<Directories Name="DebugSourceDirs"></Directories>

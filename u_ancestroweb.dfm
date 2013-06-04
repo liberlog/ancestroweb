@@ -75,16 +75,12 @@ object F_AncestroWeb: TF_AncestroWeb
     Top = 0
     Width = 788
     Height = 450
-    ActivePage = ts_needed
+    ActivePage = ts_Gen
     Align = alClient
     TabOrder = 1
     OnChange = PCPrincipalChange
     object ts_Gen: TTabSheet
       Caption = 'G'#233'n'#233'rer'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -202,7 +198,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Width = 245
             Height = 24
             Color = clBtnFace
-            ItemHeight = 0
+            ItemHeight = 16
             TabOrder = 3
             Text = 'default'
             ItemIndex = -1
@@ -283,7 +279,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Width = 245
             Height = 24
             Color = clBtnFace
-            ItemHeight = 0
+            ItemHeight = 16
             TabOrder = 4
             Text = 'default'
             ItemIndex = -1
@@ -295,7 +291,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Height = 24
             Color = clBtnFace
             DropDownCount = 10
-            ItemHeight = 0
+            ItemHeight = 16
             TabOrder = 0
             ItemIndex = -1
             OnChange = cb_BaseChange
@@ -307,7 +303,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Height = 24
             Style = csDropDownList
             Color = clBtnFace
-            ItemHeight = 0
+            ItemHeight = 16
             TabOrder = 1
             ItemIndex = -1
             OnChange = cbDossierChange
@@ -346,6 +342,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Height = 260
               Align = alClient
               DataSource = ds_Individu
+              Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
               ReadOnly = True
               TabOrder = 0
               TitleFont.Charset = DEFAULT_CHARSET
@@ -392,24 +389,25 @@ object F_AncestroWeb: TF_AncestroWeb
               Align = alTop
               BevelOuter = bvNone
               TabOrder = 1
-              object ch_ancestors: TFlatCheckBox
+              object ch_ancestors: TJvXPCheckbox
                 Left = 6
                 Top = 31
                 Width = 410
                 Height = 21
                 Caption = 'Ascendance'
-                Checked = True
                 TabOrder = 0
-                TabStop = True
+                Checked = True
+                State = cbChecked
               end
-              object ch_Filtered: TFlatCheckBox
+              object ch_Filtered: TJvXPCheckbox
                 Left = 6
                 Top = 1
                 Width = 424
                 Height = 21
                 Caption = 'Filtrer par l'#39'individu :'
                 TabOrder = 1
-                TabStop = True
+                Checked = True
+                State = cbChecked
                 OnClick = ch_FilteredClick
               end
             end
@@ -593,12 +591,11 @@ object F_AncestroWeb: TF_AncestroWeb
               ParentColor = True
               TabOrder = 0
             end
-            object me_Description: TFlatMemo
+            object me_Description: TMemo
               Left = 5
               Top = 50
               Width = 765
               Height = 92
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 1
             end
@@ -691,23 +688,18 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 8
               Text = 'index'
             end
-            object ch_Comptage: TFlatCheckBox
+            object ch_Comptage: TJvXPCheckbox
               Left = 5
               Top = 148
               Width = 274
               Height = 16
               Caption = 'Statistiques sur les individus'
               TabOrder = 9
-              TabStop = True
             end
           end
         end
         object ts_Files: TTabSheet
           Caption = 'Fiches'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel10: TPanel
             Left = 0
             Top = 0
@@ -752,24 +744,23 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 0
               Text = 'Files'
             end
-            object me_FilesHead: TFlatMemo
+            object me_FilesHead: TMemo
               Left = 5
               Top = 60
               Width = 765
               Height = 91
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 1
             end
-            object ch_Images: TFlatCheckBox
+            object ch_Images: TJvXPCheckbox
               Left = 5
               Top = 159
               Width = 198
               Height = 21
               Caption = 'Joindre les images'
-              Checked = True
               TabOrder = 2
-              TabStop = True
+              Checked = True
+              State = cbChecked
             end
             object ed_ListsBeginName: TFlatEdit
               Left = 497
@@ -781,23 +772,18 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 3
               Text = 'List'
             end
-            object ch_ShowMainFile: TFlatCheckBox
+            object ch_ShowMainFile: TJvXPCheckbox
               Left = 260
               Top = 159
               Width = 198
               Height = 21
               Caption = 'Montrer l'#39'onglet Fiches'
               TabOrder = 4
-              TabStop = True
             end
           end
         end
         object ts_global: TTabSheet
           Caption = 'Global'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel15: TPanel
             Left = 0
             Top = 0
@@ -820,7 +806,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 251
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -843,35 +829,35 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 1
               Text = 'http://fr.wikipedia.org/wiki/'
             end
-            object ch_CitiesLink: TFlatCheckBox
+            object ch_CitiesLink: TJvXPCheckbox
               Left = 5
               Top = 133
               Width = 246
               Height = 21
               Caption = 'Lier '#224' une base de villes :'
-              Checked = True
               TabOrder = 2
-              TabStop = True
+              Checked = True
+              State = cbChecked
             end
-            object ch_SurnamesLink: TFlatCheckBox
+            object ch_SurnamesLink: TJvXPCheckbox
               Left = 5
               Top = 101
               Width = 246
               Height = 21
               Caption = 'Lier '#224' une base de noms :'
-              Checked = True
               TabOrder = 3
-              TabStop = True
+              Checked = True
+              State = cbChecked
             end
-            object ch_NamesLink: TFlatCheckBox
+            object ch_NamesLink: TJvXPCheckbox
               Left = 5
               Top = 66
               Width = 246
               Height = 21
               Caption = 'Lier '#224' une base de pr'#233'noms :'
-              Checked = True
               TabOrder = 4
-              TabStop = True
+              Checked = True
+              State = cbChecked
             end
             object ed_BaseNames: TFlatEdit
               Left = 261
@@ -899,7 +885,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 251
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -918,7 +904,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 251
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -931,35 +917,34 @@ object F_AncestroWeb: TF_AncestroWeb
               Text = 'Sans accent sans majuscule'
               ItemIndex = 1
             end
-            object ch_HideLessThan100: TFlatCheckBox
+            object ch_HideLessThan100: TJvXPCheckbox
               Left = 5
               Top = 4
               Width = 311
               Height = 21
               Caption = 'Cacher les dates de moins de 100'#160'ans'
-              Checked = True
               TabOrder = 9
-              TabStop = True
+              Checked = True
+              State = cbChecked
               OnClick = ch_FilteredClick
             end
-            object me_Bottom: TFlatMemo
+            object me_Bottom: TMemo
               Left = 5
               Top = 315
               Width = 763
               Height = 46
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 10
             end
-            object ch_JobsLink: TFlatCheckBox
+            object ch_JobsLink: TJvXPCheckbox
               Left = 5
               Top = 33
               Width = 246
               Height = 21
               Caption = 'Lier '#224' une base de m'#233'tiers :'
-              Checked = True
               TabOrder = 11
-              TabStop = True
+              Checked = True
+              State = cbChecked
             end
             object ed_BaseJobs: TFlatEdit
               Left = 261
@@ -977,7 +962,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 251
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -996,10 +981,6 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_options: TTabSheet
       Caption = 'Options'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageControl1: TPageControl
         Left = 0
         Top = 0
@@ -1010,10 +991,6 @@ object F_AncestroWeb: TF_AncestroWeb
         TabOrder = 0
         object ts_tree: TTabSheet
           Caption = 'Arbre'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel2: TPanel
             Left = 0
             Top = 0
@@ -1040,22 +1017,21 @@ object F_AncestroWeb: TF_AncestroWeb
               Color = clBtnFace
               ParentColor = False
             end
-            object ch_genTree: TFlatCheckBox
+            object ch_genTree: TJvXPCheckbox
               Left = 5
               Top = 7
               Width = 315
               Height = 21
               Caption = 'G'#233'n'#233'rer l'#39'arbre'
-              Checked = True
               TabOrder = 0
-              TabStop = True
+              Checked = True
+              State = cbChecked
             end
-            object me_HeadTree: TFlatMemo
+            object me_HeadTree: TMemo
               Left = 5
               Top = 50
               Width = 765
               Height = 92
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 1
             end
@@ -1073,10 +1049,6 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ts_Surnames: TTabSheet
           Caption = 'Patronymes'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel12: TPanel
             Left = 0
             Top = 0
@@ -1129,15 +1101,15 @@ object F_AncestroWeb: TF_AncestroWeb
               Color = clBtnFace
               ParentColor = False
             end
-            object ch_genSurnames: TFlatCheckBox
+            object ch_genSurnames: TJvXPCheckbox
               Left = 5
               Top = 7
               Width = 394
               Height = 21
               Caption = 'G'#233'n'#233'rer les patronymes'
-              Checked = True
               TabOrder = 0
-              TabStop = True
+              Checked = True
+              State = cbChecked
             end
             object ed_SurnamesFileName: TFlatEdit
               Left = 606
@@ -1149,24 +1121,23 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 1
               Text = 'Surnames'
             end
-            object me_SurnamesHead: TFlatMemo
+            object me_SurnamesHead: TMemo
               Left = 5
               Top = 50
               Width = 765
               Height = 92
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 2
             end
-            object ch_genMap: TFlatCheckBox
+            object ch_genMap: TJvXPCheckbox
               Left = 5
               Top = 148
               Width = 404
               Height = 21
               Caption = 'G'#233'n'#233'rer la carte des patronymes (n'#233'cessite PHP)'
-              Checked = True
               TabOrder = 3
-              TabStop = True
+              Checked = True
+              State = cbChecked
             end
             object ed_MapFileName: TFlatEdit
               Left = 606
@@ -1178,12 +1149,11 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 4
               Text = 'Map'
             end
-            object me_MapHead: TFlatMemo
+            object me_MapHead: TMemo
               Left = 5
               Top = 197
               Width = 765
               Height = 91
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 5
             end
@@ -1191,10 +1161,6 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ts_search: TTabSheet
           Caption = 'Recherche'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel11: TPanel
             Left = 0
             Top = 0
@@ -1271,14 +1237,13 @@ object F_AncestroWeb: TF_AncestroWeb
               ParentColor = False
               ParentFont = False
             end
-            object ch_genSearch: TFlatCheckBox
+            object ch_genSearch: TJvXPCheckbox
               Left = 5
               Top = 31
               Width = 316
               Height = 21
               Caption = 'G'#233'n'#233'rer la recherche'
               TabOrder = 0
-              TabStop = True
             end
             object ed_SearchName: TFlatEdit
               Left = 495
@@ -1290,12 +1255,11 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 1
               Text = 'Recherche'
             end
-            object me_searchHead: TFlatMemo
+            object me_searchHead: TMemo
               Left = 5
               Top = 80
               Width = 765
               Height = 91
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 2
             end
@@ -1332,10 +1296,6 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ts_contact: TTabSheet
           Caption = 'Contact'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel9: TPanel
             Left = 0
             Top = 0
@@ -1454,24 +1414,23 @@ object F_AncestroWeb: TF_AncestroWeb
               Color = clBtnFace
               ParentColor = False
             end
-            object me_ContactHead: TFlatMemo
+            object me_ContactHead: TMemo
               Left = 5
               Top = 80
               Width = 765
               Height = 91
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 0
             end
-            object ch_genContact: TFlatCheckBox
+            object ch_genContact: TJvXPCheckbox
               Left = 5
               Top = 31
               Width = 326
               Height = 21
               Caption = 'G'#233'n'#233'rer la fiche de contact'
-              Checked = True
               TabOrder = 1
-              TabStop = True
+              Checked = True
+              State = cbChecked
             end
             object ed_ContactName: TFlatEdit
               Left = 495
@@ -1489,7 +1448,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 256
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'ssl')
               TabOrder = 3
@@ -1534,15 +1493,15 @@ object F_AncestroWeb: TF_AncestroWeb
               PasswordChar = '*'
               TabOrder = 7
             end
-            object ch_ContactIdentify: TFlatCheckBox
+            object ch_ContactIdentify: TJvXPCheckbox
               Left = 5
               Top = 277
               Width = 287
               Height = 21
               Caption = 'S'#39'identifier sur ce serveur :'
-              Checked = True
               TabOrder = 8
-              TabStop = True
+              Checked = True
+              State = cbChecked
             end
             object ed_ContactPassword2: TFlatEdit
               Left = 514
@@ -1579,7 +1538,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 256
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'qmail'
                 'sendmail'
@@ -1592,10 +1551,6 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ts_jobs: TTabSheet
           Caption = 'M'#233'tiers'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel14: TPanel
             Left = 0
             Top = 0
@@ -1622,22 +1577,21 @@ object F_AncestroWeb: TF_AncestroWeb
               Color = clBtnFace
               ParentColor = False
             end
-            object ch_genjobs: TFlatCheckBox
+            object ch_genjobs: TJvXPCheckbox
               Left = 5
               Top = 7
               Width = 354
               Height = 21
               Caption = 'G'#233'n'#233'rer les statistiques sur les professions'
-              Checked = True
               TabOrder = 0
-              TabStop = True
+              Checked = True
+              State = cbChecked
             end
-            object me_HeadJobs: TFlatMemo
+            object me_HeadJobs: TMemo
               Left = 5
               Top = 50
               Width = 765
               Height = 92
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 1
             end
@@ -1655,10 +1609,6 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ts_ages: TTabSheet
           Caption = #194'ges'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel13: TPanel
             Left = 0
             Top = 0
@@ -1685,22 +1635,21 @@ object F_AncestroWeb: TF_AncestroWeb
               Color = clBtnFace
               ParentColor = False
             end
-            object ch_genages: TFlatCheckBox
+            object ch_genages: TJvXPCheckbox
               Left = 5
               Top = 7
               Width = 354
               Height = 21
               Caption = 'G'#233'n'#233'rer les statistiques sur les '#226'ges'
-              Checked = True
               TabOrder = 0
-              TabStop = True
+              Checked = True
+              State = cbChecked
             end
-            object me_HeadAges: TFlatMemo
+            object me_HeadAges: TMemo
               Left = 5
               Top = 50
               Width = 765
               Height = 92
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 1
             end
@@ -1720,10 +1669,6 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_about: TTabSheet
       Caption = #192' propos'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pa_About: TScrollBox
         Left = 0
         Top = 0
@@ -1906,11 +1851,11 @@ object F_AncestroWeb: TF_AncestroWeb
   object OnFormInfoIni: TOnFormInfoIni
     SaveEdits = [feTEdit, feTCheck, feTComboValue, feTDirectoryEdit, feTFileNameEdit, feTGrid, feTMemo, feTPageControl, feTRadio, feTRadioGroup, feTSpinEdit]
     SaveForm = [sfSavePos, sfSaveSizes]
-    Options = [loAutoUpdate]
+    Options = [loAutoUpdate, loAutoWrite]
     OnIniLoad = OnFormInfoIniIniLoad
     OnIniWrite = OnFormInfoIniIniWrite
-    Left = 320
-    Top = 80
+    Left = 392
+    Top = 184
   end
   object FileCopy: TExtFileCopy
     Errors = 0

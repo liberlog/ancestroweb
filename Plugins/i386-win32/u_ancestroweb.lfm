@@ -1835,7 +1835,7 @@ object F_AncestroWeb: TF_AncestroWeb
   object OnFormInfoIni: TOnFormInfoIni
     SaveEdits = [feTEdit, feTCheck, feTComboValue, feTDirectoryEdit, feTFileNameEdit, feTMemo, feTRadio, feTRadioGroup, feTSpinEdit]
     SaveForm = [sfSavePos, sfSaveSizes]
-    Options = [loAutoUpdate]
+    Options = [loAutoUpdate, loAutoWrite]
     OnIniLoad = OnFormInfoIniIniLoad
     OnIniWrite = OnFormInfoIniIniWrite
     left = 320
