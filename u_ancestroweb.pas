@@ -64,7 +64,9 @@ const
                                              FileUnit : 'U_AncestroWeb' ;
                                              Owner : 'Matthieu Giroux' ;
                                              Comment : 'Composant de copie multi-platformes.' ;
-                                             BugsStory : '1.2.3.1 : No Flat Check, ini writing.' +#13#10
+                                             BugsStory : '1.2.3.3 : date_mois not found bug.' +#13#10
+                                                       + '1.2.3.2 : More data exception.' +#13#10
+                                                       + '1.2.3.1 : No Flat Check, ini writing.' +#13#10
                                                        + '1.2.3.0 : No Flat Check, only for ancestromania.' +#13#10
                                                        + '1.2.2.6 : No Flat Combo' +#13#10
                                                        + '1.2.2.5 : Delphi compatible' +#13#10
@@ -81,7 +83,7 @@ const
                                                        + '1.0.0.0 : Integrating in Freelogy' +#13#10
                                                        + '0.9.9.0 : First published version' ;
                                              UnitType : CST_TYPE_UNITE_APPLI ;
-                                             Major : 1 ; Minor : 2 ; Release : 3 ; Build : 1 );
+                                             Major : 1 ; Minor : 2 ; Release : 3 ; Build : 3 );
 {$ENDIF}
 
 
@@ -2507,7 +2509,7 @@ var
          astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_UNION + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
                               + fs_GetNameLink ( fs_RemplaceChar(ls_ASurname,' ', '_'), ls_ASurname));
          astl_HTMLAFolder.Add ( fs_CreateMarried ( not FieldByName(UNION_DATE_MARIAGE).IsNull,
-                                                   FieldByName(UNION_DATE_MARIAGE).AsString,
+                                                   FormatDateTime ( 'yyyy-mm-dd', FieldByName(UNION_DATE_MARIAGE).AsDateTime ),
                                                    FieldByName(UNION_MARIAGE_WRITEN).AsString ,
                                                    FieldByName(UNION_CLEF).AsInteger));
          astl_HTMLAFolder.Add ( CST_HTML_LI_END);

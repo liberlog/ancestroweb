@@ -270,34 +270,21 @@ object DMWeb: TDMWeb
       '     ,case u.union_mari'
       '        when :I_CLEF then u.union_femme'
       '        else u.union_mari'
-      '        end as conjoint'
-      
-        '     ,(select first(1) (case char_length(ev_fam_date_year) when ' +
-        '1 then LPAD(ev_fam_date_year,4,'#39'0'#39') when 2 then LPAD(ev_fam_date' +
-        '_year,4,'#39'0'#39') when 3 then LPAD(ev_fam_date_year,4,'#39'0'#39') ELSE ev_fa' +
-        'm_date_year end)||'#39'-'#39
-      
-        '     ||(case char_length(ev_fam_date_mois) when 1 then LPAD(ev_f' +
-        'am_date_mois,2,'#39'0'#39') ELSE ev_fam_date_mois end)||'#39'-'#39'||'
-      
-        '     (case char_length(extract(day from ev_fam_date)) when 1 the' +
-        'n LPAD(extract(day from ev_fam_date),2,'#39'0'#39') ELSE extract(day fro' +
-        'm ev_fam_date) end)'
+      '        end as conjoint,'
+      '      (select first(1) ev_fam_date'
       '       from evenements_fam'
       
         '       where ev_fam_kle_famille=u.union_clef and ev_fam_date_yea' +
         'r is not null'
-      
-        '       order by ev_fam_date_year,ev_fam_date_mois,ev_fam_date) a' +
-        's date_prem_fam,'
+      '       order by ev_fam_date_year,ev_fam_date) as date_prem_fam,'
       '(select first(1) ev_fam_date_writen'
       '       from evenements_fam'
       
         '       where ev_fam_kle_famille=u.union_clef and ev_fam_date_yea' +
         'r is not null'
       
-        '       order by ev_fam_date_year,ev_fam_date_mois,ev_fam_date) a' +
-        's date_prem_fam_writen'
+        '       order by ev_fam_date_year,ev_fam_date) as date_prem_fam_w' +
+        'riten'
       '     FROM t_union u'
       
         '      left join individu c on (c.cle_fiche is not distinct from ' +
@@ -398,7 +385,7 @@ object DMWeb: TDMWeb
       'AND EV_IND_TYPE='#39'OCCU'#39)
     Transaction = IBT_BASE
     Left = 424
-    Top = 264
+    Top = 272
   end
   object IBS_TreeSurnamesDesc: TIBSQL
     Database = ibd_BASE
