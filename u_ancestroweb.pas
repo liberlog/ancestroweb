@@ -2249,25 +2249,36 @@ var
   end;
 
 begin
+  p_Setcomments ( gs_AnceSTROWEB_List ); // advert for user
+  Finalize ( lt_SheetsLists );
+  if IBQ_FilesFiltered.IsEmpty then
+   Begin
+    MessageDlg({$IFDEF FPC}CST_AncestroWeb_WithLicense,{$ENDIF}
+    gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_List + CST_ENDOFLINE + CST_ENDOFLINE +  gs_ANCESTROWEB_Noone_to_show +
+    FileCopy.Destination + ' ?', mtError, [mbOK], 0);
+    Exit;
+   end;
+  p_createLettersSheets ( lt_SheetsLists, IBQ_FilesFiltered, gi_FilesPerList, ed_ListsBeginName.Text );
+  li_CounterPages := 0;
+  pb_ProgressInd.Progress := 0; // initing user value
+  ls_ImagesDir := gs_RootPathForExport + CST_SUBDIR_HTML_LISTS + DirectorySeparator + CST_SUBDIR_HTML_IMAGES + DirectorySeparator ;
+  fb_CreateDirectoryStructure(ls_ImagesDir);
+  fb_CreateDirectoryStructure(gs_RootPathForExport + CST_SUBDIR_HTML_LISTS);
   try
-    p_Setcomments ( gs_AnceSTROWEB_List ); // advert for user
-    Finalize ( lt_SheetsLists );
-    p_createLettersSheets ( lt_SheetsLists, IBQ_FilesFiltered, gi_FilesPerList, ed_ListsBeginName.Text );
-    li_CounterPages := 0;
-    pb_ProgressInd.Progress := 0; // initing user value
-    ls_ImagesDir := gs_RootPathForExport + CST_SUBDIR_HTML_LISTS + DirectorySeparator + CST_SUBDIR_HTML_IMAGES + DirectorySeparator ;
-    fb_CreateDirectoryStructure(ls_ImagesDir);
-    fb_CreateDirectoryStructure(gs_RootPathForExport + CST_SUBDIR_HTML_LISTS);
     pb_ProgressInd.MaxValue := IBQ_FilesFiltered.RecordCount;
     IBQ_FilesFiltered.First;
-    p_SelectTabSheet(gt_TabSheets, ( gs_AnceSTROWEB_List ), ''); // current page sheet
-    ls_ASurname := '';
-    p_IncProgressBar; // growing the counter
-    while not IBQ_FilesFiltered.EOF do
-      p_AddAList;
-
-  finally
+  Except
+    MessageDlg({$IFDEF FPC}CST_AncestroWeb_WithLicense,{$ENDIF}
+    gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_List + CST_ENDOFLINE + CST_ENDOFLINE +  gs_ANCESTROWEB_cantOpenData +
+    FileCopy.Destination + ' ?', mtError, [mbOK], 0);
+    Exit;
   end;
+  p_SelectTabSheet(gt_TabSheets, ( gs_AnceSTROWEB_List ), ''); // current page sheet
+  ls_ASurname := '';
+  p_IncProgressBar; // growing the counter
+  while not IBQ_FilesFiltered.EOF do
+    p_AddAList;
+
   p_SelectTabSheet(gt_TabSheets, ( gs_AnceSTROWEB_List ), '', False);  // reiniting for next page
 end;
 function TF_AncestroWeb.fs_getaltPhoto(const IBQ_IndividuFiltered : TIBQuery):String;

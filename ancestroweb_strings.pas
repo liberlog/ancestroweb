@@ -59,6 +59,7 @@ resourcestring
   gs_ANCESTROWEB_MapCountry = 'FRANCE';
   gs_ANCESTROWEB_MapProblemNoPostalCode = 'Problème : Pas de code postal';
   gs_ANCESTROWEB_MapProblemNoCity = 'Problème : Pas de ville';
+  gs_ANCESTROWEB_Noone_to_show = 'Personne ne peut être montré.';
   gs_ANCESTROWEB_WomanDiedOn = 'Décédée le ';
   gs_ANCESTROWEB_ManDiedOn = 'Décédé le ';
   gs_ANCESTROWEB_Surnames = 'Patronymes';
