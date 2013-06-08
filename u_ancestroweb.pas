@@ -64,7 +64,9 @@ const
                                              FileUnit : 'U_AncestroWeb' ;
                                              Owner : 'Matthieu Giroux' ;
                                              Comment : 'Composant de copie multi-platformes.' ;
-                                             BugsStory : '1.2.3.3 : date_mois not found bug.' +#13#10
+                                             BugsStory : '1.2.3.5 : Obvious array not created bug.' +#13#10
+                                                       + '1.2.3.4 : noone bug.' +#13#10
+                                                       + '1.2.3.3 : date_mois not found bug.' +#13#10
                                                        + '1.2.3.2 : More data exception.' +#13#10
                                                        + '1.2.3.1 : No Flat Check, ini writing.' +#13#10
                                                        + '1.2.3.0 : No Flat Check, only for ancestromania.' +#13#10
@@ -83,7 +85,7 @@ const
                                                        + '1.0.0.0 : Integrating in Freelogy' +#13#10
                                                        + '0.9.9.0 : First published version' ;
                                              UnitType : CST_TYPE_UNITE_APPLI ;
-                                             Major : 1 ; Minor : 2 ; Release : 3 ; Build : 3 );
+                                             Major : 1 ; Minor : 2 ; Release : 3 ; Build : 5 );
 {$ENDIF}
 
 
@@ -290,6 +292,7 @@ type
       var ErrorMessage: string; var ContinueCopy: boolean);
     procedure fne_ExportAcceptFileName(Sender: TObject; var Value: String);
     procedure fne_importAcceptFileName(Sender: TObject; var Value: String);
+    procedure fne_importChange(Sender: TObject);
     procedure FWEraseImage3Click(Sender: TObject);
     procedure FWEraseImage2Click(Sender: TObject);
     procedure FWEraseImageClick(Sender: TObject);
@@ -623,6 +626,12 @@ begin
   bt_exportClick(bt_export);
 end;
 
+procedure TF_AncestroWeb.fne_importChange(Sender: TObject);
+var as_text : String;
+Begin
+  as_text := fne_import.{$IFDEF FPC}Filename{$ELSE}Text{$ENDIF};
+  fne_importAcceptFileName ( sender, as_text );
+End;
 // procedure TF_AncestroWeb.fne_importAcceptFileName
 // Importing ini on filename's accept
 procedure TF_AncestroWeb.fne_importAcceptFileName(Sender: TObject;
@@ -1712,6 +1721,8 @@ Begin
        Then li_modulo := 0
        Else li_modulo := 1;
 
+      p_AddTabSheet(at_SheetsLetters, lch_i,
+        as_BeginFile + IntToStr(li_Counter) + CST_EXTENSION_HTML );
       if li_Counter + li_OldCounterPages > 1 Then
         for li_i := li_OldCounterPages to li_Counter + li_modulo -1 do
          Begin
@@ -1720,8 +1731,6 @@ Begin
   //           Showmessage ( fs_RemplaceEspace (fs_getNameAndSurName(IBQ_FilesFiltered), '_' ) + ' ' + IntToStr(li_i) );
           p_AddTabSheetPage(at_SheetsLetters, high ( at_SheetsLetters ), as_BeginFile + IntToStr(li_i) + CST_EXTENSION_HTML, fs_RemplaceEspace (fs_getNameAndSurName(IBQ_FilesFiltered), '_' ));
          end;
-      p_AddTabSheet(at_SheetsLetters, lch_i,
-        as_BeginFile + IntToStr(li_Counter) + CST_EXTENSION_HTML );
     end;
 end;
 
@@ -2254,9 +2263,8 @@ begin
   if IBQ_FilesFiltered.IsEmpty then
    Begin
     MessageDlg({$IFDEF FPC}CST_AncestroWeb_WithLicense,{$ENDIF}
-    gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_List + CST_ENDOFLINE + CST_ENDOFLINE +  gs_ANCESTROWEB_Noone_to_show +
-    FileCopy.Destination + ' ?', mtError, [mbOK], 0);
-    Exit;
+    gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_List + CST_ENDOFLINE + CST_ENDOFLINE +  gs_ANCESTROWEB_Noone_to_show, mtError, [mbOK], 0);
+    Abort;
    end;
   p_createLettersSheets ( lt_SheetsLists, IBQ_FilesFiltered, gi_FilesPerList, ed_ListsBeginName.Text );
   li_CounterPages := 0;
@@ -2269,8 +2277,7 @@ begin
     IBQ_FilesFiltered.First;
   Except
     MessageDlg({$IFDEF FPC}CST_AncestroWeb_WithLicense,{$ENDIF}
-    gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_List + CST_ENDOFLINE + CST_ENDOFLINE +  gs_ANCESTROWEB_cantOpenData +
-    FileCopy.Destination + ' ?', mtError, [mbOK], 0);
+    gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_List + CST_ENDOFLINE + CST_ENDOFLINE +  gs_ANCESTROWEB_cantOpenData, mtError, [mbOK], 0);
     Exit;
   end;
   p_SelectTabSheet(gt_TabSheets, ( gs_AnceSTROWEB_List ), ''); // current page sheet
@@ -2520,7 +2527,7 @@ var
          astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_UNION + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
                               + fs_GetNameLink ( fs_RemplaceChar(ls_ASurname,' ', '_'), ls_ASurname));
          astl_HTMLAFolder.Add ( fs_CreateMarried ( not FieldByName(UNION_DATE_MARIAGE).IsNull,
-                                                   FormatDateTime ( 'yyyy-mm-dd', FieldByName(UNION_DATE_MARIAGE).AsDateTime ),
+                                                   FieldByName(UNION_DATE_MARIAGE).AsString,
                                                    FieldByName(UNION_MARIAGE_WRITEN).AsString ,
                                                    FieldByName(UNION_CLEF).AsInteger));
          astl_HTMLAFolder.Add ( CST_HTML_LI_END);
@@ -3433,16 +3440,16 @@ begin
   // ici mettre la taille initiale car avec les skins, les fenetres se resize
   Width := 640;
   Height := 400;
+  btnSelectBase.Caption:='';
   PCPrincipal.ActivePage:=ts_Gen;
   Caption := fs_getCorrectString(CST_AncestroWeb_WithLicense+' : '+gs_AnceSTROWEB_FORM_CAPTION);
+  OnFormInfoIni.p_ExecuteLecture(Self);
   if fbddpath <> '' Then
     Begin
-      p_AddToCombo(cb_Base,fbddpath);
+      p_AddToCombo(cb_Base,fbddpath,False);
       DoInitBase(cb_Base);
-      p_AddToCombo(cb_Base,fbddpath, False);
     end
    else
-   OnFormInfoIni.p_ExecuteLecture(Self);
 end;
 
 procedure TF_AncestroWeb.JvXPButton1Click(Sender: TObject);

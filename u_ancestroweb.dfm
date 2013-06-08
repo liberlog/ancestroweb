@@ -467,6 +467,7 @@ object F_AncestroWeb: TF_AncestroWeb
               ButtonWidth = 28
               NumGlyphs = 1
               TabOrder = 2
+              OnChange = fne_importChange
             end
             object bt_export: TFWSaveAs
               Left = 2

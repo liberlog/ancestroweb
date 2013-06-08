@@ -59,7 +59,9 @@ resourcestring
   gs_ANCESTROWEB_MapCountry = 'FRANCE';
   gs_ANCESTROWEB_MapProblemNoPostalCode = 'Problème : Pas de code postal';
   gs_ANCESTROWEB_MapProblemNoCity = 'Problème : Pas de ville';
-  gs_ANCESTROWEB_Noone_to_show = 'Personne ne peut être montré.';
+  gs_ANCESTROWEB_Noone_to_show = 'Rien à montrer.' + #13#10
+                                +'Si vous avez filtré par un individu il doit avoir des ascendants si "Ascendants" est cochée.' + #13#10
+                                +'Sinon il doit avoir des descendants.';
   gs_ANCESTROWEB_WomanDiedOn = 'Décédée le ';
   gs_ANCESTROWEB_ManDiedOn = 'Décédé le ';
   gs_ANCESTROWEB_Surnames = 'Patronymes';
