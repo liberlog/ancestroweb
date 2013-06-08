@@ -64,7 +64,8 @@ const
                                              FileUnit : 'U_AncestroWeb' ;
                                              Owner : 'Matthieu Giroux' ;
                                              Comment : 'Composant de copie multi-platformes.' ;
-                                             BugsStory : '1.2.3.5 : Obvious array not created bug.' +#13#10
+                                             BugsStory : '1.2.3.6 : Sorting letter sheets.' +#13#10
+                                                       + '1.2.3.5 : Obvious array not created bug.' +#13#10
                                                        + '1.2.3.4 : noone bug.' +#13#10
                                                        + '1.2.3.3 : date_mois not found bug.' +#13#10
                                                        + '1.2.3.2 : More data exception.' +#13#10
@@ -85,7 +86,7 @@ const
                                                        + '1.0.0.0 : Integrating in Freelogy' +#13#10
                                                        + '0.9.9.0 : First published version' ;
                                              UnitType : CST_TYPE_UNITE_APPLI ;
-                                             Major : 1 ; Minor : 2 ; Release : 3 ; Build : 5 );
+                                             Major : 1 ; Minor : 2 ; Release : 3 ; Build : 6 );
 {$ENDIF}
 
 
@@ -277,6 +278,7 @@ type
     cb_Files: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
     Label44: TLabel;
     de_ExportWeb: TDirectoryEdit;
+    cb_treeWithoutJavascript: TJvXPCheckbox;
     procedure btnSelectBaseClick(Sender: TObject);
     procedure bt_exportClick(Sender: TObject);
     procedure bt_genClick(Sender: TObject);
@@ -1399,8 +1401,8 @@ begin
         IBQ_Tree.Locate(IBQ_CLE_FICHE, gi_CleFiche, []) then
         Exit;
       if ch_ancestors.Checked
-        Then li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree, gi_CleFiche)
-        Else li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree, gi_CleFiche,True,True,False,IBQ_TQ_NUM_SOSA,False);
+        Then li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree, gi_CleFiche,not cb_treeWithoutJavascript.Checked)
+        Else li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree, gi_CleFiche,not cb_treeWithoutJavascript.Checked,True,False,IBQ_TQ_NUM_SOSA,False);
       lstl_HTMLTree.Insert(0, fs_Format_Lines(me_HeadTree.Lines.Text));
       p_CreateAHtmlFile(lstl_HTMLTree, CST_FILE_TREE, me_Description.Lines.Text,
         ( gs_AnceSTROWEB_FamilyTree ), gs_AnceSTROWEB_FullTree, fs_GetTitleTree ( gs_AnceSTROWEB_Ancestry, li_generation), gs_LinkGedcom, '../');
@@ -1706,7 +1708,7 @@ procedure TF_AncestroWeb.p_createLettersSheets ( var at_SheetsLetters : TAHTMLUL
                                                  const ai_PerPage : Integer;
                                                  const as_BeginFile : String );
 var li_Counter, li_OldCounterPages,  li_i,  li_modulo: Longint;
-    lch_i: char;
+    lch_i, lch_j : char;
 Begin
   li_Counter := 0;
   li_OldCounterPages := 0;
@@ -1715,16 +1717,24 @@ Begin
   if IBQ_FilesFiltered.Locate(IBQ_NOM, lch_i,
     [loPartialKey, loCaseInsensitive]) then
     begin
-      li_OldCounterPages := li_Counter;
-      li_Counter:=(IBQ_FilesFiltered.RecNo - 1) div ai_PerPage;
+      li_OldCounterPages := (IBQ_FilesFiltered.RecNo - 1) div ai_PerPage;
+      lch_j := chr ( ord ( lch_i ) + 1 );
+      while not  IBQ_FilesFiltered.Locate(IBQ_NOM, lch_j,
+      [loPartialKey, loCaseInsensitive]) and ( uppercase ( lch_j ) [ 1 ] > 'Z' )
+       do lch_j := chr ( ord ( lch_i ) + 1 );
+      if uppercase ( lch_j ) > 'Z'
+        then IBQ_FilesFiltered.RecNo := IBQ_FilesFiltered.RecordCount - 1;
+
+      li_counter := (IBQ_FilesFiltered.RecNo - 1 ) div ai_PerPage;
+
       if (IBQ_FilesFiltered.RecNo - 1) mod ai_PerPage = 0
        Then li_modulo := 0
        Else li_modulo := 1;
 
       p_AddTabSheet(at_SheetsLetters, lch_i,
-        as_BeginFile + IntToStr(li_Counter) + CST_EXTENSION_HTML );
-      if li_Counter + li_OldCounterPages > 1 Then
-        for li_i := li_OldCounterPages to li_Counter + li_modulo -1 do
+        as_BeginFile + IntToStr(li_OldCounterPages) + CST_EXTENSION_HTML );
+      if li_Counter > 0 Then
+        for li_i := li_OldCounterPages to li_Counter + li_modulo - 1 do
          Begin
           IBQ_FilesFiltered.RecNo:= li_i * ai_PerPage + 1 ;
 //           if pos ( 'GOURDEL', fs_getNameAndSurName(IBQ_FilesFiltered) ) > 0 Then
@@ -2527,7 +2537,7 @@ var
          astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_UNION + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
                               + fs_GetNameLink ( fs_RemplaceChar(ls_ASurname,' ', '_'), ls_ASurname));
          astl_HTMLAFolder.Add ( fs_CreateMarried ( not FieldByName(UNION_DATE_MARIAGE).IsNull,
-                                                   FieldByName(UNION_DATE_MARIAGE).AsString,
+                                                   fs_RemplaceChar ( FieldByName(UNION_DATE_MARIAGE).AsString, '/', '-' ),
                                                    FieldByName(UNION_MARIAGE_WRITEN).AsString ,
                                                    FieldByName(UNION_CLEF).AsInteger));
          astl_HTMLAFolder.Add ( CST_HTML_LI_END);

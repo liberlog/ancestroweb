@@ -75,12 +75,16 @@ object F_AncestroWeb: TF_AncestroWeb
     Top = 0
     Width = 788
     Height = 450
-    ActivePage = ts_Gen
+    ActivePage = ts_options
     Align = alClient
     TabOrder = 1
     OnChange = PCPrincipalChange
     object ts_Gen: TTabSheet
       Caption = 'G'#233'n'#233'rer'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -198,7 +202,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Width = 245
             Height = 24
             Color = clBtnFace
-            ItemHeight = 16
+            ItemHeight = 0
             TabOrder = 3
             Text = 'default'
             ItemIndex = -1
@@ -279,7 +283,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Width = 245
             Height = 24
             Color = clBtnFace
-            ItemHeight = 16
+            ItemHeight = 0
             TabOrder = 4
             Text = 'default'
             ItemIndex = -1
@@ -291,7 +295,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Height = 24
             Color = clBtnFace
             DropDownCount = 10
-            ItemHeight = 16
+            ItemHeight = 0
             TabOrder = 0
             ItemIndex = -1
             OnChange = cb_BaseChange
@@ -303,7 +307,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Height = 24
             Style = csDropDownList
             Color = clBtnFace
-            ItemHeight = 16
+            ItemHeight = 0
             TabOrder = 1
             ItemIndex = -1
             OnChange = cbDossierChange
@@ -823,7 +827,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 251
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -902,7 +906,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 251
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -921,7 +925,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 251
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -979,7 +983,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 251
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -1069,6 +1073,14 @@ object F_AncestroWeb: TF_AncestroWeb
               ParentColor = True
               TabOrder = 2
               Text = 'Tree'
+            end
+            object cb_treeWithoutJavascript: TJvXPCheckbox
+              Left = 5
+              Top = 148
+              Width = 315
+              Height = 21
+              Caption = 'Arbre l'#233'ger sans Javascript'
+              TabOrder = 3
             end
           end
         end
@@ -1485,7 +1497,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 256
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'ssl')
               TabOrder = 3
@@ -1575,7 +1587,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 256
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'qmail'
                 'sendmail'
