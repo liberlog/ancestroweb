@@ -1804,7 +1804,7 @@ const CST_DUMMY_COORD = 2000000;
         ParamByName(I_CP  ).AsString:=as_codepostal;
         ParamByName(I_PAYS).AsString:=as_Pays;
         ExecQuery;
-        if RecordCount = 0 Then
+        if EOF and BOF Then
          if as_Pays = gs_ANCESTROWEB_MapCountry
           Then Exit
           Else p_getCityInfos ( as_codepostal, gs_ANCESTROWEB_MapCountry, as_City, ad_latitude, ad_longitude );
@@ -2014,7 +2014,7 @@ const CST_DUMMY_COORD = 2000000;
      end;
     if ( ld_latitude  = CST_DUMMY_COORD) Then
      Exit;
-    ls_CitySurname:=StringReplace(ls_CitySurname, '''', '\\\''',[rfReplaceAll]);
+    ls_CitySurname:=StringReplace(ls_CitySurname, '''', '\\''',[rfReplaceAll]);
     p_ReplaceLanguageString ( astl_Aline, CST_MAP_LINE, astl_Line.Text );
     ls_CitySurname := ls_CitySurname + ' - ' ;
     ls_link := IntToStr(li_counter) + ' ' ;
@@ -2022,8 +2022,9 @@ const CST_DUMMY_COORD = 2000000;
      Then AppendStr ( ls_link, gs_ANCESTROWEB_FamilyPersons )
      Else AppendStr ( ls_link, gs_ANCESTROWEB_FamilyPerson  );
     p_ReplaceLanguageString ( astl_Aline, CST_MAP_NAME_CITY ,
-                              StringReplace ( ls_CitySurname + fs_GetNameLink ( IBS_MapFiltered.FieldByName(IBQ_NOM).AsString
-                              , ls_link, CST_SUBDIR_HTML_FILES + CST_HTML_DIR_SEPARATOR), '"', '\"',[rfReplaceAll]),[rfReplaceAll]);
+                              StringReplace ( ls_CitySurname + StringReplace ( fs_GetNameLink ( IBS_MapFiltered.FieldByName(IBQ_NOM).AsString
+                              , ls_link, CST_SUBDIR_HTML_FILES + CST_HTML_DIR_SEPARATOR), '''', '\\''',[rfReplaceAll])
+                              , '"', '\"',[rfReplaceAll]));
     p_ReplaceLanguageString ( astl_Aline, CST_MAP_LATITUD   , FloatToStr(ld_latitude ),[rfReplaceAll]);
     p_ReplaceLanguageString ( astl_Aline, CST_MAP_LONGITUD  , FloatToStr(ld_longitude),[rfReplaceAll]);
     li_dot := CST_NB_DOTS;
@@ -2050,13 +2051,14 @@ const CST_DUMMY_COORD = 2000000;
     lstl_ALine    : TStringList;
     li_Name       ,
     li_i          : Integer ;
+    lch_decimalSep : Char;
   Begin
     Finalize ( lt_Surnames );
     p_createMinMaxMap ( IBS_MapFiltered );
     try
       IBS_MapFiltered.Close;
       IBS_MapFiltered.ExecQuery;
-     Except
+    Except
        on E : Exception do
          Begin
           ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Map  + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
@@ -2087,42 +2089,49 @@ const CST_DUMMY_COORD = 2000000;
     p_LoadStringList(lstl_ALine      , gs_Root, CST_FILE_MapLine + CST_EXTENSION_PHP);
     p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_HTML_CAPTION, gs_ANCESTROWEB_Map_Long,[rfReplaceAll] );
     // Full Map
-    p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CAPTIONS, gs_ANCESTROWEB_MapCaptions ,[rfReplaceAll]);
-    p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_TO      , gs_ANCESTROWEB_Map_To      ,[rfReplaceAll]);
-    p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_CASE    , '' ,[rfReplaceAll]);
-    p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_NAME    , '' ,[rfReplaceAll]);
-    p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_LATITUD , FloatToStr(ld_MinLatitude ),[rfReplaceAll]);
-    p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_LONGITUD, FloatToStr(ld_MinLongitude),[rfReplaceAll]);
-    p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_MAX_ZOOM, gs_ANCESTROWEB_MapMaxZoom,[rfReplaceAll]);
-    p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_ZOOM    , fs_MapZoom ( ld_Minlatitude, ld_Maxlatitude, ld_Minlongitude , ld_Maxlongitude ),[rfReplaceAll]);
-    li_i := 0;
-    with IBS_MapFiltered do
-    while not EOF do
-      begin
-        p_IncProgressInd; // growing the second counter
-        ls_NewSurname := FieldByName(IBQ_NOM).AsString;
-        if  ( ls_NewSurname <> ls_ASurname )
-        and ( ls_NewSurname <> '' )
-         Then // Setting new case for a new named map
-           p_setACase(lstl_HTMLAFolder, lstl_ACase, li_Name);
-        if  ( li_Name <> -1 )
-        and ( ls_NewSurname <> '' ) Then
-         Begin  // adding lines in the full and named map
-           inc (li_i);
-           p_setAline(lstl_HTMLAFolder, lstl_ALine,IBS_MapFiltered,lt_Surnames [ li_Name ].MaxCounter,True);
-           p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_N, IntToStr(li_i),[rfReplaceAll] );
-           inc (li_i);
-           p_setAline(lstl_AllSurnames, lstl_ALine,IBS_MapFiltered,li_MaxCounter,False);
-           p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_N, IntToStr(li_i),[rfReplaceAll] );
-           p_addKeyWord(ls_ASurname, '-'); // adding a head's meta keywords
-         end;
-        Next;
+    try
+      lch_decimalSep:=DefaultFormatSettings.DecimalSeparator;
+      DefaultFormatSettings.DecimalSeparator:='.';
+      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CAPTIONS, gs_ANCESTROWEB_MapCaptions ,[rfReplaceAll]);
+      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_TO      , gs_ANCESTROWEB_Map_To      ,[rfReplaceAll]);
+      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_CASE    , '' ,[rfReplaceAll]);
+      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_NAME    , '' ,[rfReplaceAll]);
+      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_LATITUD , FloatToStr(ld_MinLatitude ),[rfReplaceAll]);
+      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_LONGITUD, FloatToStr(ld_MinLongitude),[rfReplaceAll]);
+      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_MAX_ZOOM, gs_ANCESTROWEB_MapMaxZoom,[rfReplaceAll]);
+      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_ZOOM    , fs_MapZoom ( ld_Minlatitude, ld_Maxlatitude, ld_Minlongitude , ld_Maxlongitude ),[rfReplaceAll]);
+      li_i := 0;
+      with IBS_MapFiltered do
+      while not EOF do
+        begin
+          p_IncProgressInd; // growing the second counter
+          ls_NewSurname := FieldByName(IBQ_NOM).AsString;
+          if  ( ls_NewSurname <> ls_ASurname )
+          and ( ls_NewSurname <> '' )
+           Then // Setting new case for a new named map
+             p_setACase(lstl_HTMLAFolder, lstl_ACase, li_Name);
+          if  ( li_Name <> -1 )
+          and ( ls_NewSurname <> '' ) Then
+           Begin  // adding lines in the full and named map
+             inc (li_i);
+             p_setAline(lstl_HTMLAFolder, lstl_ALine,IBS_MapFiltered,lt_Surnames [ li_Name ].MaxCounter,True);
+             p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_N, IntToStr(li_i),[rfReplaceAll] );
+             inc (li_i);
+             p_setAline(lstl_AllSurnames, lstl_ALine,IBS_MapFiltered,li_MaxCounter,False);
+             p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_N, IntToStr(li_i),[rfReplaceAll] );
+             p_addKeyWord(ls_ASurname, '-'); // adding a head's meta keywords
+           end;
+          Next;
 
-      end;
-    // Finishing
-    p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_LINE, '' );
-    p_ReplaceLanguageString ( lstl_AllSurnames   , CST_MAP_LINE, '' );
-    p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CASE, lstl_AllSurnames.Text );
+        end;
+      // Finishing
+      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_LINE, '' );
+      p_ReplaceLanguageString ( lstl_AllSurnames   , CST_MAP_LINE, '' );
+      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CASE, lstl_AllSurnames.Text );
+
+    finally
+     DefaultFormatSettings.DecimalSeparator:=lch_decimalSep;
+    end;
     // creating PHP file
     p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_MAP, me_MapHead.Lines.Text,
        gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map_Long, gs_LinkGedcom,'',CST_EXTENSION_PHP);
