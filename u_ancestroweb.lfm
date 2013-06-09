@@ -70,9 +70,9 @@ object F_AncestroWeb: TF_AncestroWeb
     Height = 366
     Top = 0
     Width = 640
-    ActivePage = ts_Gen
+    ActivePage = ts_options
     Align = alClient
-    TabIndex = 0
+    TabIndex = 2
     TabOrder = 1
     OnChange = PCPrincipalChange
     object ts_Gen: TTabSheet
@@ -260,6 +260,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Height = 22
             Top = 22
             Width = 23
+            Caption = 'Ouvrir'
             TabOrder = 7
             Anchors = [akTop, akRight]
             Font.Color = clMaroon
@@ -489,11 +490,11 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_needed: TTabSheet
       Caption = 'Général'
-      ClientHeight = 340
+      ClientHeight = 337
       ClientWidth = 632
       object pc_needed: TPageControl
         Left = 0
-        Height = 340
+        Height = 337
         Top = 0
         Width = 632
         ActivePage = ts_home
@@ -502,23 +503,23 @@ object F_AncestroWeb: TF_AncestroWeb
         TabOrder = 0
         object ts_home: TTabSheet
           Caption = 'Accueil'
-          ClientHeight = 314
+          ClientHeight = 308
           ClientWidth = 624
           object Panel8: TPanel
             Left = 0
-            Height = 314
+            Height = 308
             Top = 0
             Width = 624
             Align = alClient
             BevelOuter = bvNone
-            ClientHeight = 314
+            ClientHeight = 308
             ClientWidth = 624
             TabOrder = 0
             object Label2: TLabel
               Left = 4
-              Height = 14
+              Height = 17
               Top = 5
-              Width = 38
+              Width = 45
               Caption = 'Auteur :'
               ParentColor = False
             end
@@ -542,23 +543,23 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object Label3: TLabel
               Left = 4
-              Height = 14
+              Height = 17
               Top = 25
-              Width = 60
+              Width = 75
               Caption = 'Description :'
               ParentColor = False
             end
             object lb_Images: TLabel
               Left = 4
-              Height = 14
+              Height = 17
               Top = 145
-              Width = 41
+              Width = 52
               Caption = 'Images :'
               ParentColor = False
             end
             object ImageEdit1: TFileNameEdit
               Left = 60
-              Height = 21
+              Height = 24
               Top = 137
               Width = 96
               DialogOptions = []
@@ -573,7 +574,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ImageEdit2: TFileNameEdit
               Left = 212
-              Height = 21
+              Height = 24
               Top = 136
               Width = 152
               DialogOptions = []
@@ -587,7 +588,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ImageEdit3: TFileNameEdit
               Left = 420
-              Height = 21
+              Height = 24
               Top = 137
               Width = 152
               DialogOptions = []
@@ -644,9 +645,9 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object Label10: TLabel
               Left = 300
-              Height = 14
+              Height = 17
               Top = 5
-              Width = 75
+              Width = 92
               Caption = 'Nom du fichier :'
               ParentColor = False
             end
@@ -988,11 +989,11 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_options: TTabSheet
       Caption = 'Options'
-      ClientHeight = 340
+      ClientHeight = 337
       ClientWidth = 632
       object PageControl1: TPageControl
         Left = 0
-        Height = 340
+        Height = 337
         Top = 0
         Width = 632
         ActivePage = ts_tree
@@ -1001,16 +1002,16 @@ object F_AncestroWeb: TF_AncestroWeb
         TabOrder = 0
         object ts_tree: TTabSheet
           Caption = 'Arbre'
-          ClientHeight = 314
+          ClientHeight = 308
           ClientWidth = 624
           object Panel2: TPanel
             Left = 0
-            Height = 314
+            Height = 308
             Top = 0
             Width = 624
             Align = alClient
             BevelOuter = bvNone
-            ClientHeight = 314
+            ClientHeight = 308
             ClientWidth = 624
             TabOrder = 0
             object ch_genTree: TJvXPCheckbox
@@ -1035,17 +1036,17 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object Label8: TLabel
               Left = 4
-              Height = 14
+              Height = 17
               Top = 25
-              Width = 38
+              Width = 45
               Caption = 'Entête :'
               ParentColor = False
             end
             object Label11: TLabel
               Left = 300
-              Height = 14
+              Height = 17
               Top = 5
-              Width = 75
+              Width = 92
               Caption = 'Nom du fichier :'
               ParentColor = False
             end
@@ -1058,6 +1059,15 @@ object F_AncestroWeb: TF_AncestroWeb
               ParentColor = True
               TabOrder = 2
               Text = 'Tree'
+            end
+            object cb_treeWithoutJavascript: TJvXPCheckbox
+              Left = 4
+              Height = 17
+              Top = 126
+              Width = 333
+              Caption = 'Alléger l''arbre en enlevant la partie dynamique'
+              TabOrder = 3
+              UseDockManager = False
             end
           end
         end
@@ -1837,8 +1847,8 @@ object F_AncestroWeb: TF_AncestroWeb
     Filter = 'Tous les fichiers (*.*)|*.*|Bases Firebird/Interbase (*.fdb,*.gdb)|*.fdb;*.gdb'
     FilterIndex = 0
     Options = [ofHideReadOnly, ofNoNetworkButton, ofViewDetail]
-    left = 56
-    top = 48
+    left = 272
+    top = 80
   end
   object OnFormInfoIni: TOnFormInfoIni
     SaveEdits = [feTEdit, feTCheck, feTComboValue, feTDirectoryEdit, feTFileNameEdit, feTMemo, feTRadio, feTRadioGroup, feTSpinEdit]

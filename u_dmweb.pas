@@ -303,6 +303,7 @@ type
     ibd_BASE: TIBDatabase;
     IBS_DLL: TIBSQL;
     IBS_UpdateDLL: TIBSQL;
+    IBS_City: TIBSQL;
     {$IFDEF FPC}
     Execute:TProcess;
     {$ENDIF}

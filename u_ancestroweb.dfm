@@ -827,7 +827,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 251
               Height = 24
               Color = clBtnFace
-              ItemHeight = 16
+              ItemHeight = 0
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -906,7 +906,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 251
               Height = 24
               Color = clBtnFace
-              ItemHeight = 16
+              ItemHeight = 0
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -925,7 +925,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 251
               Height = 24
               Color = clBtnFace
-              ItemHeight = 16
+              ItemHeight = 0
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -983,7 +983,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 251
               Height = 24
               Color = clBtnFace
-              ItemHeight = 16
+              ItemHeight = 0
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -1002,10 +1002,6 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_options: TTabSheet
       Caption = 'Options'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageControl1: TPageControl
         Left = 0
         Top = 0
@@ -1016,10 +1012,6 @@ object F_AncestroWeb: TF_AncestroWeb
         TabOrder = 0
         object ts_tree: TTabSheet
           Caption = 'Arbre'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel2: TPanel
             Left = 0
             Top = 0
@@ -1497,7 +1489,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 256
               Height = 24
               Color = clBtnFace
-              ItemHeight = 16
+              ItemHeight = 0
               Items.Strings = (
                 'ssl')
               TabOrder = 3
@@ -1587,7 +1579,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 256
               Height = 24
               Color = clBtnFace
-              ItemHeight = 16
+              ItemHeight = 0
               Items.Strings = (
                 'qmail'
                 'sendmail'

@@ -479,22 +479,6 @@ object DMWeb: TDMWeb
     Left = 40
     Top = 264
   end
-  object IBS_City: TIBSQL
-    Database = ibd_BASE
-    SQL.Strings = (
-      'SELECT CP_LATITUDE,CP_LONGITUDE,CP_VILLE'
-      'FROM REF_CP_VILLE INNER JOIN REF_PAYS '
-      'ON ( CP_PAYS = RPA_CODE ) '
-      'WHERE RPA_LIBELLE=:I_PAYS '
-      'AND CP_VILLE= :I_CITY'
-      'AND CP_LATITUDE >= -90'
-      'AND CP_LATITUDE <= 90'
-      'AND CP_LONGITUDE >= -180'
-      'AND CP_LONGITUDE <= 180')
-    Transaction = IBT_BASE
-    Left = 304
-    Top = 264
-  end
   object IBS_MapAll: TIBSQL
     Database = ibd_BASE
     SQL.Strings = (
@@ -545,5 +529,18 @@ object DMWeb: TDMWeb
     Transaction = IBT_BASE
     Left = 304
     Top = 336
+  end
+  object IBS_City: TIBSQL
+    Database = ibd_BASE
+    SQL.Strings = (
+      'SELECT FIRST 1 CP_LATITUDE,CP_LONGITUDE,CP_VILLE'
+      'FROM REF_CP_VILLE INNER JOIN REF_PAYS '
+      'ON ( CP_PAYS = RPA_CODE ) '
+      'WHERE RPA_LIBELLE=:I_PAYS '
+      'AND CP_CP= :I_CP'
+      'AND CP_VILLE <> '#39#39)
+    Transaction = IBT_BASE
+    Left = 304
+    Top = 256
   end
 end

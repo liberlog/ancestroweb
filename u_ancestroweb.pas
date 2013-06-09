@@ -117,6 +117,7 @@ type
     ch_genMap: TJvXPCheckBox;
     ch_genSearch: TJvXPCheckBox;
     ch_genTree: TJvXPCheckBox;
+    cb_treeWithoutJavascript: TJvXPCheckbox;
     ch_HideLessThan100: TJvXPCheckBox;
     ch_Images: TJvXPCheckBox;
     ch_NamesLink: TJvXPCheckBox;
@@ -278,7 +279,6 @@ type
     cb_Files: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
     Label44: TLabel;
     de_ExportWeb: TDirectoryEdit;
-    cb_treeWithoutJavascript: TJvXPCheckbox;
     procedure btnSelectBaseClick(Sender: TObject);
     procedure bt_exportClick(Sender: TObject);
     procedure bt_genClick(Sender: TObject);
@@ -1785,6 +1785,36 @@ const CST_DUMMY_COORD = 2000000;
       end;
     Result := -1;
   End;
+  procedure p_getCityInfos ( as_codepostal, as_Pays : String ; var as_City : String; var ad_latitude , ad_longitude : Double);
+  Begin
+    ad_latitude :=CST_DUMMY_COORD;
+    ad_longitude:=CST_DUMMY_COORD;
+    as_City := '' ;
+    if ( as_codepostal = '' )
+    or ( Length(as_codepostal)>8) Then
+      Begin
+        p_Setcomments(gs_ANCESTROWEB_MapProblemNoPostalCode);
+        Exit;
+      end;
+    if ( as_pays = '' ) Then
+     as_pays := gs_ANCESTROWEB_MapCountry;
+    with DMWeb.IBS_City do
+      Begin
+        Close;
+        ParamByName(I_CP  ).AsString:=as_codepostal;
+        ParamByName(I_PAYS).AsString:=as_Pays;
+        ExecQuery;
+        if RecordCount = 0 Then
+         if as_Pays = gs_ANCESTROWEB_MapCountry
+          Then Exit
+          Else p_getCityInfos ( as_codepostal, gs_ANCESTROWEB_MapCountry, as_City, ad_latitude, ad_longitude );
+        ad_latitude := FieldByName(IBQ_CP_LATITUDE ).AsFloat;
+        ad_longitude:= FieldByName(IBQ_CP_LONGITUDE).AsFloat;
+        as_City     := FieldByName(IBQ_CP_VILLE    ).AsString;
+        Close;
+      end;
+  end;
+
   // procedure p_getGlobalMinMax
   // Min and max for global map
   procedure p_getGlobalMinMax (var ad_Minlatitude, ad_Maxlatitude, ad_Minlongitude , ad_Maxlongitude : Double ; var ai_MaxCounter  : Int64 );
@@ -1814,20 +1844,23 @@ const CST_DUMMY_COORD = 2000000;
         ld_latitude  ,
         ld_longitude : Double;
         ld_counter   : Int64;
+        lb_found     : Boolean;
         ls_City ,
         ls_AName : String;
     Begin
       ld_longitude := 0;
       ld_latitude  := 0;
       ls_City      := '';
+      lb_found := False;
       with IBS_MapFiltered do
       while not Eof do
         Begin
           ls_AName := FieldByName(IBQ_NOM).AsString;
-          if  ( ls_AName <> '' )
+          ls_City:= Trim ( FieldByName(IBQ_EV_IND_VILLE).AsString );
+          if  ( ls_AName <> '' ) 
           and ( FieldAddress ( IBQ_EV_IND_LATITUDE ) <> nil ) Then
             Begin
-              ls_City:= Trim ( FieldByName(IBQ_EV_IND_VILLE).AsString );
+              lb_found := not FieldByName(IBQ_EV_IND_LATITUDE ).IsNull and not FieldByName(IBQ_EV_IND_LONGITUDE ).IsNull;
               ld_latitude :=FieldByName(IBQ_EV_IND_LATITUDE ).AsDouble;
               ld_longitude:=FieldByName(IBQ_EV_IND_LONGITUDE).AsDouble;
               ld_counter :=  FieldByName(IBQ_COUNTER ).AsInt64;
@@ -1863,6 +1896,43 @@ const CST_DUMMY_COORD = 2000000;
                       end;
                    end;
                 end;
+             End;
+           if not lb_found Then
+             Begin
+               p_getCityInfos ( FieldByName(IBQ_EV_IND_CP).AsString, FieldByName(IBQ_EV_IND_PAYS).AsString, ls_City, ld_latitude, ld_longitude );
+               ld_counter :=  FieldByName(IBQ_COUNTER ).AsInt64;
+               if ls_City <> '' Then
+                 begin
+                   li_i := fi_findName ( ls_AName );
+                   if li_i <> -1 Then
+                    with lt_Surnames [ li_i ] do
+                    // mise à jour des max
+                     Begin
+                       if ld_latitude  < Minlatitude then
+                        Minlatitude:= ld_latitude;
+                       if ld_latitude  > Maxlatitude then
+                        Maxlatitude:= ld_latitude;
+                       if ld_longitude  < Minlongitude then
+                        Minlongitude:= ld_longitude;
+                       if ld_longitude  > Maxlongitude then
+                         Maxlongitude:= ld_longitude;
+                       if ld_counter  > MaxCounter then
+                         MaxCounter:=ld_counter;
+                     end
+                   else
+                    Begin
+                      SetLength(lt_Surnames, high ( lt_surnames ) + 2);
+                      with lt_SurNames [ high ( lt_SurNames )] do
+                       Begin
+                         Name := ls_AName;
+                         Minlatitude :=ld_latitude;
+                         Maxlatitude :=ld_latitude;
+                         Minlongitude:=ld_longitude;
+                         Maxlongitude:=ld_longitude;
+                         MaxCounter := ld_counter;
+                       end;
+                    end;
+                 End;
             end;
           Next;
         end;
@@ -1921,8 +1991,16 @@ const CST_DUMMY_COORD = 2000000;
     with IBS_MapFiltered do
      Begin
        ls_CitySurname:=Trim(FieldByName(IBQ_EV_IND_VILLE).AsString);
-       ld_latitude :=FieldByName(IBQ_EV_IND_LATITUDE ).AsDouble;
-       ld_longitude:=FieldByName(IBQ_EV_IND_LONGITUDE).AsDouble;
+       if fieldAddress ( IBQ_EV_IND_LATITUDE ) <> nil then
+        Begin
+         ld_latitude :=FieldByName(IBQ_EV_IND_LATITUDE ).AsDouble;
+         ld_longitude:=FieldByName(IBQ_EV_IND_LONGITUDE).AsDouble;
+        End
+        Else
+         p_getCityInfos ( FieldByName(IBQ_EV_IND_CP).AsString,
+                          FieldByName(IBQ_EV_IND_PAYS).AsString,
+                          ls_CitySurname,
+                          ld_latitude, ld_longitude );
        if ab_IsNamedMap
         Then // just set the link
          ls_CitySurname:=fs_getLinkedCity(ls_CitySurname)
