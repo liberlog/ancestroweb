@@ -19,7 +19,7 @@ uses
   SysUtils;
 
 type THTMLULTabSheet = Record
-      s_Title, s_link : String ;
+      s_Title, s_link, s_info : String ;
       b_SheetSelected : Boolean ;
       a_Pages : Array of Record
                           s_Key, s_link : String ;
@@ -181,7 +181,7 @@ procedure p_FreeKeyWords;
 procedure p_addKeyWord ( as_KeyWord : String; const ach_Separator : Char = ' ' );
 procedure p_CreateKeyWords;
 procedure p_AddTabSheet ( var  at_TabSheets : TAHTMLULTabSheet ;
-                          const as_Title, as_link : String );
+                          const as_Title, as_link : String ; const as_info : String = '' );
 procedure p_AddTabSheetPage ( var  at_TabSheets : TAHTMLULTabSheet ;
                              const ai_pos : Longint ;
                              const as_link : String ;
@@ -269,12 +269,13 @@ Begin
 end;
 
 procedure p_AddTabSheet ( var  at_TabSheets : TAHTMLULTabSheet ;
-                          const as_Title, as_link : String );
+                          const as_Title, as_link : String ; const as_info : String = '' );
 begin
   SetLength(at_TabSheets, high ( at_TabSheets ) + 2);
   with at_TabSheets [ High(at_TabSheets)] do
     Begin
       s_Title:=as_Title;
+      s_info :=as_info;
       s_link :={$IFDEF WINDOWS}fs_RemplaceChar ( {$ENDIF}as_link{$IFDEF WINDOWS}, DirectorySeparator, CST_HTML_DIR_SEPARATOR ){$ENDIF};
     end;
 end;

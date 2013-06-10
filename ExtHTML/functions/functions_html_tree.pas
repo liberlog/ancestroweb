@@ -15,7 +15,10 @@ uses
   SysUtils, functions_html,
   fonctions_system;
 
-const CST_TREE_LETTER_BEGIN = 'a' ;
+var   gs_TreeLetterBegin : Char = 'a' ;
+
+
+const CST_TREE_LETTER_BEGIN  = 'a' ;
       CST_TREE_LETTER_BARS  = 'B' ;
       CST_TREE_LETTER_SPACE = ' ' ;
       CST_TREE_LETTER_BLANK = '\' ;
@@ -180,7 +183,7 @@ end;
 
 procedure p_setEndHTMLFile(const astl_HTMLTree : TStrings);
 begin
-  astl_HTMLTree.Add('<SCRIPT LANGUAGE="JavaScript1.2">arrangeNetscape("'+CST_TREE_LETTER_BEGIN+'");</SCRIPT>' );
+  astl_HTMLTree.Add('<SCRIPT LANGUAGE="JavaScript1.2">arrangeNetscape("'+gs_TreeLetterBegin+'");</SCRIPT>' );
 end;
 
 procedure p_setLevel ( const astl_HTMLTree : TStrings;

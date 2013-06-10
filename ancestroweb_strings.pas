@@ -32,6 +32,17 @@ resourcestring
   gs_ANCESTROWEB_HTMLTitle = 'Généalogie @ARG';
   gs_ANCESTROWEB_FullTree = 'Arbre';
   gs_ANCESTROWEB_FamilyTree = 'Arbre familial';
+  gs_ANCESTROWEB_Father = 'Père @ARG';
+  gs_ANCESTROWEB_Mother = 'Mère @ARG';
+  gs_ANCESTROWEB_Old_Father = 'Grand-père @ARG (@ARG)';
+  gs_ANCESTROWEB_Old_Mother = 'Grand-père @ARG (@ARG)';
+  gs_ANCESTROWEB_old_father_minus = 'grand-père @ARG (@ARG)';
+  gs_ANCESTROWEB_old_mother_minus = 'grand-père @ARG (@ARG)';
+  gs_ANCESTROWEB_Ancestry_Man = 'Arrière @ARG';
+  gs_ANCESTROWEB_Ancestry_Woman = 'Arrière @ARG';
+  gs_ANCESTROWEB_ancestry_man_minus = 'arrière @ARG';
+  gs_ANCESTROWEB_ancestry_woman_minus = 'arrière @ARG';
+  gs_ANCESTROWEB_generation = 'Génération @ARG (@ARG) Enfant @ARG';
   gs_ANCESTROWEB_FamilyPersons = 'membres';
   gs_ANCESTROWEB_FamilyPerson = 'membre';
   gs_ANCESTROWEB_Search = 'Recherche';
@@ -76,7 +87,6 @@ resourcestring
   gs_ANCESTROWEB_Years = ' Ans';
   gs_ANCESTROWEB_At = ' à ';
   gs_ANCESTROWEB_Finished = 'Finie.';
-  gs_ANCESTROWEB_Generation = ' génération';
   gs_ANCESTROWEB_Generating = 'Création : ';
   gs_ANCESTROWEB_Generations = ' générations';
   gs_ANCESTROWEB_Ancestry = 'Ascendance';
