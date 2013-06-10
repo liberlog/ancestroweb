@@ -127,7 +127,7 @@ type
     ch_SeparateMap: TJvXPCheckbox;
     ch_ShowMainFile: TJvXPCheckBox;
     ch_SurnamesLink: TJvXPCheckBox;
-    co_groupMap: TSpinEdit;
+    sp_groupMap: TSpinEdit;
     DBGrid1: TDBGrid;
     ds_Individu: TDatasource;
     cb_Base: {$IFNDEF FPC}TFlatComboBox{$ELSE}TComboBox{$ENDIF};
@@ -265,7 +265,7 @@ type
     pb_ProgressInd: TFlatGauge;
     pb_ProgressAll: TFlatGauge;
     se_ContactPort: TSpinEdit;
-    co_gentree: TSpinEdit;
+    sp_gentree: TSpinEdit;
     Splitter1: TSplitter;
     Splitter2: TSplitter;
     spSkinPanel1: TPanel;
@@ -413,6 +413,7 @@ var
   F_AncestroWeb: TF_AncestroWeb;
   gs_HTMLTitle: string = '';
   gb_EraseExport: boolean = True;
+  gt_SheetsMapGroup : TAHTMLULTabSheet;
   gb_Generate : boolean = False;
   {$IFDEF WINDOWS}
   gb_Logie : Boolean ;
@@ -830,8 +831,8 @@ begin
 
     if ch_genTree.Checked then
       if ch_ancestors.Checked
-       Then p_genHTMLTree ( DMWeb.IBQ_TreeAsc , ch_SeparateTree.Checked, co_gentree.Value )
-       Else p_genHTMLTree ( DMWeb.IBQ_TreeDesc, ch_SeparateTree.Checked, co_gentree.Value );
+       Then p_genHTMLTree ( DMWeb.IBQ_TreeAsc , ch_SeparateTree.Checked, sp_gentree.Value )
+       Else p_genHTMLTree ( DMWeb.IBQ_TreeDesc, ch_SeparateTree.Checked, sp_gentree.Value );
     if ch_genages.Checked then
       p_genHtmlAges;
     if ch_genjobs.Checked then
@@ -1016,7 +1017,9 @@ begin
     begin
       Inc(Result, CST_PROGRESS_COUNTER_MAP);
       p_setCorrectFileName(ed_MapFileName, CST_FILE_MAP);
-      p_AddTabSheet(gt_TabSheets, ( gs_ANCESTROWEB_Map ), ed_MapFileName.Text + CST_EXTENSION_PHP);
+      if ch_SeparateMap.Checked
+       then p_AddTabSheet(gt_TabSheets, ( gs_ANCESTROWEB_Map ), ed_MapFileName.Text + '0' + CST_EXTENSION_PHP)
+       Else p_AddTabSheet(gt_TabSheets, ( gs_ANCESTROWEB_Map ), ed_MapFileName.Text +       CST_EXTENSION_PHP);
     end;
   end;
   Inc(Result, CST_PROGRESS_COUNTER_FILES+CST_PROGRESS_COUNTER_LIST);
@@ -2207,7 +2210,6 @@ const CST_DUMMY_COORD = 2000000;
      4 :  p_ReplaceLanguageString ( astl_Aline, CST_MAP_ICON, CST_MAP_BIG_MID_DOT ,[rfReplaceAll]);
      else p_ReplaceLanguageString ( astl_Aline, CST_MAP_ICON, CST_MAP_BIG_DOT     ,[rfReplaceAll]);
     end;
-    with IBS_MapFiltered do
   end;
 
   // procedure p_createAMap
@@ -2219,21 +2221,62 @@ const CST_DUMMY_COORD = 2000000;
     lstl_ACase    ,
     lstl_ALine    : TStringList;
     li_Name       ,
-    li_i          : Integer ;
+    li_i, li_j          : Integer ;
+    li_recno : Int64;
     lch_decimalSep : Char;
+    procedure p_scroll ( var ai_recno : Int64 ; const ai_recordtogo : Int64 );
+    Begin
+      while ai_recno < ai_recordtogo do
+       Begin
+        inc ( ai_recno );
+        IBS_MapFiltered.Next;
+       end;
+    end;
+
+    procedure p_CreateSheets;
+    var
+      ls_from : string;
+      li_counter : Integer;
+    begin
+      li_recno := 0;
+      with IBS_MapFiltered do
+       if not ( BOF and EOF ) Then
+        for li_counter := sp_groupMap.Value - 1 downto 0 do
+          begin
+            if li_counter < sp_groupMap.Value Then
+              Next;
+            ls_from:= FieldByName(IBQ_COUNTER).AsString;
+            if li_counter = 0
+             Then p_scroll( li_recno, RecordCount )
+             Else p_scroll( li_recno, RecordCount div li_counter - 2);
+            if FieldByName(IBQ_COUNTER).AsInt64 = 1
+             Then p_AddTabSheet(gt_SheetsMapGroup, gs_ANCESTROWEB_1_person,
+                            ed_MapFileName.Text + IntToStr(li_counter) + CST_EXTENSION_HTML, FieldByName ( IBQ_NOM ).AsString )
+             Else p_AddTabSheet(gt_SheetsMapGroup, fs_RemplaceMsg ( gs_ANCESTROWEB_From_to_persons, [ls_from,FieldByName(IBQ_COUNTER).AsString]),
+                             ed_MapFileName.Text + IntToStr(li_counter) + CST_EXTENSION_HTML, FieldByName ( IBQ_NOM ).AsString );
+          End;
+    end;
   Begin
     Finalize ( lt_Surnames );
     p_createMinMaxMap ( IBS_MapFiltered );
-    try
-      IBS_MapFiltered.Close;
-      IBS_MapFiltered.ExecQuery;
-    Except
-       on E : Exception do
-         Begin
-          ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Map  + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
-          Exit;
-         End;
-     End;
+    with IBS_MapFiltered do
+      try
+        Close;
+        ExecQuery;
+      Except
+         on E : Exception do
+           Begin
+            ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Map  + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
+            Exit;
+           End;
+       End;
+    if ch_SeparateMap.Checked Then
+     with IBS_MapFiltered do
+       Begin
+         p_CreateSheets;
+         Close;
+         ExecQuery;
+       end;
     // initing global values
     ld_Minlatitude := CST_DUMMY_COORD;
     ld_Maxlatitude := -CST_DUMMY_COORD;
@@ -2270,9 +2313,12 @@ const CST_DUMMY_COORD = 2000000;
       p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_MAX_ZOOM, gs_ANCESTROWEB_MapMaxZoom,[rfReplaceAll]);
       p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_ZOOM    , fs_MapZoom ( ld_Minlatitude, ld_Maxlatitude, ld_Minlongitude , ld_Maxlongitude ),[rfReplaceAll]);
       li_i := 0;
+      li_recno := 0;
+      li_j := sp_groupMap.Value - 1;
       with IBS_MapFiltered do
       while not EOF do
         begin
+          inc ( li_recno );
           p_IncProgressInd; // growing the second counter
           ls_NewSurname := FieldByName(IBQ_NOM).AsString;
           if  ( ls_NewSurname <> ls_ASurname )
@@ -2290,6 +2336,27 @@ const CST_DUMMY_COORD = 2000000;
              p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_N, IntToStr(li_i),[rfReplaceAll] );
              p_addKeyWord(ls_ASurname, '-'); // adding a head's meta keywords
            end;
+          if ch_SeparateMap.Checked
+          and ( li_j > 0) and ( li_recno = RecordCount div li_j ) Then
+           Begin
+            // creating PHP file
+            lstl_HTMLAFolder.Insert(0,fs_CreateULTabsheets(gt_SheetsMapGroup, '', CST_HTML_SUBMENU));
+            p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_MAP, me_MapHead.Lines.Text,
+               gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map_Long, gs_LinkGedcom,'',CST_EXTENSION_PHP);
+            // saving the page
+            ls_destination := gs_RootPathForExport + ed_MapFileName.Text + IntToStr(sp_groupMap.Value-li_j-1) + CST_EXTENSION_PHP;
+            try
+              lstl_HTMLAFolder.SaveToFile(ls_destination);
+            except
+              On E: Exception do
+              begin
+                ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Map + #13#10 + #13#10 + fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
+                Abort;
+              end;
+            end;
+            lstl_HTMLAFolder.Clear;
+
+           end;
           Next;
 
         end;
@@ -2305,7 +2372,9 @@ const CST_DUMMY_COORD = 2000000;
     p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_MAP, me_MapHead.Lines.Text,
        gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map_Long, gs_LinkGedcom,'',CST_EXTENSION_PHP);
     // saving the page
-    ls_destination := gs_RootPathForExport + ed_MapFileName.Text + CST_EXTENSION_PHP;
+    if ch_SeparateMap.Checked
+      Then ls_destination := gs_RootPathForExport + ed_MapFileName.Text + IntToStr(sp_groupMap.Value-1) + CST_EXTENSION_PHP
+      Else ls_destination := gs_RootPathForExport + ed_MapFileName.Text + CST_EXTENSION_PHP;
     try
       lstl_HTMLAFolder.SaveToFile(ls_destination);
     except
@@ -2357,6 +2426,7 @@ const CST_DUMMY_COORD = 2000000;
        end;
     end;
   end;
+  var li_i : Integer;
 begin
   lstl_HTMLAFolder := TStringList.Create;
   p_createMap;
@@ -2384,10 +2454,20 @@ begin
       lstl_HTMLAFolder.Add ( fs_GetNameLink ( ls_NewSurname, ls_NewSurname, CST_SUBDIR_HTML_FILES + CST_HTML_DIR_SEPARATOR ) +' ( '+ IBS_FilesFiltered.FieldByName( IBQ_COUNTER ).AsString );
       if  ch_genMap.Checked // Creating optionnal map button
       and ( fi_findName(ls_NewSurname)<>-1)
-       Then
-        lstl_HTMLAFolder.Add ( ' - ' + fs_Create_Link(ed_MapFileName.Text+CST_EXTENSION_PHP + '?name=' +ls_NewSurname,
-                               fs_Create_Image(CST_SUBDIR_HTML_IMAGES+CST_HTML_DIR_SEPARATOR+CST_FILE_MAP
-                               +CST_HTML_DIR_SEPARATOR+CST_FILE_MAP+CST_FILE_Button+CST_EXTENSION_GIF,gs_ANCESTROWEB_Map)));
+       Then if ch_SeparateMap.Checked Then
+        Begin
+         for li_i := 0 to high ( gt_SheetsMapGroup ) do
+          if ls_NewSurname <= gt_SheetsMapGroup [ li_i ].s_info Then
+           Begin
+            lstl_HTMLAFolder.Add ( ' - ' + fs_Create_Link(ed_MapFileName.Text+IntToStr(li_i)+ CST_EXTENSION_PHP + '?name=' +ls_NewSurname,
+                                   fs_Create_Image(CST_SUBDIR_HTML_IMAGES+CST_HTML_DIR_SEPARATOR+CST_FILE_MAP
+                                   +CST_HTML_DIR_SEPARATOR+CST_FILE_MAP+CST_FILE_Button+CST_EXTENSION_GIF,gs_ANCESTROWEB_Map)));
+           End;
+         End
+        Else
+          lstl_HTMLAFolder.Add ( ' - ' + fs_Create_Link(ed_MapFileName.Text+CST_EXTENSION_PHP + '?name=' +ls_NewSurname,
+                                 fs_Create_Image(CST_SUBDIR_HTML_IMAGES+CST_HTML_DIR_SEPARATOR+CST_FILE_MAP
+                                 +CST_HTML_DIR_SEPARATOR+CST_FILE_MAP+CST_FILE_Button+CST_EXTENSION_GIF,gs_ANCESTROWEB_Map)));
       lstl_HTMLAFolder.Add ( ')' );
      end;
     ls_ASurname := IBS_FilesFiltered.FieldByName(IBQ_NOM).AsString;
