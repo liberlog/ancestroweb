@@ -2302,8 +2302,8 @@ const CST_DUMMY_COORD = 2000000;
     p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_HTML_CAPTION, gs_ANCESTROWEB_Map_Long,[rfReplaceAll] );
     // Full Map
     try
-      lch_decimalSep:=DefaultFormatSettings.DecimalSeparator;
-      DefaultFormatSettings.DecimalSeparator:='.';
+      lch_decimalSep:={$IFDEF FPC}DefaultFormatSettings.{$ENDIF}DecimalSeparator;
+      {$IFDEF FPC}DefaultFormatSettings.{$ENDIF}DecimalSeparator:='.';
       p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CAPTIONS, gs_ANCESTROWEB_MapCaptions ,[rfReplaceAll]);
       p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_TO      , gs_ANCESTROWEB_Map_To      ,[rfReplaceAll]);
       p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_CASE    , '' ,[rfReplaceAll]);
@@ -2366,7 +2366,7 @@ const CST_DUMMY_COORD = 2000000;
       p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CASE, lstl_AllSurnames.Text );
 
     finally
-     DefaultFormatSettings.DecimalSeparator:=lch_decimalSep;
+     {$IFDEF FPC}DefaultFormatSettings.{$ENDIF}DecimalSeparator:=lch_decimalSep;
     end;
     // creating PHP file
     p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_MAP, me_MapHead.Lines.Text,
