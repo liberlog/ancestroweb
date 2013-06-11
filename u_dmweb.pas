@@ -1,4 +1,4 @@
-﻿unit U_DMWeb;
+unit U_DMWeb;
 
 {$IFDEF FPC}
   {$MODE Delphi}
@@ -304,6 +304,9 @@ type
     IBS_DLL: TIBSQL;
     IBS_UpdateDLL: TIBSQL;
     IBS_City: TIBSQL;
+    IBQ_TreeMapCount: TIBQuery;
+    IBQ_TreeDescCount: TIBQuery;
+    IBQ_CountMapAll: TIBQuery;
     {$IFDEF FPC}
     Execute:TProcess;
     {$ENDIF}

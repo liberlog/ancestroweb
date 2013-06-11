@@ -10,7 +10,7 @@ uses
   Classes, SysUtils;
 
 resourcestring
-  gs_ANCESTROWEB_From_to_persons = 'De @ARG à @ARG individus';
+  gs_ANCESTROWEB_From_to_persons = '@ARG à @ARG';
   gs_ANCESTROWEB_1_person  = '1 individu';  gs_ANCESTROWEB_LittleDateFormat = 'dd-mm-yyyy';
   gs_ANCESTROWEB_Language = 'Français';
   gs_ANCESTROWEB_DoEraseOldExport = 'Effacer le répertoire ';
@@ -38,9 +38,9 @@ resourcestring
   gs_ANCESTROWEB_Father = 'Père @ARG';
   gs_ANCESTROWEB_Mother = 'Mère @ARG';
   gs_ANCESTROWEB_Old_Father = 'Grand-père @ARG (@ARG)';
-  gs_ANCESTROWEB_Old_Mother = 'Grand-père @ARG (@ARG)';
+  gs_ANCESTROWEB_Old_Mother = 'Grand-mère @ARG (@ARG)';
   gs_ANCESTROWEB_old_father_minus = 'grand-père @ARG (@ARG)';
-  gs_ANCESTROWEB_old_mother_minus = 'grand-père @ARG (@ARG)';
+  gs_ANCESTROWEB_old_mother_minus = 'grand-mère @ARG (@ARG)';
   gs_ANCESTROWEB_Ancestry_Man = 'Arrière @ARG';
   gs_ANCESTROWEB_Ancestry_Woman = 'Arrière @ARG';
   gs_ANCESTROWEB_ancestry_man_minus = 'arrière @ARG';

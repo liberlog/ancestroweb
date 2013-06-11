@@ -64,7 +64,8 @@ const
                                              FileUnit : 'U_AncestroWeb' ;
                                              Owner : 'Matthieu Giroux' ;
                                              Comment : 'Composant de copie multi-platformes.' ;
-                                             BugsStory : '1.2.4.0 : Separate tree.' +#13#10
+                                             BugsStory : '1.2.5.0 : Separate map.' +#13#10
+                                                       + '1.2.4.0 : Separate tree.' +#13#10
                                                        + '1.2.3.6 : Sorting letter sheets.' +#13#10
                                                        + '1.2.3.5 : Obvious array not created bug.' +#13#10
                                                        + '1.2.3.4 : noone bug.' +#13#10
@@ -87,7 +88,7 @@ const
                                                        + '1.0.0.0 : Integrating in Freelogy' +#13#10
                                                        + '0.9.9.0 : First published version' ;
                                              UnitType : CST_TYPE_UNITE_APPLI ;
-                                             Major : 1 ; Minor : 2 ; Release : 4 ; Build : 0 );
+                                             Major : 1 ; Minor : 2 ; Release : 5 ; Build : 0 );
 {$ENDIF}
 
 
@@ -370,6 +371,7 @@ type
     function fi_CreateHTMLTree(const IBQ_Tree: TIBQuery;
       const astl_HTMLTree: TStrings;
       const ai_Clefiche: longint;
+      const ab_Div: boolean = True;
       const ab_Link: boolean = True;
       const ab_Progress: boolean = True;
       const ab_NotFirst: boolean = False;
@@ -1146,14 +1148,16 @@ end;
 function TF_AncestroWeb.fi_CreateHTMLTree(const IBQ_Tree: TIBQuery;
   const astl_HTMLTree: TStrings;
   const ai_Clefiche: longint;
+  const ab_Div: boolean = True;
   const ab_Link: boolean = True;
   const ab_Progress: boolean = True;
   const ab_NotFirst: boolean = False;
   const as_IdSosa: string = IBQ_TQ_SOSA;
   const ab_Asc: boolean = True): longint;
 var
-  li_LocalLevel, li_LocalPreLevel, li_Clefiche: integer;
+  li_LocalLevel, li_LevelOrigin, li_LocalPreLevel, li_Clefiche: integer;
   ls_Tempo, ls_Barres, ls_NodeLink, ls_NameSurname, ls_Image: string;
+  lb_foundARecord : Boolean;
 
   function fs_getText: string;
   begin
@@ -1190,7 +1194,7 @@ var
           ls_Image := fs_GetNameLink ( fs_RemplaceEspace ( ls_NameSurname, '_' ),ls_Image, '' );
       end;
     p_setEndLine(ls_Tempo, ls_Image, ls_NodeLink, ab_OldNext,
-      ab_IsTheEnd, li_LocalPreLevel, li_LocalLevel, ab_Link);
+      ab_IsTheEnd, li_LocalPreLevel, li_LocalLevel, ab_Link, ab_div);
 
     astl_HTMLTree.Add(ls_Tempo);
   end;
@@ -1210,7 +1214,7 @@ var
        Then
         Begin
           li_LocalPreLevel := li_LocalLevel;
-          li_LocalLevel := abs(IBQ_Tree.FieldByName(IBQ_NIVEAU).AsInteger);
+          li_LocalLevel := abs(IBQ_Tree.FieldByName(IBQ_NIVEAU).AsInteger)-li_levelOrigin;
           if not ab_Asc then
             Dec(li_LocalLevel);
           if ab_NotFirst then
@@ -1218,6 +1222,8 @@ var
           if ( li_LocalLevel > Result )
            Then
             Result := li_LocalLevel;
+            
+          lb_foundARecord := True;
           if li_LocalPreLevel <> -1 then
             p_AddLine ( li_Clefiche, False, ab_OldNext, ab_IsFirst or ab_IsSecond );
 
@@ -1229,7 +1235,7 @@ var
             ls_NodeLink := fs_GetNodeLink(ls_NodeLink, li_LocalLevel);
 
           // Création du début de Division
-          p_setLevel(astl_HTMLTree, ls_NodeLink, ab_IsFirst or ab_IsSecond and ab_NotFirst, li_LocalLevel, li_LocalPreLevel, ab_Link);
+          p_setLevel(astl_HTMLTree, ls_NodeLink, ab_IsFirst or ab_IsSecond and ab_NotFirst, li_LocalLevel, li_LocalPreLevel, ab_div);
 
           li_Sexe := IBQ_Tree.FieldByName(IBQ_SEXE).AsInteger;
 
@@ -1293,16 +1299,24 @@ begin
   Result := -1;
   ls_NodeLink := '';
   ls_Tempo := '';
+  ls_NameSurname := '';
+  ls_Image  := '';
   gs_HTMLTreeNodeLink := '';
   ls_Barres := '';
   try
     // first node
     IBQ_Tree.Locate(IBQ_CLE_FICHE, ai_Clefiche, []);
+    li_LevelOrigin := abs(IBQ_Tree.FieldByName(IBQ_NIVEAU).AsInteger);
+    if not ab_asc
+    and ( li_levelOrigin > 0 ) then
+     dec ( li_levelOrigin );
     li_Clefiche:=ai_Clefiche;
+    lb_foundARecord := False;
     // create the tree
     p_CreateChilds(IBQ_Tree.FieldByName(as_IdSosa).AsFloat,
       IBQ_Tree.FieldByName(as_IdSosa).AsString, False, False, True, False, False);
-    p_AddLine ( li_Clefiche, True, False, False );
+    if lb_foundARecord then
+      p_AddLine ( li_Clefiche, True, False, False );
   except
     On E: Exception do
       ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_cantCreateATree ) + CST_ENDOFLINE + E.Message);
@@ -1392,6 +1406,7 @@ begin
         ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_FullTree + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
     end;
 end;
+
 
 // procedure TF_AncestroWeb.p_genHTMLTree
 // creating the main interactive HTML Tree
@@ -1542,11 +1557,13 @@ begin
         if ab_Separate Then
          Begin
            for li_counter := 0 to high ( lt_SheetsGen ) do
+            with lt_SheetsGen [ li_counter ] do
+             if s_info <> '' Then
              Begin
                lstl_HTMLTree2.Text:='';
                if ch_ancestors.Checked
-                 Then li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree2, StrToInt ( lt_SheetsGen [ li_counter ].s_info ),not cb_treeWithoutJavascript.Checked)
-                 Else li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree2, StrToInt ( lt_SheetsGen [ li_counter ].s_info ),not cb_treeWithoutJavascript.Checked,True,False,IBQ_TQ_NUM_SOSA,False);
+                 Then li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree2, StrToInt ( s_info ),not cb_treeWithoutJavascript.Checked)
+                 Else li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree2, StrToInt ( s_info ),not cb_treeWithoutJavascript.Checked,True,True,False,IBQ_TQ_NUM_SOSA,False);
                lstl_HTMLTree2.Insert(0, '<br><br><div class="begin" id="'+gs_TreeLetterBegin+'">'+fs_Create_Tree_Image('a'+CST_EXTENSION_GIF)+'</div><br>');
                lstl_HTMLTree2.Insert(0, fs_Format_Lines(me_HeadTree.Lines.Text));
                lstl_HTMLTree2.Insert(0,lstl_HTMLTree.Text);
@@ -1570,7 +1587,7 @@ begin
          Begin
           if ch_ancestors.Checked
             Then li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree, gi_CleFiche,not cb_treeWithoutJavascript.Checked)
-            Else li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree, gi_CleFiche,not cb_treeWithoutJavascript.Checked,True,False,IBQ_TQ_NUM_SOSA,False);
+            Else li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree, gi_CleFiche,not cb_treeWithoutJavascript.Checked,True,True,False,IBQ_TQ_NUM_SOSA,False);
           lstl_HTMLTree.Insert(0, '<div class="begin" id="'+gs_TreeLetterBegin+'">'+fs_Create_Tree_Image('a'+CST_EXTENSION_GIF)+'</div><br>');
           lstl_HTMLTree.Insert(0, fs_Format_Lines(me_HeadTree.Lines.Text));
           p_CreateAHtmlFile(lstl_HTMLTree, CST_SUBDIR_HTML_TREE, me_Description.Lines.Text,
@@ -2214,7 +2231,7 @@ const CST_DUMMY_COORD = 2000000;
 
   // procedure p_createAMap
   // creating a map with persons frpm IBS_MapFiltered
-  procedure p_createAMap ( const IBS_MapFiltered :TIBSQL);
+  procedure p_createAMap ( const IBS_MapFiltered :TIBSQL; IBQ_CountMap :TIBQuery);
   var ld_MinLatitude, ld_MaxLatitude, ld_MinLongitude, ld_MaxLongitude : Double;
     li_MaxCounter : Int64;
     lstl_AllSurnames ,
@@ -2222,7 +2239,7 @@ const CST_DUMMY_COORD = 2000000;
     lstl_ALine    : TStringList;
     li_Name       ,
     li_i, li_j          : Integer ;
-    li_recno : Int64;
+    li_recno, li_recordcount : Int64;
     lch_decimalSep : Char;
     procedure p_scroll ( var ai_recno : Int64 ; const ai_recordtogo : Int64 );
     Begin
@@ -2245,18 +2262,60 @@ const CST_DUMMY_COORD = 2000000;
           begin
             if li_counter < sp_groupMap.Value Then
               Next;
-            ls_from:= FieldByName(IBQ_COUNTER).AsString;
+            ls_from:= FieldByName(IBQ_nom).AsString;
             if li_counter = 0
-             Then p_scroll( li_recno, RecordCount )
-             Else p_scroll( li_recno, RecordCount div li_counter - 2);
-            if FieldByName(IBQ_COUNTER).AsInt64 = 1
-             Then p_AddTabSheet(gt_SheetsMapGroup, gs_ANCESTROWEB_1_person,
-                            ed_MapFileName.Text + IntToStr(li_counter) + CST_EXTENSION_HTML, FieldByName ( IBQ_NOM ).AsString )
-             Else p_AddTabSheet(gt_SheetsMapGroup, fs_RemplaceMsg ( gs_ANCESTROWEB_From_to_persons, [ls_from,FieldByName(IBQ_COUNTER).AsString]),
-                             ed_MapFileName.Text + IntToStr(li_counter) + CST_EXTENSION_HTML, FieldByName ( IBQ_NOM ).AsString );
+             Then p_scroll( li_recno, li_recordcount - 1 )
+             Else p_scroll( li_recno, li_recordcount div (li_counter + 1 ) - 1 );
+            with FieldByName(IBQ_NOM) do
+               p_AddTabSheet(gt_SheetsMapGroup, fs_RemplaceMsg ( gs_ANCESTROWEB_From_to_persons, [ls_from,AsString]),
+                             ed_MapFileName.Text + IntToStr(sp_groupMap.Value - 1-li_counter) + CST_EXTENSION_PHP, AsString );
           End;
     end;
+    procedure p_createPHPFileMap(const li_page : Integer);
+    Begin
+      // Finishing
+      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_LINE, '' );
+      p_ReplaceLanguageString ( lstl_AllSurnames   , CST_MAP_LINE, '' );
+      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CASE, lstl_AllSurnames.Text );
+      // creating PHP file
+      lstl_HTMLAFolder.Insert(0,fs_CreateULTabsheets(gt_SheetsMapGroup, '', CST_HTML_SUBMENU));
+      p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_MAP, me_MapHead.Lines.Text,
+         gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map_Long, gs_LinkGedcom,'',CST_EXTENSION_PHP);
+      // saving the page
+      ls_destination := gs_RootPathForExport + ed_MapFileName.Text + IntToStr(li_page) + CST_EXTENSION_PHP;
+      try
+        lstl_HTMLAFolder.SaveToFile(ls_destination);
+      except
+        On E: Exception do
+        begin
+          ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Map + #13#10 + #13#10 + fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
+          Abort;
+        end;
+      end;
+      lstl_HTMLAFolder.Clear;
+     End;
+     procedure p_initFileMap;
+     Begin
+      ls_NewSurname := '';
+      ls_ASurname := 'Z1È~23><';  // for a good test
+      p_LoadStringList(lstl_HTMLAFolder, gs_Root, CST_FILE_MAP     + CST_EXTENSION_PHP);
+      p_LoadStringList(lstl_AllSurnames   , gs_Root, CST_FILE_MapCase + CST_EXTENSION_PHP);
+      p_LoadStringList(lstl_ACase      , gs_Root, CST_FILE_MapCase + CST_EXTENSION_PHP);
+      p_LoadStringList(lstl_ALine      , gs_Root, CST_FILE_MapLine + CST_EXTENSION_PHP);
+      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_HTML_CAPTION, gs_ANCESTROWEB_Map_Long,[rfReplaceAll] );
+      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CAPTIONS, gs_ANCESTROWEB_MapCaptions ,[rfReplaceAll]);
+      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_TO      , gs_ANCESTROWEB_Map_To      ,[rfReplaceAll]);
+      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_CASE    , '' ,[rfReplaceAll]);
+      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_NAME    , '' ,[rfReplaceAll]);
+      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_LATITUD , FloatToStr(ld_MinLatitude ),[rfReplaceAll]);
+      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_LONGITUD, FloatToStr(ld_MinLongitude),[rfReplaceAll]);
+      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_MAX_ZOOM, gs_ANCESTROWEB_MapMaxZoom,[rfReplaceAll]);
+      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_ZOOM    , fs_MapZoom ( ld_Minlatitude, ld_Maxlatitude, ld_Minlongitude , ld_Maxlongitude ),[rfReplaceAll]);
+     End;
   Begin
+    if not IBQ_CountMap.EOF then
+      IBQ_CountMap.Last;
+    li_recordcount := IBQ_CountMap.RecordCount;
     Finalize ( lt_Surnames );
     p_createMinMaxMap ( IBS_MapFiltered );
     with IBS_MapFiltered do
@@ -2288,33 +2347,19 @@ const CST_DUMMY_COORD = 2000000;
     ls_ASurname := '';
     li_Name := -1;
     pb_ProgressInd.Progress:=0;  // initing user value
-    pb_ProgressInd.MaxValue:=IBS_FilesFiltered.RecordCount;
+    pb_ProgressInd.MaxValue:=li_recordcount;
     lstl_AllSurnames := TStringList.Create;
     lstl_ACase    := TStringList.Create;
     lstl_ALine    := TStringList.Create;
-    ls_NewSurname := '';
-    ls_ASurname := 'Z1È~23><';  // for a good test
     // loading files
-    p_LoadStringList(lstl_HTMLAFolder, gs_Root, CST_FILE_MAP     + CST_EXTENSION_PHP);
-    p_LoadStringList(lstl_AllSurnames   , gs_Root, CST_FILE_MapCase + CST_EXTENSION_PHP);
-    p_LoadStringList(lstl_ACase      , gs_Root, CST_FILE_MapCase + CST_EXTENSION_PHP);
-    p_LoadStringList(lstl_ALine      , gs_Root, CST_FILE_MapLine + CST_EXTENSION_PHP);
-    p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_HTML_CAPTION, gs_ANCESTROWEB_Map_Long,[rfReplaceAll] );
     // Full Map
     try
       lch_decimalSep:={$IFDEF FPC}DefaultFormatSettings.{$ENDIF}DecimalSeparator;
       {$IFDEF FPC}DefaultFormatSettings.{$ENDIF}DecimalSeparator:='.';
-      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CAPTIONS, gs_ANCESTROWEB_MapCaptions ,[rfReplaceAll]);
-      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_TO      , gs_ANCESTROWEB_Map_To      ,[rfReplaceAll]);
-      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_CASE    , '' ,[rfReplaceAll]);
-      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_NAME    , '' ,[rfReplaceAll]);
-      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_LATITUD , FloatToStr(ld_MinLatitude ),[rfReplaceAll]);
-      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_LONGITUD, FloatToStr(ld_MinLongitude),[rfReplaceAll]);
-      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_MAX_ZOOM, gs_ANCESTROWEB_MapMaxZoom,[rfReplaceAll]);
-      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_ZOOM    , fs_MapZoom ( ld_Minlatitude, ld_Maxlatitude, ld_Minlongitude , ld_Maxlongitude ),[rfReplaceAll]);
+      p_initFileMap;
       li_i := 0;
       li_recno := 0;
-      li_j := sp_groupMap.Value - 1;
+      li_j := sp_groupMap.Value;
       with IBS_MapFiltered do
       while not EOF do
         begin
@@ -2337,54 +2382,22 @@ const CST_DUMMY_COORD = 2000000;
              p_addKeyWord(ls_ASurname, '-'); // adding a head's meta keywords
            end;
           if ch_SeparateMap.Checked
-          and ( li_j > 0) and ( li_recno = RecordCount div li_j ) Then
+          and ( li_j > 1) and ( li_recno = li_recordcount div li_j ) Then
            Begin
-            // creating PHP file
-            lstl_HTMLAFolder.Insert(0,fs_CreateULTabsheets(gt_SheetsMapGroup, '', CST_HTML_SUBMENU));
-            p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_MAP, me_MapHead.Lines.Text,
-               gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map_Long, gs_LinkGedcom,'',CST_EXTENSION_PHP);
-            // saving the page
-            ls_destination := gs_RootPathForExport + ed_MapFileName.Text + IntToStr(sp_groupMap.Value-li_j-1) + CST_EXTENSION_PHP;
-            try
-              lstl_HTMLAFolder.SaveToFile(ls_destination);
-            except
-              On E: Exception do
-              begin
-                ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Map + #13#10 + #13#10 + fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
-                Abort;
-              end;
-            end;
-            lstl_HTMLAFolder.Clear;
-
-           end;
+            p_createPHPFileMap ( sp_groupMap.Value-li_j );
+            p_initFileMap;
+           End;
           Next;
 
         end;
-      // Finishing
-      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_LINE, '' );
-      p_ReplaceLanguageString ( lstl_AllSurnames   , CST_MAP_LINE, '' );
-      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CASE, lstl_AllSurnames.Text );
-
+      p_createPHPFileMap ( sp_groupMap.Value - 1 );
     finally
      {$IFDEF FPC}DefaultFormatSettings.{$ENDIF}DecimalSeparator:=lch_decimalSep;
+      lstl_AllSurnames.Free;
+      lstl_ACase      .Free;
+      lstl_ALine      .Free;
     end;
     // creating PHP file
-    p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_MAP, me_MapHead.Lines.Text,
-       gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map_Long, gs_LinkGedcom,'',CST_EXTENSION_PHP);
-    // saving the page
-    if ch_SeparateMap.Checked
-      Then ls_destination := gs_RootPathForExport + ed_MapFileName.Text + IntToStr(sp_groupMap.Value-1) + CST_EXTENSION_PHP
-      Else ls_destination := gs_RootPathForExport + ed_MapFileName.Text + CST_EXTENSION_PHP;
-    try
-      lstl_HTMLAFolder.SaveToFile(ls_destination);
-    except
-      On E: Exception do
-      begin
-        ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Map + #13#10 + #13#10 + fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
-        Abort;
-      end;
-    end;
-    lstl_HTMLAFolder.Clear;
     p_IncProgressBar;
   end;
 
@@ -2399,21 +2412,33 @@ const CST_DUMMY_COORD = 2000000;
        Begin
          if ch_ancestors.Checked Then
            Begin
-             if fb_OpenTree(DmWeb.IBS_TreeMap,gi_CleFiche) Then
-               p_createAMap (DmWeb.IBS_TreeMap);
+             if  fb_OpenTree(DmWeb.IBS_TreeMap,gi_CleFiche)
+             and fb_OpenTree(DmWeb.IBQ_TreeMapCount,gi_CleFiche)
+              Then
+               p_createAMap (DmWeb.IBS_TreeMap,DmWeb.IBQ_TreeMapCount);
            end
           else
            Begin
-             if fb_OpenTree(DmWeb.IBS_TreeMapDes, gi_CleFiche) Then
-               p_createAMap (DmWeb.IBS_TreeMapDes);
+             if  fb_OpenTree(DmWeb.IBS_TreeMapDes, gi_CleFiche)
+             and fb_OpenTree(DmWeb.IBQ_TreeDescCount, gi_CleFiche) Then
+               p_createAMap (DmWeb.IBS_TreeMapDes,DmWeb.IBQ_TreeDescCount);
            end;
        end
       else
        Begin
          try
-           DmWeb.IBS_MapAll.Close;
-           DmWeb.IBS_MapAll.ParamByName(I_DOSSIER).AsInteger:=DMWeb.CleDossier;
-           DmWeb.IBS_MapAll.ExecQuery;
+           with DmWeb.IBS_MapAll do
+            Begin
+             Close;
+             ParamByName(I_DOSSIER).AsInteger:=DMWeb.CleDossier;
+             ExecQuery;
+            End;
+           with DmWeb.IBQ_CountMapAll do
+            Begin
+             Close;
+             ParamByName(I_DOSSIER).AsInteger:=DMWeb.CleDossier;
+             Open;
+            End;
          Except
            on E : Exception do
              Begin
@@ -2421,7 +2446,7 @@ const CST_DUMMY_COORD = 2000000;
               Exit;
              End;
          End;
-         p_createAMap (DmWeb.IBS_MapAll);
+         p_createAMap (DmWeb.IBS_MapAll,DmWeb.IBQ_CountMapAll);
 
        end;
     end;
@@ -2893,22 +2918,31 @@ var
    // adding a line and cell in the table
     astl_HTMLAFolder.Add(CST_HTML_TR_BEGIN + CST_HTML_TD_BEGIN );
     lstl_Tree := TStringList.Create;
-    if fb_OpenTree(DMWeb.IBQ_TreeAsc, ai_CleFiche, 3)
-     Then lb_AddAncestry := DMWeb.IBQ_TreeAsc.RecordCount > 1
-     Else lb_AddAncestry := False;
+    with DMWeb.IBQ_TreeAsc do
+      if fb_OpenTree(DMWeb.IBQ_TreeAsc, ai_CleFiche, 3)
+      and not IsEmpty
+       Then Begin Next; lb_AddAncestry := RecordCount > 1; First End // delphi bug
+       Else lb_AddAncestry := False;
      // descent
+    with DMWeb.IBQ_TreeDesc do
     if fb_OpenTree(DMWeb.IBQ_TreeDesc, ai_CleFiche, 3)
-    and ( DMWeb.IBQ_TreeDesc.RecordCount > 1 ) then
-    begin
-      li_generations :=
-        fi_CreateHTMLTree(DMWeb.IBQ_TreeDesc, lstl_Tree, ai_CleFiche,
-        False, False, True, IBQ_TQ_NUM_SOSA, False);
-      lstl_Tree.Insert(0, fs_Create_DIV('descent' + CST_FILE_Number + IntToStr(ai_NoInPage), CST_HTML_CLASS_EQUAL) + fs_GetTitleTree (( gs_AnceSTROWEB_Descent ), li_generations ));
-      astl_HTMLAFolder.AddStrings(lstl_Tree);
-      astl_HTMLAFolder.Add(CST_HTML_DIV_End);
-      if lb_AddAncestry then
-        astl_HTMLAFolder.Add(CST_HTML_BR);
-    end;
+    and not IsEmpty // delphi bug
+     Then
+      Begin
+        Next;
+        if ( DMWeb.IBQ_TreeDesc.RecordCount > 1 ) then
+        begin
+          li_generations :=
+            fi_CreateHTMLTree(DMWeb.IBQ_TreeDesc, lstl_Tree, ai_CleFiche,
+            False, False, False, True, IBQ_TQ_NUM_SOSA, False);
+          lstl_Tree.Insert(0, fs_Create_DIV('descent' + CST_FILE_Number + IntToStr(ai_NoInPage), CST_HTML_CLASS_EQUAL) + fs_GetTitleTree (( gs_AnceSTROWEB_Descent ), li_generations ));
+          astl_HTMLAFolder.AddStrings(lstl_Tree);
+          astl_HTMLAFolder.Add(CST_HTML_DIV_End);
+          if lb_AddAncestry then
+            astl_HTMLAFolder.Add(CST_HTML_BR);
+          First;  
+        end;
+      End;
     // ancestry
     if lb_AddAncestry then
     begin

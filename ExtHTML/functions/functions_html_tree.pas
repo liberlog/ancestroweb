@@ -17,7 +17,6 @@ uses
 
 var   gs_TreeLetterBegin : Char = 'a' ;
 
-
 const CST_TREE_LETTER_BEGIN  = 'a' ;
       CST_TREE_LETTER_BARS  = 'B' ;
       CST_TREE_LETTER_SPACE = ' ' ;
@@ -46,7 +45,7 @@ procedure p_setLevel ( const astl_HTMLTree : TStrings;
                        const as_NodeLink : String;
                        const ab_IsFirst : Boolean;
                        const ai_CurrentLevel, ai_PreviousLevel : Integer ;
-                       const ab_link : Boolean );
+                       const ab_div : Boolean );
 function fs_CreateLineImages ( const as_LettersImages : String; const ai_CurrentLevel : Integer ): String;
 function fs_NewLineImages ( const as_LettersImages : String; const ab_HasNext : Boolean; const ai_CurrentLevel : Integer ): String;
 procedure p_setEndHTMLFile(const astl_HTMLTree : TStrings);
@@ -54,7 +53,7 @@ procedure p_setEndLine ( var as_Line : String;
                          const as_Text, as_NodeLink : String;
                          const ab_HasNext, ab_IsEnd : Boolean;
                          const ai_CurrentLevel, ai_NextLevel : Integer ;
-                         const ab_Link : Boolean  = True );
+                         const ab_Link, ab_div : Boolean );
 function  fs_Create_Tree_Image      ( const as_Image       : String;
                                       const as_Text        : String  = ''):String ;
 
@@ -146,7 +145,7 @@ procedure p_setEndLine ( var as_Line : String;
                          const as_Text, as_NodeLink : String;
                          const ab_HasNext, ab_IsEnd : Boolean;
                          const ai_CurrentLevel, ai_NextLevel : Integer ;
-                         const ab_Link : Boolean = True );
+                         const ab_Link, ab_div : Boolean );
 Begin
   if not ab_IsEnd Then
     Begin
@@ -175,7 +174,7 @@ Begin
 
 
   AppendStr ( as_Line, fs_Create_Tree_Image ( 'r' + CST_TREE_GIF_EXT ) + fs_Create_Text ( as_Text ));
-  if ab_Link
+  if ab_div
   and ( ai_CurrentLevel <> ai_NextLevel )
    then AppendStr ( as_Line, CST_HTML_DIV_End )
    Else AppendStr ( as_Line, CST_HTML_BR );
@@ -190,7 +189,7 @@ procedure p_setLevel ( const astl_HTMLTree : TStrings;
                        const as_NodeLink : String;
                        const ab_IsFirst : Boolean;
                        const ai_CurrentLevel, ai_PreviousLevel : Integer ;
-                       const ab_link : Boolean );
+                       const ab_div : Boolean );
 Begin
   If ai_CurrentLevel = 0
     Then
@@ -198,13 +197,13 @@ Begin
         If ab_IsFirst
           Then
             astl_HTMLTree.Add ( fs_Create_Tree_Image ( 'a' + CST_TREE_GIF_EXT, '') +CST_HTML_BR );
-        if ab_link
+        if ab_div
          Then
           astl_HTMLTree.Add ( fs_Create_Tree_DIV ( as_NodeLink, CST_HTML_ID_EQUAL, True ));
       End
     Else
       If ( ai_PreviousLevel <> ai_CurrentLevel )
-      and ab_link
+      and ab_div
         Then
           astl_HTMLTree.Add ( fs_Create_Tree_DIV ( as_NodeLink, CST_HTML_ID_EQUAL, False ));
 end;

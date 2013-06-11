@@ -543,4 +543,80 @@ object DMWeb: TDMWeb
     Left = 304
     Top = 256
   end
+  object IBQ_TreeMapCount: TIBQuery
+    Database = ibd_BASE
+    Transaction = IBT_BASE
+    SQL.Strings = (
+      'SELECT COUNT (*) AS COUNTER'
+      'FROM PROC_TQ_ASCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,0) t'
+      'inner join individu i on i.cle_fiche=t.tq_cle_fiche'
+      'left join EVENEMENTS_IND e on i.cle_fiche=e.EV_IND_KLE_FICHE'
+      'GROUP BY NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS')
+    Left = 40
+    Top = 144
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'I_CLEF'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'I_NIVEAU'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'I_PARQUI'
+        ParamType = ptUnknown
+      end>
+  end
+  object IBQ_TreeDescCount: TIBQuery
+    Database = ibd_BASE
+    Transaction = IBT_BASE
+    SQL.Strings = (
+      'SELECT COUNT (*) AS COUNTER'
+      'FROM PROC_TQ_DESCENDANCE(:I_CLEF,:I_NIVEAU,:I_PARQUI,0) t'
+      'inner join individu i on i.cle_fiche=t.tq_cle_fiche'
+      'left join EVENEMENTS_IND e on i.cle_fiche=e.EV_IND_KLE_FICHE'
+      'GROUP BY NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS'
+      '')
+    Left = 280
+    Top = 192
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'I_CLEF'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'I_NIVEAU'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'I_PARQUI'
+        ParamType = ptUnknown
+      end>
+  end
+  object IBQ_CountMapAll: TIBQuery
+    Database = ibd_BASE
+    Transaction = IBT_BASE
+    SQL.Strings = (
+      'SELECT COUNT (*) AS COUNTER'
+      'FROM individu i'
+      'WHERE KLE_DOSSIER=:I_DOSSIER'
+      'GROUP BY NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS'
+      ''
+      '')
+    Left = 112
+    Top = 304
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'I_DOSSIER'
+        ParamType = ptUnknown
+      end>
+  end
 end
