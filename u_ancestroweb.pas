@@ -1307,8 +1307,7 @@ begin
     // first node
     IBQ_Tree.Locate(IBQ_CLE_FICHE, ai_Clefiche, []);
     li_LevelOrigin := abs(IBQ_Tree.FieldByName(IBQ_NIVEAU).AsInteger);
-    if not ab_asc
-    and ( li_levelOrigin > 0 ) then
+    if ( li_levelOrigin > 0 ) then
      dec ( li_levelOrigin );
     li_Clefiche:=ai_Clefiche;
     lb_foundARecord := False;

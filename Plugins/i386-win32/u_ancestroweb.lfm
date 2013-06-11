@@ -129,11 +129,11 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object cb_Themes: TComboBox
             Left = 67
-            Height = 23
+            Height = 30
             Top = 128
             Width = 199
             Color = clBtnFace
-            ItemHeight = 13
+            ItemHeight = 16
             TabOrder = 3
           end
           object GedcomEdit: TFileNameEdit
@@ -525,7 +525,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_Author: TFlatEdit
               Left = 60
-              Height = 19
+              Height = 22
               Top = 1
               Width = 224
               ColorFlat = clBtnFace
@@ -635,7 +635,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_IndexName: TFlatEdit
               Left = 402
-              Height = 19
+              Height = 22
               Top = 1
               Width = 224
               ColorFlat = clBtnFace
@@ -700,7 +700,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_FileBeginName: TFlatEdit
               Left = 404
-              Height = 19
+              Height = 22
               Top = 1
               Width = 224
               ColorFlat = clBtnFace
@@ -738,7 +738,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_ListsBeginName: TFlatEdit
               Left = 404
-              Height = 19
+              Height = 22
               Top = 25
               Width = 224
               ColorFlat = clBtnFace
@@ -780,11 +780,11 @@ object F_AncestroWeb: TF_AncestroWeb
             TabOrder = 0
             object cb_CityAccents: TComboBox
               Left = 412
-              Height = 23
+              Height = 30
               Top = 100
               Width = 212
               Color = clBtnFace
-              ItemHeight = 13
+              ItemHeight = 16
               ItemIndex = 0
               Items.Strings = (
                 'Sans accent avec une majuscule'
@@ -800,7 +800,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_BaseCities: TFlatEdit
               Left = 212
-              Height = 19
+              Height = 22
               Top = 103
               Width = 194
               ColorFlat = clBtnFace
@@ -843,7 +843,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_BaseNames: TFlatEdit
               Left = 212
-              Height = 19
+              Height = 22
               Top = 49
               Width = 194
               ColorFlat = clBtnFace
@@ -853,7 +853,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_BaseSurnames: TFlatEdit
               Left = 212
-              Height = 19
+              Height = 22
               Top = 77
               Width = 194
               ColorFlat = clBtnFace
@@ -944,7 +944,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_BaseJobs: TFlatEdit
               Left = 212
-              Height = 19
+              Height = 22
               Top = 23
               Width = 194
               ColorFlat = clBtnFace
@@ -989,29 +989,29 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_options: TTabSheet
       Caption = 'Options'
-      ClientHeight = 340
+      ClientHeight = 337
       ClientWidth = 632
       object PageControl1: TPageControl
         Left = 0
-        Height = 340
+        Height = 337
         Top = 0
         Width = 632
-        ActivePage = ts_Surnames
+        ActivePage = ts_tree
         Align = alClient
-        TabIndex = 1
+        TabIndex = 0
         TabOrder = 0
         object ts_tree: TTabSheet
           Caption = 'Arbre'
-          ClientHeight = 314
+          ClientHeight = 308
           ClientWidth = 624
           object Panel2: TPanel
             Left = 0
-            Height = 314
+            Height = 308
             Top = 0
             Width = 624
             Align = alClient
             BevelOuter = bvNone
-            ClientHeight = 314
+            ClientHeight = 308
             ClientWidth = 624
             TabOrder = 0
             object ch_genTree: TJvXPCheckbox
@@ -1036,23 +1036,23 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object Label8: TLabel
               Left = 4
-              Height = 14
+              Height = 17
               Top = 25
-              Width = 38
+              Width = 45
               Caption = 'Entête :'
               ParentColor = False
             end
             object Label11: TLabel
               Left = 300
-              Height = 14
+              Height = 17
               Top = 5
-              Width = 75
+              Width = 92
               Caption = 'Nom du fichier :'
               ParentColor = False
             end
             object ed_TreeName: TFlatEdit
               Left = 404
-              Height = 19
+              Height = 22
               Top = 1
               Width = 224
               ColorFlat = clBtnFace
@@ -1061,7 +1061,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Text = 'Tree'
             end
             object cb_treeWithoutJavascript: TJvXPCheckbox
-              Left = 280
+              Left = 296
               Height = 17
               Top = 126
               Width = 333
@@ -1073,15 +1073,15 @@ object F_AncestroWeb: TF_AncestroWeb
               Left = 4
               Height = 17
               Top = 126
-              Width = 133
+              Width = 148
               Caption = 'Séparer l''arbre selon '
               TabOrder = 4
               UseDockManager = False
             end
             object sp_gentree: TSpinEdit
-              Left = 136
-              Height = 21
-              Top = 126
+              Left = 152
+              Height = 24
+              Top = 122
               Width = 40
               MaxValue = 50
               MinValue = 1
@@ -1089,10 +1089,10 @@ object F_AncestroWeb: TF_AncestroWeb
               Value = 1
             end
             object Label52: TLabel
-              Left = 184
-              Height = 14
+              Left = 192
+              Height = 17
               Top = 129
-              Width = 65
+              Width = 83
               Caption = 'génération(s).'
               ParentColor = False
             end
@@ -1100,15 +1100,15 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ts_Surnames: TTabSheet
           Caption = 'Patronymes'
-          ClientHeight = 314
+          ClientHeight = 308
           ClientWidth = 624
           object Panel12: TPanel
             Left = 0
-            Height = 314
+            Height = 308
             Top = 0
             Width = 624
             Align = alClient
-            ClientHeight = 314
+            ClientHeight = 308
             ClientWidth = 624
             TabOrder = 0
             object ch_genSurnames: TJvXPCheckbox
@@ -1124,15 +1124,15 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object Label29: TLabel
               Left = 340
-              Height = 14
+              Height = 17
               Top = 6
-              Width = 120
+              Width = 147
               Caption = 'Nom du début du fichier :'
               ParentColor = False
             end
             object ed_SurnamesFileName: TFlatEdit
               Left = 492
-              Height = 19
+              Height = 22
               Top = 1
               Width = 136
               ColorFlat = clBtnFace
@@ -1151,9 +1151,9 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object Label30: TLabel
               Left = 4
-              Height = 14
+              Height = 17
               Top = 24
-              Width = 60
+              Width = 75
               Caption = 'Description :'
               ParentColor = False
             end
@@ -1170,15 +1170,15 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object Label50: TLabel
               Left = 340
-              Height = 14
+              Height = 17
               Top = 120
-              Width = 120
+              Width = 147
               Caption = 'Nom du début du fichier :'
               ParentColor = False
             end
             object ed_MapFileName: TFlatEdit
               Left = 492
-              Height = 19
+              Height = 22
               Top = 116
               Width = 134
               ColorFlat = clBtnFace
@@ -1197,17 +1197,17 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object Label51: TLabel
               Left = 32
-              Height = 14
+              Height = 17
               Top = 53
-              Width = 60
+              Width = 75
               Caption = 'Description :'
               ParentColor = False
             end
             object lb_DescribeMap: TLabel
               Left = 4
-              Height = 14
+              Height = 17
               Top = 144
-              Width = 60
+              Width = 75
               Caption = 'Description :'
               ParentColor = False
             end
@@ -1215,14 +1215,14 @@ object F_AncestroWeb: TF_AncestroWeb
               Left = 4
               Height = 17
               Top = 244
-              Width = 133
+              Width = 141
               Caption = 'Séparer la carte en '
               TabOrder = 6
               UseDockManager = False
             end
             object sp_groupMap: TSpinEdit
-              Left = 136
-              Height = 21
+              Left = 152
+              Height = 24
               Top = 244
               Width = 40
               MaxValue = 50
@@ -1231,10 +1231,10 @@ object F_AncestroWeb: TF_AncestroWeb
               Value = 2
             end
             object Label53: TLabel
-              Left = 184
-              Height = 14
+              Left = 200
+              Height = 17
               Top = 247
-              Width = 42
+              Width = 54
               Caption = 'groupes.'
               ParentColor = False
             end
@@ -1281,7 +1281,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_SearchName: TFlatEdit
               Left = 402
-              Height = 19
+              Height = 22
               Top = 23
               Width = 224
               ColorFlat = clBtnFace
@@ -1308,7 +1308,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_SearchSite: TFlatEdit
               Left = 380
-              Height = 19
+              Height = 22
               Top = 145
               Width = 248
               ColorFlat = clBtnFace
@@ -1325,7 +1325,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_SearchTool: TFlatEdit
               Left = 380
-              Height = 19
+              Height = 22
               Top = 173
               Width = 248
               ColorFlat = clBtnFace
@@ -1347,7 +1347,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_SearchQuery: TFlatEdit
               Left = 140
-              Height = 19
+              Height = 22
               Top = 173
               Width = 112
               ColorFlat = clBtnFace
@@ -1421,7 +1421,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_ContactName: TFlatEdit
               Left = 402
-              Height = 19
+              Height = 22
               Top = 23
               Width = 224
               ColorFlat = clBtnFace
@@ -1461,7 +1461,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_ContactMail: TFlatEdit
               Left = 100
-              Height = 19
+              Height = 22
               Top = 145
               Width = 208
               ColorFlat = clBtnFace
@@ -1478,7 +1478,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_ContactHost: TFlatEdit
               Left = 100
-              Height = 19
+              Height = 22
               Top = 172
               Width = 208
               ColorFlat = clBtnFace
@@ -1496,7 +1496,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_ContactUser: TFlatEdit
               Left = 100
-              Height = 19
+              Height = 22
               Top = 241
               Width = 208
               ColorFlat = clBtnFace
@@ -1513,7 +1513,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_ContactPassword: TFlatEdit
               Left = 418
-              Height = 19
+              Height = 22
               Top = 241
               Width = 208
               ColorFlat = clBtnFace
@@ -1550,7 +1550,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_ContactPassword2: TFlatEdit
               Left = 418
-              Height = 19
+              Height = 22
               Top = 269
               Width = 208
               ColorFlat = clBtnFace
@@ -1577,7 +1577,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_ContactAuthor: TFlatEdit
               Left = 418
-              Height = 19
+              Height = 22
               Top = 145
               Width = 208
               ColorFlat = clBtnFace
@@ -1670,7 +1670,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_JobsName: TFlatEdit
               Left = 404
-              Height = 19
+              Height = 22
               Top = 1
               Width = 224
               ColorFlat = clBtnFace
@@ -1732,7 +1732,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_AgesName: TFlatEdit
               Left = 404
-              Height = 19
+              Height = 22
               Top = 1
               Width = 224
               ColorFlat = clBtnFace
@@ -1753,10 +1753,10 @@ object F_AncestroWeb: TF_AncestroWeb
         Height = 340
         Top = 0
         Width = 632
-        HorzScrollBar.Page = 611
-        VertScrollBar.Page = 319
+        HorzScrollBar.Page = 607
+        VertScrollBar.Page = 315
         Align = alClient
-        ClientHeight = 336
+        ClientHeight = 315
         ClientWidth = 628
         TabOrder = 0
         object Label19: TLabel
