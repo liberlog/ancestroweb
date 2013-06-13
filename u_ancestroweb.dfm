@@ -509,10 +509,6 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_needed: TTabSheet
       Caption = 'G'#233'n'#233'ral'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pc_needed: TPageControl
         Left = 0
         Top = 0

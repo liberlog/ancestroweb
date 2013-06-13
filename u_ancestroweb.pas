@@ -64,7 +64,8 @@ const
                                              FileUnit : 'U_AncestroWeb' ;
                                              Owner : 'Matthieu Giroux' ;
                                              Comment : 'Composant de copie multi-platformes.' ;
-                                             BugsStory : '1.2.5.0 : Separate map.' +#13#10
+                                             BugsStory : '1.2.6.0 : No map in PHP.' +#13#10
+                                                       + '1.2.5.0 : Separate map.' +#13#10
                                                        + '1.2.4.0 : Separate tree.' +#13#10
                                                        + '1.2.3.6 : Sorting letter sheets.' +#13#10
                                                        + '1.2.3.5 : Obvious array not created bug.' +#13#10
@@ -88,7 +89,7 @@ const
                                                        + '1.0.0.0 : Integrating in Freelogy' +#13#10
                                                        + '0.9.9.0 : First published version' ;
                                              UnitType : CST_TYPE_UNITE_APPLI ;
-                                             Major : 1 ; Minor : 2 ; Release : 5 ; Build : 0 );
+                                             Major : 1 ; Minor : 2 ; Release : 6 ; Build : 0 );
 {$ENDIF}
 
 
@@ -794,6 +795,7 @@ begin
   or gb_Generate then
     Exit;
 
+  p_CreateKeyWords;
   gs_RootPathForExport := de_ExportWeb.{$IFDEF FPC}Directory{$ELSE}Text{$ENDIF} + DirectorySeparator;
   gb_Generate := True;
   IBQ_Individu.DisableControls;
@@ -1020,8 +1022,8 @@ begin
       Inc(Result, CST_PROGRESS_COUNTER_MAP);
       p_setCorrectFileName(ed_MapFileName, CST_FILE_MAP);
       if ch_SeparateMap.Checked
-       then p_AddTabSheet(gt_TabSheets, ( gs_ANCESTROWEB_Map ), ed_MapFileName.Text + '0' + CST_EXTENSION_PHP)
-       Else p_AddTabSheet(gt_TabSheets, ( gs_ANCESTROWEB_Map ), ed_MapFileName.Text +       CST_EXTENSION_PHP);
+       Then p_AddTabSheet(gt_TabSheets, ( gs_ANCESTROWEB_Map ), ed_MapFileName.Text + '0' + CST_EXTENSION_HTML)
+       Else p_AddTabSheet(gt_TabSheets, ( gs_ANCESTROWEB_Map ), ed_MapFileName.Text +       CST_EXTENSION_HTML);
     end;
   end;
   Inc(Result, CST_PROGRESS_COUNTER_FILES+CST_PROGRESS_COUNTER_LIST);
@@ -1075,6 +1077,7 @@ begin
         fb_EraseDir(ls_Destination, False);
         fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_CSS, True);
         fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_IMAGES, True);
+        fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_MAPS, True);
         fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_LISTS , True);
         fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_MAILER, True);
         fb_EraseDir(ls_Destination + CST_SUBDIR_HTML_SCRIPTS, True);
@@ -1541,8 +1544,8 @@ begin
   p_Setcomments (( gs_AnceSTROWEB_FamilyTree )); // advert for user
   lstl_HTMLTree := TStringList.Create;
   lstl_HTMLTree2 := nil;
+  p_ClearKeyWords;
   try
-    p_CreateKeyWords;
     pb_ProgressInd.Progress := 0; // initing not needed user value
     if fb_OpenTree(IBQ_Tree, gi_CleFiche)
      then
@@ -1728,7 +1731,7 @@ begin
       '"images">' + CST_HTML_TR_BEGIN + ls_Images + CST_HTML_TR_END + CST_HTML_TABLE_END  + CST_HTML_BR);
   p_AddCounting ( lstl_HTMLHome );
   lstl_HTMLHome.Add(CST_HTML_CENTER_END);
-  p_CreateKeyWords;
+  p_ClearKeyWords;
   pb_ProgressInd.Progress := 0; // initing not needed user value
   p_CreateAHtmlFile(lstl_HTMLHome, CST_FILE_Home, me_Description.Lines.Text,
     ( gs_AnceSTROWEB_Home ), ( gs_AnceSTROWEB_Home ), gs_ANCESTROWEB_Welcome, gs_LinkGedcom);
@@ -1950,13 +1953,13 @@ var
 
   // for map
   lt_Surnames : Array of Record
-                        Name : String;
-                        Minlatitude  ,
-                        Minlongitude ,
-                        Maxlatitude  ,
-                        Maxlongitude : Double;
-                        MaxCounter   : Int64;
-                      end;
+                          Name : String;
+                          Minlatitude  ,
+                          Minlongitude ,
+                          Maxlatitude  ,
+                          Maxlongitude : Double;
+                          MaxCounter   : Int64;
+                        end;
 
 const CST_DUMMY_COORD = 2000000;
       CST_NB_DOTS     = 5;
@@ -1996,6 +1999,8 @@ const CST_DUMMY_COORD = 2000000;
          if as_Pays = gs_ANCESTROWEB_MapCountry
           Then Exit
           Else p_getCityInfos ( as_codepostal, gs_ANCESTROWEB_MapCountry, as_City, ad_latitude, ad_longitude );
+        if FieldByName(IBQ_CP_LATITUDE ).IsNull or FieldByName(IBQ_CP_LONGITUDE ).IsNull Then
+         Exit;
         ad_latitude := FieldByName(IBQ_CP_LATITUDE ).AsFloat;
         ad_longitude:= FieldByName(IBQ_CP_LONGITUDE).AsFloat;
         as_City     := FieldByName(IBQ_CP_VILLE    ).AsString;
@@ -2032,23 +2037,21 @@ const CST_DUMMY_COORD = 2000000;
         ld_latitude  ,
         ld_longitude : Double;
         ld_counter   : Int64;
-        lb_found     : Boolean;
         ls_City ,
         ls_AName : String;
     Begin
       ld_longitude := 0;
       ld_latitude  := 0;
       ls_City      := '';
-      lb_found := False;
       with IBS_MapFiltered do
       while not Eof do
         Begin
           ls_AName := FieldByName(IBQ_NOM).AsString;
           ls_City:= Trim ( FieldByName(IBQ_EV_IND_VILLE).AsString );
           if  ( ls_AName <> '' ) 
-          and ( FieldAddress ( IBQ_EV_IND_LATITUDE ) <> nil ) Then
+          and ( FieldIndex [ IBQ_EV_IND_LATITUDE ] >= 0 ) Then
+           if not FieldByName(IBQ_EV_IND_LATITUDE ).IsNull and not FieldByName(IBQ_EV_IND_LONGITUDE ).IsNull Then
             Begin
-              lb_found := not FieldByName(IBQ_EV_IND_LATITUDE ).IsNull and not FieldByName(IBQ_EV_IND_LONGITUDE ).IsNull;
               ld_latitude :=FieldByName(IBQ_EV_IND_LATITUDE ).AsDouble;
               ld_longitude:=FieldByName(IBQ_EV_IND_LONGITUDE).AsDouble;
               ld_counter :=  FieldByName(IBQ_COUNTER ).AsInt64;
@@ -2084,8 +2087,8 @@ const CST_DUMMY_COORD = 2000000;
                       end;
                    end;
                 end;
-             End;
-           if not lb_found Then
+             End
+            Else
              Begin
                p_getCityInfos ( FieldByName(IBQ_EV_IND_CP).AsString, FieldByName(IBQ_EV_IND_PAYS).AsString, ls_City, ld_latitude, ld_longitude );
                ld_counter :=  FieldByName(IBQ_COUNTER ).AsInt64;
@@ -2144,33 +2147,26 @@ const CST_DUMMY_COORD = 2000000;
   End;
   // procedure p_setACase
   // creating a now switching case
-  procedure p_setACase ( const astl_ACase, astl_ACaseSource : TStringList; var ai_Name : Integer);
+  procedure p_setACase ( const astl_ACaseFile : TStringList; const ai_Name : Integer );
   Begin
-    ai_Name := fi_findName(ls_NewSurname);
-    if ai_Name <> -1 Then
-     Begin
-      p_ReplaceLanguageString ( astl_ACase, CST_MAP_LINE, '' ,[rfReplaceAll]);
-      p_ReplaceLanguageString ( astl_ACase, CST_MAP_CASE, astl_ACaseSource.Text );
+    if ( ai_Name > -1 ) Then
       with lt_Surnames [ ai_Name ] do
         Begin
-          p_ReplaceLanguageString ( astl_ACase, CST_MAP_NAME    , Name ,[rfReplaceAll]);
-          p_ReplaceLanguageString ( astl_ACase, CST_MAP_LATITUD , FloatToStr((Maxlatitude  + MinLatitude ) /2),[rfReplaceAll]);
-          p_ReplaceLanguageString ( astl_ACase, CST_MAP_LONGITUD, FloatToStr((MinLongitude + Maxlongitude) /2),[rfReplaceAll]);
-          p_ReplaceLanguageString ( astl_ACase, CST_MAP_MIN_LATITUD , FloatToStr(MinLatitude ),[rfReplaceAll]);
-          p_ReplaceLanguageString ( astl_ACase, CST_MAP_MIN_LONGITUD, FloatToStr(MinLongitude),[rfReplaceAll]);
-          p_ReplaceLanguageString ( astl_ACase, CST_MAP_MAX_LATITUD , FloatToStr(MaxLatitude ),[rfReplaceAll]);
-          p_ReplaceLanguageString ( astl_ACase, CST_MAP_MAX_LONGITUD, FloatToStr(MaxLongitude),[rfReplaceAll]);
-          p_ReplaceLanguageString ( astl_ACase, CST_MAP_MAX_ZOOM, gs_ANCESTROWEB_MapMaxZoom,[rfReplaceAll]);
-          p_ReplaceLanguageString ( astl_ACase, CST_MAP_ZOOM    , fs_MapZoom ( Minlatitude, Maxlatitude, Minlongitude , Maxlongitude ),[rfReplaceAll]);
+          p_ReplaceLanguageString ( astl_ACaseFile, CST_MAP_LATITUD , FloatToStr((Maxlatitude  + MinLatitude ) /2),[rfReplaceAll]);
+          p_ReplaceLanguageString ( astl_ACaseFile, CST_MAP_LONGITUD, FloatToStr((MinLongitude + Maxlongitude) /2),[rfReplaceAll]);
+          p_ReplaceLanguageString ( astl_ACaseFile, CST_MAP_MIN_LATITUD , FloatToStr(MinLatitude ),[rfReplaceAll]);
+          p_ReplaceLanguageString ( astl_ACaseFile, CST_MAP_MIN_LONGITUD, FloatToStr(MinLongitude),[rfReplaceAll]);
+          p_ReplaceLanguageString ( astl_ACaseFile, CST_MAP_MAX_LATITUD , FloatToStr(MaxLatitude ),[rfReplaceAll]);
+          p_ReplaceLanguageString ( astl_ACaseFile, CST_MAP_MAX_LONGITUD, FloatToStr(MaxLongitude),[rfReplaceAll]);
+          p_ReplaceLanguageString ( astl_ACaseFile, CST_MAP_ZOOM    , fs_MapZoom ( Minlatitude, Maxlatitude, Minlongitude , Maxlongitude ),[rfReplaceAll]);
         end;
-     end;
     ls_ASurname := ls_NewSurname;
 
   end;
 
   // procedure p_setAline
   // creating a new case line
-  procedure p_setAline ( const astl_Aline, astl_Line : TStringList; const IBS_MapFiltered :TIBSQL; const ai_MaxCounter : Int64 ; const ab_IsNamedMap : Boolean );
+  procedure p_setAline ( const astl_FileLines, astl_Line : TStringList; const IBS_MapFiltered :TIBSQL; const ai_MaxCounter : Int64 ; const ab_IsNamedMap : Boolean ; const ai_counter : Longint );
   var li_i, li_dot : Integer ;
       ld_latitude, ld_longitude : Double;
       li_counter : Int64;
@@ -2179,7 +2175,8 @@ const CST_DUMMY_COORD = 2000000;
     with IBS_MapFiltered do
      Begin
        ls_CitySurname:=Trim(FieldByName(IBQ_EV_IND_VILLE).AsString);
-       if fieldAddress ( IBQ_EV_IND_LATITUDE ) <> nil then
+       if ( FieldIndex [ IBQ_EV_IND_LATITUDE ] > -1 )
+       and ( not FieldByName(IBQ_EV_IND_LATITUDE ).IsNull ) then
         Begin
          ld_latitude :=FieldByName(IBQ_EV_IND_LATITUDE ).AsDouble;
          ld_longitude:=FieldByName(IBQ_EV_IND_LONGITUDE).AsDouble;
@@ -2201,31 +2198,34 @@ const CST_DUMMY_COORD = 2000000;
        li_counter:= FieldByName(IBQ_COUNTER).AsInt64;
      end;
     if ( ld_latitude  = CST_DUMMY_COORD) Then
-     Exit;
-    ls_CitySurname:=StringReplace(ls_CitySurname, '''', '\\''',[rfReplaceAll]);
-    p_ReplaceLanguageString ( astl_Aline, CST_MAP_LINE, astl_Line.Text );
+     Exit; // si mauvaises coordonnées on n'ajoute pas de ligne
+    astl_FileLines.Append ( astl_Line.Text );
+    astl_FileLines.BeginUpdate;
+    ls_CitySurname:=StringReplace(ls_CitySurname, '''', '\''',[rfReplaceAll]);
+    p_ReplaceLanguageString ( astl_FileLines, CST_MAP_N, IntToStr(ai_counter),[rfReplaceAll] );
     ls_CitySurname := ls_CitySurname + ' - ' ;
     ls_link := IntToStr(li_counter) + ' ' ;
     if li_counter > 1
      Then AppendStr ( ls_link, gs_ANCESTROWEB_FamilyPersons )
      Else AppendStr ( ls_link, gs_ANCESTROWEB_FamilyPerson  );
-    p_ReplaceLanguageString ( astl_Aline, CST_MAP_NAME_CITY ,
+    p_ReplaceLanguageString ( astl_FileLines, CST_MAP_NAME_CITY ,
                               StringReplace ( ls_CitySurname + StringReplace ( fs_GetNameLink ( IBS_MapFiltered.FieldByName(IBQ_NOM).AsString
-                              , ls_link, CST_SUBDIR_HTML_FILES + CST_HTML_DIR_SEPARATOR), '''', '\\''',[rfReplaceAll])
+                              , ls_link, CST_SUBDIR_HTML_FILES + CST_HTML_DIR_SEPARATOR), '''', '\''',[rfReplaceAll])
                               , '"', '\"',[rfReplaceAll]));
-    p_ReplaceLanguageString ( astl_Aline, CST_MAP_LATITUD   , FloatToStr(ld_latitude ),[rfReplaceAll]);
-    p_ReplaceLanguageString ( astl_Aline, CST_MAP_LONGITUD  , FloatToStr(ld_longitude),[rfReplaceAll]);
+    p_ReplaceLanguageString ( astl_FileLines, CST_MAP_LATITUD   , FloatToStr(ld_latitude ),[rfReplaceAll]);
+    p_ReplaceLanguageString ( astl_FileLines, CST_MAP_LONGITUD  , FloatToStr(ld_longitude),[rfReplaceAll]);
     li_dot := CST_NB_DOTS;
     for li_i := 1 to CST_NB_DOTS do
       if li_counter <= ai_MaxCounter / li_i Then
        li_dot := CST_NB_DOTS - li_i + 1;
     case li_dot of
-     1 :  p_ReplaceLanguageString ( astl_Aline, CST_MAP_ICON, CST_MAP_LITTLE_DOT  ,[rfReplaceAll]);
-     2 :  p_ReplaceLanguageString ( astl_Aline, CST_MAP_ICON, CST_MAP_LI_MID_DOT  ,[rfReplaceAll]);
-     3 :  p_ReplaceLanguageString ( astl_Aline, CST_MAP_ICON, CST_MAP_MIDDLE_DOT  ,[rfReplaceAll]);
-     4 :  p_ReplaceLanguageString ( astl_Aline, CST_MAP_ICON, CST_MAP_BIG_MID_DOT ,[rfReplaceAll]);
-     else p_ReplaceLanguageString ( astl_Aline, CST_MAP_ICON, CST_MAP_BIG_DOT     ,[rfReplaceAll]);
+     1 :  p_ReplaceLanguageString ( astl_FileLines, CST_MAP_ICON, CST_MAP_LITTLE_DOT  ,[rfReplaceAll]);
+     2 :  p_ReplaceLanguageString ( astl_FileLines, CST_MAP_ICON, CST_MAP_LI_MID_DOT  ,[rfReplaceAll]);
+     3 :  p_ReplaceLanguageString ( astl_FileLines, CST_MAP_ICON, CST_MAP_MIDDLE_DOT  ,[rfReplaceAll]);
+     4 :  p_ReplaceLanguageString ( astl_FileLines, CST_MAP_ICON, CST_MAP_BIG_MID_DOT ,[rfReplaceAll]);
+     else p_ReplaceLanguageString ( astl_FileLines, CST_MAP_ICON, CST_MAP_BIG_DOT     ,[rfReplaceAll]);
     end;
+    astl_FileLines.EndUpdate;
   end;
 
   // procedure p_createAMap
@@ -2235,11 +2235,13 @@ const CST_DUMMY_COORD = 2000000;
     li_MaxCounter : Int64;
     lstl_AllSurnames ,
     lstl_ACase    ,
+    lstl_AFile    ,
     lstl_ALine    : TStringList;
     li_Name       ,
-    li_i, li_j          : Integer ;
+    li_i, li_j, li_MapFileJS          : Integer ;
     li_recno, li_recordcount : Int64;
     lch_decimalSep : Char;
+    // scroll on a dataset
     procedure p_scroll ( var ai_recno : Int64 ; const ai_recordtogo : Int64 );
     Begin
       while ai_recno < ai_recordtogo do
@@ -2249,6 +2251,7 @@ const CST_DUMMY_COORD = 2000000;
        end;
     end;
 
+    // create grouped surnames sheets
     procedure p_CreateSheets;
     var
       ls_from : string;
@@ -2267,21 +2270,56 @@ const CST_DUMMY_COORD = 2000000;
              Else p_scroll( li_recno, li_recordcount div (li_counter + 1 ) - 1 );
             with FieldByName(IBQ_NOM) do
                p_AddTabSheet(gt_SheetsMapGroup, fs_RemplaceMsg ( gs_ANCESTROWEB_From_to_persons, [ls_from,AsString]),
-                             ed_MapFileName.Text + IntToStr(sp_groupMap.Value - 1-li_counter) + CST_EXTENSION_PHP, AsString );
+                             ed_MapFileName.Text + IntToStr(sp_groupMap.Value - 1-li_counter) + CST_EXTENSION_HTML, AsString );
           End;
     end;
-    procedure p_createPHPFileMap(const li_page : Integer);
+
+    //creating a map js file
+    procedure p_createFileCaseMap ( const astl_AFile : TStringList; const ai_counter : Integer);
     Begin
-      // Finishing
-      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_LINE, '' );
-      p_ReplaceLanguageString ( lstl_AllSurnames   , CST_MAP_LINE, '' );
-      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CASE, lstl_AllSurnames.Text );
-      // creating PHP file
-      lstl_HTMLAFolder.Insert(0,fs_CreateULTabsheets(gt_SheetsMapGroup, '', CST_HTML_SUBMENU));
-      p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_MAP, me_MapHead.Lines.Text,
-         gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map_Long, gs_LinkGedcom,'',CST_EXTENSION_PHP);
+
       // saving the page
-      ls_destination := gs_RootPathForExport + ed_MapFileName.Text + IntToStr(li_page) + CST_EXTENSION_PHP;
+      ls_destination := gs_RootPathForExport + CST_SUBDIR_HTML_MAPS + DirectorySeparator + ed_MapFileName.Text + CST_FILE_FILE + IntToStr(ai_counter) + CST_EXTENSION_JS;
+      try
+        astl_AFile.SaveToFile(ls_destination);
+      except
+        On E: Exception do
+        begin
+          ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Map + #13#10 + #13#10 + fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
+          Abort;
+        end;
+      end;
+     End;
+
+    //creating and initing a map js file
+    procedure p_createACase ( const astl_Case : TStringList; const as_Name : String );
+    Begin
+      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CASE, lstl_ACase.Text );
+      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_FILE, StringReplace( CST_SUBDIR_HTML_MAPS +'/'+ ed_MapFileName.Text + CST_FILE_FILE + IntToStr(li_MapFileJS)+CST_EXTENSION_JS, '''', '\''',[rfReplaceAll]));
+      p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_NAME    , StringReplace ( StringReplace ( as_Name, '"', '\"', [rfReplaceAll] ), '''', '\''', [rfReplaceAll] ) ,[rfReplaceAll]);
+      if as_Name > '' Then
+        p_setACase(astl_Case, li_Name); //  load case file and set html var files
+      p_createFileCaseMap ( astl_Case, li_MapFileJS );
+      p_LoadStringList(astl_Case      , gs_Root, CST_MAP_FILE + CST_EXTENSION_JS);
+      inc ( li_MapFileJS );
+      if as_Name = ''
+       Then p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CASE, '' );
+    end;
+
+    // creating a map htm file
+    procedure p_createFileMap(const li_page : Integer);
+    Begin
+      // create map file
+      p_createACase ( lstl_AllSurnames, '' );
+      // creating PHP file
+      if ch_SeparateMap.Checked Then
+        lstl_HTMLAFolder.Insert(0,fs_CreateULTabsheets(gt_SheetsMapGroup, '', CST_HTML_SUBMENU));
+      p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_MAP, me_MapHead.Lines.Text,
+         gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map_Long, gs_LinkGedcom,'',CST_EXTENSION_HTML);
+      // saving the page
+      if li_page > -1
+       Then ls_destination := gs_RootPathForExport + ed_MapFileName.Text + IntToStr(li_page) + CST_EXTENSION_HTML
+       Else ls_destination := gs_RootPathForExport + ed_MapFileName.Text + CST_EXTENSION_HTML;
       try
         lstl_HTMLAFolder.SaveToFile(ls_destination);
       except
@@ -2293,19 +2331,20 @@ const CST_DUMMY_COORD = 2000000;
       end;
       lstl_HTMLAFolder.Clear;
      End;
-     procedure p_initFileMap;
+    // initing a map
+    procedure p_initFileMap;
      Begin
       ls_NewSurname := '';
-      ls_ASurname := 'Z1È~23><';  // for a good test
-      p_LoadStringList(lstl_HTMLAFolder, gs_Root, CST_FILE_MAP     + CST_EXTENSION_PHP);
-      p_LoadStringList(lstl_AllSurnames   , gs_Root, CST_FILE_MapCase + CST_EXTENSION_PHP);
-      p_LoadStringList(lstl_ACase      , gs_Root, CST_FILE_MapCase + CST_EXTENSION_PHP);
-      p_LoadStringList(lstl_ALine      , gs_Root, CST_FILE_MapLine + CST_EXTENSION_PHP);
+      li_i := 0;
+      ls_ASurname := IBS_MapFiltered.FieldByName(IBQ_NOM).AsString;
+      p_LoadStringList(lstl_HTMLAFolder, gs_Root, CST_FILE_MAP     + CST_EXTENSION_HTML);
+      p_LoadStringList(lstl_AllSurnames, gs_Root, CST_MAP_FILE     + CST_EXTENSION_JS);
+      p_LoadStringList(lstl_ACase      , gs_Root, CST_FILE_MapCase + CST_EXTENSION_JS);
+      p_LoadStringList(lstl_AFile      , gs_Root, CST_MAP_FILE     + CST_EXTENSION_JS);
+      p_LoadStringList(lstl_ALine      , gs_Root, CST_FILE_MapLine + CST_EXTENSION_JS);
       p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_HTML_CAPTION, gs_ANCESTROWEB_Map_Long,[rfReplaceAll] );
       p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CAPTIONS, gs_ANCESTROWEB_MapCaptions ,[rfReplaceAll]);
       p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_TO      , gs_ANCESTROWEB_Map_To      ,[rfReplaceAll]);
-      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_CASE    , '' ,[rfReplaceAll]);
-      p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_NAME    , '' ,[rfReplaceAll]);
       p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_LATITUD , FloatToStr(ld_MinLatitude ),[rfReplaceAll]);
       p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_LONGITUD, FloatToStr(ld_MinLongitude),[rfReplaceAll]);
       p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_MAX_ZOOM, gs_ANCESTROWEB_MapMaxZoom,[rfReplaceAll]);
@@ -2315,6 +2354,7 @@ const CST_DUMMY_COORD = 2000000;
     if not IBQ_CountMap.EOF then
       IBQ_CountMap.Last;
     li_recordcount := IBQ_CountMap.RecordCount;
+    fb_CreateDirectoryStructure(gs_RootPathForExport + CST_SUBDIR_HTML_MAPS);
     Finalize ( lt_Surnames );
     p_createMinMaxMap ( IBS_MapFiltered );
     with IBS_MapFiltered do
@@ -2342,60 +2382,63 @@ const CST_DUMMY_COORD = 2000000;
     ld_Maxlongitude  := -CST_DUMMY_COORD;
     li_MaxCounter  := 0;
     p_getGlobalMinMax ( ld_Minlatitude, ld_Maxlatitude, ld_Minlongitude , ld_Maxlongitude, li_MaxCounter );
-    p_CreateKeyWords;
-    ls_ASurname := '';
+    p_ClearKeyWords;
     li_Name := -1;
     pb_ProgressInd.Progress:=0;  // initing user value
     pb_ProgressInd.MaxValue:=li_recordcount;
     lstl_AllSurnames := TStringList.Create;
     lstl_ACase    := TStringList.Create;
+    lstl_AFile    := TStringList.Create;
     lstl_ALine    := TStringList.Create;
     // loading files
     // Full Map
-    try
+    with IBS_MapFiltered do
+     try
       lch_decimalSep:={$IFDEF FPC}DefaultFormatSettings.{$ENDIF}DecimalSeparator;
       {$IFDEF FPC}DefaultFormatSettings.{$ENDIF}DecimalSeparator:='.';
       p_initFileMap;
-      li_i := 0;
       li_recno := 0;
       li_j := sp_groupMap.Value;
-      with IBS_MapFiltered do
+      li_MapFileJS := 0;
       while not EOF do
         begin
           inc ( li_recno );
           p_IncProgressInd; // growing the second counter
           ls_NewSurname := FieldByName(IBQ_NOM).AsString;
-          if  ( ls_NewSurname <> ls_ASurname )
-          and ( ls_NewSurname <> '' )
-           Then // Setting new case for a new named map
-             p_setACase(lstl_HTMLAFolder, lstl_ACase, li_Name);
-          if  ( li_Name <> -1 )
-          and ( ls_NewSurname <> '' ) Then
+          li_Name := fi_findName(ls_NewSurname);
+          if  ( li_Name > -1 )
+          and ( ls_NewSurname > '' ) Then
            Begin  // adding lines in the full and named map
              inc (li_i);
-             p_setAline(lstl_HTMLAFolder, lstl_ALine,IBS_MapFiltered,lt_Surnames [ li_Name ].MaxCounter,True);
-             p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_N, IntToStr(li_i),[rfReplaceAll] );
-             inc (li_i);
-             p_setAline(lstl_AllSurnames, lstl_ALine,IBS_MapFiltered,li_MaxCounter,False);
-             p_ReplaceLanguageString ( lstl_AllSurnames, CST_MAP_N, IntToStr(li_i),[rfReplaceAll] );
+             p_setAline(lstl_AllSurnames, lstl_ALine,IBS_MapFiltered,li_MaxCounter,False, li_i);
+             p_setAline(lstl_AFile, lstl_ALine,IBS_MapFiltered,lt_Surnames [ li_Name ].MaxCounter,True, li_i);
              p_addKeyWord(ls_ASurname, '-'); // adding a head's meta keywords
            end;
+          if  ( ls_NewSurname <> ls_ASurname )
+           Then // Setting new case for a new named map
+            Begin
+             p_createACase (lstl_AFile, ls_NewSurname);
+            end;
           if ch_SeparateMap.Checked
           and ( li_j > 1) and ( li_recno = li_recordcount div li_j ) Then
            Begin
-            p_createPHPFileMap ( sp_groupMap.Value-li_j );
+            p_createFileMap ( sp_groupMap.Value-li_j );
+            p_ClearKeyWords;
             p_initFileMap;
            End;
           Next;
 
         end;
-      p_createPHPFileMap ( sp_groupMap.Value - 1 );
-    finally
+      if ch_SeparateMap.Checked
+       Then p_createFileMap ( sp_groupMap.Value-1 )
+       Else p_createFileMap (-1);
+     finally
      {$IFDEF FPC}DefaultFormatSettings.{$ENDIF}DecimalSeparator:=lch_decimalSep;
-      lstl_AllSurnames.Free;
-      lstl_ACase      .Free;
-      lstl_ALine      .Free;
-    end;
+      lstl_AllSurnames.Destroy;
+      lstl_ACase      .Destroy;
+      lstl_AFile      .Destroy;
+      lstl_ALine      .Destroy;
+     end;
     // creating PHP file
     p_IncProgressBar;
   end;
@@ -2454,7 +2497,7 @@ const CST_DUMMY_COORD = 2000000;
 begin
   lstl_HTMLAFolder := TStringList.Create;
   p_createMap;
-  p_CreateKeyWords;
+  p_ClearKeyWords;
   ls_ASurname := '';
   pb_ProgressInd.Progress:=0;  // initing user value
   pb_ProgressInd.MaxValue:=IBS_FilesFiltered.RecordCount;
@@ -2478,20 +2521,20 @@ begin
       lstl_HTMLAFolder.Add ( fs_GetNameLink ( ls_NewSurname, ls_NewSurname, CST_SUBDIR_HTML_FILES + CST_HTML_DIR_SEPARATOR ) +' ( '+ IBS_FilesFiltered.FieldByName( IBQ_COUNTER ).AsString );
       if  ch_genMap.Checked // Creating optionnal map button
       and ( fi_findName(ls_NewSurname)<>-1)
-       Then if ch_SeparateMap.Checked Then
-        Begin
-         for li_i := 0 to high ( gt_SheetsMapGroup ) do
-          if ls_NewSurname <= gt_SheetsMapGroup [ li_i ].s_info Then
-           Begin
-            lstl_HTMLAFolder.Add ( ' - ' + fs_Create_Link(ed_MapFileName.Text+IntToStr(li_i)+ CST_EXTENSION_PHP + '?name=' +ls_NewSurname,
-                                   fs_Create_Image(CST_SUBDIR_HTML_IMAGES+CST_HTML_DIR_SEPARATOR+CST_FILE_MAP
-                                   +CST_HTML_DIR_SEPARATOR+CST_FILE_MAP+CST_FILE_Button+CST_EXTENSION_GIF,gs_ANCESTROWEB_Map)));
-           End;
-         End
-        Else
-          lstl_HTMLAFolder.Add ( ' - ' + fs_Create_Link(ed_MapFileName.Text+CST_EXTENSION_PHP + '?name=' +ls_NewSurname,
-                                 fs_Create_Image(CST_SUBDIR_HTML_IMAGES+CST_HTML_DIR_SEPARATOR+CST_FILE_MAP
-                                 +CST_HTML_DIR_SEPARATOR+CST_FILE_MAP+CST_FILE_Button+CST_EXTENSION_GIF,gs_ANCESTROWEB_Map)));
+      Then if ch_SeparateMap.Checked Then
+       Begin
+        for li_i := 0 to high ( gt_SheetsMapGroup ) do
+         if ls_NewSurname <= gt_SheetsMapGroup [ li_i ].s_info Then
+          Begin
+           lstl_HTMLAFolder.Add ( ' - ' + fs_Create_Link(ed_MapFileName.Text+IntToStr(li_i)+ CST_EXTENSION_PHP + '?name=' +ls_NewSurname,
+                                  fs_Create_Image(CST_SUBDIR_HTML_IMAGES+CST_HTML_DIR_SEPARATOR+CST_FILE_MAP
+                                  +CST_HTML_DIR_SEPARATOR+CST_FILE_MAP+CST_FILE_Button+CST_EXTENSION_GIF,gs_ANCESTROWEB_Map)));
+          End;
+        End
+       Else
+         lstl_HTMLAFolder.Add ( ' - ' + fs_Create_Link(ed_MapFileName.Text+CST_EXTENSION_PHP + '?name=' +ls_NewSurname,
+                                fs_Create_Image(CST_SUBDIR_HTML_IMAGES+CST_HTML_DIR_SEPARATOR+CST_FILE_MAP
+                                +CST_HTML_DIR_SEPARATOR+CST_FILE_MAP+CST_FILE_Button+CST_EXTENSION_GIF,gs_ANCESTROWEB_Map)));
       lstl_HTMLAFolder.Add ( ')' );
      end;
     ls_ASurname := IBS_FilesFiltered.FieldByName(IBQ_NOM).AsString;
@@ -2544,7 +2587,7 @@ var
     li_i, li_CleFiche: longint;
     lb_next : Boolean ;
   begin
-    p_CreateKeyWords;
+    p_ClearKeyWords;
     lstl_HTMLAList := TStringList.Create;
     ls_ASurnameBegin := IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString;
     if (ls_ASurnameBegin <> '') then
@@ -2966,7 +3009,7 @@ var
     li_i, li_CleFiche: longint;
     lb_next : Boolean ;
   begin
-    p_CreateKeyWords;
+    p_ClearKeyWords;
     lstl_HTMLAFolder := TStringList.Create;
     ls_ASurnameBegin := IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString;
     ls_ASurnameSurname := fs_RemplaceEspace ( fs_getNameAndSurName(IBQ_FilesFiltered), '_' );
@@ -3080,7 +3123,7 @@ begin
     CST_HTML_ID_EQUAL + '"head">' + fs_Format_Lines(
     me_FilesHead.Text) + CST_HTML_Paragraph_END;
   lstl_HTMLPersons.Add(CST_HTML_CENTER_END);
-  p_CreateKeyWords;
+  p_ClearKeyWords;
   pb_ProgressInd.Progress := 0; // initing not needed user value
   p_IncProgressBar; // growing the counter
   p_CreateAHtmlFile(lstl_HTMLPersons, CST_FILE_FILES, me_FilesHead.Lines.Text,
@@ -3139,7 +3182,7 @@ begin
   p_ReplaceLanguageString(lstl_HTMLContactBeforeHTML,CST_CONTACT_PORT,se_ContactPort.Text);
 
   // Head key words
-  p_CreateKeyWords;
+  p_ClearKeyWords;
   pb_ProgressInd.Progress := 0; // initing not needed user value
 
   // finishing creating the page
@@ -3385,7 +3428,7 @@ begin
   lstl_HTMLAges  := TStringList.Create;
   lstl_HTMLAges2 := TStringList.Create;
   lstl_HTMLLines := TStringList.Create;
-  p_CreateKeyWords;
+  p_ClearKeyWords;
   // loading a simple not inited line
   p_LoadStringList ( lstl_HTMLLines, gs_Root, CST_FILE_AGES_LINE + CST_EXTENSION_HTML );
   p_LoadStringList ( lstl_HTMLAges , gs_Root, CST_FILE_AGES + '3' + CST_EXTENSION_HTML );
@@ -3521,39 +3564,43 @@ begin
   lstl_HTMLJobs  := TStringList.Create;
   lstl_HTMLJobs2 := TStringList.Create;
   lstl_HTMLLines := TStringList.Create;
-
-  p_CreateKeyWords;
-  // loading a simple not inited line
-  p_LoadStringList ( lstl_HTMLLines, gs_Root, CST_FILE_JOBS_LINE + CST_EXTENSION_HTML );
-  p_LoadStringList ( lstl_HTMLJobs , gs_Root, CST_FILE_JOBS + '3' + CST_EXTENSION_HTML );
-
-  // Customizing the page
-  p_ReplaceLanguageString(lstl_HTMLJobs,CST_HTML_HEAD_DESCRIBE, StringReplace(me_HeadJobs.Text,CST_ENDOFLINE,'<BR />',[]));
-
-  p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_A_JOB  , gs_ANCESTROWEB_A_Job        ,[]);
-  p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_COUNT  , gs_ANCESTROWEB_Jobs_Count   ,[]);
-  p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_CITY   , gs_ANCESTROWEB_Jobs_Cities  ,[]);
-
-  p_CreateLines;
-
-  // creating and initing the ages page
-  p_CreateAHtmlFile(lstl_HTMLJobs2, CST_FILE_JOBS, me_HeadJobs.Lines.Text,
-        gs_ANCESTROWEB_Jobs, gs_ANCESTROWEB_Jobs, gs_ANCESTROWEB_Jobs_Long, gs_LinkGedcom, '',CST_EXTENSION_HTML,'',lstl_HTMLJobs);
-
-  // saving the page
-  ls_destination := gs_RootPathForExport + ed_JobsName.Text  + CST_EXTENSION_HTML;
   try
-    lstl_HTMLJobs2.SaveToFile(ls_destination);
-  except
-    On E: Exception do
-    begin
-      ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Jobs + #13#10 + #13#10 + fs_getCorrectString ( gs_ANCESTROWEB_cantSaveFile ) + ls_destination + CST_ENDOFLINE + E.Message);
-      Abort;
+    p_ClearKeyWords;
+    // loading a simple not inited line
+    p_LoadStringList ( lstl_HTMLLines, gs_Root, CST_FILE_JOBS_LINE + CST_EXTENSION_HTML );
+    p_LoadStringList ( lstl_HTMLJobs , gs_Root, CST_FILE_JOBS + '3' + CST_EXTENSION_HTML );
+
+    // Customizing the page
+    p_ReplaceLanguageString(lstl_HTMLJobs,CST_HTML_HEAD_DESCRIBE, StringReplace(me_HeadJobs.Text,CST_ENDOFLINE,'<BR />',[]));
+
+    p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_A_JOB  , gs_ANCESTROWEB_A_Job        ,[]);
+    p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_COUNT  , gs_ANCESTROWEB_Jobs_Count   ,[]);
+    p_ReplaceLanguageString ( lstl_HTMLJobs, CST_JOBS_CITY   , gs_ANCESTROWEB_Jobs_Cities  ,[]);
+
+    p_CreateLines;
+
+    // creating and initing the ages page
+    p_CreateAHtmlFile(lstl_HTMLJobs2, CST_FILE_JOBS, me_HeadJobs.Lines.Text,
+          gs_ANCESTROWEB_Jobs, gs_ANCESTROWEB_Jobs, gs_ANCESTROWEB_Jobs_Long, gs_LinkGedcom, '',CST_EXTENSION_HTML,'',lstl_HTMLJobs);
+
+    // saving the page
+    ls_destination := gs_RootPathForExport + ed_JobsName.Text  + CST_EXTENSION_HTML;
+    try
+      lstl_HTMLJobs2.SaveToFile(ls_destination);
+    except
+      On E: Exception do
+      begin
+        ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Jobs + #13#10 + #13#10 + fs_getCorrectString ( gs_ANCESTROWEB_cantSaveFile ) + ls_destination + CST_ENDOFLINE + E.Message);
+        Abort;
+      end;
     end;
+    // freeing
+
+  finally
+    lstl_HTMLJobs.Destroy;
+    lstl_HTMLJobs2.Destroy;
+    lstl_HTMLLines.Destroy;
   end;
-  // freeing
-  lstl_HTMLJobs.Free;
-  lstl_HTMLLines.Free;
   p_IncProgressBar;// jobs growing
 end;
 

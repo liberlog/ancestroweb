@@ -996,9 +996,9 @@ object F_AncestroWeb: TF_AncestroWeb
         Height = 337
         Top = 0
         Width = 632
-        ActivePage = ts_tree
+        ActivePage = ts_Surnames
         Align = alClient
-        TabIndex = 0
+        TabIndex = 1
         TabOrder = 0
         object ts_tree: TTabSheet
           Caption = 'Arbre'
@@ -1133,7 +1133,7 @@ object F_AncestroWeb: TF_AncestroWeb
             object ed_SurnamesFileName: TFlatEdit
               Left = 492
               Height = 22
-              Top = 1
+              Top = 6
               Width = 136
               ColorFlat = clBtnFace
               ParentColor = True
@@ -1142,7 +1142,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object me_SurnamesHead: TMemo
               Left = 4
-              Height = 74
+              Height = 61
               Top = 41
               Width = 622
               ParentColor = True
@@ -1160,9 +1160,9 @@ object F_AncestroWeb: TF_AncestroWeb
             object ch_genMap: TJvXPCheckbox
               Left = 4
               Height = 17
-              Top = 120
+              Top = 110
               Width = 328
-              Caption = 'Générer la carte des patronymes (nécessite PHP)'
+              Caption = 'Générer la carte des patronymes'
               TabOrder = 3
               Checked = True
               State = cbChecked
@@ -1171,7 +1171,7 @@ object F_AncestroWeb: TF_AncestroWeb
             object Label50: TLabel
               Left = 340
               Height = 17
-              Top = 120
+              Top = 110
               Width = 147
               Caption = 'Nom du début du fichier :'
               ParentColor = False
@@ -1179,7 +1179,7 @@ object F_AncestroWeb: TF_AncestroWeb
             object ed_MapFileName: TFlatEdit
               Left = 492
               Height = 22
-              Top = 116
+              Top = 110
               Width = 134
               ColorFlat = clBtnFace
               ParentColor = True
@@ -1188,8 +1188,8 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object me_MapHead: TMemo
               Left = 4
-              Height = 74
-              Top = 160
+              Height = 58
+              Top = 150
               Width = 622
               ParentColor = True
               ScrollBars = ssAutoBoth
@@ -1206,7 +1206,7 @@ object F_AncestroWeb: TF_AncestroWeb
             object lb_DescribeMap: TLabel
               Left = 4
               Height = 17
-              Top = 144
+              Top = 134
               Width = 75
               Caption = 'Description :'
               ParentColor = False
@@ -1214,7 +1214,7 @@ object F_AncestroWeb: TF_AncestroWeb
             object ch_SeparateMap: TJvXPCheckbox
               Left = 4
               Height = 17
-              Top = 244
+              Top = 220
               Width = 141
               Caption = 'Séparer la carte en '
               TabOrder = 6
@@ -1223,7 +1223,7 @@ object F_AncestroWeb: TF_AncestroWeb
             object sp_groupMap: TSpinEdit
               Left = 152
               Height = 24
-              Top = 244
+              Top = 214
               Width = 40
               MaxValue = 50
               MinValue = 2
@@ -1231,9 +1231,9 @@ object F_AncestroWeb: TF_AncestroWeb
               Value = 2
             end
             object Label53: TLabel
-              Left = 200
+              Left = 192
               Height = 17
-              Top = 247
+              Top = 220
               Width = 54
               Caption = 'groupes.'
               ParentColor = False
@@ -1935,7 +1935,7 @@ object F_AncestroWeb: TF_AncestroWeb
     Mask = '*'
     FileOptions = [cpUseFilter, cpDestinationIsFile, cpCreateDestination]
     DoEraseDir = FileCopyDoEraseDir
-    left = 312
-    top = 120
+    left = 320
+    top = 88
   end
 end

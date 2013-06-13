@@ -157,10 +157,10 @@ const
   I_DOSSIER = 'I_DOSSIER';
   I_PARQUI = 'I_PARQUI';
   I_CLEF_UNION = 'I_CLEF_UNION';
+  CST_MAP_FILE = 'MapFile';
   CST_MAP_CASE = 'MapCase';
   CST_MAP_NAME = 'AName';
   CST_MAP_CAPTIONS = 'MapCaptions';
-  CST_MAP_LINE = 'MapLine';
   CST_MAP_N = 'n';
   CST_MAP_TO = 'To';
   CST_MAP_MIN_LONGITUD = 'MinLongitud';
@@ -187,6 +187,7 @@ const
   CST_SUBDIR_HTML_FILES = 'Files';
   CST_SUBDIR_HTML_FILES_DIR = CST_SUBDIR_HTML_FILES+'/';
   CST_SUBDIR_HTML_LISTS = 'Lists';
+  CST_SUBDIR_HTML_MAPS = 'Maps';
   CST_SUBDIR_HTML_ARCHIVE = 'Archive';
   CST_SUBDIR_HTML_IMAGES = 'Images';
   CST_SUBDIR_HTML_CSS = 'Css';
@@ -215,6 +216,7 @@ const
   CST_FILE_JOBS_LINE = 'JobsLine';
   CST_FILE_Surnames = 'Names';
   CST_FILE_MAP = 'Map';
+  CST_FILE_FILE = 'File';
   CST_FILE_Number = ' no';
   CST_FILE_UNION = 'union';
   CST_FILE_COUNTING = 'counting';

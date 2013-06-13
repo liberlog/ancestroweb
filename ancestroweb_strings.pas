@@ -20,8 +20,7 @@ resourcestring
   gs_ANCESTROWEB_TITRE = 'AncestroWeb : Générer un Site Web Généalogique';
   gs_ANCESTROWEB_ExportMoreThan5Chars =
     'Le chemin d''exportation web doit faire plus de 5 caractères.';
-  gs_ANCESTROWEB_From_to_persons = 'De @ARG à @ARG individus';
-  gs_ANCESTROWEB_1_person  = '1 individu';
+  gs_ANCESTROWEB_From_to_persons = '@ARG à @ARG';
   gs_ANCESTROWEB_Delete =
     'Effacement';
   gs_ANCESTROWEB_ExportDelete =

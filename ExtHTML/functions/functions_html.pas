@@ -97,6 +97,7 @@ const CST_HTML_DIV                 = 'DIV' ;
       CST_HTML_DIV_SHOW            = ' STYLE="display:block"';
 
       CST_EXTENSION_HTML           = '.htm' ;
+      CST_EXTENSION_JS             = '.js' ;
       CST_EXTENSION_PHP            = '.php' ;
 
       CST_HTML_DIR_SEPARATOR       = '/' ;
@@ -179,6 +180,7 @@ function fb_FindTabSheet ( const at_TabSheets : TAHTMLULTabSheet ;
                            var   ai_Main, ai_Page : Longint):Boolean;
 procedure p_FreeKeyWords;
 procedure p_addKeyWord ( as_KeyWord : String; const ach_Separator : Char = ' ' );
+procedure p_ClearKeyWords;
 procedure p_CreateKeyWords;
 procedure p_AddTabSheet ( var  at_TabSheets : TAHTMLULTabSheet ;
                           const as_Title, as_link : String ; const as_info : String = '' );
@@ -304,13 +306,18 @@ Begin
   lstl_Keywords := nil;
   as_KeyWord:=StringReplace(Trim(as_KeyWord),'"', '\"', [rfReplaceAll]);
   p_ChampsVersListe ( lstl_Keywords, as_KeyWord, ach_Separator );
-  if assigned ( gstl_HeadKeyWords ) Then
-    for li_i:= 0 to lstl_Keywords.Count-1 do
-      Begin
-        ls_KeyWord := Trim ( lstl_Keywords [ li_i ] );
-        if gstl_HeadKeyWords.IndexOf(ls_KeyWord)<0 Then
-          gstl_HeadKeyWords.add (ls_KeyWord);
-      end;
+  try
+    if assigned ( gstl_HeadKeyWords ) Then
+      for li_i:= 0 to lstl_Keywords.Count-1 do
+        Begin
+          ls_KeyWord := Trim ( lstl_Keywords [ li_i ] );
+          if gstl_HeadKeyWords.IndexOf(ls_KeyWord)<0 Then
+            gstl_HeadKeyWords.add (ls_KeyWord);
+        end;
+
+  finally
+    lstl_Keywords.Free;
+  end;
 end;
 
 procedure p_FreeKeyWords;
@@ -323,6 +330,11 @@ procedure p_CreateKeyWords;
 Begin
   gstl_HeadKeyWords.Free;
   gstl_HeadKeyWords := TStringList.Create;
+end;
+
+procedure p_ClearKeyWords;
+Begin
+  gstl_HeadKeyWords.Clear;
 end;
 
 
@@ -537,16 +549,20 @@ function fs_createHead (const as_PathFiles,as_Describe, as_Keywords, as_title, a
 var  lstl_Head : TStringList;
 Begin
   lstl_Head := TStringList.Create;
-  p_LoadStringList ( lstl_Head, as_PathFiles, CST_HTML_FILE_HEAD );
-  p_ReplaceLanguagesStrings ( lstl_Head, CST_HTML_HEAD_IN_LANG_FILE );
-  p_ReplaceLanguagesStrings ( lstl_Head, CST_HTML_HEAD_IN_LANG_FILE );
-  p_ReplaceLanguageString(lstl_Head,CST_HTML_HEAD_DESCRIBE,StringReplace (as_Describe, CST_ENDOFLINE, '', [rfReplaceAll]));
-  p_ReplaceLanguageString(lstl_Head,CST_HTML_HEAD_CHARSET,gs_HtmlCharset);
-  p_ReplaceLanguageString(lstl_Head,CST_HTML_HEAD_TITLE,as_title);
-  p_ReplaceLanguageString(lstl_Head,CST_HTML_LANG,gs_Lang);
-  p_ReplaceLanguageString(lstl_Head,CST_HTML_LANGUAGE,as_language);
-  p_ReplaceLanguageString(lstl_Head,CST_HTML_HEAD_AUTOKEYS,StringReplace (as_Keywords, CST_ENDOFLINE, ',', [rfReplaceAll]));
-  Result := lstl_Head.Text;
+  try
+    p_LoadStringList ( lstl_Head, as_PathFiles, CST_HTML_FILE_HEAD );
+    p_ReplaceLanguagesStrings ( lstl_Head, CST_HTML_HEAD_IN_LANG_FILE );
+    p_ReplaceLanguagesStrings ( lstl_Head, CST_HTML_HEAD_IN_LANG_FILE );
+    p_ReplaceLanguageString(lstl_Head,CST_HTML_HEAD_DESCRIBE,StringReplace (as_Describe, CST_ENDOFLINE, '', [rfReplaceAll]));
+    p_ReplaceLanguageString(lstl_Head,CST_HTML_HEAD_CHARSET,gs_HtmlCharset);
+    p_ReplaceLanguageString(lstl_Head,CST_HTML_HEAD_TITLE,as_title);
+    p_ReplaceLanguageString(lstl_Head,CST_HTML_LANG,gs_Lang);
+    p_ReplaceLanguageString(lstl_Head,CST_HTML_LANGUAGE,as_language);
+    p_ReplaceLanguageString(lstl_Head,CST_HTML_HEAD_AUTOKEYS,StringReplace (as_Keywords, CST_ENDOFLINE, ',', [rfReplaceAll]));
+    Result := lstl_Head.Text;
+  finally
+    lstl_Head.Free;
+  end;
 end;
 
 procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
@@ -568,49 +584,53 @@ var  lstl_HTML : TStringList;
 
 Begin
   lstl_HTML := TStringList.Create;
-  if as_FileBeforeHead <> '' Then
-    Begin
-      p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileBeforeHead );
-      ls_Text1 := lstl_HTML.Text;
-    end
-   Else ls_Text1 := '' ;
-  if as_FileAfterHead <> '' Then
-    Begin
-      p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileAfterHead );
-      ls_Text2 := lstl_HTML.Text;
-    end
-   Else ls_Text2 := '' ;
-  if astl_Body <> nil then
-    Begin
-      p_LoadText3 ( astl_Body );
-    end
-   Else
-    if as_FileAfterMenu <> '' Then
+  try
+    if as_FileBeforeHead <> '' Then
       Begin
-        p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileAfterMenu );
-        p_LoadText3 ( lstl_HTML );
+        p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileBeforeHead );
+        ls_Text1 := lstl_HTML.Text;
       end
-     Else ls_Text3 := '' ;
-  if as_FileAfterBody <> '' Then
-    Begin
-      p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileAfterBody );
-      ls_Text4 := lstl_HTML.Text;
-    end
-   Else ls_Text4 := '';
-  p_LoadStringList ( lstl_HTML, as_PathFiles, CST_HTML_FILE_HEAD );
-  p_ReplaceLanguagesStrings ( lstl_HTML, CST_HTML_HEAD_IN_LANG_FILE );
-  p_ReplaceLanguageString(lstl_HTML,CST_HTML_HEAD_DESCRIBE,StringReplace (as_Describe, CST_ENDOFLINE, '', [rfReplaceAll]));
-  p_ReplaceLanguageString(lstl_HTML,CST_HTML_HEAD_TITLE,as_title);
-  p_ReplaceLanguageString(lstl_HTML,CST_HTML_HEAD_AUTOKEYS,StringReplace (as_Keywords, CST_ENDOFLINE, ',', [rfReplaceAll]));
-  astl_Destination.Text := as_BeforeHTML + CST_ENDOFLINE + ls_Text1 + CST_ENDOFLINE + fs_createHead(as_PathFiles,as_Describe, as_Keywords, as_title, as_language) + CST_ENDOFLINE + ls_Text2
-                        +  fs_CreateElementWithId(CST_HTML_DIV, 'title', CST_HTML_CLASS_EQUAL )
-                        +  CST_HTML_H1_BEGIN + as_title + CST_HTML_H1_END + CST_HTML_DIV_End
-                        +  CST_ENDOFLINE + fs_CreateULTabsheets ( at_TabSheets, as_Subdir ) + CST_ENDOFLINE + ls_Text3
-                        +  CST_ENDOFLINE + fs_CreateElementWithId ( CST_HTML_DIV, as_IdOfPageMainElement )
-                        +  CST_ENDOFLINE + astl_Destination.Text
-                        +  CST_ENDOFLINE + CST_HTML_DIV_End
-                        +  CST_ENDOFLINE + fs_Format_Lines(as_EndPage)
-                        +  CST_ENDOFLINE + ls_Text4;
+     Else ls_Text1 := '' ;
+    if as_FileAfterHead <> '' Then
+      Begin
+        p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileAfterHead );
+        ls_Text2 := lstl_HTML.Text;
+      end
+     Else ls_Text2 := '' ;
+    if astl_Body <> nil then
+      Begin
+        p_LoadText3 ( astl_Body );
+      end
+     Else
+      if as_FileAfterMenu <> '' Then
+        Begin
+          p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileAfterMenu );
+          p_LoadText3 ( lstl_HTML );
+        end
+       Else ls_Text3 := '' ;
+    if as_FileAfterBody <> '' Then
+      Begin
+        p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileAfterBody );
+        ls_Text4 := lstl_HTML.Text;
+      end
+     Else ls_Text4 := '';
+    p_LoadStringList ( lstl_HTML, as_PathFiles, CST_HTML_FILE_HEAD );
+    p_ReplaceLanguagesStrings ( lstl_HTML, CST_HTML_HEAD_IN_LANG_FILE );
+    p_ReplaceLanguageString(lstl_HTML,CST_HTML_HEAD_DESCRIBE,StringReplace (as_Describe, CST_ENDOFLINE, '', [rfReplaceAll]));
+    p_ReplaceLanguageString(lstl_HTML,CST_HTML_HEAD_TITLE,as_title);
+    p_ReplaceLanguageString(lstl_HTML,CST_HTML_HEAD_AUTOKEYS,StringReplace (as_Keywords, CST_ENDOFLINE, ',', [rfReplaceAll]));
+    astl_Destination.Text := as_BeforeHTML + CST_ENDOFLINE + ls_Text1 + CST_ENDOFLINE + fs_createHead(as_PathFiles,as_Describe, as_Keywords, as_title, as_language) + CST_ENDOFLINE + ls_Text2
+                          +  fs_CreateElementWithId(CST_HTML_DIV, 'title', CST_HTML_CLASS_EQUAL )
+                          +  CST_HTML_H1_BEGIN + as_title + CST_HTML_H1_END + CST_HTML_DIV_End
+                          +  CST_ENDOFLINE + fs_CreateULTabsheets ( at_TabSheets, as_Subdir ) + CST_ENDOFLINE + ls_Text3
+                          +  CST_ENDOFLINE + fs_CreateElementWithId ( CST_HTML_DIV, as_IdOfPageMainElement )
+                          +  CST_ENDOFLINE + astl_Destination.Text
+                          +  CST_ENDOFLINE + CST_HTML_DIV_End
+                          +  CST_ENDOFLINE + fs_Format_Lines(as_EndPage)
+                          +  CST_ENDOFLINE + ls_Text4;
+  finally
+    lstl_HTML.Destroy;
+  end;
 end;
 
 function  fs_Create_Image           ( const as_Image       : String;
