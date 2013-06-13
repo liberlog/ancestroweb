@@ -19,7 +19,7 @@ uses
   u_ancestroweb in 'u_ancestroweb.pas';
 
 {$IFDEF WIN32}
-{$R *.res}
+{d$R *.res}
 {$ENDIF}
 
 

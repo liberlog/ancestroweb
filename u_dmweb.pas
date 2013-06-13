@@ -40,7 +40,7 @@ uses
   fonctions_system,
 {$ENDIF}
   IBQuery, IBSQLMonitor, IBSQL, Dialogs, Forms, functions_html,
-  fonctions_images, IBIntf, DB, IBCustomDataSet;
+  fonctions_images, U_ExtFileCopy, u_traducefile, IBIntf, DB, IBCustomDataSet;
 
 var
   gt_TabSheets: TaHTMLULTabSheet;
@@ -64,7 +64,7 @@ const
   CST_PROGRESS_COUNTER_SEARCH = 1;
   CST_PROGRESS_COUNTER_AGES = 1;
   CST_PROGRESS_COUNTER_JOBS = 1;
-  CST_PROGRESS_COUNTER_TREE = 4;
+  CST_PROGRESS_COUNTER_TREE = 3;
   CST_PROGRESS_COUNTER_CONTACT = 1;
   CST_PROGRESS_COUNTER_HOME = 1;
   CST_PROGRESS_COUNTER_FILES = 4;
@@ -93,6 +93,7 @@ const
   IBQ_EV_IND_LONGITUDE = 'EV_IND_LONGITUDE';
   IBQ_EV_IND_DATE = 'EV_IND_DATE';
   IBQ_EV_IND_PAYS = 'EV_IND_PAYS';
+  IBQ_IND_CONFIDENTIEL = 'EV_IND_CONFIDENTIEL';
 
   IBQ_DATE_NAISSANCE = 'DATE_NAISSANCE';
   IBQ_LIEU_NAISSANCE = 'LIEU_NAISSANCE';
@@ -269,8 +270,8 @@ const
     'SendMessage', 'MailSentMessage', 'Lang');
 
   // letters' sheet
-  CST_FILES_BEGIN_LETTER = 'A';
-  CST_FILES_END_LETTER = 'Z';
+  CST_HTML_BEGIN_LETTER = 'A';
+  CST_HTML_END_LETTER = 'Z';
 
   CST_INI_PATH_BDD = 'PathFileNameBdd';
   CST_INI_PATH     = 'Path';

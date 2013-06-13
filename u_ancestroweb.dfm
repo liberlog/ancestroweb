@@ -509,6 +509,10 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_needed: TTabSheet
       Caption = 'G'#233'n'#233'ral'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pc_needed: TPageControl
         Left = 0
         Top = 0
@@ -823,7 +827,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 251
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -902,7 +906,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 251
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -921,7 +925,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 251
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -979,7 +983,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 251
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -998,6 +1002,10 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_options: TTabSheet
       Caption = 'Options'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object PageControl1: TPageControl
         Left = 0
         Top = 0
@@ -1105,6 +1113,10 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ts_Surnames: TTabSheet
           Caption = 'Patronymes'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Panel12: TPanel
             Left = 0
             Top = 0
@@ -1539,7 +1551,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 256
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'ssl')
               TabOrder = 3
@@ -1629,7 +1641,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 256
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               Items.Strings = (
                 'qmail'
                 'sendmail'

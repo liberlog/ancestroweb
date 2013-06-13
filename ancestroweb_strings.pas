@@ -36,9 +36,9 @@ resourcestring
   gs_ANCESTROWEB_Father = 'Père @ARG';
   gs_ANCESTROWEB_Mother = 'Mère @ARG';
   gs_ANCESTROWEB_Old_Father = 'Grand-père @ARG (@ARG)';
-  gs_ANCESTROWEB_Old_Mother = 'Grand-père @ARG (@ARG)';
+  gs_ANCESTROWEB_Old_Mother = 'Grand-mère @ARG (@ARG)';
   gs_ANCESTROWEB_old_father_minus = 'grand-père @ARG (@ARG)';
-  gs_ANCESTROWEB_old_mother_minus = 'grand-père @ARG (@ARG)';
+  gs_ANCESTROWEB_old_mother_minus = 'grand-mère @ARG (@ARG)';
   gs_ANCESTROWEB_Ancestry_Man = 'Arrière @ARG';
   gs_ANCESTROWEB_Ancestry_Woman = 'Arrière @ARG';
   gs_ANCESTROWEB_ancestry_man_minus = 'arrière @ARG';
