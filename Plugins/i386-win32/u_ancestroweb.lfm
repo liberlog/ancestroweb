@@ -70,9 +70,9 @@ object F_AncestroWeb: TF_AncestroWeb
     Height = 366
     Top = 0
     Width = 640
-    ActivePage = ts_needed
+    ActivePage = ts_Gen
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 1
     OnChange = PCPrincipalChange
     object ts_Gen: TTabSheet

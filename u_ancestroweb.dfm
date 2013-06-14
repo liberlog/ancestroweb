@@ -75,16 +75,12 @@ object F_AncestroWeb: TF_AncestroWeb
     Top = 0
     Width = 788
     Height = 450
-    ActivePage = ts_needed
+    ActivePage = ts_Gen
     Align = alClient
     TabOrder = 1
     OnChange = PCPrincipalChange
     object ts_Gen: TTabSheet
       Caption = 'G'#233'n'#233'rer'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -202,7 +198,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Width = 245
             Height = 24
             Color = clBtnFace
-            ItemHeight = 0
+            ItemHeight = 16
             TabOrder = 3
             Text = 'default'
           end
@@ -282,7 +278,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Width = 245
             Height = 24
             Color = clBtnFace
-            ItemHeight = 0
+            ItemHeight = 16
             TabOrder = 4
             Text = 'default'
           end
@@ -293,7 +289,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Height = 24
             Color = clBtnFace
             DropDownCount = 10
-            ItemHeight = 0
+            ItemHeight = 16
             TabOrder = 0
             OnChange = cb_BaseChange
           end
@@ -304,7 +300,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Height = 24
             Style = csDropDownList
             Color = clBtnFace
-            ItemHeight = 0
+            ItemHeight = 16
             TabOrder = 1
             OnChange = cbDossierChange
           end
@@ -510,15 +506,11 @@ object F_AncestroWeb: TF_AncestroWeb
         Top = 0
         Width = 780
         Height = 419
-        ActivePage = ts_global
+        ActivePage = ts_home
         Align = alClient
         TabOrder = 0
         object ts_home: TTabSheet
           Caption = 'Accueil'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel8: TPanel
             Left = 0
             Top = 0
@@ -703,10 +695,6 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ts_Files: TTabSheet
           Caption = 'Fiches'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel10: TPanel
             Left = 0
             Top = 0
@@ -1037,10 +1025,6 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_options: TTabSheet
       Caption = 'Options'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageControl1: TPageControl
         Left = 0
         Top = 0
@@ -1051,10 +1035,6 @@ object F_AncestroWeb: TF_AncestroWeb
         TabOrder = 0
         object ts_tree: TTabSheet
           Caption = 'Arbre'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel2: TPanel
             Left = 0
             Top = 0
@@ -1147,10 +1127,6 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ts_Surnames: TTabSheet
           Caption = 'Patronymes'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel12: TPanel
             Left = 0
             Top = 0
@@ -1288,10 +1264,6 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ts_search: TTabSheet
           Caption = 'Recherche'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel11: TPanel
             Left = 0
             Top = 0
@@ -1423,10 +1395,6 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ts_contact: TTabSheet
           Caption = 'Contact'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel9: TPanel
             Left = 0
             Top = 0
@@ -1578,7 +1546,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 256
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               ItemIndex = 0
               TabOrder = 3
               Text = 'ssl'
@@ -1662,7 +1630,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 256
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               ItemIndex = 0
               TabOrder = 12
               Text = 'qmail'
@@ -1675,10 +1643,6 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ts_jobs: TTabSheet
           Caption = 'M'#233'tiers'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel14: TPanel
             Left = 0
             Top = 0
@@ -1736,10 +1700,6 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ts_ages: TTabSheet
           Caption = #194'ges'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel13: TPanel
             Left = 0
             Top = 0
@@ -1799,10 +1759,6 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_about: TTabSheet
       Caption = #192' propos'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pa_About: TScrollBox
         Left = 0
         Top = 0

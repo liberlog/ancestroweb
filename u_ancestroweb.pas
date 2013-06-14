@@ -293,6 +293,7 @@ type
     cb_Files: TComboBox;
     Label44: TLabel;
     de_ExportWeb: TDirectoryEdit;
+    se_Nom : TExtSearchDBEdit;
     procedure btnSelectBaseClick(Sender: TObject);
     procedure bt_exportClick(Sender: TObject);
     procedure bt_genClick(Sender: TObject);
@@ -437,7 +438,7 @@ var
   gs_LinkGedcom: string;
   gs_RootPathForExport: string;
   gt_SheetsLetters: TAHTMLULTabSheet;
-  gt_ExistingPersons : Array of Longint;
+  gDat_Existing_Persons : TDataset = nil;
   // for map
   gt_Surnames : Array of Record
                           Name : String;
@@ -546,36 +547,22 @@ end;
 
 // procedure TF_AncestroWeb.p_createExistingPersons
 // creating a HTML list of persons
-procedure p_createExistingPersons (const IBQ_FilesFiltered: TIBQuery; const ab_DisableControls : Boolean = True);
+procedure p_createExistingPersons (const IBQ_FilesFiltered: TIBQuery );
 Begin
-  Finalize(gt_ExistingPersons);
-  with IBQ_FilesFiltered do
-  if not IsEmpty Then
-    Begin
-      if ab_DisableControls Then
-        DisableControls;
-      First;
-      while not EOF do
-        try
-          SetLength(gt_ExistingPersons, high ( gt_ExistingPersons ) + 2);
-          gt_ExistingPersons [ high ( gt_ExistingPersons )] := FieldByName(IBQ_CLE_FICHE).AsInteger;
-          Next;
-        finally
-        end;
-      if ab_DisableControls Then
-        EnableControls;
-    end;
+  gDat_Existing_Persons := IBQ_FilesFiltered;
 end;
 
 function fb_IsCreatedPerson ( const ai_Key : Longint ):Boolean;
 var li_i : Longint;
 Begin
-  Result := False;
-  for li_i := 0 to high ( gt_ExistingPersons ) do
-    if gt_ExistingPersons [ li_i ] = ai_Key Then
-      Begin
-        Result := True;
-        Exit;
+  Result := not Assigned(gDat_Existing_Persons);
+  if not Result Then
+    with gDat_Existing_Persons do
+      try
+         Open;
+         Result := Locate(IBQ_CLE_FICHE,ai_Key,[]);
+      Except
+        ShowMessage ( gs_ANCESTROWEB_cantOpenData ) ;
       end;
 end;
 
@@ -810,6 +797,7 @@ end;
 // Main Web Site Generation
 procedure TF_AncestroWeb.bt_genClick(Sender: TObject);
 begin
+  //  verifying
   if length(FileCopy.Destination) < 6 then
   begin
     ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_ExportMoreThan5Chars));
@@ -829,15 +817,17 @@ begin
   or gb_Generate then
     Exit;
 
-  p_CreateKeyWords;
-  gs_RootPathForExport := de_ExportWeb.{$IFDEF FPC}Directory{$ELSE}Text{$ENDIF} + DirectorySeparator;
-  gb_Generate := True;
+  // going to work for a time : freezing options to protect work and options
+  ts_needed .Enabled:=False;
+  ts_options.Enabled:=False;
   IBQ_Individu.DisableControls;
-  pb_ProgressAll.Progress := 0;
-  pb_ProgressInd.Progress := 0; // initing not needed user value
-  pb_ProgressAll.MaxValue := CST_PROGRESS_COUNTER_COPY + CST_PROGRESS_COUNTER_TITLE + fi_CreateSheets;
-
-  try
+  try // starting work
+    p_CreateKeyWords;
+    gs_RootPathForExport := de_ExportWeb.{$IFDEF FPC}Directory{$ELSE}Text{$ENDIF} + DirectorySeparator;
+    gb_Generate := True;
+    pb_ProgressAll.Progress := 0;
+    pb_ProgressInd.Progress := 0; // initing not needed user value
+    pb_ProgressAll.MaxValue := CST_PROGRESS_COUNTER_COPY + CST_PROGRESS_COUNTER_TITLE + fi_CreateSheets;
     p_CopyStructure;
     p_genHTMLTitle;
     p_genHtmlHome;
@@ -857,7 +847,7 @@ begin
          if fb_OpenTree(DmWeb.IBQ_TreeDescBysurnames, gi_CleFiche ) then
            Begin
              p_createLettersSheets( gt_SheetsLetters, DmWeb.IBQ_TreeDescBysurnames, gi_FilesPerPage, ed_FileBeginName.Text);
-             p_createExistingPersons ( DmWeb.IBQ_TreeBysurnames );
+             p_createExistingPersons ( DmWeb.IBQ_TreeDescBySurnames );
            end;
        end;
     end
@@ -918,13 +908,17 @@ begin
     end;
     if ch_genContact.Checked then
       p_genPhpContact;
+    if assigned ( gDat_Existing_Persons ) Then
+      gDat_Existing_Persons.Close
   finally
+    ts_needed .Enabled:=True;
+    ts_options.Enabled:=True;
+    gDat_Existing_Persons := nil;
     gb_Generate := False;
     p_Setcomments (( gs_AnceSTROWEB_Finished )); // advert for user
     IBQ_Individu.Locate(IBQ_CLE_FICHE, fCleFiche, []);
     IBQ_Individu.EnableControls;
     Finalize(gt_SheetsMapGroup);
-    Finalize(gt_ExistingPersons);
     Finalize(gt_SheetsLetters);
     Finalize(gt_TabSheets);
     Finalize(gt_Surnames);
