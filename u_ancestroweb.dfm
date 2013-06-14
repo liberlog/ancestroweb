@@ -75,7 +75,7 @@ object F_AncestroWeb: TF_AncestroWeb
     Top = 0
     Width = 788
     Height = 450
-    ActivePage = ts_options
+    ActivePage = ts_needed
     Align = alClient
     TabOrder = 1
     OnChange = PCPrincipalChange
@@ -196,7 +196,7 @@ object F_AncestroWeb: TF_AncestroWeb
             ButtonWidth = 28
             TabOrder = 2
           end
-          object cb_Themes: TFlatComboBox
+          object cb_Themes: TComboBox
             Left = 82
             Top = 158
             Width = 245
@@ -205,7 +205,6 @@ object F_AncestroWeb: TF_AncestroWeb
             ItemHeight = 0
             TabOrder = 3
             Text = 'default'
-            ItemIndex = -1
           end
           object GedcomEdit: TFilenameEdit
             Left = 82
@@ -277,7 +276,7 @@ object F_AncestroWeb: TF_AncestroWeb
             ParentFont = False
             OnClick = FWEraseImage2Click
           end
-          object cb_Files: TFlatComboBox
+          object cb_Files: TComboBox
             Left = 82
             Top = 197
             Width = 245
@@ -286,9 +285,8 @@ object F_AncestroWeb: TF_AncestroWeb
             ItemHeight = 0
             TabOrder = 4
             Text = 'default'
-            ItemIndex = -1
           end
-          object cb_Base: TFlatComboBox
+          object cb_Base: TComboBox
             Left = 5
             Top = 26
             Width = 300
@@ -297,10 +295,9 @@ object F_AncestroWeb: TF_AncestroWeb
             DropDownCount = 10
             ItemHeight = 0
             TabOrder = 0
-            ItemIndex = -1
             OnChange = cb_BaseChange
           end
-          object cbDossier: TFlatComboBox
+          object cbDossier: TComboBox
             Left = 74
             Top = 59
             Width = 253
@@ -309,7 +306,6 @@ object F_AncestroWeb: TF_AncestroWeb
             Color = clBtnFace
             ItemHeight = 0
             TabOrder = 1
-            ItemIndex = -1
             OnChange = cbDossierChange
           end
         end
@@ -509,16 +505,12 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_needed: TTabSheet
       Caption = 'G'#233'n'#233'ral'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pc_needed: TPageControl
         Left = 0
         Top = 0
         Width = 780
         Height = 419
-        ActivePage = ts_home
+        ActivePage = ts_global
         Align = alClient
         TabOrder = 0
         object ts_home: TTabSheet
@@ -595,12 +587,11 @@ object F_AncestroWeb: TF_AncestroWeb
               Center = True
               Proportional = True
             end
-            object ed_Author: TFlatEdit
+            object ed_Author: TEdit
               Left = 74
               Top = 1
               Width = 276
               Height = 24
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 0
             end
@@ -691,12 +682,11 @@ object F_AncestroWeb: TF_AncestroWeb
               ParentFont = False
               OnClick = FWEraseImage3Click
             end
-            object ed_IndexName: TFlatEdit
+            object ed_IndexName: TEdit
               Left = 495
               Top = 1
               Width = 275
               Height = 24
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 8
               Text = 'index'
@@ -751,12 +741,11 @@ object F_AncestroWeb: TF_AncestroWeb
               Color = clBtnFace
               ParentColor = False
             end
-            object ed_FileBeginName: TFlatEdit
+            object ed_FileBeginName: TEdit
               Left = 497
               Top = 1
               Width = 276
               Height = 24
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 0
               Text = 'Files'
@@ -779,12 +768,11 @@ object F_AncestroWeb: TF_AncestroWeb
               Checked = True
               State = cbChecked
             end
-            object ed_ListsBeginName: TFlatEdit
+            object ed_ListsBeginName: TEdit
               Left = 497
               Top = 31
               Width = 276
-              Height = 23
-              ColorFlat = clBtnFace
+              Height = 24
               ParentColor = True
               TabOrder = 3
               Text = 'List'
@@ -801,10 +789,6 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ts_global: TTabSheet
           Caption = 'Global'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel15: TPanel
             Left = 0
             Top = 0
@@ -812,22 +796,58 @@ object F_AncestroWeb: TF_AncestroWeb
             Height = 388
             Align = alClient
             TabOrder = 0
+            DesignSize = (
+              772
+              388)
+            object Label56: TLabel
+              Left = 5
+              Top = 155
+              Width = 512
+              Height = 16
+              Caption = 
+                'Pour les bases, le libell'#233' s'#39'ajoute par d'#233'faut '#224' la fin. Sinon p' +
+                'lacez [first_letter] ou [label].'
+              Color = clBtnFace
+              ParentColor = False
+            end
             object Label6: TLabel
               Left = 5
-              Top = 295
+              Top = 177
               Width = 150
               Height = 16
               Caption = 'En bas de chaque page :'
               Color = clBtnFace
               ParentColor = False
             end
-            object cb_CityAccents: TFlatComboBox
-              Left = 507
-              Top = 126
-              Width = 251
+            object ch_JobsLink: TJvXPCheckbox
+              Left = 4
+              Top = 26
+              Width = 200
+              Height = 17
+              Caption = 'Lier '#224' une base de m'#233'tiers :'
+              TabOrder = 0
+              Checked = True
+              State = cbChecked
+            end
+            object ed_BaseJobs: TEdit
+              Left = 212
+              Top = 23
+              Width = 194
+              Height = 24
+              ParentColor = True
+              TabOrder = 1
+              Text = 'http://www.vieuxmetiers.org/lettre_[first_letter].htm#[label]'
+            end
+            object cb_JobsAccents: TComboBox
+              Left = 412
+              Top = 22
+              Width = 212
               Height = 24
               Color = clBtnFace
               ItemHeight = 16
+              ItemIndex = 1
+              TabOrder = 2
+              Text = 'Sans accent sans majuscule'
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -836,154 +856,152 @@ object F_AncestroWeb: TF_AncestroWeb
                 'Avec accents sans majuscule'
                 'Avec accents en majuscules'
                 'Tel quel')
-              TabOrder = 0
-              Text = 'Sans accent avec une majuscule'
-              ItemIndex = 0
             end
-            object ed_BaseCities: TFlatEdit
-              Left = 261
-              Top = 127
-              Width = 239
-              Height = 23
-              ColorFlat = clBtnFace
-              ParentColor = True
-              TabOrder = 1
-              Text = 'http://fr.wikipedia.org/wiki/'
-            end
-            object ch_CitiesLink: TJvXPCheckbox
-              Left = 5
-              Top = 133
-              Width = 246
-              Height = 21
-              Caption = 'Lier '#224' une base de villes :'
-              TabOrder = 2
-              Checked = True
-              State = cbChecked
-            end
-            object ch_SurnamesLink: TJvXPCheckbox
-              Left = 5
-              Top = 101
-              Width = 246
-              Height = 21
-              Caption = 'Lier '#224' une base de noms :'
+            object cb_ImagesJobsAccents: TComboBox
+              Left = 412
+              Top = 48
+              Width = 212
+              Height = 24
+              Color = clBtnFace
+              ItemHeight = 16
+              ItemIndex = 1
               TabOrder = 3
+              Text = 'Sans accent sans majuscule'
+              Items.Strings = (
+                'Sans accent avec une majuscule'
+                'Sans accent sans majuscule'
+                'Sans accent en majuscules'
+                'Avec accents avec une majuscule'
+                'Avec accents sans majuscule'
+                'Avec accents en majuscules'
+                'Tel quel')
+            end
+            object ed_ImagesJobs: TEdit
+              Left = 212
+              Top = 49
+              Width = 194
+              Height = 24
+              ParentColor = True
+              TabOrder = 4
+              Text = 
+                'http://www.gifsmaniac.com/data/gif/metiers/[label]/metiers-[labe' +
+                'l]-1.gif'
+            end
+            object ch_JobsImages: TJvXPCheckbox
+              Left = 5
+              Top = 52
+              Width = 200
+              Height = 17
+              Caption = 'Lier '#224' des images de m'#233'tiers :'
+              TabOrder = 5
               Checked = True
               State = cbChecked
             end
             object ch_NamesLink: TJvXPCheckbox
-              Left = 5
-              Top = 66
-              Width = 246
-              Height = 21
+              Left = 4
+              Top = 79
+              Width = 200
+              Height = 17
               Caption = 'Lier '#224' une base de pr'#233'noms :'
-              TabOrder = 4
+              TabOrder = 6
               Checked = True
               State = cbChecked
             end
-            object ed_BaseNames: TFlatEdit
-              Left = 261
-              Top = 60
-              Width = 239
+            object ed_BaseNames: TEdit
+              Left = 212
+              Top = 75
+              Width = 194
               Height = 24
-              ColorFlat = clBtnFace
               ParentColor = True
-              TabOrder = 5
+              TabOrder = 7
               Text = 'http://www.behindthename.com/name/'
             end
-            object ed_BaseSurnames: TFlatEdit
-              Left = 261
-              Top = 95
-              Width = 239
-              Height = 23
-              ColorFlat = clBtnFace
-              ParentColor = True
-              TabOrder = 6
-              Text = 'http://www.geneanet.org/nom-de-famille/'
-            end
-            object cb_SurnamesAccents: TFlatComboBox
-              Left = 507
-              Top = 92
-              Width = 251
+            object cb_NamesAccents: TComboBox
+              Left = 412
+              Top = 74
+              Width = 212
               Height = 24
               Color = clBtnFace
               ItemHeight = 16
-              Items.Strings = (
-                'Sans accent avec une majuscule'
-                'Sans accent sans majuscule'
-                'Sans accent en majuscules'
-                'Avec accents avec une majuscule'
-                'Avec accents sans majuscule'
-                'Avec accents en majuscules'
-                'Tel quel')
-              TabOrder = 7
-              Text = 'Sans accent sans majuscule'
               ItemIndex = 1
-            end
-            object cb_NamesAccents: TFlatComboBox
-              Left = 507
-              Top = 59
-              Width = 251
-              Height = 24
-              Color = clBtnFace
-              ItemHeight = 16
-              Items.Strings = (
-                'Sans accent avec une majuscule'
-                'Sans accent sans majuscule'
-                'Sans accent en majuscules'
-                'Avec accents avec une majuscule'
-                'Avec accents sans majuscule'
-                'Avec accents en majuscules'
-                'Tel quel')
               TabOrder = 8
               Text = 'Sans accent sans majuscule'
+              Items.Strings = (
+                'Sans accent avec une majuscule'
+                'Sans accent sans majuscule'
+                'Sans accent en majuscules'
+                'Avec accents avec une majuscule'
+                'Avec accents sans majuscule'
+                'Avec accents en majuscules'
+                'Tel quel')
+            end
+            object cb_SurnamesAccents: TComboBox
+              Left = 412
+              Top = 100
+              Width = 212
+              Height = 24
+              Color = clBtnFace
+              ItemHeight = 16
               ItemIndex = 1
-            end
-            object ch_HideLessThan100: TJvXPCheckbox
-              Left = 5
-              Top = 4
-              Width = 311
-              Height = 21
-              Caption = 'Cacher les dates de moins de 100'#160'ans'
               TabOrder = 9
-              Checked = True
-              State = cbChecked
-              OnClick = ch_FilteredClick
+              Text = 'Sans accent sans majuscule'
+              Items.Strings = (
+                'Sans accent avec une majuscule'
+                'Sans accent sans majuscule'
+                'Sans accent en majuscules'
+                'Avec accents avec une majuscule'
+                'Avec accents sans majuscule'
+                'Avec accents en majuscules'
+                'Tel quel')
             end
-            object me_Bottom: TMemo
-              Left = 5
-              Top = 315
-              Width = 763
-              Height = 46
+            object ed_BaseSurnames: TEdit
+              Left = 212
+              Top = 103
+              Width = 194
+              Height = 24
               ParentColor = True
               TabOrder = 10
+              Text = 'http://www.geneanet.org/nom-de-famille/'
             end
-            object ch_JobsLink: TJvXPCheckbox
-              Left = 5
-              Top = 33
-              Width = 246
-              Height = 21
-              Caption = 'Lier '#224' une base de m'#233'tiers :'
+            object ch_SurnamesLink: TJvXPCheckbox
+              Left = 4
+              Top = 106
+              Width = 200
+              Height = 17
+              Caption = 'Lier '#224' une base de noms :'
               TabOrder = 11
               Checked = True
               State = cbChecked
             end
-            object ed_BaseJobs: TFlatEdit
-              Left = 261
-              Top = 28
-              Width = 239
-              Height = 24
-              ColorFlat = clBtnFace
-              ParentColor = True
+            object ch_CitiesLink: TJvXPCheckbox
+              Left = 4
+              Top = 133
+              Width = 200
+              Height = 17
+              Caption = 'Lier '#224' une base de villes :'
               TabOrder = 12
+              Checked = True
+              State = cbChecked
+            end
+            object ed_BaseCities: TEdit
+              Left = 212
+              Top = 129
+              Width = 194
+              Height = 24
+              ParentColor = True
+              TabOrder = 13
               Text = 'http://fr.wikipedia.org/wiki/'
             end
-            object cb_JobsAccents: TFlatComboBox
-              Left = 507
-              Top = 26
-              Width = 251
+            object cb_CityAccents: TComboBox
+              Left = 412
+              Top = 126
+              Width = 212
               Height = 24
               Color = clBtnFace
               ItemHeight = 16
+              ItemIndex = 0
+              TabOrder = 14
+              Text = 'Sans accent avec une majuscule'
               Items.Strings = (
                 'Sans accent avec une majuscule'
                 'Sans accent sans majuscule'
@@ -992,9 +1010,26 @@ object F_AncestroWeb: TF_AncestroWeb
                 'Avec accents sans majuscule'
                 'Avec accents en majuscules'
                 'Tel quel')
-              TabOrder = 13
-              Text = 'Sans accent avec une majuscule'
-              ItemIndex = 0
+            end
+            object me_Bottom: TMemo
+              Left = 5
+              Top = 193
+              Width = 616
+              Height = 45
+              Anchors = [akLeft, akTop, akRight, akBottom]
+              ParentColor = True
+              TabOrder = 16
+            end
+            object ch_HideLessThan100: TJvXPCheckbox
+              Left = 4
+              Top = 3
+              Width = 576
+              Height = 17
+              Caption = 'Cacher les informations de moins de 100'#160'ans'
+              TabOrder = 15
+              Checked = True
+              State = cbChecked
+              OnClick = ch_FilteredClick
             end
           end
         end
@@ -1011,7 +1046,7 @@ object F_AncestroWeb: TF_AncestroWeb
         Top = 0
         Width = 780
         Height = 419
-        ActivePage = ts_Surnames
+        ActivePage = ts_tree
         Align = alClient
         TabOrder = 0
         object ts_tree: TTabSheet
@@ -1073,12 +1108,11 @@ object F_AncestroWeb: TF_AncestroWeb
               ParentColor = True
               TabOrder = 1
             end
-            object ed_TreeName: TFlatEdit
+            object ed_TreeName: TEdit
               Left = 497
               Top = 1
               Width = 276
               Height = 24
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 2
               Text = 'Tree'
@@ -1206,12 +1240,11 @@ object F_AncestroWeb: TF_AncestroWeb
               Checked = True
               State = cbChecked
             end
-            object ed_SurnamesFileName: TFlatEdit
+            object ed_SurnamesFileName: TEdit
               Left = 606
               Top = 1
               Width = 167
               Height = 24
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 1
               Text = 'Surnames'
@@ -1234,12 +1267,11 @@ object F_AncestroWeb: TF_AncestroWeb
               Checked = True
               State = cbChecked
             end
-            object ed_MapFileName: TFlatEdit
+            object ed_MapFileName: TEdit
               Left = 606
               Top = 143
               Width = 164
-              Height = 23
-              ColorFlat = clBtnFace
+              Height = 24
               ParentColor = True
               TabOrder = 4
               Text = 'Map'
@@ -1344,12 +1376,11 @@ object F_AncestroWeb: TF_AncestroWeb
               Caption = 'G'#233'n'#233'rer la recherche'
               TabOrder = 0
             end
-            object ed_SearchName: TFlatEdit
+            object ed_SearchName: TEdit
               Left = 495
               Top = 28
               Width = 275
               Height = 24
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 1
               Text = 'Recherche'
@@ -1362,31 +1393,28 @@ object F_AncestroWeb: TF_AncestroWeb
               ParentColor = True
               TabOrder = 2
             end
-            object ed_SearchSite: TFlatEdit
+            object ed_SearchSite: TEdit
               Left = 468
               Top = 178
               Width = 305
               Height = 24
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 3
             end
-            object ed_SearchTool: TFlatEdit
+            object ed_SearchTool: TEdit
               Left = 468
               Top = 213
               Width = 305
-              Height = 23
-              ColorFlat = clBtnFace
+              Height = 24
               ParentColor = True
               TabOrder = 4
               Text = 'http://www.google.fr/search'
             end
-            object ed_SearchQuery: TFlatEdit
+            object ed_SearchQuery: TEdit
               Left = 172
               Top = 213
               Width = 138
-              Height = 23
-              ColorFlat = clBtnFace
+              Height = 24
               ParentColor = True
               TabOrder = 5
               Text = 'q'
@@ -1535,63 +1563,58 @@ object F_AncestroWeb: TF_AncestroWeb
               Checked = True
               State = cbChecked
             end
-            object ed_ContactName: TFlatEdit
+            object ed_ContactName: TEdit
               Left = 495
               Top = 28
               Width = 275
               Height = 24
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 2
               Text = 'Contact'
             end
-            object cb_ContactSecurity: TFlatComboBox
+            object cb_ContactSecurity: TComboBox
               Left = 514
               Top = 208
               Width = 256
               Height = 24
               Color = clBtnFace
-              ItemHeight = 16
-              Items.Strings = (
-                'ssl')
+              ItemHeight = 0
+              ItemIndex = 0
               TabOrder = 3
               Text = 'ssl'
-              ItemIndex = 0
+              Items.Strings = (
+                'ssl')
             end
-            object ed_ContactMail: TFlatEdit
+            object ed_ContactMail: TEdit
               Left = 123
               Top = 178
               Width = 256
               Height = 24
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 4
             end
-            object ed_ContactHost: TFlatEdit
+            object ed_ContactHost: TEdit
               Left = 123
               Top = 212
               Width = 256
-              Height = 23
-              ColorFlat = clBtnFace
+              Height = 24
               ParentColor = True
               TabOrder = 5
               Text = 'localhost'
             end
-            object ed_ContactUser: TFlatEdit
+            object ed_ContactUser: TEdit
               Left = 123
               Top = 297
               Width = 256
-              Height = 23
-              ColorFlat = clBtnFace
+              Height = 24
               ParentColor = True
               TabOrder = 6
             end
-            object ed_ContactPassword: TFlatEdit
+            object ed_ContactPassword: TEdit
               Left = 514
               Top = 297
               Width = 256
-              Height = 23
-              ColorFlat = clBtnFace
+              Height = 24
               ParentColor = True
               PasswordChar = '*'
               TabOrder = 7
@@ -1606,12 +1629,11 @@ object F_AncestroWeb: TF_AncestroWeb
               Checked = True
               State = cbChecked
             end
-            object ed_ContactPassword2: TFlatEdit
+            object ed_ContactPassword2: TEdit
               Left = 514
               Top = 331
               Width = 256
-              Height = 23
-              ColorFlat = clBtnFace
+              Height = 24
               ParentColor = True
               PasswordChar = '*'
               TabOrder = 9
@@ -1626,29 +1648,28 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 10
               Value = 25
             end
-            object ed_ContactAuthor: TFlatEdit
+            object ed_ContactAuthor: TEdit
               Left = 514
               Top = 178
               Width = 256
               Height = 24
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 11
             end
-            object cb_ContactTool: TFlatComboBox
+            object cb_ContactTool: TComboBox
               Left = 514
               Top = 244
               Width = 256
               Height = 24
               Color = clBtnFace
-              ItemHeight = 16
+              ItemHeight = 0
+              ItemIndex = 0
+              TabOrder = 12
+              Text = 'qmail'
               Items.Strings = (
                 'qmail'
                 'sendmail'
                 'mail')
-              TabOrder = 12
-              Text = 'qmail'
-              ItemIndex = 0
             end
           end
         end
@@ -1702,12 +1723,11 @@ object F_AncestroWeb: TF_AncestroWeb
               ParentColor = True
               TabOrder = 1
             end
-            object ed_JobsName: TFlatEdit
+            object ed_JobsName: TEdit
               Left = 497
               Top = 1
               Width = 276
               Height = 24
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 2
               Text = 'Jobs'
@@ -1764,12 +1784,11 @@ object F_AncestroWeb: TF_AncestroWeb
               ParentColor = True
               TabOrder = 1
             end
-            object ed_AgesName: TFlatEdit
+            object ed_AgesName: TEdit
               Left = 497
               Top = 1
               Width = 276
               Height = 24
-              ColorFlat = clBtnFace
               ParentColor = True
               TabOrder = 2
               Text = 'Ages'
@@ -1951,8 +1970,8 @@ object F_AncestroWeb: TF_AncestroWeb
   end
   object ds_Individu: TDataSource
     DataSet = IBQ_Individu
-    Left = 472
-    Top = 256
+    Left = 440
+    Top = 272
   end
   object OpenDialog: TOpenDialog
     Filter = 

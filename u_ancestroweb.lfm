@@ -70,9 +70,9 @@ object F_AncestroWeb: TF_AncestroWeb
     Height = 366
     Top = 0
     Width = 640
-    ActivePage = ts_options
+    ActivePage = ts_needed
     Align = alClient
-    TabIndex = 2
+    TabIndex = 1
     TabOrder = 1
     OnChange = PCPrincipalChange
     object ts_Gen: TTabSheet
@@ -1064,9 +1064,9 @@ object F_AncestroWeb: TF_AncestroWeb
         Height = 337
         Top = 0
         Width = 632
-        ActivePage = ts_contact
+        ActivePage = ts_tree
         Align = alClient
-        TabIndex = 3
+        TabIndex = 0
         TabOrder = 0
         object ts_tree: TTabSheet
           Caption = 'Arbre'
@@ -1120,7 +1120,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_TreeName: TEdit
               Left = 404
-              Height = 22
+              Height = 24
               Top = 1
               Width = 224
               ParentColor = True

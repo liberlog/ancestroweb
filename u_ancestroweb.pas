@@ -64,7 +64,7 @@ const
                                              FileUnit : 'U_AncestroWeb' ;
                                              Owner : 'Matthieu Giroux' ;
                                              Comment : 'Composant de copie multi-platformes.' ;
-                                             BugsStory : '1.3.0.0 : adding searchedit and more web sites bases.' +#13#10
+                                             BugsStory : '1.3.0.0 : Restructure, adding searchedit and more web sites bases.' +#13#10
                                                        + '1.2.6.1 : Large database.' +#13#10
                                                        + '1.2.6.0 : No map in PHP.' +#13#10
                                                        + '1.2.5.0 : Separate map.' +#13#10
@@ -135,8 +135,6 @@ type
     ch_Comptage: TJvXPCheckBox;
     FileCopy: TExtFileCopy;
     FileIniCopy: TExtFileCopy;
-    Label54: TLabel;
-    se_Nom: TExtSearchDBEdit;
     sp_groupMap: TSpinEdit;
     DBGrid1: TDBGrid;
     ds_Individu: TDatasource;
@@ -1439,6 +1437,8 @@ begin
         ParamByName(I_DOSSIER).AsInteger := DMWeb.CleDossier;
       AIBQ_Tree.Open;
       Result := not AIBQ_Tree.IsEmpty;
+      if result then   // delphi bug
+       Next;
     except
       On E: Exception do
         ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_FullTree + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
@@ -1460,6 +1460,8 @@ begin
       ParamByName(I_PARQUI).AsInteger := ai_Sexe;
       ExecQuery;
       Result := not Eof;
+      if result then   // delphi bug
+       Next;
     except
       On E: Exception do
         ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_FullTree + #13#10 + #13#10 + fs_getCorrectString ( gs_AnceSTROWEB_cantOpenData ) + sDataBaseName + CST_ENDOFLINE + E.Message);
@@ -1537,7 +1539,7 @@ var
               End
              Else
               Begin
-                p_AddTabSheet(lt_SheetsGen, fs_RemplaceMsg ( gs_ANCESTROWEB_generation, [FieldByName(IBQ_NOM).AsString,IntToStr(trunc(af_Sosa)),FieldByName(IBQ_PRENOM).AsString]),
+                p_AddTabSheet(lt_SheetsGen, fs_RemplaceMsg ( gs_ANCESTROWEB_generation_child, [FieldByName(IBQ_NOM).AsString,IntToStr(trunc(af_Sosa)),FieldByName(IBQ_PRENOM).AsString]),
                                 ed_TreeName.Text + IntToStr(li_counter) + CST_EXTENSION_HTML, FieldByName(IBQ_CLE_FICHE).AsString )
               End;
              inc (li_counter);
@@ -2084,9 +2086,9 @@ const CST_DUMMY_COORD = 2000000;
         Begin
           ls_AName := FieldByName(IBQ_NOM).AsString;
           ls_City:= Trim ( FieldByName(IBQ_EV_IND_VILLE).AsString );
-          if  ( ls_AName <> '' ) 
-          and ( FieldIndex [ IBQ_EV_IND_LATITUDE ] >= 0 ) Then
-           if not FieldByName(IBQ_EV_IND_LATITUDE ).IsNull and not FieldByName(IBQ_EV_IND_LONGITUDE ).IsNull Then
+          if  ( ls_AName <> '' ) Then
+           if ( FieldIndex [ IBQ_EV_IND_LATITUDE ] >= 0 )
+           and not FieldByName(IBQ_EV_IND_LATITUDE ).IsNull and not FieldByName(IBQ_EV_IND_LONGITUDE ).IsNull Then
             Begin
               ld_latitude :=FieldByName(IBQ_EV_IND_LATITUDE ).AsDouble;
               ld_longitude:=FieldByName(IBQ_EV_IND_LONGITUDE).AsDouble;
@@ -2853,7 +2855,7 @@ var
         while not DMWeb.IBQ_ConjointSources.EOF do
           Begin
             ls_FileName := ls_FileNameBegin + IntToStr(li_i);
-            if fb_getMediaFile ( DMWeb.IBQ_ConjointSources, fFolderBasePath, ls_FileName ) Then
+            if fb_getMediaFile ( DMWeb.IBQ_ConjointSources, gs_RootPathForExport + CST_SUBDIR_HTML_ARCHIVE + DirectorySeparator, ls_FileName ) Then
               Begin
                 AppendStr( Result, ' - ' +fs_Create_Link ( CST_HTML_OUTDIR_SEPARATOR + CST_SUBDIR_HTML_ARCHIVE + CST_HTML_DIR_SEPARATOR + ls_FileName +CST_EXTENSION_JPEG,
                                                            gs_ANCESTROWEB_ArchiveLinkBegin + IntToStr(li_i),CST_HTML_TARGET_BLANK ));
@@ -2978,7 +2980,7 @@ var
            astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_UNION + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
                                 + fs_GetNameLink ( fs_RemplaceChar(ls_ASurname,' ', '_'), ls_ASurname));
            astl_HTMLAFolder.Add ( fs_CreateMarried ( not FieldByName(UNION_DATE_MARIAGE).IsNull ,
-                                                     FieldByName(UNION_DATE_MARIAGE).AsString ,
+                                                     fs_RemplaceChar ( FieldByName(UNION_DATE_MARIAGE).AsString, '/', '-' ) ,
                                                      FieldByName(UNION_MARIAGE_WRITEN).AsString ,
                                                      FieldByName(UNION_CLEF).AsInteger));
            astl_HTMLAFolder.Add ( CST_HTML_LI_END);
@@ -3006,12 +3008,12 @@ var
     astl_HTMLAFolder.Add(CST_HTML_TR_BEGIN + CST_HTML_TD_BEGIN );
     lstl_Tree := TStringList.Create;
     if fb_OpenTree(DMWeb.IBQ_TreeAsc, ai_CleFiche, 3)
-     Then lb_AddAncestry := DMWeb.IBQ_TreeAsc.RecordCount > 1
+     Then lb_AddAncestry := not DMWeb.IBQ_TreeAsc.EOF
      Else lb_AddAncestry := False;
      // descent
     if ab_show
     and fb_OpenTree(DMWeb.IBQ_TreeDesc, ai_CleFiche, 3)
-    and ( DMWeb.IBQ_TreeDesc.RecordCount > 1 ) then
+    and ( not DMWeb.IBQ_TreeDesc.EOF ) then
     begin
       li_generations :=
         fi_CreateHTMLTree(DMWeb.IBQ_TreeDesc, lstl_Tree, ai_CleFiche,
@@ -3366,11 +3368,6 @@ var
     li_i : Integer;
     ls_Text : String;
 Begin
-  if  ( as_Texte <> '' ) Then
-   Begin
-    Result := as_Texte [1] + '.';
-    Exit;
-   end;
   if not ch_NamesLink.Checked
   or ( Trim ( as_Texte ) = '' ) Then
    Begin

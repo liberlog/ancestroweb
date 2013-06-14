@@ -93,7 +93,7 @@ function fs_GetNodeLink ( const as_NodeLink : String; const ai_CurrentLevel : In
 Begin
   If length ( gs_HTMLTreeNodeLink ) >= ai_CurrentLevel + 1
     Then
-      If chr ( ord (as_NodeLink[ai_CurrentLevel + 1 ]) + 1 ) <> CST_TREE_LETTER_BLANK
+      If chr ( ord (gs_HTMLTreeNodeLink[ai_CurrentLevel + 1 ]) + 1 ) <> CST_TREE_LETTER_BLANK
         Then
           Begin
             gs_HTMLTreeNodeLink := Copy ( gs_HTMLTreeNodeLink, 1, ai_CurrentLevel )+ chr ( ord (gs_HTMLTreeNodeLink[ai_CurrentLevel + 1 ]) + 1 )

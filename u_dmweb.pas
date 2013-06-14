@@ -1,4 +1,4 @@
-unit U_DMWeb;
+﻿unit U_DMWeb;
 
 {$IFDEF FPC}
   {$MODE Delphi}
@@ -354,7 +354,7 @@ uses
 {$IFNDEF FPC}
   AncestroWeb_strings_delphi,
 {$ELSE}
-  AncestroWeb_strings,
+  AncestroWeb_strings, FileUtil,
 {$ENDIF}
   fonctions_init, fonctions_string,
   U_AncestroWeb;
@@ -472,6 +472,12 @@ begin
       Open;
       Locate(CLE_DOSSIER, fCleDossier, []);
       fFolderBasePath := Fields[2].AsString;
+      if ( fFolderBasePath > '' )
+      and ( fFolderBasePath [ length ( fFolderBasePath ) ] <> DirectorySeparator ) then
+        appendstr ( fFolderBasePath, DirectorySeparator );
+      if not DirectoryExistsUTF8 ( fFolderBasePath )
+        then
+         fFolderBasePath := fSoftUserPath ;
       fNom_Dossier := fs_getCorrectString(Fields[1].AsString);
     end;
   end;

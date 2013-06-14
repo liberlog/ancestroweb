@@ -45,7 +45,8 @@ resourcestring
   gs_ANCESTROWEB_Ancestry_Woman = 'Arrière @ARG';
   gs_ANCESTROWEB_ancestry_man_minus = 'arrière @ARG';
   gs_ANCESTROWEB_ancestry_woman_minus = 'arrière @ARG';
-  gs_ANCESTROWEB_generation = 'Génération @ARG (@ARG) Enfant @ARG';
+  gs_ANCESTROWEB_generation = ' génération';
+  gs_ANCESTROWEB_generation_child = 'Génération @ARG (@ARG) Enfant @ARG';
   gs_ANCESTROWEB_Search = 'Recherche';
   gs_ANCESTROWEB_SearchLong = 'Rechercher sur le site';
   gs_ANCESTROWEB_Ages   = 'Âges';
