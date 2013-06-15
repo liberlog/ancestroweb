@@ -169,7 +169,7 @@ type
     ExtImage3: TExtImage;
     fne_Export: TFileNameEdit;
     fne_import: TFileNameEdit;
-    FWEraseGedcom: TJvXPButton;
+    FWEraseGedcom: TFWErase;
     FWEraseImage: TFWErase;
     FWEraseImage2: TFWErase;
     FWEraseImage3: TFWErase;
@@ -467,6 +467,7 @@ uses  fonctions_init,
 //  windirs,
 {$ENDIF}
   fonctions_system,
+  fonctions_dbcomponents,
   fonctions_db,
   DefObjet,
   fonctions_languages,
@@ -550,7 +551,9 @@ end;
 // creating a HTML list of persons
 procedure p_createExistingPersons (const IBQ_FilesFiltered: TIBQuery );
 Begin
-  gDat_Existing_Persons := IBQ_FilesFiltered;
+  gDat_Existing_Persons := fdat_CloneDatasetWithSQL ( IBQ_FilesFiltered, DMWeb );
+  //ShowMessage(TIBQuery(gDat_Existing_Persons).SQL.Text);
+  gDat_Existing_Persons.open;
 end;
 
 function fb_IsCreatedPerson ( const ai_Key : Longint ):Boolean;
@@ -560,7 +563,6 @@ Begin
   if not Result Then
     with gDat_Existing_Persons do
       try
-         Open;
          Result := Locate(IBQ_CLE_FICHE,ai_Key,[]);
       Except
         ShowMessage ( gs_ANCESTROWEB_cantOpenData ) ;
@@ -716,21 +718,7 @@ end;
 
 procedure TF_AncestroWeb.FWPreview1Click(Sender: TObject);
 begin
-{$IFDEF FPC}
-  with DMWeb.Execute do
-    Begin
-      CommandLine :=
-      {$IFDEF LINUX}
-      'xdg-open'
-      {$ELSE}
-      'explorer'
-      {$ENDIF}
-      +' "' + de_ExportWeb.Directory + '"';
-      Execute;
-    end;
-{$ELSE}
-  ShellExecute(Handle,'open', PChar(de_ExportWeb.Text), nil, nil, SW_SHOWNORMAL) ;
-{$ENDIF}
+  p_OpenFileOrDirectory ( de_ExportWeb.Text );
 end;
 
 // procedure TF_AncestroWeb.ImageEdit2Change
@@ -799,6 +787,11 @@ end;
 procedure TF_AncestroWeb.bt_genClick(Sender: TObject);
 begin
   //  verifying
+  if not IBQ_Individu.Active Then
+  begin
+    ShowMessage(fs_getCorrectString ( gs_ANCESTROWEB_BaseNotOpened ));
+    Exit;
+  end;
   if length(FileCopy.Destination) < 6 then
   begin
     ShowMessage(fs_getCorrectString ( gs_AnceSTROWEB_ExportMoreThan5Chars));
@@ -834,23 +827,24 @@ begin
     p_genHtmlHome;
     if ch_Filtered.Checked then
     begin
-      if ch_ancestors.Checked Then
+      with DmWeb do
+       if ch_ancestors.Checked Then
         Begin
-          if fb_OpenTree(DmWeb.IBQ_TreeBysurnames, gi_CleFiche )
+          if fb_OpenTree(IBQ_TreeBysurnames, gi_CleFiche )
              then
                Begin
-                p_createLettersSheets( gt_SheetsLetters, DmWeb.IBQ_TreeBysurnames, gi_FilesPerPage, ed_FileBeginName.Text);
-                p_createExistingPersons ( DmWeb.IBQ_TreeBysurnames );
+                p_createLettersSheets( gt_SheetsLetters, IBQ_TreeBysurnames, gi_FilesPerPage, ed_FileBeginName.Text);
+                p_createExistingPersons ( IBQ_TreeBysurnames );
                end;
         end
        Else
-       Begin
-         if fb_OpenTree(DmWeb.IBQ_TreeDescBysurnames, gi_CleFiche ) then
+        Begin
+         if fb_OpenTree(IBQ_TreeDescBysurnames, gi_CleFiche ) then
            Begin
-             p_createLettersSheets( gt_SheetsLetters, DmWeb.IBQ_TreeDescBysurnames, gi_FilesPerPage, ed_FileBeginName.Text);
-             p_createExistingPersons ( DmWeb.IBQ_TreeDescBySurnames );
+             p_createLettersSheets( gt_SheetsLetters, IBQ_TreeDescBysurnames, gi_FilesPerPage, ed_FileBeginName.Text);
+             p_createExistingPersons ( IBQ_TreeDescBySurnames );
            end;
-       end;
+        end;
     end
     else
      Begin
@@ -914,6 +908,7 @@ begin
   finally
     ts_needed .Enabled:=True;
     ts_options.Enabled:=True;
+    gDat_Existing_Persons.Free;
     gDat_Existing_Persons := nil;
     gb_Generate := False;
     p_Setcomments (( gs_AnceSTROWEB_Finished )); // advert for user
@@ -1237,7 +1232,7 @@ var
   Begin
     if not ch_Filtered.Checked
     or ( ab_IsFirst )
-    or ( ab_asc = ch_ancestors.Checked ) // filtered by the correct direction ?
+    or ( ab_Asc = ch_ancestors.Checked )
     or fb_IsCreatedPerson(ai_Key)
     Then
       Begin
@@ -1959,22 +1954,22 @@ Begin
   li_OldCounterPages := 0;
   gi_PagesCount:=0;
   Finalize(at_SheetsLetters);
-  for lch_i := CST_HTML_BEGIN_LETTER to CST_HTML_END_LETTER do
-  if IBQ_FilesFiltered.Locate(IBQ_NOM, lch_i,
-    [loPartialKey, loCaseInsensitive]) then
-    begin
+  with IBQ_FilesFiltered do
+   for lch_i := CST_HTML_BEGIN_LETTER to CST_HTML_END_LETTER do
+    if Locate(IBQ_NOM, lch_i,[loPartialKey, loCaseInsensitive]) then
+     begin
       if li_i > 0 Then
-        li_OldCounterPages := IBQ_FilesFiltered.RecNo div ai_PerPage;
+        li_OldCounterPages := RecNo div ai_PerPage;
       lch_j := chr ( ord ( lch_i ) + 1 );
-      while not  IBQ_FilesFiltered.Locate(IBQ_NOM, lch_j,
+      while not  Locate(IBQ_NOM, lch_j,
       [loPartialKey, loCaseInsensitive]) and ( uppercase ( lch_j ) [ 1 ] > 'Z' )
        do lch_j := chr ( ord ( lch_i ) + 1 );
       if uppercase ( lch_j ) > 'Z'
-        then IBQ_FilesFiltered.Last;
+        then Last;
 
-      li_counter := IBQ_FilesFiltered.RecNo div ai_PerPage;
+      li_counter := RecNo div ai_PerPage;
 
-      if IBQ_FilesFiltered.RecNo mod ai_PerPage = 0
+      if RecNo mod ai_PerPage = 0
        Then li_modulo := 0
        Else li_modulo := 1;
 
@@ -1987,9 +1982,9 @@ Begin
 //           if pos ( 'GOURDEL', fs_getNameAndSurName(IBQ_FilesFiltered) ) > 0 Then
   //           Showmessage ( fs_RemplaceEspace (fs_getNameAndSurName(IBQ_FilesFiltered), '_' ) + ' ' + IntToStr(li_i) );
           p_AddTabSheetPage(at_SheetsLetters, high ( at_SheetsLetters ), as_BeginFile + IntToStr(li_i) + CST_EXTENSION_HTML, fs_RemplaceEspace (fs_getNameAndSurName(IBQ_FilesFiltered), '_' ));
-          inc ( gi_PagesCount );
          end;
-    end;
+     end;
+  gi_PagesCount := round ( IBQ_FilesFiltered.RecordCount / ai_PerPage+0.5);
 end;
 
 // function fs_GetNameLink
@@ -2687,7 +2682,7 @@ var
          end ;
       end;
     lstl_HTMLAList.Add( CST_HTML_TABLE_END + CST_HTML_BR);
-    if li_CounterPages - 1 > 0 Then
+    if li_CounterPages > 1 Then
       lstl_HTMLAList.Add ( fs_CreatePrevNext ( li_CounterPages - 1, CST_PAGE_PREVIOUS, '../', ed_ListsBeginName.Text ));
     if lb_next Then
       lstl_HTMLAList.Add ( fs_CreatePrevNext ( li_CounterPages + 1, CST_PAGE_NEXT, '../', ed_ListsBeginName.Text ));
@@ -3112,8 +3107,8 @@ var
           Break;
          end ;
       end;
-      lstl_HTMLAFolder.Add(CST_HTML_Paragraph_BEGIN + fs_RemplaceMsg(gs_ANCESTROWEB_Page_of,[IntToStr(li_CounterPages+1),IntToStr(gi_PagesCount)])+ CST_HTML_Paragraph_END );
-      if li_CounterPages - 1 > 0 Then
+      lstl_HTMLAFolder.Add(CST_HTML_CENTER_BEGIN + fs_RemplaceMsg(gs_ANCESTROWEB_Page_of,[IntToStr(li_CounterPages+1),IntToStr(gi_PagesCount)])+ CST_HTML_CENTER_END );
+      if li_CounterPages > 1 Then
         lstl_HTMLAFolder.Add ( fs_CreatePrevNext ( li_CounterPages - 1, CST_PAGE_PREVIOUS, '../', ed_FileBeginName.Text ));
       if lb_next Then
         lstl_HTMLAFolder.Add ( fs_CreatePrevNext ( li_CounterPages + 1, CST_PAGE_NEXT, '../', ed_FileBeginName.Text ));

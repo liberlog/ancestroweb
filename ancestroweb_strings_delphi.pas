@@ -11,6 +11,7 @@ uses
 
 resourcestring
   gs_ANCESTROWEB_From_to_persons = '@ARG à @ARG';
+  gs_ANCESTROWEB_BaseNotOpened = 'Vous n''avez ouvert aucune donnée.';
   gs_ANCESTROWEB_1_person  = '1 individu';  gs_ANCESTROWEB_LittleDateFormat = 'dd-mm-yyyy';
   gs_ANCESTROWEB_Language = 'Français';
   gs_ANCESTROWEB_DoEraseOldExport = 'Effacer le répertoire ';
@@ -83,6 +84,7 @@ resourcestring
   gs_ANCESTROWEB_Files = 'Fiches';
   gs_ANCESTROWEB_Files_Long = 'Trouver un individu';
   gs_ANCESTROWEB_List = 'Liste';
+  gs_ANCESTROWEB_Page_of = 'Page @ARG de @ARG';
   gs_ANCESTROWEB_Person = 'Individu';
   gs_ANCESTROWEB_Phase = 'Étape : ';
   gs_ANCESTROWEB_Born = 'Naissance';
