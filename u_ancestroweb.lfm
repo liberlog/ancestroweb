@@ -70,9 +70,9 @@ object F_AncestroWeb: TF_AncestroWeb
     Height = 366
     Top = 0
     Width = 640
-    ActivePage = ts_Gen
+    ActivePage = ts_options
     Align = alClient
-    TabIndex = 0
+    TabIndex = 2
     TabOrder = 1
     OnChange = PCPrincipalChange
     object ts_Gen: TTabSheet
@@ -1064,9 +1064,9 @@ object F_AncestroWeb: TF_AncestroWeb
         Height = 337
         Top = 0
         Width = 632
-        ActivePage = ts_tree
+        ActivePage = ts_Surnames
         Align = alClient
-        TabIndex = 0
+        TabIndex = 1
         TabOrder = 0
         object ts_tree: TTabSheet
           Caption = 'Arbre'
@@ -1225,10 +1225,10 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ch_genMap: TJvXPCheckbox
               Left = 4
-              Height = 17
-              Top = 110
+              Height = 33
+              Top = 102
               Width = 328
-              Caption = 'Générer la carte des patronymes'
+              Caption = 'Générer la carte des patronymes (Coordonnées GPS nécessaires)'
               TabOrder = 3
               Checked = True
               State = cbChecked

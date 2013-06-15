@@ -435,6 +435,7 @@ var
   gs_Ancestro : String;
   {$ENDIF}
   gi_CleFiche: integer = 0;
+  gi_PagesCount : Longint;
   gs_LinkGedcom: string;
   gs_RootPathForExport: string;
   gt_SheetsLetters: TAHTMLULTabSheet;
@@ -1956,6 +1957,7 @@ var li_Counter, li_OldCounterPages,  li_i,  li_modulo: Longint;
 Begin
   li_Counter := 0;
   li_OldCounterPages := 0;
+  gi_PagesCount:=0;
   Finalize(at_SheetsLetters);
   for lch_i := CST_HTML_BEGIN_LETTER to CST_HTML_END_LETTER do
   if IBQ_FilesFiltered.Locate(IBQ_NOM, lch_i,
@@ -1985,6 +1987,7 @@ Begin
 //           if pos ( 'GOURDEL', fs_getNameAndSurName(IBQ_FilesFiltered) ) > 0 Then
   //           Showmessage ( fs_RemplaceEspace (fs_getNameAndSurName(IBQ_FilesFiltered), '_' ) + ' ' + IntToStr(li_i) );
           p_AddTabSheetPage(at_SheetsLetters, high ( at_SheetsLetters ), as_BeginFile + IntToStr(li_i) + CST_EXTENSION_HTML, fs_RemplaceEspace (fs_getNameAndSurName(IBQ_FilesFiltered), '_' ));
+          inc ( gi_PagesCount );
          end;
     end;
 end;
@@ -3044,94 +3047,98 @@ var
   begin
     p_CreateKeyWords;
     lstl_HTMLAFolder := TStringList.Create;
-    ls_ASurnameBegin := IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString;
-    ls_ASurnameSurname := fs_RemplaceEspace ( fs_getNameAndSurName(IBQ_FilesFiltered), '_' );
-    if (ls_ASurnameBegin > '') and ( ls_ASurnameSurname > '' ) then
-      p_SelectTabSheet(gt_SheetsLetters,ls_ASurnameSurname[1],ls_ASurnameSurname); // current letter sheet
-    lstl_HTMLAFolder.Text := fs_CreateULTabsheets(gt_SheetsLetters, '', CST_HTML_SUBMENU); // Creating the letters' sheets
-    if (ls_ASurnameBegin > '') and ( ls_ASurnameSurname > '' ) then
-      p_SelectTabSheet(gt_SheetsLetters,ls_ASurnameSurname[1],ls_ASurnameSurname, False);  // reiniting for next page
-    lb_next := True;
-    lstl_HTMLAFolder.Add( CST_HTML_CENTER_BEGIN );
-    with IBQ_FilesFiltered do
-    for li_i := 1 to gi_FilesPerPage do
-    begin
-      p_IncProgressInd; // growing the second counter
-      ls_ASurnameSurname := fs_RemplaceEspace ( fs_getNameAndSurName(IBQ_FilesFiltered), '_' );
-      // adding html head's meta-keywords
-      p_addKeyWord(FieldByName(IBQ_NOM).AsString, '-'); // adding a head's meta keyword
-      lb_show := fb_ShowYear( FieldByName(IBQ_ANNEE_NAISSANCE).asinteger );
-      if lb_show then
-        p_addKeyWord(FieldByName(IBQ_PRENOM).AsString); // adding a head's meta keyword
-      li_CleFiche := FieldByName(IBQ_CLE_FICHE).AsInteger;
-      ls_NewSurname := FieldByName(IBQ_NOM).AsString;
-      if (ls_NewSurname <> ls_ASurname) Then
-       Begin
-        if (ls_ASurname = '') or ((length(ls_NewSurname) > 0) and
-          (ls_NewSurname[1] <> ls_ASurname[1])) then
-          lstl_HTMLAFolder.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + ls_NewSurname[1] + '" />')
-        else if (ls_ASurname = '') then
-          lstl_HTMLAFolder.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"A" />');
-        if length ( ls_NewSurname ) > 1 Then
-          lstl_HTMLAFolder.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + ls_NewSurname + '" />');
-       end;
-      ls_ASurname := ls_NewSurname;
-      case FieldByName(IBQ_SEXE).AsInteger of
-       IBQ_SEXE_MAN   : ls_NewSurname := CST_FILE_MAN;
-       IBQ_SEXE_WOMAN : ls_NewSurname := CST_FILE_WOMAN;
-       else
-         ls_NewSurname := 'file';
-      end;
-      lstl_HTMLAFolder.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + ls_ASurnameSurname + '" />');
-      lstl_HTMLAFolder.Add(CST_HTML_BR + fs_CreateElementWithId ( CST_HTML_TABLE , ls_NewSurname + CST_FILE_Number + IntToStr(li_i) , CST_HTML_CLASS_EQUAL ) +
-        CST_HTML_TR_BEGIN + fs_Create_TD ( ls_NewSurname + CST_FILE_Number + IntToStr(li_i), CST_HTML_CLASS_EQUAL, 2 ));
-      lstl_HTMLAFolder.Add( CST_HTML_DIV_BEGIN + '<' + CST_HTML_H2 + CST_HTML_ID_EQUAL +'"subtitle">' + CST_HTML_IMAGE_SRC + '../'
-                           + CST_SUBDIR_HTML_IMAGES + '/' + ls_NewSurname + CST_EXTENSION_GIF + '" />' + fs_getLinkedSurName ( ls_ASurname ) +
-        ' ' + fs_getLinkedName ( FieldByName(IBQ_PRENOM).AsString, lstl_listWords ) + CST_HTML_H2_BEGIN + CST_HTML_DIV_END);
-      lstl_HTMLAFolder.Add(CST_HTML_TD_END + CST_HTML_TR_END  + CST_HTML_TR_BEGIN  + CST_HTML_TD_BEGIN);
-      if lb_show then
-       Begin
-        p_AddInfos ( lstl_HTMLAFolder, li_CleFiche, li_i );
-        lstl_HTMLAFolder.Add(CST_HTML_TD_END);
-        lstl_HTMLAFolder.Add( fs_AddImageTable(fs_AddPhoto( li_CleFiche, fs_getaltPhoto(IBQ_FilesFiltered), ls_ImagesDir)));
-       end
-      Else
-        lstl_HTMLAFolder.Add(CST_HTML_TD_END);
-      lstl_HTMLAFolder.Add( CST_HTML_TR_END );
-      p_AddTrees ( lstl_HTMLAFolder, li_CleFiche, li_i, lb_show );
-      lstl_HTMLAFolder.Add( CST_HTML_TABLE_END + CST_HTML_BR);
-      ls_ASurnameEnd := FieldByName(IBQ_NOM).AsString;
-      Next;
-      if EOF then
-       Begin
-        lb_next:=False;
-        Break;
-       end ;
-    end;
-    if li_CounterPages - 1 > 0 Then
-      lstl_HTMLAFolder.Add ( fs_CreatePrevNext ( li_CounterPages - 1, CST_PAGE_PREVIOUS, '../', ed_FileBeginName.Text ));
-    if lb_next Then
-      lstl_HTMLAFolder.Add ( fs_CreatePrevNext ( li_CounterPages + 1, CST_PAGE_NEXT, '../', ed_FileBeginName.Text ));
-    lstl_HTMLAFolder.Add ( CST_HTML_CENTER_END );
-    p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_SUBFILES, me_Description.Lines.Text,
-      ( gs_AnceSTROWEB_Files ) + ' - ' + ls_ASurnameBegin +
-      ( gs_AnceSTROWEB_At ) + ls_ASurnameEnd, '', '', gs_LinkGedcom, '..' + CST_HTML_DIR_SEPARATOR);
-
-    // saving the page
-    ls_destination := gs_RootPathForExport +
-      CST_SUBDIR_HTML_FILES + DirectorySeparator + ed_FileBeginName.Text + IntToStr(
-      li_CounterPages) + CST_EXTENSION_HTML;
     try
-      lstl_HTMLAFolder.SaveToFile(ls_destination);
-    except
-      On E: Exception do
+      ls_ASurnameBegin := IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString;
+      ls_ASurnameSurname := fs_RemplaceEspace ( fs_getNameAndSurName(IBQ_FilesFiltered), '_' );
+      if (ls_ASurnameBegin > '') and ( ls_ASurnameSurname > '' ) then
+        p_SelectTabSheet(gt_SheetsLetters,ls_ASurnameSurname[1],ls_ASurnameSurname); // current letter sheet
+      lstl_HTMLAFolder.Text := fs_CreateULTabsheets(gt_SheetsLetters, '', CST_HTML_SUBMENU); // Creating the letters' sheets
+      if (ls_ASurnameBegin > '') and ( ls_ASurnameSurname > '' ) then
+        p_SelectTabSheet(gt_SheetsLetters,ls_ASurnameSurname[1],ls_ASurnameSurname, False);  // reiniting for next page
+      lb_next := True;
+      lstl_HTMLAFolder.Add( CST_HTML_CENTER_BEGIN );
+      with IBQ_FilesFiltered do
+      for li_i := 1 to gi_FilesPerPage do
       begin
-        ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Files + CST_ENDOFLINE + CST_ENDOFLINE + fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
-        Abort;
+        p_IncProgressInd; // growing the second counter
+        ls_ASurnameSurname := fs_RemplaceEspace ( fs_getNameAndSurName(IBQ_FilesFiltered), '_' );
+        // adding html head's meta-keywords
+        p_addKeyWord(FieldByName(IBQ_NOM).AsString, '-'); // adding a head's meta keyword
+        lb_show := fb_ShowYear( FieldByName(IBQ_ANNEE_NAISSANCE).asinteger );
+        if lb_show then
+          p_addKeyWord(FieldByName(IBQ_PRENOM).AsString); // adding a head's meta keyword
+        li_CleFiche := FieldByName(IBQ_CLE_FICHE).AsInteger;
+        ls_NewSurname := FieldByName(IBQ_NOM).AsString;
+        if (ls_NewSurname <> ls_ASurname) Then
+         Begin
+          if (ls_ASurname = '') or ((length(ls_NewSurname) > 0) and
+            (ls_NewSurname[1] <> ls_ASurname[1])) then
+            lstl_HTMLAFolder.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + ls_NewSurname[1] + '" />')
+          else if (ls_ASurname = '') then
+            lstl_HTMLAFolder.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"A" />');
+          if length ( ls_NewSurname ) > 1 Then
+            lstl_HTMLAFolder.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + ls_NewSurname + '" />');
+         end;
+        ls_ASurname := ls_NewSurname;
+        case FieldByName(IBQ_SEXE).AsInteger of
+         IBQ_SEXE_MAN   : ls_NewSurname := CST_FILE_MAN;
+         IBQ_SEXE_WOMAN : ls_NewSurname := CST_FILE_WOMAN;
+         else
+           ls_NewSurname := 'file';
+        end;
+        lstl_HTMLAFolder.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + ls_ASurnameSurname + '" />');
+        lstl_HTMLAFolder.Add(CST_HTML_BR + fs_CreateElementWithId ( CST_HTML_TABLE , ls_NewSurname + CST_FILE_Number + IntToStr(li_i) , CST_HTML_CLASS_EQUAL ) +
+          CST_HTML_TR_BEGIN + fs_Create_TD ( ls_NewSurname + CST_FILE_Number + IntToStr(li_i), CST_HTML_CLASS_EQUAL, 2 ));
+        lstl_HTMLAFolder.Add( CST_HTML_DIV_BEGIN + '<' + CST_HTML_H2 + CST_HTML_ID_EQUAL +'"subtitle">' + CST_HTML_IMAGE_SRC + '../'
+                             + CST_SUBDIR_HTML_IMAGES + '/' + ls_NewSurname + CST_EXTENSION_GIF + '" />' + fs_getLinkedSurName ( ls_ASurname ) +
+          ' ' + fs_getLinkedName ( FieldByName(IBQ_PRENOM).AsString, lstl_listWords ) + CST_HTML_H2_BEGIN + CST_HTML_DIV_END);
+        lstl_HTMLAFolder.Add(CST_HTML_TD_END + CST_HTML_TR_END  + CST_HTML_TR_BEGIN  + CST_HTML_TD_BEGIN);
+        if lb_show then
+         Begin
+          p_AddInfos ( lstl_HTMLAFolder, li_CleFiche, li_i );
+          lstl_HTMLAFolder.Add(CST_HTML_TD_END);
+          lstl_HTMLAFolder.Add( fs_AddImageTable(fs_AddPhoto( li_CleFiche, fs_getaltPhoto(IBQ_FilesFiltered), ls_ImagesDir)));
+         end
+        Else
+          lstl_HTMLAFolder.Add(CST_HTML_TD_END);
+        lstl_HTMLAFolder.Add( CST_HTML_TR_END );
+        p_AddTrees ( lstl_HTMLAFolder, li_CleFiche, li_i, lb_show );
+        lstl_HTMLAFolder.Add( CST_HTML_TABLE_END + CST_HTML_BR);
+        ls_ASurnameEnd := FieldByName(IBQ_NOM).AsString;
+        Next;
+        if EOF then
+         Begin
+          lb_next:=False;
+          Break;
+         end ;
       end;
+      lstl_HTMLAFolder.Add(CST_HTML_Paragraph_BEGIN + fs_RemplaceMsg(gs_ANCESTROWEB_Page_of,[IntToStr(li_CounterPages+1),IntToStr(gi_PagesCount)])+ CST_HTML_Paragraph_END );
+      if li_CounterPages - 1 > 0 Then
+        lstl_HTMLAFolder.Add ( fs_CreatePrevNext ( li_CounterPages - 1, CST_PAGE_PREVIOUS, '../', ed_FileBeginName.Text ));
+      if lb_next Then
+        lstl_HTMLAFolder.Add ( fs_CreatePrevNext ( li_CounterPages + 1, CST_PAGE_NEXT, '../', ed_FileBeginName.Text ));
+      lstl_HTMLAFolder.Add ( CST_HTML_CENTER_END );
+      p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_SUBFILES, me_Description.Lines.Text,
+        ( gs_AnceSTROWEB_Files ) + ' - ' + ls_ASurnameBegin +
+        ( gs_AnceSTROWEB_At ) + ls_ASurnameEnd, '', '', gs_LinkGedcom, '..' + CST_HTML_DIR_SEPARATOR);
+
+      // saving the page
+      ls_destination := gs_RootPathForExport +
+        CST_SUBDIR_HTML_FILES + DirectorySeparator + ed_FileBeginName.Text + IntToStr(
+        li_CounterPages) + CST_EXTENSION_HTML;
+      try
+        lstl_HTMLAFolder.SaveToFile(ls_destination);
+      except
+        On E: Exception do
+        begin
+          ShowMessage(gs_ANCESTROWEB_Phase + gs_ANCESTROWEB_Files + CST_ENDOFLINE + CST_ENDOFLINE + fs_getCorrectString ( gs_ANCESTROWEB_cantCreateHere ) + ls_destination + CST_ENDOFLINE + E.Message);
+          Abort;
+        end;
+      end;
+    finally
+      lstl_HTMLAFolder.Free;
+      Inc(li_CounterPages);
     end;
-    lstl_HTMLAFolder.Free;
-    Inc(li_CounterPages);
   end;
 
 begin
