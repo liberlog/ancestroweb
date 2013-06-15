@@ -517,9 +517,7 @@ Begin
                  if ab_NoLink
                   Then ls_Link := ''
                   else ls_Link := as_Subdir + s_Link;
-                 if ( high ( a_Pages ) >= 0 )
-                  Then AppendStr(Result,fs_Create_Link( ls_link + '#' + s_Title ,  s_Title, as_Target ))
-                  Else AppendStr(Result,fs_Create_Link( ls_link,  s_Title, as_Target ));
+                 AppendStr(Result,fs_Create_Link( ls_link + '#' + s_Title ,  s_Title, as_Target ))
                end;
               if ab_ShowPages
               and ( high ( a_Pages ) >= 0 ) Then

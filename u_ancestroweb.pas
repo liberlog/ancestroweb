@@ -556,7 +556,7 @@ Begin
   gDat_Existing_Persons.open;
 end;
 
-function fb_IsCreatedPerson ( const ai_Key : Longint ):Boolean;
+function fb_IsCreatedPerson ( const ai_Key : Int64 ):Boolean;
 var li_i : Longint;
 Begin
   Result := not Assigned(gDat_Existing_Persons);
@@ -1947,43 +1947,54 @@ procedure TF_AncestroWeb.p_createLettersSheets ( var at_SheetsLetters : TAHTMLUL
                                                  const IBQ_FilesFiltered: TIBQuery;
                                                  const ai_PerPage : Integer;
                                                  const as_BeginFile : String );
-var li_Counter, li_OldCounterPages,  li_i,  li_modulo: Longint;
+var li_Counter, li_OldCounterPages,  li_i: Longint;
     lch_i, lch_j : char;
 Begin
   li_Counter := 0;
   li_OldCounterPages := 0;
   gi_PagesCount:=0;
   Finalize(at_SheetsLetters);
+  lch_i := CST_HTML_BEGIN_LETTER;
   with IBQ_FilesFiltered do
-   for lch_i := CST_HTML_BEGIN_LETTER to CST_HTML_END_LETTER do
-    if Locate(IBQ_NOM, lch_i,[loPartialKey, loCaseInsensitive]) then
-     begin
-      if li_i > 0 Then
-        li_OldCounterPages := RecNo div ai_PerPage;
-      lch_j := chr ( ord ( lch_i ) + 1 );
-      while not  Locate(IBQ_NOM, lch_j,
-      [loPartialKey, loCaseInsensitive]) and ( uppercase ( lch_j ) [ 1 ] > 'Z' )
-       do lch_j := chr ( ord ( lch_i ) + 1 );
-      if uppercase ( lch_j ) > 'Z'
-        then Last;
+   while lch_i <= CST_HTML_END_LETTER do
+    Begin
+      if Locate(IBQ_NOM, lch_i,[loPartialKey, loCaseInsensitive]) then
+       begin
+        if li_i > 0 Then
+          li_OldCounterPages := RecNo div ai_PerPage;
+        lch_j := chr ( ord ( lch_i ) + 1 );
+        while not  Locate(IBQ_NOM, lch_j,
+        [loPartialKey, loCaseInsensitive]) and ( uppercase ( lch_j ) [ 1 ] <= CST_HTML_END_LETTER )
+         do lch_j := chr ( ord ( lch_j ) + 1 );
+        if uppercase ( lch_j ) > 'Z'
+          then Last;
 
-      li_counter := RecNo div ai_PerPage;
-
-      if RecNo mod ai_PerPage = 0
-       Then li_modulo := 0
-       Else li_modulo := 1;
-
-      p_AddTabSheet(at_SheetsLetters, lch_i,
-        as_BeginFile + IntToStr(li_OldCounterPages) + CST_EXTENSION_HTML );
-      if li_Counter > 0 Then
-        for li_i := li_OldCounterPages to li_Counter + li_modulo - 1 do
-         Begin
-          IBQ_FilesFiltered.RecNo:= li_i * ai_PerPage ;
-//           if pos ( 'GOURDEL', fs_getNameAndSurName(IBQ_FilesFiltered) ) > 0 Then
-  //           Showmessage ( fs_RemplaceEspace (fs_getNameAndSurName(IBQ_FilesFiltered), '_' ) + ' ' + IntToStr(li_i) );
-          p_AddTabSheetPage(at_SheetsLetters, high ( at_SheetsLetters ), as_BeginFile + IntToStr(li_i) + CST_EXTENSION_HTML, fs_RemplaceEspace (fs_getNameAndSurName(IBQ_FilesFiltered), '_' ));
-         end;
-     end;
+        li_counter := RecNo div ai_PerPage;
+        {
+        if li_counter > li_OldCounterPages Then
+          with FieldByName(IBQ_NOM) do
+           if  ( AsString > '' )
+           and ( AsString [1] = lch_j ) Then
+            Begin
+             IBQ_FilesFiltered.RecNo:= li_counter * ( ai_PerPage + 1 );
+             if  ( AsString > '' )
+             and ( AsString [1] < lch_j ) Then
+              Begin
+               p_AddTabSheetPage(at_SheetsLetters, high ( at_SheetsLetters ), as_BeginFile + IntToStr(li_Counter+1) + CST_EXTENSION_HTML, fs_RemplaceEspace (fs_getNameAndSurName(IBQ_FilesFiltered), '_' ));
+              end
+            End;
+         }
+        p_AddTabSheet(at_SheetsLetters, lch_i,
+          as_BeginFile + IntToStr(li_OldCounterPages) + CST_EXTENSION_HTML );
+        if li_OldCounterPages < li_Counter Then
+          for li_i := li_OldCounterPages to li_Counter do
+           Begin
+            IBQ_FilesFiltered.RecNo:= li_i * ai_PerPage + 1 ;
+            p_AddTabSheetPage(at_SheetsLetters, high ( at_SheetsLetters ), as_BeginFile + IntToStr(li_i) + CST_EXTENSION_HTML, fs_RemplaceEspace (fs_getNameAndSurName(IBQ_FilesFiltered), '_' ));
+           end;
+       end;
+      lch_i := chr ( ord ( lch_i ) + 1 );
+    end;
   gi_PagesCount := round ( IBQ_FilesFiltered.RecordCount / ai_PerPage+0.5);
 end;
 
@@ -2954,7 +2965,8 @@ var
       // deathday
       astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBS_Fiche, IBQ_DATE_DECES, IBQ_ANNEE_DECES, IBQ_LIEU_DECES, ( gs_ANCESTROWEB_ManDiedOn ), ( gs_ANCESTROWEB_WomanDiedOn )) + CST_HTML_BR);
       p_AddJobs ( astl_HTMLAFolder, ai_CleFiche, ai_NoInPage );
-      if not DMWeb.IBS_Conjoint.Eof Then  // Husband
+      with DMWeb,IBS_Conjoint do
+       if not Eof Then  // Husband
         Begin
           // title
          astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_H3    , CST_FILE_UNION + 's'
@@ -2965,12 +2977,14 @@ var
          astl_HTMLAFolder.Add ( CST_HTML_H3_END );  // title end
          astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_UL, CST_FILE_UNION + 's'
                                                             + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL));
-         while not DMWeb.IBS_Conjoint.EOF do  // adding all husbands
-         with DMWeb.IBS_Conjoint do
+         while not EOF do  // adding all husbands
           Begin
-           ls_ASurname := fs_getNameAndSurName ( DMWeb.IBS_Conjoint );
-           astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_UNION + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL)
-                                + fs_GetNameLink ( fs_RemplaceChar(ls_ASurname,' ', '_'), ls_ASurname));
+           ls_ASurname := fs_getNameAndSurName ( IBS_Conjoint );
+           astl_HTMLAFolder.Add ( fs_CreateElementWithId ( CST_HTML_LI, CST_FILE_UNION + CST_FILE_Number + IntToStr( ai_NoInPage ),CST_HTML_CLASS_EQUAL));
+           if not ch_Filtered.Checked
+           or fb_IsCreatedPerson(FieldByName(IBQ_CLE_FICHE).AsInt64)
+            Then astl_HTMLAFolder.Add ( fs_GetNameLink ( fs_RemplaceChar(ls_ASurname,' ', '_'), ls_ASurname))
+            Else astl_HTMLAFolder.Add ( ls_ASurname );
            astl_HTMLAFolder.Add ( fs_CreateMarried ( not FieldByName(UNION_DATE_MARIAGE).IsNull ,
                                                      fs_RemplaceChar ( FieldByName(UNION_DATE_MARIAGE).AsString, '/', '-' ) ,
                                                      FieldByName(UNION_MARIAGE_WRITEN).AsString ,
@@ -3037,21 +3051,11 @@ var
   var
     lstl_HTMLAFolder: TStringList;
     ls_NewSurname, ls_ASurnameBegin, ls_ASurnameSurname, ls_ASurnameEnd: string;
-    li_i, li_CleFiche: longint;
+    li_CleFiche: longint;
     lb_next, lb_show : Boolean ;
-  begin
-    p_CreateKeyWords;
-    lstl_HTMLAFolder := TStringList.Create;
-    try
-      ls_ASurnameBegin := IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString;
-      ls_ASurnameSurname := fs_RemplaceEspace ( fs_getNameAndSurName(IBQ_FilesFiltered), '_' );
-      if (ls_ASurnameBegin > '') and ( ls_ASurnameSurname > '' ) then
-        p_SelectTabSheet(gt_SheetsLetters,ls_ASurnameSurname[1],ls_ASurnameSurname); // current letter sheet
-      lstl_HTMLAFolder.Text := fs_CreateULTabsheets(gt_SheetsLetters, '', CST_HTML_SUBMENU); // Creating the letters' sheets
-      if (ls_ASurnameBegin > '') and ( ls_ASurnameSurname > '' ) then
-        p_SelectTabSheet(gt_SheetsLetters,ls_ASurnameSurname[1],ls_ASurnameSurname, False);  // reiniting for next page
-      lb_next := True;
-      lstl_HTMLAFolder.Add( CST_HTML_CENTER_BEGIN );
+    procedure p_ScrollAPage;
+    var li_i : integer;
+    Begin
       with IBQ_FilesFiltered do
       for li_i := 1 to gi_FilesPerPage do
       begin
@@ -3107,8 +3111,24 @@ var
           Break;
          end ;
       end;
+    end;
+
+  begin
+    p_CreateKeyWords;
+    lstl_HTMLAFolder := TStringList.Create;
+    try
+      ls_ASurnameBegin := IBQ_FilesFiltered.FieldByName(IBQ_NOM).AsString;
+      ls_ASurnameSurname := fs_RemplaceEspace ( fs_getNameAndSurName(IBQ_FilesFiltered), '_' );
+      if (ls_ASurnameBegin > '') and ( ls_ASurnameSurname > '' ) then
+        p_SelectTabSheet(gt_SheetsLetters,ls_ASurnameSurname[1],ls_ASurnameSurname); // current letter sheet
+      lstl_HTMLAFolder.Text := fs_CreateULTabsheets(gt_SheetsLetters, '', CST_HTML_SUBMENU); // Creating the letters' sheets
+      if (ls_ASurnameBegin > '') and ( ls_ASurnameSurname > '' ) then
+        p_SelectTabSheet(gt_SheetsLetters,ls_ASurnameSurname[1],ls_ASurnameSurname, False);  // reiniting for next page
+      lb_next := True;
+      lstl_HTMLAFolder.Add( CST_HTML_CENTER_BEGIN );
       lstl_HTMLAFolder.Add(CST_HTML_CENTER_BEGIN + fs_RemplaceMsg(gs_ANCESTROWEB_Page_of,[IntToStr(li_CounterPages+1),IntToStr(gi_PagesCount)])+ CST_HTML_CENTER_END );
-      if li_CounterPages > 1 Then
+      p_ScrollAPage;
+      if li_CounterPages > 0 Then
         lstl_HTMLAFolder.Add ( fs_CreatePrevNext ( li_CounterPages - 1, CST_PAGE_PREVIOUS, '../', ed_FileBeginName.Text ));
       if lb_next Then
         lstl_HTMLAFolder.Add ( fs_CreatePrevNext ( li_CounterPages + 1, CST_PAGE_NEXT, '../', ed_FileBeginName.Text ));
