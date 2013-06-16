@@ -2037,10 +2037,12 @@ const CST_DUMMY_COORD = 2000000;
         p_Setcomments(gs_ANCESTROWEB_MapProblemNoPostalCode);
         Exit;
       end;
+    if FileExistsUTF8(fs_getSoftDir+CST_MANIA+'.exe') Then
+     Exit;
     if ( as_pays = '' ) Then
      as_pays := gs_ANCESTROWEB_MapCountry;
     with DMWeb.IBS_City do
-      Begin
+      try
         Close;
         ParamByName(I_CP  ).AsString:=as_codepostal;
         ParamByName(I_PAYS).AsString:=as_Pays;
@@ -2055,6 +2057,7 @@ const CST_DUMMY_COORD = 2000000;
         ad_longitude:= FieldByName(IBQ_CP_LONGITUDE).AsFloat;
         as_City     := FieldByName(IBQ_CP_VILLE    ).AsString;
         Close;
+      Except
       end;
   end;
 
