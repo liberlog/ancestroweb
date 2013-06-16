@@ -64,7 +64,8 @@ const
                                              FileUnit : 'U_AncestroWeb' ;
                                              Owner : 'Matthieu Giroux' ;
                                              Comment : 'Composant de copie multi-platformes.' ;
-                                             BugsStory : '1.3.0.2 : Better splitted tree and better progress.' +#13#10
+                                             BugsStory : '1.3.0.3 : Restoring Ancestromania integration.' +#13#10
+                                                       + '1.3.0.2 : Better splitted tree and better progress.' +#13#10
                                                        + '1.3.0.1 : Finalizing files.' +#13#10
                                                        + '1.3.0.0 : Restructure, adding searchedit and more web sites bases.' +#13#10
                                                        + '1.2.6.1 : Large database.' +#13#10
@@ -93,7 +94,7 @@ const
                                                        + '1.0.0.0 : Integrating in Freelogy' +#13#10
                                                        + '0.9.9.0 : First published version' ;
                                              UnitType : CST_TYPE_UNITE_APPLI ;
-                                             Major : 1 ; Minor : 3 ; Release : 0 ; Build : 2 );
+                                             Major : 1 ; Minor : 3 ; Release : 0 ; Build : 3 );
 {$ENDIF}
 
 
@@ -2037,7 +2038,7 @@ const CST_DUMMY_COORD = 2000000;
         p_Setcomments(gs_ANCESTROWEB_MapProblemNoPostalCode);
         Exit;
       end;
-    if FileExistsUTF8(fs_getSoftDir+CST_MANIA+'.exe') Then
+    if not gb_Logie Then
      Exit;
     if ( as_pays = '' ) Then
      as_pays := gs_ANCESTROWEB_MapCountry;
@@ -3949,13 +3950,13 @@ begin
   with lreg_Registry do
   try
     RootKey := HKEY_CURRENT_USER;
-  {  if not fb_ReadAncestroKey (CST_MANIA) Then
-     Begin}
+    if not fb_ReadAncestroKey (CST_MANIA) Then
+     Begin
        gs_Ancestro := CST_LOGIE;
        if fb_ReadAncestroKey (CST_LOGIE ) Then
-         gb_Logie:=True;
-//     End
-//     else gs_Ancestro := CST_MANIA;
+         gb_Logie:=True
+     End
+     else gs_Ancestro := CST_MANIA;
     fKeyRegistry:='\SOFTWARE\'+gs_Ancestro+'\Settings';
     if OpenKeyReadOnly(fKeyRegistry) then
     begin
