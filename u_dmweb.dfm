@@ -263,6 +263,7 @@ object DMWeb: TDMWeb
       'select'
       '     u.union_clef,'
       '     c.nom,'
+      '     c.cle_fiche,'
       '     c.sexe,'
       '     c.prenom,'
       '     f.EV_FAM_CP,'

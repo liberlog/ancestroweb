@@ -64,7 +64,9 @@ const
                                              FileUnit : 'U_AncestroWeb' ;
                                              Owner : 'Matthieu Giroux' ;
                                              Comment : 'Composant de copie multi-platformes.' ;
-                                             BugsStory : '1.3.0.0 : Restructure, adding searchedit and more web sites bases.' +#13#10
+                                             BugsStory : '1.3.0.2 : Better separated tree and better progress.' +#13#10
+                                                       + '1.3.0.1 : Finalizing files.' +#13#10
+                                                       + '1.3.0.0 : Restructure, adding searchedit and more web sites bases.' +#13#10
                                                        + '1.2.6.1 : Large database.' +#13#10
                                                        + '1.2.6.0 : No map in PHP.' +#13#10
                                                        + '1.2.5.0 : Separate map.' +#13#10
@@ -91,7 +93,7 @@ const
                                                        + '1.0.0.0 : Integrating in Freelogy' +#13#10
                                                        + '0.9.9.0 : First published version' ;
                                              UnitType : CST_TYPE_UNITE_APPLI ;
-                                             Major : 1 ; Minor : 2 ; Release : 6 ; Build : 1 );
+                                             Major : 1 ; Minor : 3 ; Release : 0 ; Build : 2 );
 {$ENDIF}
 
 
@@ -553,9 +555,15 @@ procedure p_createExistingPersons (const IBQ_FilesFiltered: TIBQuery );
 Begin
   gDat_Existing_Persons := fdat_CloneDatasetWithSQL ( IBQ_FilesFiltered, DMWeb );
   //ShowMessage(TIBQuery(gDat_Existing_Persons).SQL.Text);
-  gDat_Existing_Persons.open;
+  try
+    gDat_Existing_Persons.open;
+  Except
+    ShowMessage ( gs_ANCESTROWEB_cantOpenData ) ;
+  end;
 end;
 
+// function fb_IsCreatedPerson
+// verify if person is in the list or in the files
 function fb_IsCreatedPerson ( const ai_Key : Int64 ):Boolean;
 var li_i : Longint;
 Begin
@@ -1040,7 +1048,7 @@ begin
       Begin
        p_AddTabSheet(gt_TabSheets, ( gs_AnceSTROWEB_FullTree ), CST_FILE_TREE +
            DirectorySeparator + ed_TreeName.Text + '0' + CST_EXTENSION_HTML);
-       Inc ( Result, sp_gentree.Value );
+       Inc ( Result, sp_gentree.Value * 2 );
       end
      else
       Begin
@@ -1571,6 +1579,7 @@ var
        End;
   end;
   procedure p_prepareSeparate;
+  var li_i : Integer;
   Begin
     if ab_Separate Then
      Begin
@@ -1584,6 +1593,10 @@ var
        lstl_HTMLTree.Text := fs_CreateULTabsheets(lt_SheetsGen,
          '', CST_HTML_SUBMENU);
        lstl_HTMLTree.Add(CST_HTML_CENTER_END);
+       for li_i := 1 to sp_gentree.value * 2 do
+          lstl_HTMLTree.Add ( CST_HTML_BR );
+       lstl_HTMLTree.Add ( CST_HTML_BR+CST_HTML_BR + '<'+CST_HTML_DIV+' class="begin" id="'+gs_TreeLetterBegin+'">'+fs_Create_Tree_Image('a'+CST_EXTENSION_GIF));
+       lstl_HTMLTree.Add(CST_HTML_DIV_END);
      end;
 
   end;
@@ -1615,7 +1628,6 @@ begin
                if ch_ancestors.Checked
                  Then li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree2, StrToInt ( s_info ),not cb_treeWithoutJavascript.Checked)
                  Else li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree2, StrToInt ( s_info ),not cb_treeWithoutJavascript.Checked,True,True,False,IBQ_TQ_NUM_SOSA,False);
-               lstl_HTMLTree2.Insert(0, '<br><br><div class="begin" id="'+gs_TreeLetterBegin+'">'+fs_Create_Tree_Image('a'+CST_EXTENSION_GIF)+'</div><br>');
                lstl_HTMLTree2.Insert(0, fs_Format_Lines(me_HeadTree.Lines.Text));
                lstl_HTMLTree2.Insert(0,lstl_HTMLTree.Text);
                p_CreateAHtmlFile(lstl_HTMLTree2, CST_SUBDIR_HTML_TREE, me_Description.Lines.Text,
@@ -1956,9 +1968,8 @@ Begin
   Finalize(at_SheetsLetters);
   lch_i := CST_HTML_BEGIN_LETTER;
   with IBQ_FilesFiltered do
-   while lch_i <= CST_HTML_END_LETTER do
-    Begin
-      if Locate(IBQ_NOM, lch_i,[loPartialKey, loCaseInsensitive]) then
+   for lch_i := CST_HTML_BEGIN_LETTER to CST_HTML_END_LETTER do
+     if Locate(IBQ_NOM, lch_i,[loPartialKey, loCaseInsensitive]) then
        begin
         if li_i > 0 Then
           li_OldCounterPages := RecNo div ai_PerPage;
@@ -1993,8 +2004,6 @@ Begin
             p_AddTabSheetPage(at_SheetsLetters, high ( at_SheetsLetters ), as_BeginFile + IntToStr(li_i) + CST_EXTENSION_HTML, fs_RemplaceEspace (fs_getNameAndSurName(IBQ_FilesFiltered), '_' ));
            end;
        end;
-      lch_i := chr ( ord ( lch_i ) + 1 );
-    end;
   gi_PagesCount := round ( IBQ_FilesFiltered.RecordCount / ai_PerPage+0.5);
 end;
 
@@ -2959,11 +2968,11 @@ var
       DMWeb.IBS_Conjoint.Close;
       DMWeb.IBS_Conjoint.ParamByName ( I_CLEF    ).AsInteger:=ai_CleFiche;
       DMWeb.IBS_Conjoint.ExecQuery;
-      // Jobs ?
       // birthday
       astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBS_Fiche, IBQ_DATE_NAISSANCE, IBQ_ANNEE_NAISSANCE, IBQ_LIEU_NAISSANCE, ( gs_ANCESTROWEB_ManBornOn ), ( gs_ANCESTROWEB_WomanBornOn )));
       // deathday
       astl_HTMLAFolder.Add ( fs_addDateAndCity ( DMWeb.IBS_Fiche, IBQ_DATE_DECES, IBQ_ANNEE_DECES, IBQ_LIEU_DECES, ( gs_ANCESTROWEB_ManDiedOn ), ( gs_ANCESTROWEB_WomanDiedOn )) + CST_HTML_BR);
+      // Jobs ?
       p_AddJobs ( astl_HTMLAFolder, ai_CleFiche, ai_NoInPage );
       with DMWeb,IBS_Conjoint do
        if not Eof Then  // Husband
