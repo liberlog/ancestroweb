@@ -78,17 +78,15 @@
         <PackageName Value="LCL"/>
       </Item12>
     </RequiredPackages>
-    <Units Count="100">
+    <Units Count="101">
       <Unit0>
         <Filename Value="AncestroWeb.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AncestroWeb"/>
-        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="26" Y="5"/>
         <UsageCount Value="200"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit0>
       <Unit1>
@@ -98,11 +96,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="U_AncestroWeb"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="64"/>
-        <CursorPos X="66" Y="91"/>
+        <TopLine Value="1932"/>
+        <CursorPos X="3" Y="1883"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -898,10 +895,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="U_DMWeb"/>
-        <EditorIndex Value="3"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="61" Y="13"/>
+        <TopLine Value="374"/>
+        <CursorPos X="51" Y="374"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -960,124 +958,138 @@
         <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit99>
+      <Unit100>
+        <Filename Value="../ibx/runtime/IBDatabase.pas"/>
+        <UnitName Value="IBDatabase"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="228"/>
+        <CursorPos X="21" Y="234"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit100>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1550" Column="31" TopLine="1527"/>
+        <Caret Line="1561" Column="31" TopLine="1538"/>
       </Position1>
       <Position2>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1551" Column="31" TopLine="1528"/>
+        <Caret Line="1568" Column="38" TopLine="1545"/>
       </Position2>
       <Position3>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1561" Column="31" TopLine="1538"/>
+        <Caret Line="1574" Column="39" TopLine="1551"/>
       </Position3>
       <Position4>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1568" Column="38" TopLine="1545"/>
+        <Caret Line="1580" Column="16" TopLine="1570"/>
       </Position4>
       <Position5>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1574" Column="39" TopLine="1551"/>
+        <Caret Line="1591" Column="63" TopLine="1570"/>
       </Position5>
       <Position6>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1580" Column="16" TopLine="1570"/>
+        <Caret Line="1625" Column="1" TopLine="1610"/>
       </Position6>
       <Position7>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1591" Column="63" TopLine="1570"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position7>
       <Position8>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1625" Column="1" TopLine="1610"/>
+        <Caret Line="1590" Column="66" TopLine="1574"/>
       </Position8>
       <Position9>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="1658" Column="30" TopLine="1653"/>
       </Position9>
       <Position10>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1590" Column="66" TopLine="1574"/>
+        <Caret Line="76" Column="21" TopLine="73"/>
       </Position10>
       <Position11>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1658" Column="30" TopLine="1653"/>
+        <Caret Line="386" Column="30" TopLine="363"/>
       </Position11>
       <Position12>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="76" Column="21" TopLine="73"/>
+        <Caret Line="387" Column="25" TopLine="364"/>
       </Position12>
       <Position13>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="386" Column="30" TopLine="363"/>
+        <Caret Line="1651" Column="21" TopLine="1647"/>
       </Position13>
       <Position14>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="387" Column="25" TopLine="364"/>
+        <Caret Line="1652" Column="24" TopLine="1647"/>
       </Position14>
       <Position15>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1651" Column="21" TopLine="1647"/>
+        <Caret Line="1653" Column="42" TopLine="1647"/>
       </Position15>
       <Position16>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1652" Column="24" TopLine="1647"/>
+        <Caret Line="1660" Column="28" TopLine="1647"/>
       </Position16>
       <Position17>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1653" Column="42" TopLine="1647"/>
+        <Caret Line="1675" Column="18" TopLine="1651"/>
       </Position17>
       <Position18>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1660" Column="28" TopLine="1647"/>
+        <Caret Line="1472" Column="48" TopLine="1468"/>
       </Position18>
       <Position19>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1675" Column="18" TopLine="1651"/>
+        <Caret Line="1474" Column="31" TopLine="1468"/>
       </Position19>
       <Position20>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1472" Column="48" TopLine="1468"/>
+        <Caret Line="1573" Column="3" TopLine="1573"/>
       </Position20>
       <Position21>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1474" Column="31" TopLine="1468"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position21>
       <Position22>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1573" Column="3" TopLine="1573"/>
+        <Caret Line="316" Column="32" TopLine="315"/>
       </Position22>
       <Position23>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="1734" Column="18" TopLine="1726"/>
       </Position23>
       <Position24>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="316" Column="32" TopLine="315"/>
+        <Caret Line="2040" Column="53" TopLine="2033"/>
       </Position24>
       <Position25>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1734" Column="18" TopLine="1726"/>
+        <Caret Line="2051" Column="33" TopLine="2036"/>
       </Position25>
       <Position26>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="2040" Column="53" TopLine="2033"/>
+        <Caret Line="38" Column="33" TopLine="22"/>
       </Position26>
       <Position27>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="2051" Column="33" TopLine="2036"/>
+        <Caret Line="2040" Column="13" TopLine="2016"/>
       </Position27>
       <Position28>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="38" Column="33" TopLine="22"/>
+        <Caret Line="69" Column="23" TopLine="64"/>
       </Position28>
       <Position29>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="2040" Column="13" TopLine="2016"/>
+        <Filename Value="../Ancestromania/Sources/Web/u_dmweb.pas"/>
+        <Caret Line="1" Column="25" TopLine="1"/>
       </Position29>
+      <Position30>
+        <Filename Value="../Ancestromania/Sources/Web/u_dmweb.pas"/>
+        <Caret Line="380" Column="33" TopLine="375"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
@@ -1099,9 +1111,6 @@
       <SmallerCode Value="True"/>
     </CodeGeneration>
     <Linking>
-      <Debugging>
-        <GenerateDebugInfo Value="False"/>
-      </Debugging>
       <LinkSmart Value="True"/>
       <Options>
         <Win32>
@@ -1121,4 +1130,15 @@
       <CompilerPath Value="$(CompPath)"/>
     </Other>
   </CompilerOptions>
+  <Debugging>
+    <BreakPoints Count="1">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="u_ancestroweb.pas"/>
+        <Line Value="1906"/>
+      </Item1>
+    </BreakPoints>
+  </Debugging>
 </CONFIG>
