@@ -1109,7 +1109,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Caption = 'All'#233'ger l'#39'arbre en enlevant la partie dynamique'
               TabOrder = 3
             end
-            object ch_SeparateTree: TJvXPCheckbox
+            object ch_SplittedTree: TJvXPCheckbox
               Left = 5
               Top = 147
               Width = 177
@@ -1196,7 +1196,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Color = clBtnFace
               ParentColor = False
             end
-            object ch_SeparateMap: TJvXPCheckbox
+            object ch_SplittedMap: TJvXPCheckbox
               Left = 5
               Top = 276
               Width = 141
@@ -2000,4 +2000,4 @@ object F_AncestroWeb: TF_AncestroWeb
     Left = 312
     Top = 104
   end
-end
+end

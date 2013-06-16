@@ -153,7 +153,7 @@ object F_AncestroWeb: TF_AncestroWeb
             MaxLength = 0
             TabOrder = 5
           end
-          object FWEraseGedcom: TJvXPButton
+          object FWEraseGedcom: TFWErase
             Left = 246
             Height = 22
             Top = 193
@@ -407,14 +407,6 @@ object F_AncestroWeb: TF_AncestroWeb
                 SearchDisplay = 'NOM'
                 SearchList = 'NOM,PRENOM'
                 SearchSource = ds_Individu
-              end
-              object Label54: TLabel
-                Left = 5
-                Height = 17
-                Top = 50
-                Width = 50
-                Caption = 'Origine :'
-                ParentColor = False
               end
             end
           end
@@ -1003,14 +995,6 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 14
               Text = 'Sans accent avec une majuscule'
             end
-            object Label56: TLabel
-              Left = 5
-              Height = 17
-              Top = 155
-              Width = 513
-              Caption = 'Pour les bases, le libellé s''ajoute par défaut à la fin. Sinon placez [first_letter] ou [label].'
-              ParentColor = False
-            end
             object ch_Comptage: TJvXPCheckbox
               Left = 4
               Height = 13
@@ -1137,7 +1121,7 @@ object F_AncestroWeb: TF_AncestroWeb
               TabOrder = 3
               UseDockManager = False
             end
-            object ch_SeparateTree: TJvXPCheckbox
+            object ch_SplittedTree: TJvXPCheckbox
               Left = 4
               Height = 17
               Top = 126
@@ -1277,7 +1261,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Caption = 'Description :'
               ParentColor = False
             end
-            object ch_SeparateMap: TJvXPCheckbox
+            object ch_SplittedMap: TJvXPCheckbox
               Left = 4
               Height = 17
               Top = 220
@@ -1989,4 +1973,4 @@ object F_AncestroWeb: TF_AncestroWeb
     left = 208
     top = 104
   end
-end
+end

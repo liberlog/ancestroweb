@@ -64,13 +64,13 @@ const
                                              FileUnit : 'U_AncestroWeb' ;
                                              Owner : 'Matthieu Giroux' ;
                                              Comment : 'Composant de copie multi-platformes.' ;
-                                             BugsStory : '1.3.0.2 : Better separated tree and better progress.' +#13#10
+                                             BugsStory : '1.3.0.2 : Better splitted tree and better progress.' +#13#10
                                                        + '1.3.0.1 : Finalizing files.' +#13#10
                                                        + '1.3.0.0 : Restructure, adding searchedit and more web sites bases.' +#13#10
                                                        + '1.2.6.1 : Large database.' +#13#10
                                                        + '1.2.6.0 : No map in PHP.' +#13#10
-                                                       + '1.2.5.0 : Separate map.' +#13#10
-                                                       + '1.2.4.0 : Separate tree.' +#13#10
+                                                       + '1.2.5.0 : Splitted map.' +#13#10
+                                                       + '1.2.4.0 : Splitted tree.' +#13#10
                                                        + '1.2.3.6 : Sorting letter sheets.' +#13#10
                                                        + '1.2.3.5 : Obvious array not created bug.' +#13#10
                                                        + '1.2.3.4 : noone bug.' +#13#10
@@ -111,7 +111,7 @@ type
     cb_NamesAccents: TComboBox;
     cb_JobsAccents: TComboBox;
     cb_SurnamesAccents: TComboBox;
-    ch_SeparateTree: TJvXPCheckbox;
+    ch_SplittedTree: TJvXPCheckbox;
     ch_ancestors: TJvXPCheckBox;
     ch_CitiesLink: TJvXPCheckBox;
     ch_ContactIdentify: TJvXPCheckBox;
@@ -133,7 +133,7 @@ type
     ch_JobsLink: TJvXPCheckBox;
     ch_ShowMainFile: TJvXPCheckBox;
     ch_SurnamesLink: TJvXPCheckBox;
-    ch_SeparateMap: TJvXPCheckbox;
+    ch_SplittedMap: TJvXPCheckbox;
     ch_Comptage: TJvXPCheckBox;
     FileCopy: TExtFileCopy;
     FileIniCopy: TExtFileCopy;
@@ -406,7 +406,7 @@ type
     procedure p_genPhpContact;
     procedure p_genHtmlHome;
     procedure p_genHTMLTitle;
-    procedure p_genHTMLTree ( const IBQ_tree : TIBQuery  ; const ab_Separate : Boolean ; const ai_generationSeparate : Integer );
+    procedure p_genHTMLTree ( const IBQ_tree : TIBQuery  ; const ab_Splitted : Boolean ; const ai_generationSplitted : Integer );
     procedure p_ImageEditChange(const aei_Image: TExtImage; const Sender: TObject);
     procedure p_ImageEditErase(const afne_EditImage: TFileNameEdit);
     procedure p_IncProgressBar;
@@ -862,8 +862,8 @@ begin
 
     if ch_genTree.Checked then
       if ch_ancestors.Checked
-       Then p_genHTMLTree ( DMWeb.IBQ_TreeAsc , ch_SeparateTree.Checked, sp_gentree.Value )
-       Else p_genHTMLTree ( DMWeb.IBQ_TreeDesc, ch_SeparateTree.Checked, sp_gentree.Value );
+       Then p_genHTMLTree ( DMWeb.IBQ_TreeAsc , ch_SplittedTree.Checked, sp_gentree.Value )
+       Else p_genHTMLTree ( DMWeb.IBQ_TreeDesc, ch_SplittedTree.Checked, sp_gentree.Value );
     if ch_genages.Checked then
       p_genHtmlAges;
     if ch_genjobs.Checked then
@@ -1043,7 +1043,7 @@ begin
   begin
     Inc(Result, CST_PROGRESS_COUNTER_TREE);
     p_setCorrectFileName(ed_TreeName, CST_FILE_TREE);
-    if ch_SeparateTree.Checked
+    if ch_SplittedTree.Checked
      then
       Begin
        p_AddTabSheet(gt_TabSheets, ( gs_AnceSTROWEB_FullTree ), CST_FILE_TREE +
@@ -1066,7 +1066,7 @@ begin
     begin
       Inc(Result, CST_PROGRESS_COUNTER_MAP);
       p_setCorrectFileName(ed_MapFileName, CST_FILE_MAP);
-      if ch_SeparateMap.Checked
+      if ch_SplittedMap.Checked
        Then
         Begin
          p_AddTabSheet(gt_TabSheets, ( gs_ANCESTROWEB_Map ), ed_MapFileName.Text + '0' + CST_EXTENSION_HTML);
@@ -1469,7 +1469,7 @@ end;
 
 // procedure TF_AncestroWeb.p_genHTMLTree
 // creating the main interactive HTML Tree
-procedure TF_AncestroWeb.p_genHTMLTree ( const IBQ_tree : TIBQuery ; const ab_Separate : Boolean ; const ai_generationSeparate : Integer  );
+procedure TF_AncestroWeb.p_genHTMLTree ( const IBQ_tree : TIBQuery ; const ab_Splitted : Boolean ; const ai_generationSplitted : Integer  );
 var
   lstl_HTMLTree, lstl_HTMLTree2: TStringList;
   ls_destination,ls_idSosa: string;
@@ -1529,7 +1529,7 @@ var
     if (ch_ancestors.Checked and Locate(ls_IdSosa, af_Sosa, [])) or
       (not ch_ancestors.Checked and Locate(ls_IdSosa, as_Aboville, [])) then
         begin
-          if ai_generation = ai_generationSeparate Then
+          if ai_generation = ai_generationSplitted Then
            Begin
              if ch_ancestors.Checked then
               Begin
@@ -1544,7 +1544,7 @@ var
             End;
            if ch_ancestors.Checked then
             Begin
-             if ai_generation < ai_generationSeparate Then
+             if ai_generation < ai_generationSplitted Then
               begin    // next parents
                 lf_SosaPere := af_Sosa * 2;
                 lf_SosaMere := af_Sosa * 2 + 1;
@@ -1565,7 +1565,7 @@ var
                   ls_newAboville := as_aboville + '1';
                   if FieldByName(ls_IdSosa).AsString = ls_newAboville then  // next record of childs
                     begin
-                     if ai_generation < ai_generationSeparate Then
+                     if ai_generation < ai_generationSplitted Then
                        p_CreateSheets(ai_generation+1,af_Sosa, ls_newAboville );
                       // verify if there is another sister or brother
                       ls_newAboville :=
@@ -1578,10 +1578,10 @@ var
             end;
        End;
   end;
-  procedure p_prepareSeparate;
+  procedure p_prepareSplitted;
   var li_i : Integer;
   Begin
-    if ab_Separate Then
+    if ab_Splitted Then
      Begin
        if ch_ancestors.Checked
         Then ls_idSosa := IBQ_TQ_SOSA
@@ -1612,13 +1612,13 @@ begin
     if fb_OpenTree(IBQ_Tree, gi_CleFiche)
      then
       try
-        p_prepareSeparate;
+        p_prepareSplitted;
         pb_ProgressInd.MaxValue := IBQ_Tree.RecordCount;
         p_IncProgressBar; // growing the counter
         if not ch_Filtered.Checked and not
           IBQ_Tree.Locate(IBQ_CLE_FICHE, gi_CleFiche, []) then
           Exit;
-        if ab_Separate Then
+        if ab_Splitted Then
          Begin
            for li_counter := 0 to high ( lt_SheetsGen ) do
             with lt_SheetsGen [ li_counter ] do
@@ -2363,7 +2363,7 @@ const CST_DUMMY_COORD = 2000000;
       // create map file
       p_createACase ( lstl_AllSurnames, '' );
       // creating PHP file
-      if ch_SeparateMap.Checked Then
+      if ch_SplittedMap.Checked Then
         lstl_HTMLAFolder.Insert(0,fs_CreateULTabsheets(gt_SheetsMapGroup, '', CST_HTML_SUBMENU));
       p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_MAP, me_MapHead.Lines.Text,
          gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map_Long, gs_LinkGedcom,'',CST_EXTENSION_HTML);
@@ -2420,7 +2420,7 @@ const CST_DUMMY_COORD = 2000000;
             Exit;
            End;
        End;
-    if ch_SeparateMap.Checked Then
+    if ch_SplittedMap.Checked Then
      with IBS_MapFiltered do
        Begin
          p_CreateSheets;
@@ -2471,7 +2471,7 @@ const CST_DUMMY_COORD = 2000000;
             Begin
              p_createACase (lstl_AFile, ls_NewSurname);
             end;
-          if ch_SeparateMap.Checked
+          if ch_SplittedMap.Checked
           and ( li_j > 1) and ( li_recno = li_recordcount div ( li_j * 2 )) Then
            Begin
             p_createFileMap ( sp_groupMap.Value-li_j );
@@ -2482,7 +2482,7 @@ const CST_DUMMY_COORD = 2000000;
           Next;
 
         end;
-      if ch_SeparateMap.Checked
+      if ch_SplittedMap.Checked
        Then p_createFileMap ( sp_groupMap.Value-1 )
        Else p_createFileMap (-1);
      finally
@@ -2575,7 +2575,7 @@ begin
         lstl_HTMLAFolder.Add ( fs_GetNameLink ( ls_NewSurname, ls_NewSurname, CST_SUBDIR_HTML_FILES + CST_HTML_DIR_SEPARATOR ) +' ( '+ IBS_FilesFiltered.FieldByName( IBQ_COUNTER ).AsString );
         if  ch_genMap.Checked // Creating optionnal map button
         and ( fi_findName(ls_NewSurname)>-1)
-        Then if ch_SeparateMap.Checked Then
+        Then if ch_SplittedMap.Checked Then
          Begin
           for li_i := 0 to high ( gt_SheetsMapGroup ) do
            if ls_NewSurname <= gt_SheetsMapGroup [ li_i ].s_info Then
