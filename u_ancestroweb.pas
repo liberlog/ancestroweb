@@ -2036,8 +2036,10 @@ const CST_DUMMY_COORD = 2000000;
         p_Setcomments(gs_ANCESTROWEB_MapProblemNoPostalCode);
         Exit;
       end;
+    {$IFDEF WINDOWS}
     if not gb_Logie Then
      Exit;
+    {$ENDIF}
     if ( as_pays = '' ) Then
      as_pays := gs_ANCESTROWEB_MapCountry;
     with DMWeb.IBS_City do

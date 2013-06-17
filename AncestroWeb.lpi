@@ -99,8 +99,8 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="4077"/>
-        <CursorPos X="1" Y="4106"/>
+        <TopLine Value="2010"/>
+        <CursorPos X="104" Y="2040"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -981,7 +981,7 @@
         <UsageCount Value="10"/>
       </Unit102>
     </Units>
-    <JumpHistory Count="19" HistoryIndex="18">
+    <JumpHistory Count="21" HistoryIndex="20">
       <Position1>
         <Filename Value="u_ancestroweb.pas"/>
         <Caret Line="2040" Column="53" TopLine="2033"/>
@@ -1056,8 +1056,16 @@
       </Position18>
       <Position19>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="4106" Column="1" TopLine="4077"/>
+        <Caret Line="4106" Column="1" TopLine="4052"/>
       </Position19>
+      <Position20>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2039" Column="17" TopLine="2010"/>
+      </Position20>
+      <Position21>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="3946" Column="1" TopLine="3899"/>
+      </Position21>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
@@ -1079,6 +1087,9 @@
       <SmallerCode Value="True"/>
     </CodeGeneration>
     <Linking>
+      <Debugging>
+        <GenerateDebugInfo Value="False"/>
+      </Debugging>
       <LinkSmart Value="True"/>
       <Options>
         <Win32>
@@ -1109,4 +1120,4 @@
       </Item1>
     </BreakPoints>
   </Debugging>
-</CONFIG>
+</CONFIG>
