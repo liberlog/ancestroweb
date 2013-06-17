@@ -138,6 +138,7 @@ type
     ch_Comptage: TJvXPCheckBox;
     FileCopy: TExtFileCopy;
     FileIniCopy: TExtFileCopy;
+    Label54: TLabel;
     sp_groupMap: TSpinEdit;
     DBGrid1: TDBGrid;
     ds_Individu: TDatasource;
@@ -1272,8 +1273,6 @@ var
         Begin
           li_LocalPreLevel := li_LocalLevel;
           li_LocalLevel := abs(IBQ_Tree.FieldByName(IBQ_NIVEAU).AsInteger)-li_levelOrigin;
-          if not ab_Asc then
-            Dec(li_LocalLevel);
           if ab_NotFirst then
             Dec(li_LocalLevel);
           if ( li_LocalLevel > Result )
@@ -1364,8 +1363,8 @@ begin
     // first node
     IBQ_Tree.Locate(IBQ_CLE_FICHE, ai_Clefiche, []);
     li_LevelOrigin := abs(IBQ_Tree.FieldByName(IBQ_NIVEAU).AsInteger);
-    if ( li_levelOrigin > 0 ) then
-     dec ( li_levelOrigin );
+//    if ( li_levelOrigin > 0 ) then
+//     dec ( li_levelOrigin );
     li_Clefiche:=ai_Clefiche;
     lb_foundARecord := False;
     // create the tree
@@ -1652,7 +1651,6 @@ begin
           if ch_ancestors.Checked
             Then li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree, gi_CleFiche,not cb_treeWithoutJavascript.Checked)
             Else li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree, gi_CleFiche,not cb_treeWithoutJavascript.Checked,True,True,False,IBQ_TQ_NUM_SOSA,False);
-          lstl_HTMLTree.Insert(0, '<div class="begin" id="'+gs_TreeLetterBegin+'">'+fs_Create_Tree_Image('a'+CST_EXTENSION_GIF)+'</div><br>');
           lstl_HTMLTree.Insert(0, fs_Format_Lines(me_HeadTree.Lines.Text));
           p_CreateAHtmlFile(lstl_HTMLTree, CST_SUBDIR_HTML_TREE, me_Description.Lines.Text,
             ( gs_AnceSTROWEB_FamilyTree ), gs_AnceSTROWEB_FullTree, fs_GetTitleTree ( gs_AnceSTROWEB_Ancestry, li_generation), gs_LinkGedcom, '../');

@@ -1,7 +1,7 @@
 object F_AncestroWeb: TF_AncestroWeb
-  Left = 210
+  Left = 346
   Height = 396
-  Top = 126
+  Top = 182
   Width = 640
   ActiveControl = PCPrincipal
   BorderIcons = []
@@ -71,9 +71,9 @@ object F_AncestroWeb: TF_AncestroWeb
     Height = 366
     Top = 0
     Width = 640
-    ActivePage = ts_options
+    ActivePage = ts_Gen
     Align = alClient
-    TabIndex = 2
+    TabIndex = 0
     TabOrder = 1
     OnChange = PCPrincipalChange
     object ts_Gen: TTabSheet
@@ -363,6 +363,14 @@ object F_AncestroWeb: TF_AncestroWeb
                 SearchDisplay = 'NOM'
                 SearchList = 'NOM,PRENOM'
                 SearchSource = ds_Individu
+              end
+              object Label54: TLabel
+                Left = 5
+                Height = 17
+                Top = 47
+                Width = 50
+                Caption = 'Origine :'
+                ParentColor = False
               end
             end
           end
