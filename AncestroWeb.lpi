@@ -100,7 +100,7 @@
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="2010"/>
-        <CursorPos X="104" Y="2040"/>
+        <CursorPos X="75" Y="2027"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -1087,9 +1087,6 @@
       <SmallerCode Value="True"/>
     </CodeGeneration>
     <Linking>
-      <Debugging>
-        <GenerateDebugInfo Value="False"/>
-      </Debugging>
       <LinkSmart Value="True"/>
       <Options>
         <Win32>
@@ -1120,4 +1117,4 @@
       </Item1>
     </BreakPoints>
   </Debugging>
-</CONFIG>
+</CONFIG>
