@@ -64,7 +64,8 @@ const
                                              FileUnit : 'U_AncestroWeb' ;
                                              Owner : 'Matthieu Giroux' ;
                                              Comment : 'Composant de copie multi-platformes.' ;
-                                             BugsStory : '1.3.0.3 : Restoring Ancestromania integration.' +#13#10
+                                             BugsStory : '1.3.0.4 : Correct jobs images.' +#13#10
+                                                       + '1.3.0.3 : Restoring Ancestromania integration.' +#13#10
                                                        + '1.3.0.2 : Better splitted tree and better progress.' +#13#10
                                                        + '1.3.0.1 : Finalizing files.' +#13#10
                                                        + '1.3.0.0 : Restructure, adding searchedit and more web sites bases.' +#13#10
@@ -94,7 +95,7 @@ const
                                                        + '1.0.0.0 : Integrating in Freelogy' +#13#10
                                                        + '0.9.9.0 : First published version' ;
                                              UnitType : CST_TYPE_UNITE_APPLI ;
-                                             Major : 1 ; Minor : 3 ; Release : 0 ; Build : 3 );
+                                             Major : 1 ; Minor : 3 ; Release : 0 ; Build : 4 );
 {$ENDIF}
 
 
@@ -1622,6 +1623,7 @@ begin
          Begin
            for li_counter := 0 to high ( lt_SheetsGen ) do
             with lt_SheetsGen [ li_counter ] do
+            if IBQ_Tree.Locate(IBQ_CLE_FICHE, StrToInt ( s_info ),[]) then
              if s_info <> '' Then
              Begin
                lstl_HTMLTree2.Text:='';
@@ -3643,7 +3645,7 @@ var
               p_addKeyWord(ls_City); // adding a head's meta keyword
               ls_City:=fs_getLinkedCity(ls_city);
             end;
-          ls_Job:=fs_getLinkedJob(ls_Job,li_Linecounter);
+          ls_Job:=fs_getLinkedJob(ls_Job,li_countTotal);
           // growing
           li_Linecounter := FieldByName ( IBQ_COUNTER ).AsInteger ;
           // showing job ant city
@@ -3950,7 +3952,8 @@ begin
   with lreg_Registry do
   try
     RootKey := HKEY_CURRENT_USER;
-    if not fb_ReadAncestroKey (CST_MANIA) Then
+    if not FileExistsUTF8 ( fs_getSoftDir + CST_MANIA + '.exe' )
+    or not fb_ReadAncestroKey (CST_MANIA) Then
      Begin
        gs_Ancestro := CST_LOGIE;
        if fb_ReadAncestroKey (CST_LOGIE ) Then
