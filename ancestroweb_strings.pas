@@ -78,8 +78,6 @@ resourcestring
                                 +'Sinon il doit avoir des descendants.';
   gs_ANCESTROWEB_WomanDiedOn = 'Décédée le ';
   gs_ANCESTROWEB_ManDiedOn = 'Décédé le ';
-  gs_ANCESTROWEB_Surnames = 'Patronymes';
-  gs_ANCESTROWEB_Surnames_Long = 'Scruter les patronymes';
   gs_ANCESTROWEB_Contact = 'Contact';
   gs_ANCESTROWEB_Files = 'Fiches';
   gs_ANCESTROWEB_Files_Long = 'Trouver un individu';
@@ -104,9 +102,11 @@ resourcestring
   gs_ANCESTROWEB_Ages_Long  = 'Statistiques de longévités';
   gs_ANCESTROWEB_The_Medias = 'les médias : ';
   gs_ANCESTROWEB_Family_On = 'Union le ';
+  gs_ANCESTROWEB_Surnames = 'Patronymes';
+  gs_ANCESTROWEB_Surnames_Long = 'Scruter les patronymes';
+  gs_ANCESTROWEB_Statistics = 'Statistiques';
   gs_ANCESTROWEB_Union = 'Union';
   gs_ANCESTROWEB_Unions = 'Unions';
-  gs_ANCESTROWEB_Statistics = 'Statistiques';
   gs_ANCESTROWEB_NoData = 'Pas de base de données ouvertes';
   gs_ANCESTROWEB_ArchiveLinkBegin = 'A';
 

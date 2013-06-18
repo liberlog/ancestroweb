@@ -553,9 +553,9 @@ begin
 end;
 
 
-// procedure TF_AncestroWeb.p_createExistingPersons
+// procedure TF_AncestroWeb.p_clonePersonVerify
 // creating a HTML list of persons
-procedure p_createExistingPersons (const IBQ_FilesFiltered: TIBQuery );
+procedure p_clonePersonVerify (const IBQ_FilesFiltered: TIBQuery );
 Begin
   gDat_Existing_Persons := fdat_CloneDatasetWithSQL ( IBQ_FilesFiltered, DMWeb );
   //ShowMessage(TIBQuery(gDat_Existing_Persons).SQL.Text);
@@ -846,7 +846,7 @@ begin
              then
                Begin
                 p_createLettersSheets( gt_SheetsLetters, IBQ_TreeBysurnames, gi_FilesPerPage, ed_FileBeginName.Text);
-                p_createExistingPersons ( IBQ_TreeBysurnames );
+                p_clonePersonVerify ( IBQ_TreeBysurnames );
                end;
         end
        Else
@@ -854,7 +854,7 @@ begin
          if fb_OpenTree(IBQ_TreeDescBysurnames, gi_CleFiche ) then
            Begin
              p_createLettersSheets( gt_SheetsLetters, IBQ_TreeDescBysurnames, gi_FilesPerPage, ed_FileBeginName.Text);
-             p_createExistingPersons ( IBQ_TreeDescBySurnames );
+             p_clonePersonVerify ( IBQ_TreeDescBySurnames );
            end;
         end;
     end
@@ -1638,7 +1638,7 @@ begin
                ls_destination := gs_RootPathForExport +
                  CST_SUBDIR_HTML_TREE + DirectorySeparator + ed_TreeName.Text + IntToStr(li_counter) + CST_EXTENSION_HTML;
                try
-                 if fb_CreateDirectoryStructure(FileCopy.Destination + DirectorySeparator + CST_SUBDIR_HTML_TREE + DirectorySeparator) then
+                 if fb_CreateDirectoryStructure(gs_RootPathForExport + CST_SUBDIR_HTML_TREE + DirectorySeparator) then
                    lstl_HTMLTree2.SaveToFile(ls_destination);
                except
                  On E: Exception do
@@ -2820,8 +2820,6 @@ begin
 
 end;
 
-// procedure TF_AncestroWeb.p_genHtmlFiles
-// HTML persons' Files generation
 // procedure TF_AncestroWeb.p_genHtmlFiles
 // HTML persons' Files generation
 procedure TF_AncestroWeb.p_genHtmlFiles(const IBQ_FilesFiltered: TIBQuery);
