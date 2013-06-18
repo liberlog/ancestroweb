@@ -148,6 +148,8 @@ function  fs_Create_Image           ( const as_Image       : String;
 function  fs_Create_TD             ( const as_Name        : String  = ''  ;
                                      const as_IdEqual  : String = CST_HTML_ID_EQUAL;
                                      const ai_Colspan     : Integer = 1  ):String ;
+function fs_exchange_special_chars ( const as_AnchorNotFormatted : String ):String;
+function fs_create_anchor ( const as_AnchorNotFormatted : String ):String;
 function  fs_Create_Link           ( const as_href        : String   ;
                                      const as_Text        : String   ;
                                      const as_Target      : String = ''):String ;
@@ -176,7 +178,7 @@ function fs_GetSheetLink ( const at_TabSheets : TAHTMLULTabSheet ;
                            const as_KeyPage : String ):String;
 function fb_FindTabSheet ( const at_TabSheets : TAHTMLULTabSheet ;
                            const as_Title : String ;
-                           const as_KeyPage : String ;
+                                 as_KeyPage : String ;
                            var   ai_Main, ai_Page : Longint):Boolean;
 procedure p_FreeKeyWords;
 procedure p_addKeyWord ( as_KeyWord : String; const ach_Separator : Char = ' ' );
@@ -206,7 +208,7 @@ uses Dialogs,fonctions_languages, fonctions_string,
 
 function fb_FindTabSheet ( const at_TabSheets : TAHTMLULTabSheet ;
                            const as_Title : String ;
-                           const as_KeyPage : String ;
+                                 as_KeyPage : String ;
                            var   ai_Main, ai_Page : Longint):Boolean;
 var li_i, li_j          : Integer;
 Begin
@@ -221,16 +223,20 @@ Begin
           or ( High(a_Pages) < 0 )
            Then Exit
            Else
-            for li_j := 0 to High(a_Pages) do
-             with a_Pages [ li_j ] do
-              if ( as_KeyPage = s_Key )
-              or ( li_j = high ( a_Pages ))
-              or (( as_KeyPage < a_Pages [ li_j +1].s_Key ) and ( as_KeyPage >= s_Key )) Then
-              Begin
-                ai_Page := li_j;
-                Result := True;
-                Exit;
-              end;
+            Begin
+              as_KeyPage:=fs_exchange_special_chars (as_KeyPage);
+              for li_j := 0 to High(a_Pages) do
+               with a_Pages [ li_j ] do
+                if ( as_KeyPage = s_Key )
+                or ( li_j = high ( a_Pages ))
+                or (( as_KeyPage < a_Pages [ li_j +1].s_Key ) and ( as_KeyPage >= s_Key )) Then
+                Begin
+                  ai_Page := li_j;
+                  Result := True;
+                  Exit;
+                end;
+
+            end;
           Exit;
         end;
     end;
@@ -281,6 +287,15 @@ begin
       s_link :={$IFDEF WINDOWS}fs_RemplaceChar ( {$ENDIF}as_link{$IFDEF WINDOWS}, DirectorySeparator, CST_HTML_DIR_SEPARATOR ){$ENDIF};
     end;
 end;
+function fs_exchange_special_chars ( const as_AnchorNotFormatted : String ):String;
+Begin
+ Result:=fs_FormatText(as_AnchorNotFormatted,mftNone,True);
+End;
+function fs_create_anchor ( const as_AnchorNotFormatted : String ):String;
+Begin
+ Result := CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + fs_exchange_special_chars (as_AnchorNotFormatted) + '" />'
+end;
+
 procedure p_AddTabSheetPage ( var  at_TabSheets : TAHTMLULTabSheet ;
                              const ai_pos : Longint ;
                              const as_link : String ;
@@ -293,7 +308,7 @@ begin
     with a_Pages [ High(a_Pages)] do
       Begin
        s_link := {$IFDEF WINDOWS}fs_RemplaceChar ( {$ENDIF}as_link{$IFDEF WINDOWS}, DirectorySeparator, CST_HTML_DIR_SEPARATOR ){$ENDIF};
-       s_Key  := as_keyPage;
+       s_Key  := fs_exchange_special_chars (as_keyPage);
       end;
   end;
 end;

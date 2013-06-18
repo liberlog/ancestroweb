@@ -64,7 +64,8 @@ const
                                              FileUnit : 'U_AncestroWeb' ;
                                              Owner : 'Matthieu Giroux' ;
                                              Comment : 'Composant de copie multi-platformes.' ;
-                                             BugsStory : '1.3.0.4 : Correct jobs images.' +#13#10
+                                             BugsStory : '1.3.0.5 : Correct special chars links.' +#13#10
+                                                       + '1.3.0.4 : Correct jobs images.' +#13#10
                                                        + '1.3.0.3 : Restoring Ancestromania integration.' +#13#10
                                                        + '1.3.0.2 : Better splitted tree and better progress.' +#13#10
                                                        + '1.3.0.1 : Finalizing files.' +#13#10
@@ -95,7 +96,7 @@ const
                                                        + '1.0.0.0 : Integrating in Freelogy' +#13#10
                                                        + '0.9.9.0 : First published version' ;
                                              UnitType : CST_TYPE_UNITE_APPLI ;
-                                             Major : 1 ; Minor : 3 ; Release : 0 ; Build : 4 );
+                                             Major : 1 ; Minor : 3 ; Release : 0 ; Build : 5 );
 {$ENDIF}
 
 
@@ -2012,8 +2013,8 @@ end;
 // Creates a link from a name and a showed info
 function TF_AncestroWeb.fs_GetNameLink ( as_name : String ; const as_Showed : String ; const as_SubDir : String = ''):String ;
 Begin
-  as_name := StringReplace( StringReplace(as_name, '"', '\"',[rfReplaceAll]), '\', '\\',[rfReplaceAll]);
-  Result := CST_HTML_AHREF + as_SubDir + fs_GetSheetLink ( gt_SheetsLetters, as_name[1], as_name ) + '#' + as_name + '">'
+  as_name := fs_FormatText(StringReplace( StringReplace(as_name, '"', '\"',[rfReplaceAll]), '\', '\\',[rfReplaceAll]),mftNone,True);
+  Result := CST_HTML_AHREF + as_SubDir + fs_GetSheetLink ( gt_SheetsLetters, as_name[1], as_name ) + '#' + fs_exchange_special_chars(as_name) + '">'
           + as_Showed + CST_HTML_A_END ;
 End;
 
@@ -2574,7 +2575,7 @@ begin
         if ((length(ls_ASurname) = 0) or
           (ls_NewSurname[1] <> ls_ASurname[1])) then // Anchor
           lstl_HTMLAFolder.Add ( CST_HTML_TD_END +CST_HTML_TR_END + CST_HTML_TR_BEGIN + CST_HTML_TD_BEGIN +
-                                 CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + ls_NewSurname[1] + '" />'+
+                                 fs_create_anchor ( ls_NewSurname[1])+
                                  CST_HTML_H4_BEGIN + ls_NewSurname[1] + CST_HTML_H4_END + CST_HTML_TD_END +CST_HTML_TD_BEGIN)
           Else lstl_HTMLAFolder.Add ( ' - ' );
         // Name and its link
@@ -2687,7 +2688,7 @@ var
          Begin
           if (ls_ASurname = '') or ((length(ls_NewSurname) > 0) and
             (ls_NewSurname[1] <> ls_ASurname[1])) then
-            lstl_HTMLAList.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + ls_NewSurname[1] + '" />');
+            lstl_HTMLAList.Add(fs_create_anchor ( ls_NewSurname[1] ));
          end;
         ls_ASurname := ls_NewSurname;
         ls_ASurname:= ls_ASurname + ' ' +  FieldByName(IBQ_PRENOM).AsString ; // showed name
@@ -2865,7 +2866,7 @@ var
         if DMWeb.IBS_Conjoint.FieldByName(IBQ_SEXE).AsInteger = IBQ_SEXE_WOMAN
         Then ls_FileNameBegin := fs_getNameAndSurName (IBQ_FilesFiltered )+'&'+fs_getNameAndSurName (DMWeb.IBS_Conjoint)
         Else ls_FileNameBegin := fs_getNameAndSurName (DMWeb.IBS_Conjoint)+'&'+fs_getNameAndSurName (IBQ_FilesFiltered);
-        ls_FileNameBegin := as_Date + '_ID'+fs_TextToFileName(DMWeb.IBS_Conjoint.FieldByName(UNION_CLEF).AsString + '_' + ls_FileNameBegin+'_'+
+        ls_FileNameBegin := as_Date + '_ID'+fs_TextToFileName(DMWeb.IBS_Conjoint.FieldByName(IBQ_CLE_FICHE).AsString + '_' + ls_FileNameBegin+'_'+
                             DMWeb.IBS_Conjoint.FieldByName(UNION_CP).AsString+'_'+DMWeb.IBS_Conjoint.FieldByName(UNION_CITY).AsString )+ '_';
         li_i := 1 ;
 
@@ -3003,7 +3004,7 @@ var
            astl_HTMLAFolder.Add ( fs_CreateMarried ( not FieldByName(UNION_DATE_MARIAGE).IsNull ,
                                                      fs_RemplaceChar ( FieldByName(UNION_DATE_MARIAGE).AsString, '/', '-' ) ,
                                                      FieldByName(UNION_MARIAGE_WRITEN).AsString ,
-                                                     FieldByName(UNION_CLEF).AsInteger));
+                                                     FieldByName(IBQ_CLE_FICHE).AsInteger));
            astl_HTMLAFolder.Add ( CST_HTML_LI_END);
            Next;
           end;
@@ -3087,11 +3088,11 @@ var
          Begin
           if (ls_ASurname = '') or ((length(ls_NewSurname) > 0) and
             (ls_NewSurname[1] <> ls_ASurname[1])) then
-            lstl_HTMLAFolder.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + ls_NewSurname[1] + '" />')
+            lstl_HTMLAFolder.Add(fs_create_anchor ( ls_NewSurname[1] ))
           else if (ls_ASurname = '') then
             lstl_HTMLAFolder.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"A" />');
           if length ( ls_NewSurname ) > 1 Then
-            lstl_HTMLAFolder.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + ls_NewSurname + '" />');
+            lstl_HTMLAFolder.Add(fs_create_anchor ( ls_NewSurname ));
          end;
         ls_ASurname := ls_NewSurname;
         case FieldByName(IBQ_SEXE).AsInteger of
@@ -3100,7 +3101,7 @@ var
          else
            ls_NewSurname := 'file';
         end;
-        lstl_HTMLAFolder.Add(CST_HTML_A_BEGIN + CST_HTML_NAME_EQUAL + '"' + ls_ASurnameSurname + '" />');
+        lstl_HTMLAFolder.Add(fs_create_anchor ( ls_ASurnameSurname ));
         lstl_HTMLAFolder.Add(CST_HTML_BR + fs_CreateElementWithId ( CST_HTML_TABLE , ls_NewSurname + CST_FILE_Number + IntToStr(li_i) , CST_HTML_CLASS_EQUAL ) +
           CST_HTML_TR_BEGIN + fs_Create_TD ( ls_NewSurname + CST_FILE_Number + IntToStr(li_i), CST_HTML_CLASS_EQUAL, 2 ));
         lstl_HTMLAFolder.Add( CST_HTML_DIV_BEGIN + '<' + CST_HTML_H2 + CST_HTML_ID_EQUAL +'"subtitle">' + CST_HTML_IMAGE_SRC + '../'
