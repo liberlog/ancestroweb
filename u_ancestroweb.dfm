@@ -81,6 +81,10 @@ object F_AncestroWeb: TF_AncestroWeb
     OnChange = PCPrincipalChange
     object ts_Gen: TTabSheet
       Caption = 'G'#233'n'#233'rer'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -198,7 +202,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Width = 245
             Height = 24
             Color = clBtnFace
-            ItemHeight = 16
+            ItemHeight = 0
             TabOrder = 3
             Text = 'default'
           end
@@ -234,7 +238,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Width = 245
             Height = 24
             Color = clBtnFace
-            ItemHeight = 16
+            ItemHeight = 0
             TabOrder = 4
             Text = 'default'
           end
@@ -245,7 +249,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Height = 24
             Color = clBtnFace
             DropDownCount = 10
-            ItemHeight = 16
+            ItemHeight = 0
             TabOrder = 0
             OnChange = cb_BaseChange
           end
@@ -256,7 +260,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Height = 24
             Style = csDropDownList
             Color = clBtnFace
-            ItemHeight = 16
+            ItemHeight = 0
             TabOrder = 1
             OnChange = cbDossierChange
           end
@@ -828,7 +832,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 212
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               ItemIndex = 1
               TabOrder = 2
               Text = 'Sans accent sans majuscule'
@@ -847,7 +851,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 212
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               ItemIndex = 1
               TabOrder = 3
               Text = 'Sans accent sans majuscule'
@@ -906,7 +910,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 212
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               ItemIndex = 1
               TabOrder = 8
               Text = 'Sans accent sans majuscule'
@@ -925,7 +929,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 212
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               ItemIndex = 1
               TabOrder = 9
               Text = 'Sans accent sans majuscule'
@@ -982,7 +986,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 212
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               ItemIndex = 0
               TabOrder = 14
               Text = 'Sans accent avec une majuscule'
@@ -1562,7 +1566,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 256
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               ItemIndex = 0
               TabOrder = 3
               Text = 'ssl'
@@ -1646,7 +1650,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Width = 256
               Height = 24
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 16
               ItemIndex = 0
               TabOrder = 12
               Text = 'qmail'
