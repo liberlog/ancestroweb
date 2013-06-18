@@ -1661,7 +1661,7 @@ begin
           ls_destination := gs_RootPathForExport +
             CST_SUBDIR_HTML_TREE + DirectorySeparator + ed_TreeName.Text + CST_EXTENSION_HTML;
           try
-            if fb_CreateDirectoryStructure(FileCopy.Destination + DirectorySeparator + CST_SUBDIR_HTML_TREE + DirectorySeparator) then
+            if fb_CreateDirectoryStructure(gs_RootPathForExport + CST_SUBDIR_HTML_TREE + DirectorySeparator) then
               lstl_HTMLTree.SaveToFile(ls_destination);
           except
             On E: Exception do
