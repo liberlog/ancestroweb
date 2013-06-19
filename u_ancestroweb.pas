@@ -64,7 +64,8 @@ const
                                              FileUnit : 'U_AncestroWeb' ;
                                              Owner : 'Matthieu Giroux' ;
                                              Comment : 'Composant de copie multi-platformes.' ;
-                                             BugsStory : '1.3.0.6 : No union files bug.' +#13#10
+                                             BugsStory : '1.3.0.7 : Tree spaces.' +#13#10
+                                                       + '1.3.0.6 : No union files bug.' +#13#10
                                                        + '1.3.0.5 : Correct special chars links.' +#13#10
                                                        + '1.3.0.4 : Correct jobs images.' +#13#10
                                                        + '1.3.0.3 : Restoring Ancestromania integration.' +#13#10
@@ -97,7 +98,7 @@ const
                                                        + '1.0.0.0 : Integrating in Freelogy' +#13#10
                                                        + '0.9.9.0 : First published version' ;
                                              UnitType : CST_TYPE_UNITE_APPLI ;
-                                             Major : 1 ; Minor : 3 ; Release : 0 ; Build : 6 );
+                                             Major : 1 ; Minor : 3 ; Release : 0 ; Build : 7 );
 {$ENDIF}
 
 
@@ -1593,13 +1594,11 @@ var
        li_counter := 0 ;
        if IBQ_Tree.Locate(IBQ_CLE_FICHE, gi_CleFiche, []) then
          p_CreateSheets ( 0, IBQ_tree.FieldByName(ls_IdSosa).AsFloat, IBQ_Tree.FieldByName(ls_IdSosa).AsString);
-       lstl_HTMLTree.Text := fs_CreateULTabsheets(lt_SheetsGen,
-         '', CST_HTML_SUBMENU);
-       lstl_HTMLTree.Add(CST_HTML_CENTER_END);
-       for li_i := 1 to sp_gentree.value * 2 do
-          lstl_HTMLTree.Add ( CST_HTML_BR );
-       lstl_HTMLTree.Add ( CST_HTML_BR+CST_HTML_BR + '<'+CST_HTML_DIV+' class="begin" id="'+gs_TreeLetterBegin+'">'+fs_Create_Tree_Image('a'+CST_EXTENSION_GIF));
-       lstl_HTMLTree.Add(CST_HTML_DIV_END);
+       lstl_HTMLTree.Text := CST_HTML_DIV_BEGIN + fs_CreateULTabsheets(lt_SheetsGen,
+         '', CST_HTML_SUBMENU)+CST_HTML_DIV_END;
+       for li_i := 1 to sp_gentree.value - 1 do // why to do that ? do not know exactly
+         lstl_HTMLTree.Add ( CST_HTML_BR + CST_HTML_BR );
+       lstl_HTMLTree.Add ( CST_HTML_BR + CST_HTML_BR );
      end;
 
   end;
