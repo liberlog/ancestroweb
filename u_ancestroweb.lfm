@@ -78,31 +78,31 @@ object F_AncestroWeb: TF_AncestroWeb
     OnChange = PCPrincipalChange
     object ts_Gen: TTabSheet
       Caption = 'Générer'
-      ClientHeight = 337
+      ClientHeight = 340
       ClientWidth = 632
       object Panel1: TPanel
         Left = 0
-        Height = 337
+        Height = 340
         Top = 0
         Width = 632
         Align = alClient
         BevelOuter = bvNone
-        ClientHeight = 337
+        ClientHeight = 340
         ClientWidth = 632
         TabOrder = 0
         object Panel3: TPanel
           Left = 0
-          Height = 337
+          Height = 340
           Top = 0
           Width = 275
           Align = alLeft
           BevelOuter = bvNone
-          ClientHeight = 337
+          ClientHeight = 340
           ClientWidth = 275
           TabOrder = 0
           object de_ExportWeb: TDirectoryEdit
             Left = 3
-            Height = 24
+            Height = 21
             Top = 100
             Width = 240
             OnAcceptDirectory = de_ExportWebAcceptDirectory
@@ -115,33 +115,33 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object Label1: TLabel
             Left = 3
-            Height = 17
+            Height = 14
             Top = 80
-            Width = 273
+            Width = 216
             Caption = 'Répertoire du site web généalogique à créer :'
             ParentColor = False
           end
           object Label7: TLabel
             Left = 8
-            Height = 17
+            Height = 14
             Top = 133
-            Width = 50
+            Width = 40
             Caption = 'Thème :'
             ParentColor = False
           end
           object cb_Themes: TComboBox
             Left = 67
-            Height = 30
+            Height = 23
             Top = 128
             Width = 199
             Anchors = [akTop, akLeft, akRight]
             Color = clBtnFace
-            ItemHeight = 16
+            ItemHeight = 13
             TabOrder = 3
           end
           object GedcomEdit: TFileNameEdit
             Left = 67
-            Height = 24
+            Height = 21
             Top = 193
             Width = 152
             DialogOptions = []
@@ -167,28 +167,28 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object Label9: TLabel
             Left = 8
-            Height = 17
+            Height = 14
             Top = 197
-            Width = 66
+            Width = 54
             Caption = 'GEDCOM :'
             ParentColor = False
           end
           object cb_Files: TComboBox
             Left = 67
-            Height = 30
+            Height = 23
             Top = 160
             Width = 199
             Anchors = [akTop, akLeft, akRight]
             Color = clBtnFace
-            ItemHeight = 16
+            ItemHeight = 13
             Style = csDropDownList
             TabOrder = 4
           end
           object Label44: TLabel
             Left = 9
-            Height = 17
+            Height = 14
             Top = 163
-            Width = 57
+            Width = 46
             Caption = 'Sources :'
             ParentColor = False
           end
@@ -206,13 +206,13 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object cb_Base: TComboBox
             Left = 4
-            Height = 30
+            Height = 23
             Top = 21
             Width = 244
             Anchors = [akTop, akLeft, akRight]
             Color = clBtnFace
             DropDownCount = 10
-            ItemHeight = 16
+            ItemHeight = 13
             OnChange = cb_BaseChange
             Style = csDropDownList
             TabOrder = 0
@@ -231,21 +231,21 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object cbDossier: TComboBox
             Left = 60
-            Height = 30
+            Height = 23
             Top = 48
             Width = 206
             Anchors = [akTop, akLeft, akRight]
             Color = clBtnFace
-            ItemHeight = 16
+            ItemHeight = 13
             OnChange = cbDossierChange
             Style = csDropDownList
             TabOrder = 1
           end
           object Label45: TLabel
             Left = 4
-            Height = 17
+            Height = 14
             Top = 51
-            Width = 60
+            Width = 48
             Caption = 'Dossier:'
             Font.Color = clWindowText
             Font.Height = -11
@@ -257,33 +257,33 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object Splitter1: TSplitter
           Left = 275
-          Height = 337
+          Height = 340
           Top = 0
           Width = 1
         end
         object Panel4: TPanel
           Left = 276
-          Height = 337
+          Height = 340
           Top = 0
           Width = 356
           Align = alClient
           BevelOuter = bvNone
-          ClientHeight = 337
+          ClientHeight = 340
           ClientWidth = 356
           TabOrder = 1
           object Panel5: TPanel
             Left = 0
-            Height = 251
+            Height = 254
             Top = 0
             Width = 356
             Align = alClient
             BevelOuter = bvNone
-            ClientHeight = 251
+            ClientHeight = 254
             ClientWidth = 356
             TabOrder = 0
             object DBGrid1: TDBGrid
               Left = 0
-              Height = 184
+              Height = 187
               Top = 67
               Width = 356
               Align = alClient
@@ -352,7 +352,7 @@ object F_AncestroWeb: TF_AncestroWeb
               end
               object se_Nom: TExtSearchDBEdit
                 Left = 58
-                Height = 24
+                Height = 21
                 Top = 43
                 Width = 290
                 Anchors = [akTop, akLeft, akRight]
@@ -366,9 +366,9 @@ object F_AncestroWeb: TF_AncestroWeb
               end
               object Label54: TLabel
                 Left = 5
-                Height = 17
+                Height = 14
                 Top = 47
-                Width = 50
+                Width = 40
                 Caption = 'Origine :'
                 ParentColor = False
               end
@@ -377,7 +377,7 @@ object F_AncestroWeb: TF_AncestroWeb
           object Panel6: TPanel
             Left = 0
             Height = 81
-            Top = 256
+            Top = 259
             Width = 356
             Align = alBottom
             BevelOuter = bvNone
@@ -397,7 +397,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object fne_Export: TFileNameEdit
               Left = 98
-              Height = 24
+              Height = 21
               Top = 26
               Width = 225
               OnAcceptFileName = fne_ExportAcceptFileName
@@ -414,7 +414,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object fne_import: TFileNameEdit
               Left = 98
-              Height = 24
+              Height = 21
               Top = 0
               Width = 226
               OnAcceptFileName = fne_importAcceptFileName
@@ -441,9 +441,9 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object Label43: TLabel
               Left = 4
-              Height = 17
+              Height = 14
               Top = 3
-              Width = 56
+              Width = 45
               Caption = 'Importer :'
               ParentColor = False
             end
@@ -465,7 +465,7 @@ object F_AncestroWeb: TF_AncestroWeb
             Cursor = crVSplit
             Left = 0
             Height = 5
-            Top = 251
+            Top = 254
             Width = 356
             Align = alBottom
             ResizeAnchor = akBottom
@@ -781,11 +781,11 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object cb_JobsAccents: TComboBox
               Left = 412
-              Height = 30
+              Height = 23
               Top = 22
               Width = 212
               Color = clBtnFace
-              ItemHeight = 16
+              ItemHeight = 13
               ItemIndex = 1
               Items.Strings = (
                 'Sans accent avec une majuscule'
@@ -801,11 +801,11 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object cb_ImagesJobsAccents: TComboBox
               Left = 412
-              Height = 30
+              Height = 23
               Top = 48
               Width = 212
               Color = clBtnFace
-              ItemHeight = 16
+              ItemHeight = 13
               ItemIndex = 1
               Items.Strings = (
                 'Sans accent avec une majuscule'
@@ -861,11 +861,11 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object cb_NamesAccents: TComboBox
               Left = 412
-              Height = 30
+              Height = 23
               Top = 74
               Width = 212
               Color = clBtnFace
-              ItemHeight = 16
+              ItemHeight = 13
               ItemIndex = 1
               Items.Strings = (
                 'Sans accent avec une majuscule'
@@ -881,11 +881,11 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object cb_SurnamesAccents: TComboBox
               Left = 412
-              Height = 30
+              Height = 23
               Top = 100
               Width = 212
               Color = clBtnFace
-              ItemHeight = 16
+              ItemHeight = 13
               ItemIndex = 1
               Items.Strings = (
                 'Sans accent avec une majuscule'
@@ -941,11 +941,11 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object cb_CityAccents: TComboBox
               Left = 412
-              Height = 30
+              Height = 23
               Top = 126
               Width = 212
               Color = clBtnFace
-              ItemHeight = 16
+              ItemHeight = 13
               ItemIndex = 0
               Items.Strings = (
                 'Sans accent avec une majuscule'
@@ -1448,11 +1448,11 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object cb_ContactSecurity: TComboBox
               Left = 418
-              Height = 30
+              Height = 23
               Top = 169
               Width = 208
               Color = clBtnFace
-              ItemHeight = 16
+              ItemHeight = 13
               ItemIndex = 0
               Items.Strings = (
                 'ssl'
@@ -1599,11 +1599,11 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object cb_ContactTool: TComboBox
               Left = 418
-              Height = 30
+              Height = 23
               Top = 198
               Width = 208
               Color = clBtnFace
-              ItemHeight = 16
+              ItemHeight = 13
               ItemIndex = 0
               Items.Strings = (
                 'qmail'
@@ -1756,10 +1756,10 @@ object F_AncestroWeb: TF_AncestroWeb
         Height = 340
         Top = 0
         Width = 632
-        HorzScrollBar.Page = 607
-        VertScrollBar.Page = 315
+        HorzScrollBar.Page = 611
+        VertScrollBar.Page = 319
         Align = alClient
-        ClientHeight = 315
+        ClientHeight = 336
         ClientWidth = 628
         TabOrder = 0
         object Label19: TLabel

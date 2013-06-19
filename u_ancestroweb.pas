@@ -64,7 +64,8 @@ const
                                              FileUnit : 'U_AncestroWeb' ;
                                              Owner : 'Matthieu Giroux' ;
                                              Comment : 'Composant de copie multi-platformes.' ;
-                                             BugsStory : '1.3.0.7 : Tree spaces.' +#13#10
+                                             BugsStory : '1.3.1.0 : No border on ie.' +#13#10
+                                                       + '1.3.0.7 : Tree spaces.' +#13#10
                                                        + '1.3.0.6 : No union files bug.' +#13#10
                                                        + '1.3.0.5 : Correct special chars links.' +#13#10
                                                        + '1.3.0.4 : Correct jobs images.' +#13#10
@@ -98,7 +99,7 @@ const
                                                        + '1.0.0.0 : Integrating in Freelogy' +#13#10
                                                        + '0.9.9.0 : First published version' ;
                                              UnitType : CST_TYPE_UNITE_APPLI ;
-                                             Major : 1 ; Minor : 3 ; Release : 0 ; Build : 7 );
+                                             Major : 1 ; Minor : 3 ; Release : 1 ; Build : 0 );
 {$ENDIF}
 
 
