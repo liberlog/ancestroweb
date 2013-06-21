@@ -272,6 +272,7 @@ const
   // letters' sheet
   CST_HTML_BEGIN_LETTER = 'A';
   CST_HTML_END_LETTER = 'Z';
+  CST_HTML_SHADOWBOX = CST_HTML_REL_EQUAL+'"shadowbox"';
 
   CST_INI_PATH_BDD = 'PathFileNameBdd';
   CST_INI_PATH     = 'Path';
