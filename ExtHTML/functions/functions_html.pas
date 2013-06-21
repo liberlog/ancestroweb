@@ -75,6 +75,7 @@ const CST_HTML_DIV                 = 'DIV' ;
       CST_HTML_IMAGE_SRC           = '<IMG SRC="';
       CST_HTML_ID_EQUAL            = ' ID=';
       CST_HTML_NAME_EQUAL          = ' NAME=';
+      CST_HTML_REL_EQUAL           = ' REL=';
       CST_HTML_TARGET_EQUAL        = ' TARGET=';
       CST_HTML_TARGET_BLANK        = '_blank';
       CST_HTML_TARGET_TOP          = '_top';
@@ -152,7 +153,8 @@ function fs_exchange_special_chars ( const as_AnchorNotFormatted : String ):Stri
 function fs_create_anchor ( const as_AnchorNotFormatted : String ):String;
 function  fs_Create_Link           ( const as_href        : String   ;
                                      const as_Text        : String   ;
-                                     const as_Target      : String = ''):String ;
+                                     const as_Target      : String = '';
+                                     const as_Options     : String = ''):String ;
 function  fs_Create_simple_Link    ( const as_href_Text   : String   ;
                                      const as_Target      : String = ''):String ;
 function  fs_Create_DIV             ( const as_Name        : String      ;
@@ -368,7 +370,7 @@ function  fs_Create_TD             ( const as_Name        : String  = ''  ;
                                       const ai_Colspan     : Integer = 1  ):String ;
 Begin
   Result := '<' + CST_HTML_TD ;
-  if as_Name    <> '' Then AppendStr(Result, as_IdEqual + '"' + as_Name + '"' );
+  if as_Name    > '' Then AppendStr(Result, as_IdEqual + '"' + as_Name + '"' );
   if ai_Colspan >  1  Then AppendStr(Result, CST_HTML_COLSPAN_EQUAL + '"' + IntToStr(ai_Colspan) + '"' );
   AppendStr(Result, '>' );
 End ;
@@ -490,11 +492,14 @@ end;
 
 function  fs_Create_Link           ( const as_href        : String   ;
                                      const as_Text        : String   ;
-                                     const as_Target      : String = ''):String ;
+                                     const as_Target      : String = '';
+                                     const as_Options     : String = ''):String ;
 begin
   Result := CST_HTML_AHREF + as_href + '"' ;
-  if as_Target <> '' Then
+  if as_Target > '' Then
     AppendStr(Result,CST_HTML_TARGET_EQUAL+'"' + as_Target + '"');
+  if as_Options > '' Then
+    AppendStr(Result, as_Options );
   AppendStr(Result,'>'+as_Text+CST_HTML_A_END);
 end;
 
@@ -598,13 +603,13 @@ var  lstl_HTML : TStringList;
 Begin
   lstl_HTML := TStringList.Create;
   try
-    if as_FileBeforeHead <> '' Then
+    if as_FileBeforeHead > '' Then
       Begin
         p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileBeforeHead );
         ls_Text1 := lstl_HTML.Text;
       end
      Else ls_Text1 := '' ;
-    if as_FileAfterHead <> '' Then
+    if as_FileAfterHead > '' Then
       Begin
         p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileAfterHead );
         ls_Text2 := lstl_HTML.Text;
@@ -615,13 +620,13 @@ Begin
         p_LoadText3 ( astl_Body );
       end
      Else
-      if as_FileAfterMenu <> '' Then
+      if as_FileAfterMenu > '' Then
         Begin
           p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileAfterMenu );
           p_LoadText3 ( lstl_HTML );
         end
        Else ls_Text3 := '' ;
-    if as_FileAfterBody <> '' Then
+    if as_FileAfterBody > '' Then
       Begin
         p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileAfterBody );
         ls_Text4 := lstl_HTML.Text;
@@ -651,8 +656,8 @@ function  fs_Create_Image           ( const as_Image       : String;
                                       const as_Id          : String  = ''):String ;
   Begin
     Result := CST_HTML_IMAGE_SRC + as_Image + '"' ;
-    If as_Alt <> '' Then AppendStr ( Result, ' ALT="' + as_Alt + '"' );
-    If as_Id  <> '' Then AppendStr ( Result, CST_HTML_ID_EQUAL + '"' + as_id + '"' );
+    If as_Alt > '' Then AppendStr ( Result, ' ALT="' + as_Alt + '"' );
+    If as_Id  > '' Then AppendStr ( Result, CST_HTML_ID_EQUAL + '"' + as_id + '"' );
     AppendStr ( Result, ' />' );
   End ;
 
