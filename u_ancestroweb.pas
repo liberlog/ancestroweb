@@ -2877,7 +2877,7 @@ var
             if fb_getMediaFile ( DMWeb.IBQ_ConjointSources, gs_RootPathForExport + CST_SUBDIR_HTML_ARCHIVE + DirectorySeparator, ls_FileName ) Then
               Begin
                 AppendStr( Result, ' - ' +fs_Create_Link ( CST_HTML_OUTDIR_SEPARATOR + CST_SUBDIR_HTML_ARCHIVE + CST_HTML_DIR_SEPARATOR + ls_FileName +CST_EXTENSION_JPEG,
-                                                           gs_ANCESTROWEB_ArchiveLinkBegin + IntToStr(li_i), '', CST_HTML_SHADOWBOX ));
+                                                           gs_ANCESTROWEB_ArchiveLinkBegin + IntToStr(li_i), CST_HTML_TARGET_BLANK, CST_HTML_SHADOWBOX ));
                 inc ( li_i );
               End;
 
@@ -3380,7 +3380,7 @@ End;
 function TF_AncestroWeb.fs_getLinkedBase ( const as_ShowedText, as_Texte : String; const as_Link : String; const ai_ComboIndex : Integer ; const ab_StopMore : Boolean = False) : String;
 var li_pos : Integer;
 Begin
- Result:=fs_Create_Link(fs_getLinkedBaseImage ( as_Texte, as_Link, ai_ComboIndex, ab_StopMore ), as_ShowedText, '', CST_HTML_SHADOWBOX );
+ Result:=fs_Create_Link(fs_getLinkedBaseImage ( as_Texte, as_Link, ai_ComboIndex, ab_StopMore ), as_ShowedText, CST_HTML_TARGET_BLANK, CST_HTML_SHADOWBOX );
 End;
 
 
