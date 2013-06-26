@@ -17,7 +17,7 @@ object F_AncestroWeb: TF_AncestroWeb
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poScreenCenter
-  LCLVersion = '1.0.10.0'
+  LCLVersion = '1.0.6.0'
   object spSkinPanel1: TPanel
     Left = 0
     Height = 30
@@ -131,12 +131,12 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object cb_Themes: TComboBox
             Left = 67
-            Height = 25
+            Height = 23
             Top = 128
             Width = 199
             Anchors = [akTop, akLeft, akRight]
             Color = clBtnFace
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 3
           end
           object GedcomEdit: TFileNameEdit
@@ -175,12 +175,12 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object cb_Files: TComboBox
             Left = 67
-            Height = 26
+            Height = 23
             Top = 160
             Width = 199
             Anchors = [akTop, akLeft, akRight]
             Color = clBtnFace
-            ItemHeight = 0
+            ItemHeight = 13
             Style = csDropDownList
             TabOrder = 4
           end
@@ -206,13 +206,13 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object cb_Base: TComboBox
             Left = 4
-            Height = 26
+            Height = 23
             Top = 21
             Width = 244
             Anchors = [akTop, akLeft, akRight]
             Color = clBtnFace
             DropDownCount = 10
-            ItemHeight = 0
+            ItemHeight = 13
             OnChange = cb_BaseChange
             Style = csDropDownList
             TabOrder = 0
@@ -231,12 +231,12 @@ object F_AncestroWeb: TF_AncestroWeb
           end
           object cbDossier: TComboBox
             Left = 60
-            Height = 26
+            Height = 23
             Top = 48
             Width = 206
             Anchors = [akTop, akLeft, akRight]
             Color = clBtnFace
-            ItemHeight = 0
+            ItemHeight = 13
             OnChange = cbDossierChange
             Style = csDropDownList
             TabOrder = 1
@@ -475,13 +475,13 @@ object F_AncestroWeb: TF_AncestroWeb
     end
     object ts_needed: TTabSheet
       Caption = 'Général'
-      ClientHeight = 336
-      ClientWidth = 636
+      ClientHeight = 340
+      ClientWidth = 632
       object pc_needed: TPageControl
         Left = 0
-        Height = 336
+        Height = 340
         Top = 0
-        Width = 636
+        Width = 632
         ActivePage = ts_global
         Align = alClient
         TabIndex = 2
@@ -748,16 +748,16 @@ object F_AncestroWeb: TF_AncestroWeb
         end
         object ts_global: TTabSheet
           Caption = 'Global'
-          ClientHeight = 306
-          ClientWidth = 632
+          ClientHeight = 314
+          ClientWidth = 624
           object Panel15: TPanel
             Left = 0
-            Height = 306
+            Height = 314
             Top = 0
-            Width = 632
+            Width = 624
             Align = alClient
-            ClientHeight = 306
-            ClientWidth = 632
+            ClientHeight = 314
+            ClientWidth = 624
             TabOrder = 0
             object ch_JobsLink: TJvXPCheckbox
               Left = 4
@@ -772,7 +772,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_BaseJobs: TEdit
               Left = 212
-              Height = 22
+              Height = 21
               Top = 23
               Width = 194
               ParentColor = True
@@ -781,11 +781,11 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object cb_JobsAccents: TComboBox
               Left = 412
-              Height = 25
+              Height = 23
               Top = 22
               Width = 212
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 13
               ItemIndex = 1
               Items.Strings = (
                 'Sans accent avec une majuscule'
@@ -801,11 +801,11 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object cb_ImagesJobsAccents: TComboBox
               Left = 412
-              Height = 25
+              Height = 23
               Top = 48
               Width = 212
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 13
               ItemIndex = 1
               Items.Strings = (
                 'Sans accent avec une majuscule'
@@ -821,7 +821,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_ImagesJobs: TEdit
               Left = 212
-              Height = 22
+              Height = 21
               Top = 49
               Width = 194
               ParentColor = True
@@ -852,7 +852,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_BaseNames: TEdit
               Left = 212
-              Height = 22
+              Height = 21
               Top = 75
               Width = 194
               ParentColor = True
@@ -861,11 +861,11 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object cb_NamesAccents: TComboBox
               Left = 412
-              Height = 25
+              Height = 23
               Top = 74
               Width = 212
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 13
               ItemIndex = 1
               Items.Strings = (
                 'Sans accent avec une majuscule'
@@ -881,11 +881,11 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object cb_SurnamesAccents: TComboBox
               Left = 412
-              Height = 25
+              Height = 23
               Top = 100
               Width = 212
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 13
               ItemIndex = 1
               Items.Strings = (
                 'Sans accent avec une majuscule'
@@ -901,7 +901,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_BaseSurnames: TEdit
               Left = 212
-              Height = 22
+              Height = 21
               Top = 103
               Width = 194
               ParentColor = True
@@ -932,7 +932,7 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object ed_BaseCities: TEdit
               Left = 212
-              Height = 22
+              Height = 21
               Top = 129
               Width = 194
               ParentColor = True
@@ -941,11 +941,11 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object cb_CityAccents: TComboBox
               Left = 412
-              Height = 25
+              Height = 23
               Top = 126
               Width = 212
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 13
               ItemIndex = 0
               Items.Strings = (
                 'Sans accent avec une majuscule'
@@ -970,17 +970,17 @@ object F_AncestroWeb: TF_AncestroWeb
             end
             object Label6: TLabel
               Left = 4
-              Height = 15
+              Height = 14
               Top = 240
-              Width = 142
+              Width = 121
               Caption = 'En bas de chaque page :'
               ParentColor = False
             end
             object me_Bottom: TMemo
               Left = 4
-              Height = 47
+              Height = 55
               Top = 256
-              Width = 628
+              Width = 620
               Anchors = [akTop, akLeft, akRight, akBottom]
               ParentColor = True
               ScrollBars = ssAutoBoth
@@ -1026,8 +1026,8 @@ object F_AncestroWeb: TF_AncestroWeb
             Width = 624
             Align = alClient
             BevelOuter = bvNone
-            ClientHeight = 304
-            ClientWidth = 620
+            ClientHeight = 308
+            ClientWidth = 624
             TabOrder = 0
             object ch_genTree: TJvXPCheckbox
               Left = 4
@@ -1122,8 +1122,8 @@ object F_AncestroWeb: TF_AncestroWeb
             Top = 0
             Width = 632
             Align = alClient
-            ClientHeight = 302
-            ClientWidth = 628
+            ClientHeight = 306
+            ClientWidth = 632
             TabOrder = 0
             object ch_genSurnames: TJvXPCheckbox
               Left = 4
@@ -1263,8 +1263,8 @@ object F_AncestroWeb: TF_AncestroWeb
             Width = 624
             Align = alClient
             BevelOuter = bvNone
-            ClientHeight = 310
-            ClientWidth = 620
+            ClientHeight = 314
+            ClientWidth = 624
             TabOrder = 0
             object ch_genSearch: TJvXPCheckbox
               Left = 4
@@ -1388,8 +1388,8 @@ object F_AncestroWeb: TF_AncestroWeb
             Width = 624
             Align = alClient
             BevelOuter = bvNone
-            ClientHeight = 304
-            ClientWidth = 620
+            ClientHeight = 308
+            ClientWidth = 624
             TabOrder = 0
             object Label4: TLabel
               Left = 4
@@ -1450,7 +1450,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Top = 169
               Width = 208
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 13
               ItemIndex = 0
               Items.Strings = (
                 'ssl'
@@ -1601,7 +1601,7 @@ object F_AncestroWeb: TF_AncestroWeb
               Top = 198
               Width = 208
               Color = clBtnFace
-              ItemHeight = 0
+              ItemHeight = 13
               ItemIndex = 0
               Items.Strings = (
                 'qmail'
@@ -1632,8 +1632,8 @@ object F_AncestroWeb: TF_AncestroWeb
             Width = 624
             Align = alClient
             BevelOuter = bvNone
-            ClientHeight = 310
-            ClientWidth = 620
+            ClientHeight = 314
+            ClientWidth = 624
             TabOrder = 0
             object ch_genjobs: TJvXPCheckbox
               Left = 4
@@ -1693,8 +1693,8 @@ object F_AncestroWeb: TF_AncestroWeb
             Width = 624
             Align = alClient
             BevelOuter = bvNone
-            ClientHeight = 310
-            ClientWidth = 620
+            ClientHeight = 314
+            ClientWidth = 624
             TabOrder = 0
             object ch_genages: TJvXPCheckbox
               Left = 4
@@ -1754,10 +1754,10 @@ object F_AncestroWeb: TF_AncestroWeb
         Height = 340
         Top = 0
         Width = 632
-        HorzScrollBar.Page = 632
-        VertScrollBar.Page = 340
+        HorzScrollBar.Page = 611
+        VertScrollBar.Page = 319
         Align = alClient
-        ClientHeight = 333
+        ClientHeight = 336
         ClientWidth = 628
         TabOrder = 0
         object Label19: TLabel
@@ -1935,4 +1935,4 @@ object F_AncestroWeb: TF_AncestroWeb
     left = 208
     top = 104
   end
-end
+end
