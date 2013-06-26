@@ -78,7 +78,7 @@
         <PackageName Value="LCL"/>
       </Item12>
     </RequiredPackages>
-    <Units Count="95">
+    <Units Count="96">
       <Unit0>
         <Filename Value="AncestroWeb.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -99,8 +99,8 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="3360"/>
-        <CursorPos X="150" Y="3383"/>
+        <TopLine Value="3766"/>
+        <CursorPos X="27" Y="3795"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -115,8 +115,8 @@
         <UnitName Value="U_DMWeb"/>
         <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="239"/>
-        <CursorPos X="22" Y="239"/>
+        <TopLine Value="266"/>
+        <CursorPos X="114" Y="271"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -135,11 +135,11 @@
       <Unit4>
         <Filename Value="../ibx/runtime/IB.pas"/>
         <UnitName Value="IB"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
         <TopLine Value="397"/>
         <CursorPos X="44" Y="402"/>
-        <UsageCount Value="75"/>
+        <UsageCount Value="78"/>
         <Loaded Value="True"/>
       </Unit4>
       <Unit5>
@@ -208,8 +208,8 @@
         <UnitName Value="functions_html"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="179"/>
-        <CursorPos X="33" Y="181"/>
+        <TopLine Value="142"/>
+        <CursorPos X="58" Y="173"/>
         <UsageCount Value="177"/>
         <Loaded Value="True"/>
       </Unit11>
@@ -416,7 +416,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="62"/>
         <CursorPos X="34" Y="67"/>
-        <UsageCount Value="60"/>
+        <UsageCount Value="63"/>
         <Loaded Value="True"/>
       </Unit35>
       <Unit36>
@@ -557,7 +557,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="151"/>
+        <UsageCount Value="157"/>
         <DefaultSyntaxHighlighter Value="XML"/>
       </Unit52>
       <Unit53>
@@ -674,10 +674,13 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="U_AncestroWeb"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="422"/>
-        <CursorPos X="30" Y="437"/>
-        <UsageCount Value="13"/>
+        <TopLine Value="449"/>
+        <CursorPos X="137" Y="472"/>
+        <UsageCount Value="15"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit66>
       <Unit67>
@@ -827,10 +830,13 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="U_DMWeb"/>
+        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
         <TopLine Value="87"/>
-        <CursorPos X="54" Y="109"/>
-        <UsageCount Value="5"/>
+        <CursorPos X="108" Y="126"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit85>
       <Unit86>
@@ -848,7 +854,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="47"/>
+        <UsageCount Value="50"/>
         <Loaded Value="True"/>
       </Unit87>
       <Unit88>
@@ -866,7 +872,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="197"/>
         <CursorPos X="78" Y="212"/>
-        <UsageCount Value="44"/>
+        <UsageCount Value="47"/>
         <Loaded Value="True"/>
       </Unit89>
       <Unit90>
@@ -909,124 +915,136 @@
         <CursorPos X="3" Y="515"/>
         <UsageCount Value="4"/>
       </Unit94>
+      <Unit95>
+        <Filename Value="../Ancestromania/Sources/Web/u_dmweb.lfm"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit95>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="2596" Column="57" TopLine="2572"/>
+        <Caret Line="2199" Column="21" TopLine="2176"/>
       </Position1>
       <Position2>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="2878" Column="57" TopLine="2855"/>
+        <Caret Line="2201" Column="18" TopLine="2176"/>
       </Position2>
       <Position3>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="3382" Column="24" TopLine="3358"/>
+        <Caret Line="2211" Column="63" TopLine="2176"/>
       </Position3>
       <Position4>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="2222" Column="60" TopLine="2176"/>
       </Position4>
       <Position5>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="1872" Column="27" TopLine="1848"/>
+        <Caret Line="2223" Column="60" TopLine="2177"/>
       </Position5>
       <Position6>
-        <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="287" Column="17" TopLine="277"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2224" Column="60" TopLine="2178"/>
       </Position6>
       <Position7>
-        <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2225" Column="60" TopLine="2179"/>
       </Position7>
       <Position8>
-        <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="25" Column="32" TopLine="1"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2226" Column="60" TopLine="2180"/>
       </Position8>
       <Position9>
-        <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="228" Column="38" TopLine="204"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2227" Column="60" TopLine="2181"/>
       </Position9>
       <Position10>
-        <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="230" Column="86" TopLine="206"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2228" Column="77" TopLine="2182"/>
       </Position10>
       <Position11>
-        <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="307" Column="26" TopLine="283"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2236" Column="86" TopLine="2190"/>
       </Position11>
       <Position12>
-        <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="286" Column="10" TopLine="271"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2242" Column="17" TopLine="2196"/>
       </Position12>
       <Position13>
-        <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2272" Column="54" TopLine="2226"/>
       </Position13>
       <Position14>
-        <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="315" Column="38" TopLine="295"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2278" Column="54" TopLine="2232"/>
       </Position14>
       <Position15>
-        <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2279" Column="104" TopLine="2233"/>
       </Position15>
       <Position16>
-        <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="251" Column="26" TopLine="243"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2282" Column="54" TopLine="2236"/>
       </Position16>
       <Position17>
-        <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="267" Column="30" TopLine="243"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2283" Column="54" TopLine="2253"/>
       </Position17>
       <Position18>
-        <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2289" Column="60" TopLine="2253"/>
       </Position18>
       <Position19>
-        <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="227" Column="65" TopLine="209"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2300" Column="38" TopLine="2270"/>
       </Position19>
       <Position20>
-        <Filename Value="ExtHTML/functions/functions_html.pas"/>
-        <Caret Line="211" Column="39" TopLine="194"/>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2356" Column="23" TopLine="2318"/>
       </Position20>
       <Position21>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="2011" Column="28" TopLine="1992"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position21>
       <Position22>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="2005" Column="84" TopLine="2002"/>
+        <Caret Line="2356" Column="64" TopLine="2310"/>
       </Position22>
       <Position23>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="107" Column="51" TopLine="100"/>
+        <Caret Line="2399" Column="64" TopLine="2353"/>
       </Position23>
       <Position24>
         <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="111" Column="18" TopLine="100"/>
+        <Caret Line="2439" Column="66" TopLine="2394"/>
       </Position24>
       <Position25>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="3382" Column="135" TopLine="3376"/>
+        <Filename Value="../Ancestromania/Sources/Web/u_ancestroweb.pas"/>
+        <Caret Line="442" Column="100" TopLine="429"/>
       </Position25>
       <Position26>
-        <Filename Value="u_ancestroweb.pas"/>
+        <Filename Value="../Ancestromania/Sources/Web/u_ancestroweb.pas"/>
         <Caret Line="1" Column="1" TopLine="1"/>
       </Position26>
       <Position27>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="2896" Column="219" TopLine="2872"/>
+        <Filename Value="../Ancestromania/Sources/Web/u_ancestroweb.pas"/>
+        <Caret Line="1618" Column="37" TopLine="1571"/>
       </Position27>
       <Position28>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="67" Column="74" TopLine="62"/>
+        <Filename Value="ExtHTML/functions/functions_html.pas"/>
+        <Caret Line="598" Column="41" TopLine="597"/>
       </Position28>
       <Position29>
-        <Filename Value="u_ancestroweb.pas"/>
-        <Caret Line="2880" Column="147" TopLine="2859"/>
+        <Filename Value="ExtHTML/functions/functions_html.pas"/>
+        <Caret Line="643" Column="121" TopLine="610"/>
       </Position29>
+      <Position30>
+        <Filename Value="u_ancestroweb.pas"/>
+        <Caret Line="2543" Column="126" TopLine="2513"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
@@ -1077,8 +1095,8 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="u_ancestroweb.pas"/>
-        <Line Value="1906"/>
+        <Line Value="1914"/>
       </Item1>
     </BreakPoints>
   </Debugging>
-</CONFIG>
+</CONFIG>

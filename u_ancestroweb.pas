@@ -274,11 +274,11 @@ type
     PCPrincipal: TPageControl;
     Panel1: TPanel;
     pa_About: TScrollbox;
-    Panel3: TPanel;
+    pa_base: TPanel;
     Panel4: TPanel;
     Panel5: TPanel;
     Panel6: TPanel;
-    Panel7: TPanel;
+    pa_filter: TPanel;
     pb_ProgressInd: TFlatGauge;
     pb_ProgressAll: TFlatGauge;
     se_ContactPort: TSpinEdit;
@@ -826,11 +826,14 @@ begin
   or IBQ_Individu.IsEmpty
   or gb_Generate then
     Exit;
-
   // going to work for a time : freezing options to protect work and options
   ts_needed .Enabled:=False;
   ts_options.Enabled:=False;
+  pa_filter .Enabled:=False;
+  pa_base   .Enabled:=False;
   IBQ_Individu.DisableControls;
+  if not ch_Filtered.Checked Then
+   ch_ancestors.Checked:=True;
   try // starting work
     p_CreateKeyWords;
     gs_RootPathForExport := de_ExportWeb.{$IFDEF FPC}Directory{$ELSE}Text{$ENDIF} + DirectorySeparator;
@@ -922,6 +925,8 @@ begin
     if assigned ( gDat_Existing_Persons ) Then
       gDat_Existing_Persons.Close
   finally
+    pa_filter .Enabled:=True;
+    pa_base   .Enabled:=True;
     ts_needed .Enabled:=True;
     ts_options.Enabled:=True;
     gDat_Existing_Persons.Free;
@@ -1596,11 +1601,12 @@ var
        li_counter := 0 ;
        if IBQ_Tree.Locate(IBQ_CLE_FICHE, gi_CleFiche, []) then
          p_CreateSheets ( 0, IBQ_tree.FieldByName(ls_IdSosa).AsFloat, IBQ_Tree.FieldByName(ls_IdSosa).AsString);
-       lstl_HTMLTree.Text := CST_HTML_DIV_BEGIN + fs_CreateULTabsheets(lt_SheetsGen,
-         '', CST_HTML_SUBMENU)+CST_HTML_DIV_END;
+       lstl_HTMLTree.Text := fs_CreateULTabsheets(lt_SheetsGen,
+         '', CST_HTML_SUBMENU);
        for li_i := 1 to sp_gentree.value - 1 do // why to do that ? do not know exactly
          lstl_HTMLTree.Add ( CST_HTML_BR + CST_HTML_BR );
        lstl_HTMLTree.Add ( CST_HTML_BR + CST_HTML_BR );
+       lstl_HTMLTree.Add ( CST_HTML_DIV_BEGIN );
      end;
 
   end;
@@ -1657,6 +1663,8 @@ begin
             Then li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree, gi_CleFiche,not cb_treeWithoutJavascript.Checked)
             Else li_generation := fi_CreateHTMLTree(IBQ_Tree, lstl_HTMLTree, gi_CleFiche,not cb_treeWithoutJavascript.Checked,True,True,False,IBQ_TQ_NUM_SOSA,False);
           lstl_HTMLTree.Insert(0, fs_Format_Lines(me_HeadTree.Lines.Text));
+          if ab_Splitted Then
+           lstl_HTMLTree.Add(CST_HTML_DIV_END);
           p_CreateAHtmlFile(lstl_HTMLTree, CST_SUBDIR_HTML_TREE, me_Description.Lines.Text,
             ( gs_AnceSTROWEB_FamilyTree ), gs_AnceSTROWEB_FullTree, fs_GetTitleTree ( gs_AnceSTROWEB_Ancestry, li_generation), gs_LinkGedcom, '../');
           // saving the page
@@ -2373,7 +2381,10 @@ const CST_DUMMY_COORD = 2000000;
       p_createACase ( lstl_AllSurnames, '' );
       // creating PHP file
       if ch_SplittedMap.Checked Then
-        lstl_HTMLAFolder.Insert(0,fs_CreateULTabsheets(gt_SheetsMapGroup, '', CST_HTML_SUBMENU));
+       Begin
+        lstl_HTMLAFolder.Insert(0,fs_CreateULTabsheets(gt_SheetsMapGroup, '', CST_HTML_SUBMENU) + CST_HTML_DIV_BEGIN );
+        lstl_HTMLAFolder.Add(CST_HTML_DIV_END);
+       end;
       p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_MAP, me_MapHead.Lines.Text,
          gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map, gs_ANCESTROWEB_Map_Long, gs_LinkGedcom,'',CST_EXTENSION_HTML);
       // saving the page
@@ -2564,7 +2575,7 @@ begin
     ls_ASurname := '';
     pb_ProgressInd.Progress:=0;  // initing user value
     pb_ProgressInd.MaxValue:=IBS_FilesFiltered.RecordCount;
-    lstl_HTMLAFolder.Add ( fs_CreateULTabsheets ( gt_SheetsLetters, '', CST_HTML_SUBMENU, False, True ));
+    lstl_HTMLAFolder.Add ( fs_CreateULTabsheets ( gt_SheetsLetters, '', CST_HTML_SUBMENU, False, True ) + CST_HTML_DIV_BEGIN );
     lstl_HTMLAFolder.Add ( fs_CreateElementWithId(CST_HTML_TABLE, 'Surnames') + CST_HTML_TR_BEGIN + CST_HTML_TD_BEGIN  );
     while not IBS_FilesFiltered.EOF do
      begin
@@ -2607,6 +2618,7 @@ begin
 
      end;
     lstl_HTMLAFolder.Add ( CST_HTML_TD_END +CST_HTML_TR_END + CST_HTML_TABLE_END );
+    lstl_HTMLAFolder.Add(CST_HTML_DIV_END);
     p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_Surnames, me_SurnamesHead.Lines.Text,
        ( gs_AnceSTROWEB_Surnames ), gs_AnceSTROWEB_Surnames, gs_ANCESTROWEB_Surnames_Long, gs_LinkGedcom);
     // saving the page
@@ -2659,7 +2671,7 @@ var
     if (ls_ASurnameBegin <> '') then
       p_SelectTabSheet(lt_SheetsLists,ls_ASurnameBegin[1],ls_ASurnameBegin); // current letter sheet
     lstl_HTMLAList.Text :=
-      fs_CreateULTabsheets(lt_SheetsLists, '', CST_HTML_SUBMENU);
+      fs_CreateULTabsheets(lt_SheetsLists, '', CST_HTML_SUBMENU) + CST_HTML_DIV_BEGIN;
     if (ls_ASurnameBegin <> '') then
       p_SelectTabSheet(lt_SheetsLists,ls_ASurnameBegin[1],ls_ASurnameBegin, False);  // reiniting for next page
     lb_next := True;
@@ -2716,6 +2728,7 @@ var
     if lb_next Then
       lstl_HTMLAList.Add ( fs_CreatePrevNext ( li_CounterPages + 1, CST_PAGE_NEXT, '../', ed_ListsBeginName.Text ));
     lstl_HTMLAList.Add ( CST_HTML_CENTER_END );
+    lstl_HTMLAList.Add(CST_HTML_DIV_END);
     p_CreateAHtmlFile(lstl_HTMLAList, CST_FILE_SUBFILES, me_Description.Lines.Text,
       ( gs_AnceSTROWEB_List ) + ' - ' + ls_ASurnameBegin +
       ( gs_AnceSTROWEB_At ) + ls_ASurnameEnd, '', '', gs_LinkGedcom, '..' + CST_HTML_DIR_SEPARATOR);
@@ -3054,7 +3067,7 @@ var
         fi_CreateHTMLTree(DMWeb.IBQ_TreeAsc, lstl_Tree, ai_CleFiche, False, False, True);
       lstl_Tree.Insert(0, fs_Create_DIV('ancestry' + CST_FILE_Number + IntToStr(ai_NoInPage),CST_HTML_CLASS_EQUAL) + fs_GetTitleTree (( gs_AnceSTROWEB_Ancestry ), li_generations ));
       astl_HTMLAFolder.AddStrings(lstl_Tree);
-      astl_HTMLAFolder.Add(CST_HTML_DIV_End);
+      astl_HTMLAFolder.Add(CST_HTML_DIV_End+CST_HTML_BR);
     end;
     // line end
     astl_HTMLAFolder.Add(CST_HTML_TD_END + CST_HTML_TR_END);
@@ -3106,7 +3119,7 @@ var
           CST_HTML_TR_BEGIN + fs_Create_TD ( ls_NewSurname + CST_FILE_Number + IntToStr(li_i), CST_HTML_CLASS_EQUAL, 2 ));
         lstl_HTMLAFolder.Add( CST_HTML_DIV_BEGIN + '<' + CST_HTML_H2 + CST_HTML_ID_EQUAL +'"subtitle">' + CST_HTML_IMAGE_SRC + '../'
                              + CST_SUBDIR_HTML_IMAGES + '/' + ls_NewSurname + CST_EXTENSION_GIF + '" />' + fs_getLinkedSurName ( ls_ASurname ) +
-          ' ' + fs_getLinkedName ( FieldByName(IBQ_PRENOM).AsString, lstl_listWords ) + CST_HTML_H2_BEGIN + CST_HTML_DIV_END);
+          ' ' + fs_getLinkedName ( FieldByName(IBQ_PRENOM).AsString, lstl_listWords ) + CST_HTML_H2_BEGIN + CST_HTML_DIV_END+CST_HTML_BR);
         lstl_HTMLAFolder.Add(CST_HTML_TD_END + CST_HTML_TR_END  + CST_HTML_TR_BEGIN  + CST_HTML_TD_BEGIN);
         if lb_show then
          Begin
@@ -3137,7 +3150,7 @@ var
       ls_ASurnameSurname := fs_RemplaceEspace ( fs_getNameAndSurName(IBQ_FilesFiltered), '_' );
       if (ls_ASurnameBegin > '') and ( ls_ASurnameSurname > '' ) then
         p_SelectTabSheet(gt_SheetsLetters,ls_ASurnameSurname[1],ls_ASurnameSurname); // current letter sheet
-      lstl_HTMLAFolder.Text := fs_CreateULTabsheets(gt_SheetsLetters, '', CST_HTML_SUBMENU); // Creating the letters' sheets
+      lstl_HTMLAFolder.Text := fs_CreateULTabsheets(gt_SheetsLetters, '', CST_HTML_SUBMENU) + CST_HTML_DIV_BEGIN; // Creating the letters' sheets
       if (ls_ASurnameBegin > '') and ( ls_ASurnameSurname > '' ) then
         p_SelectTabSheet(gt_SheetsLetters,ls_ASurnameSurname[1],ls_ASurnameSurname, False);  // reiniting for next page
       lb_next := True;
@@ -3149,6 +3162,7 @@ var
       if lb_next Then
         lstl_HTMLAFolder.Add ( fs_CreatePrevNext ( li_CounterPages + 1, CST_PAGE_NEXT, '../', ed_FileBeginName.Text ));
       lstl_HTMLAFolder.Add ( CST_HTML_CENTER_END );
+      lstl_HTMLAFolder.Add(CST_HTML_DIV_END);
       p_CreateAHtmlFile(lstl_HTMLAFolder, CST_FILE_SUBFILES, me_Description.Lines.Text,
         ( gs_AnceSTROWEB_Files ) + ' - ' + ls_ASurnameBegin +
         ( gs_AnceSTROWEB_At ) + ls_ASurnameEnd, '', '', gs_LinkGedcom, '..' + CST_HTML_DIR_SEPARATOR);
@@ -3197,7 +3211,7 @@ begin
     end;
   lstl_HTMLPersons := TStringList.Create;
   lstl_HTMLPersons.Text := fs_CreateULTabsheets(gt_SheetsLetters,
-    CST_SUBDIR_HTML_FILES + CST_HTML_DIR_SEPARATOR, CST_HTML_SUBMENU) +
+    CST_SUBDIR_HTML_FILES + CST_HTML_DIR_SEPARATOR, CST_HTML_SUBMENU) + CST_HTML_DIV_BEGIN +
     CST_HTML_CENTER_BEGIN + '<' + CST_HTML_Paragraph +
     CST_HTML_ID_EQUAL + '"head">' + fs_Format_Lines(
     me_FilesHead.Text) + CST_HTML_Paragraph_END;
@@ -3205,6 +3219,7 @@ begin
   p_CreateKeyWords;
   pb_ProgressInd.Progress := 0; // initing not needed user value
   p_IncProgressBar; // growing the counter
+  lstl_HTMLPersons.Add(CST_HTML_DIV_END);
   p_CreateAHtmlFile(lstl_HTMLPersons, CST_FILE_FILES, me_FilesHead.Lines.Text,
     ( gs_AnceSTROWEB_Files ), gs_AnceSTROWEB_Files, gs_ANCESTROWEB_Files_Long, gs_LinkGedcom);
   p_IncProgressBar; // growing the counter
@@ -3772,12 +3787,12 @@ begin
     ( gs_AnceSTROWEB_CreatedBy ) + ' ' + CST_HTML_STRONG_BEGIN +
     CST_AncestroWeb_WithLicense + ' - ' + CST_HTML_AHREF +
     'http://www.liberlog.fr">' + CST_AUTHOR +
-    CST_HTML_A_END + CST_HTML_STRONG_END + CST_HTML_Paragraph_END + CST_HTML_DIV_End;
+    CST_HTML_A_END + CST_HTML_STRONG_END + CST_HTML_Paragraph_END + CST_HTML_DIV_End+CST_HTML_BR;
   if as_LittleTitle <> '' then
     p_SelectTabSheet(gt_TabSheets, as_LittleTitle); // current page sheet
   p_CreateHTMLFile(gt_TabSheets, astl_Destination, as_BottomHTML,
     gs_Root, as_Describe, gstl_HeadKeyWords.Text, gs_HTMLTitle + ' - ' +
-    as_Title, as_LongTitle, 'main', as_BeginingFile + '1' + as_ExtFile, as_BeginingFile + '2' +
+    as_Title, as_LongTitle, as_BeginingFile + '1' + as_ExtFile, as_BeginingFile + '2' +
     as_ExtFile, as_BeginingFile + '3' + as_ExtFile, as_BeginingFile +
     '4' + as_ExtFile, as_Subdir, as_BeforeHTML, gs_ANCESTROWEB_Language, astl_Body );
   if as_LittleTitle <> '' then

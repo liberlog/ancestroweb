@@ -638,17 +638,27 @@ object DMWeb: TDMWeb
     ParamCheck = True
     SQL.Strings = (
       'SELECT '
-      'NOM,EV_IND_CP,EV_IND_PAYS,EV_IND_LATITUDE,'
-      'EV_IND_LONGITUDE,EV_IND_VILLE,COUNT (*) AS COUNTER'
+      'NOM,EV_IND_CP,'
+      'EV_IND_PAYS,'
+      'EV_IND_LATITUDE,'
+      'EV_IND_LONGITUDE,'
+      'EV_IND_VILLE,'
+      'COUNT (*) AS COUNTER'
       'FROM individu i'
-      'left join EVENEMENTS_IND e on i.cle_fiche=e.EV_IND_KLE_FICHE'
+      'left join EVENEMENTS_IND e on (i.cle_fiche=e.EV_IND_KLE_FICHE)'
       'WHERE KLE_DOSSIER=:I_DOSSIER'
       'GROUP BY '
-      'NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS,'
-      'EV_IND_LATITUDE,EV_IND_LONGITUDE'
+      'NOM,EV_IND_CP,'
+      'EV_IND_VILLE,'
+      'EV_IND_PAYS,'
+      'EV_IND_LATITUDE,'
+      'EV_IND_LONGITUDE'
       'ORDER BY '
-      'NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS,'
-      'EV_IND_LATITUDE,EV_IND_LONGITUDE'
+      'NOM,EV_IND_CP,'
+      'EV_IND_VILLE,'
+      'EV_IND_PAYS,'
+      'EV_IND_LATITUDE,'
+      'EV_IND_LONGITUDE'
       ''
       ''
     )
@@ -799,6 +809,7 @@ object DMWeb: TDMWeb
     SQL.Strings = (
       'SELECT COUNT (*) AS COUNTER'
       'FROM individu i'
+      'left join EVENEMENTS_IND e on i.cle_fiche=e.EV_IND_KLE_FICHE'
       'WHERE KLE_DOSSIER=:I_DOSSIER'
       'GROUP BY NOM,EV_IND_CP,EV_IND_VILLE,EV_IND_PAYS'
       ''
@@ -808,7 +819,7 @@ object DMWeb: TDMWeb
       item
         DataType = ftUnknown
         Name = 'I_DOSSIER'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end>
     left = 112
     top = 304
@@ -816,7 +827,7 @@ object DMWeb: TDMWeb
       item
         DataType = ftUnknown
         Name = 'I_DOSSIER'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end>
   end
 end

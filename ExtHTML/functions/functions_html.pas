@@ -170,7 +170,7 @@ procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
                              const astl_Destination : TStrings ;
                              const as_EndPage, as_PathFiles,
                                    as_Describe, as_Keywords,
-                                   as_title, as_LongTitle, as_IdOfPageMainElement : String ;
+                                   as_title, as_LongTitle : String ;
                              const as_FileBeforeHead, as_FileAfterHead,
                                    as_FileAfterMenu  , as_FileAfterBody,
                                    as_Subdir ,
@@ -587,7 +587,7 @@ procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
                              const astl_Destination : TStrings ;
                              const as_EndPage, as_PathFiles,
                                    as_Describe, as_Keywords,
-                                   as_title, as_LongTitle, as_IdOfPageMainElement : String ;
+                                   as_title, as_LongTitle : String ;
                              const as_FileBeforeHead, as_FileAfterHead,
                                    as_FileAfterMenu  , as_FileAfterBody,
                                    as_Subdir ,
@@ -641,9 +641,8 @@ Begin
                           +  fs_CreateElementWithId(CST_HTML_DIV, 'title', CST_HTML_CLASS_EQUAL )
                           +  CST_HTML_H1_BEGIN + as_title + CST_HTML_H1_END + CST_HTML_DIV_End
                           +  CST_ENDOFLINE + fs_CreateULTabsheets ( at_TabSheets, as_Subdir ) + CST_ENDOFLINE + ls_Text3
-                          +  CST_ENDOFLINE + fs_CreateElementWithId ( CST_HTML_DIV, as_IdOfPageMainElement )
                           +  CST_ENDOFLINE + astl_Destination.Text
-                          +  CST_ENDOFLINE + CST_HTML_DIV_End
+                          +  CST_ENDOFLINE + CST_HTML_DIV_End + CST_HTML_BR
                           +  CST_ENDOFLINE + fs_Format_Lines(as_EndPage)
                           +  CST_ENDOFLINE + ls_Text4;
   finally

@@ -30,6 +30,9 @@ BODY { font-family: Arial, Helvetica, Univers, 'Zurich BT', sans-serif; color: #
 
  FONT { font-family: Verdana,Tahoma,Arial,Helvetica,sans-serif; font-size: 10pt; color: #002222;}
 
+div#subsheets {
+display:table;
+}
 ul#subsheets,ul#tabsheets{list-style-type:none;margin:0;padding-left:0;padding-bottom:24px;border-bottom:1px solid #999;}
 ul#subsheets li,ul#tabsheets li{float:left;background-color:#AAFFAA;color:#000;margin:2px 5px 0 0;border:1px solid #999;padding:3px 10px 0 10px;height:23px;height:18px;}
 ul#subsheets li.tab_top_right,ul#tabsheets li.tab_top_right{float:right;height:16px;background-color:transparent;color:#999;margin:2px 0 0 0;border:0;padding:5px 0 0 0;}

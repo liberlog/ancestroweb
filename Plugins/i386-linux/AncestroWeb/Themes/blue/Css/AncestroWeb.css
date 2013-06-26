@@ -1,6 +1,6 @@
 /* CSS definition file containing sitestyle stylesheets */
 
-BODY { font-family: Arial, Helvetica, Univers, 'Zurich BT', sans-serif; color: #002233; background-image:url('../Images/background.gif');background-color: lightblue;width:100%;height:100%}
+BODY { font-family: Arial, Helvetica, Univers, 'Zurich BT', sans-serif; color: #002233; background-image:url('../Images/bk_ora2.gif');background-color: lightgreen;width:100%;height:100%}
 
  A { font-weight:bold;}
  A:active { text-decoration: none;color: #444499}
@@ -11,7 +11,7 @@ BODY { font-family: Arial, Helvetica, Univers, 'Zurich BT', sans-serif; color: #
  table#image { font-family: Verdana,Tahoma,Arial,Helvetica,sans-serif; font-size: 10pt; color: #003333; background-color: #448899;}
  table.file, table.man, table.woman,table#jobs, table#ages, table#names  {border-style:solid;border-width:1;padding:0}
  table#ages,table#jobs  {text-align:center}
- #names td, #jobs td, #jobs th, #ages td, #ages th {border-bottom:1px solid blue;padding:0}
+ #names td, #jobs td, #jobs th, #ages td, #ages th {border-bottom:1px solid green;padding:0}
  td { font-family: Verdana,Tahoma,Arial,Helvetica,sans-serif; font-size: 10pt; color: #003333}
  #center, #ages td, #ages th {text-align:center}
  #ages th {width:170px}
@@ -30,8 +30,11 @@ BODY { font-family: Arial, Helvetica, Univers, 'Zurich BT', sans-serif; color: #
 
  FONT { font-family: Verdana,Tahoma,Arial,Helvetica,sans-serif; font-size: 10pt; color: #002222;}
 
+div#subsheets {
+display:table;
+}
 ul#subsheets,ul#tabsheets{list-style-type:none;margin:0;padding-left:0;padding-bottom:24px;border-bottom:1px solid #999;}
-ul#subsheets li,ul#tabsheets li{float:left;background-color:#AAAAFF;color:#000;margin:2px 5px 0 0;border:1px solid #999;padding:3px 10px 0 10px;height:23px;height:18px;}
+ul#subsheets li,ul#tabsheets li{float:left;background-color:#AAFFAA;color:#000;margin:2px 5px 0 0;border:1px solid #999;padding:3px 10px 0 10px;height:23px;height:18px;}
 ul#subsheets li.tab_top_right,ul#tabsheets li.tab_top_right{float:right;height:16px;background-color:transparent;color:#999;margin:2px 0 0 0;border:0;padding:5px 0 0 0;}
 ul#subsheets a:link,ul#subsheets a:visited,ul#tabsheets a:link,ul#tabsheets a:visited{color:#369;font-weight:bold;background-color:transparent;white-space:nowrap;}
 li.tab_left,li.tab_mi22le,li.tab_right{border-bottom:1px solid #4444EB;color:#000;background-color:transparent;padding:3px 10px 0 10px;}
