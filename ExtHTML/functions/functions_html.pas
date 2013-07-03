@@ -174,7 +174,9 @@ procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
                              const as_FileBeforeHead, as_FileAfterHead,
                                    as_FileAfterMenu  , as_FileAfterBody,
                                    as_Subdir ,
-                                   as_BeforeHTML, as_language : String  ; const astl_Body : TStringList = nil );
+                                   as_BeforeHTML, as_language : String ;
+                             const astl_Body : TStringList = nil;
+                             const ab_HtmlTitle : boolean = True );
 function fs_GetSheetLink ( const at_TabSheets : TAHTMLULTabSheet ;
                            const as_Title : String ;
                            const as_KeyPage : String ):String;
@@ -514,8 +516,8 @@ var li_i, li_j : Longint;
     lhut_sheet, la_Pages : THTMLULTabSheet;
     ls_Link : String ;
 Begin
-
-    if high ( at_TabSheets ) > 0 Then
+   if ( at_TabSheets <> nil )
+   and ( high ( at_TabSheets ) > 0 ) Then
     Begin
       Result := fs_CreateElementWithId ( CST_HTML_DIV, as_idMenu )
              +  fs_CreateElementWithId ( CST_HTML_UL , as_idMenu ) +CST_ENDOFLINE;
@@ -591,9 +593,11 @@ procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
                              const as_FileBeforeHead, as_FileAfterHead,
                                    as_FileAfterMenu  , as_FileAfterBody,
                                    as_Subdir ,
-                                   as_BeforeHTML, as_language : String ; const astl_Body : TStringList = nil );
+                                   as_BeforeHTML, as_language : String ;
+                             const astl_Body : TStringList = nil;
+                             const ab_HtmlTitle : boolean = True );
 var  lstl_HTML : TStringList;
-     ls_Text1, ls_Text2, ls_Text3, ls_Text4  : String ;
+     ls_Text1, ls_Text2, ls_Text3, ls_Text4, ls_Text5  : String ;
   procedure p_LoadText3 ( const astl_Strings : TStringList );
   begin
     p_ReplaceLanguageString(astl_Strings,CST_HTML_CAPTION,as_LongTitle);
@@ -632,17 +636,13 @@ Begin
         ls_Text4 := lstl_HTML.Text;
       end
      Else ls_Text4 := '';
-    p_LoadStringList ( lstl_HTML, as_PathFiles, CST_HTML_FILE_HEAD );
-    p_ReplaceLanguagesStrings ( lstl_HTML, CST_HTML_HEAD_IN_LANG_FILE );
-    p_ReplaceLanguageString(lstl_HTML,CST_HTML_HEAD_DESCRIBE,StringReplace (as_Describe, CST_ENDOFLINE, '', [rfReplaceAll]));
-    p_ReplaceLanguageString(lstl_HTML,CST_HTML_HEAD_TITLE,as_title);
-    p_ReplaceLanguageString(lstl_HTML,CST_HTML_HEAD_AUTOKEYS,StringReplace (as_Keywords, CST_ENDOFLINE, ',', [rfReplaceAll]));
-    astl_Destination.Text := as_BeforeHTML + CST_ENDOFLINE + ls_Text1 + CST_ENDOFLINE + fs_createHead(as_PathFiles,as_Describe, as_Keywords, as_title, as_language) + CST_ENDOFLINE + ls_Text2
-                          +  fs_CreateElementWithId(CST_HTML_DIV, 'title', CST_HTML_CLASS_EQUAL )
-                          +  CST_HTML_H1_BEGIN + as_title + CST_HTML_H1_END + CST_HTML_DIV_End
-                          +  CST_ENDOFLINE + fs_CreateULTabsheets ( at_TabSheets, as_Subdir ) + CST_ENDOFLINE + ls_Text3
+    ls_Text5              := as_BeforeHTML + CST_ENDOFLINE + ls_Text1 + CST_ENDOFLINE + fs_createHead(as_PathFiles,as_Describe, as_Keywords, as_title, as_language) + CST_ENDOFLINE + ls_Text2 ;
+    if ab_HtmlTitle Then
+      AppendStr(ls_Text5, fs_CreateElementWithId(CST_HTML_DIV, 'title', CST_HTML_CLASS_EQUAL ) + CST_HTML_H1_BEGIN + as_title + CST_HTML_H1_END + CST_HTML_DIV_End);
+    if assigned ( at_TabSheets ) Then
+      AppendStr(ls_Text5, CST_ENDOFLINE + fs_CreateULTabsheets ( at_TabSheets, as_Subdir ) + CST_ENDOFLINE );
+    astl_Destination.Text := ls_Text5 + ls_Text3
                           +  CST_ENDOFLINE + astl_Destination.Text
-                          +  CST_ENDOFLINE + CST_HTML_DIV_End + CST_HTML_BR
                           +  CST_ENDOFLINE + fs_Format_Lines(as_EndPage)
                           +  CST_ENDOFLINE + ls_Text4;
   finally

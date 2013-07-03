@@ -1,6 +1,6 @@
 /* CSS definition file containing sitestyle stylesheets */
 
-BODY { font-family: Arial, Helvetica, Univers, 'Zurich BT', sans-serif; color: #002233; background-image:url('../Images/bk_ora2.gif');background-color: lightgreen;width:100%;height:100%}
+BODY { font-family: Arial, Helvetica, Univers, 'Zurich BT', sans-serif; color: #002233; background-image:url('../Images/background.gif');background-color: lightgreen;width:100%;height:100%}
 
  A { font-weight:bold;}
  A:active { text-decoration: none;color: #444499}
