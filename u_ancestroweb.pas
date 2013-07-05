@@ -2369,7 +2369,7 @@ const CST_DUMMY_COORD = 2000000;
       if as_Name > '' Then
         p_setACase(astl_Case, li_Name); //  load case file and set html var files
       p_createFileCaseMap ( astl_Case, li_MapFileJS );
-      p_LoadStringList(astl_Case      , gs_Root, CST_MAP_FILE + CST_EXTENSION_JS);
+      p_LoadStringList(astl_Case      , CST_MAP_FILE + CST_EXTENSION_JS);
       inc ( li_MapFileJS );
       if as_Name = ''
        Then p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CASE, '' );
@@ -2410,11 +2410,11 @@ const CST_DUMMY_COORD = 2000000;
       ls_NewSurname := '';
       li_i := 0;
       ls_ASurname := IBS_MapFiltered.FieldByName(IBQ_NOM).AsString;
-      p_LoadStringList(lstl_HTMLAFolder, gs_Root, CST_FILE_MAP     + CST_EXTENSION_HTML);
-      p_LoadStringList(lstl_AllSurnames, gs_Root, CST_MAP_FILE     + CST_EXTENSION_JS);
-      p_LoadStringList(lstl_ACase      , gs_Root, CST_FILE_MapCase + CST_EXTENSION_JS);
-      p_LoadStringList(lstl_AFile      , gs_Root, CST_MAP_FILE     + CST_EXTENSION_JS);
-      p_LoadStringList(lstl_ALine      , gs_Root, CST_FILE_MapLine + CST_EXTENSION_JS);
+      p_LoadStringList(lstl_HTMLAFolder, CST_FILE_MAP     + CST_EXTENSION_HTML);
+      p_LoadStringList(lstl_AllSurnames, CST_MAP_FILE     + CST_EXTENSION_JS);
+      p_LoadStringList(lstl_ACase      , CST_FILE_MapCase + CST_EXTENSION_JS);
+      p_LoadStringList(lstl_AFile      , CST_MAP_FILE     + CST_EXTENSION_JS);
+      p_LoadStringList(lstl_ALine      , CST_FILE_MapLine + CST_EXTENSION_JS);
       p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_HTML_CAPTION, gs_ANCESTROWEB_Map_Long,[rfReplaceAll] );
       p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_CAPTIONS, gs_ANCESTROWEB_MapCaptions ,[rfReplaceAll]);
       p_ReplaceLanguageString ( lstl_HTMLAFolder, CST_MAP_TO      , gs_ANCESTROWEB_Map_To      ,[rfReplaceAll]);
@@ -3252,14 +3252,14 @@ begin
   p_Setcomments (( gs_AnceSTROWEB_Contact )); // advert for user
   lstl_HTMLContact := TStringList.Create;
   lstl_HTMLContactBeforeHTML := TStringList.Create;
-  p_LoadStringList(lstl_HTMLContact, gs_Root, CST_FILE_ContactInBody + CST_EXTENSION_PHP);
+  p_LoadStringList(lstl_HTMLContact, CST_FILE_ContactInBody + CST_EXTENSION_PHP);
 
   // setting begining HTML page values
   p_ReplaceLanguageString(lstl_HTMLContact,CST_HTML_CAPTION,gs_ANCESTROWEB_MailCaption);
   p_ReplaceLanguageString(lstl_HTMLContact,CST_HTML_HEAD_DESCRIBE,StringReplace (me_ContactHead.Lines.Text, CST_ENDOFLINE, CST_HTML_BR, [rfReplaceAll]));
   p_ReplaceLanguagesStrings ( lstl_HTMLContact, CST_HTML_CONTACT_IN_LANG );
   // loading PHP page
-  p_LoadStringList(lstl_HTMLContactBeforeHTML, gs_Root, CST_FILE_ContactBefore + CST_EXTENSION_PHP);
+  p_LoadStringList(lstl_HTMLContactBeforeHTML, CST_FILE_ContactBefore + CST_EXTENSION_PHP);
 
   // setting PHP page
   if cb_ContactSecurity.ItemIndex >= 0 Then
@@ -3590,8 +3590,8 @@ begin
   lstl_HTMLLines := TStringList.Create;
   p_ClearKeyWords;
   // loading a simple not inited line
-  p_LoadStringList ( lstl_HTMLLines, gs_Root, CST_FILE_AGES_LINE + CST_EXTENSION_HTML );
-  p_LoadStringList ( lstl_HTMLAges , gs_Root, CST_FILE_AGES + '3' + CST_EXTENSION_HTML );
+  p_LoadStringList ( lstl_HTMLLines, CST_FILE_AGES_LINE + CST_EXTENSION_HTML );
+  p_LoadStringList ( lstl_HTMLAges , CST_FILE_AGES + '3' + CST_EXTENSION_HTML );
   // Customizing the page
   p_ReplaceLanguageString(lstl_HTMLAges,CST_HTML_HEAD_DESCRIBE, StringReplace(me_HeadAges.Text,CST_ENDOFLINE,'<BR />',[]));
 
@@ -3727,8 +3727,8 @@ begin
   try
     p_ClearKeyWords;
     // loading a simple not inited line
-    p_LoadStringList ( lstl_HTMLLines, gs_Root, CST_FILE_JOBS_LINE + CST_EXTENSION_HTML );
-    p_LoadStringList ( lstl_HTMLJobs , gs_Root, CST_FILE_JOBS + '3' + CST_EXTENSION_HTML );
+    p_LoadStringList ( lstl_HTMLLines, CST_FILE_JOBS_LINE + CST_EXTENSION_HTML );
+    p_LoadStringList ( lstl_HTMLJobs , CST_FILE_JOBS + '3' + CST_EXTENSION_HTML );
 
     // Customizing the page
     p_ReplaceLanguageString(lstl_HTMLJobs,CST_HTML_HEAD_DESCRIBE, StringReplace(me_HeadJobs.Text,CST_ENDOFLINE,'<BR />',[]));
@@ -3792,7 +3792,7 @@ begin
   if as_LittleTitle <> '' then
     p_SelectTabSheet(gt_TabSheets, as_LittleTitle); // current page sheet
   p_CreateHTMLFile(gt_TabSheets, astl_Destination, as_BottomHTML,
-    gs_Root, as_Describe, gstl_HeadKeyWords.Text, gs_HTMLTitle + ' - ' +
+    as_Describe, gstl_HeadKeyWords.Text, gs_HTMLTitle + ' - ' +
     as_Title, as_LongTitle, as_BeginingFile + '1' + as_ExtFile, as_BeginingFile + '2' +
     as_ExtFile, as_BeginingFile + '3' + as_ExtFile, as_BeginingFile +
     '4' + as_ExtFile, as_Subdir, as_BeforeHTML, gs_ANCESTROWEB_Language, astl_Body );
