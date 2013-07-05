@@ -141,7 +141,7 @@ function fs_CreateULTabsheets ( const at_TabSheets : TAHTMLULTabSheet ;
 function fs_CreateElementWithId ( const as_ElementType   : String ;
                                        const as_idElement     : String ;
                                        const as_OptionToSetId : String = CST_HTML_ID_EQUAL ) : String;
-procedure p_LoadStringList ( const astl_ToLoad : TStrings ; const as_SourceDir, as_File : String );
+procedure p_LoadStringList ( const astl_ToLoad : TStrings ; const as_File : String );
 
 function  fs_Create_Image           ( const as_Image       : String;
                                       const as_Alt         : String  = '';
@@ -165,10 +165,10 @@ function  fs_Create_Text            ( const as_Text        : String      ;
 function  fs_Format_Lines           ( const as_Text        : String      ;
                                       const ReplaceWith : String = CST_HTML_BR ):String ;
 
-function fs_createHead (const as_PathFiles,as_Describe, as_Keywords, as_title, as_language : String): String;
+function fs_createHead (const as_Describe, as_Keywords, as_title, as_language : String): String;
 procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
                              const astl_Destination : TStrings ;
-                             const as_EndPage, as_PathFiles,
+                             const as_EndPage,
                                    as_Describe, as_Keywords,
                                    as_title, as_LongTitle : String ;
                              const as_FileBeforeHead, as_FileAfterHead,
@@ -199,8 +199,9 @@ procedure p_SelectTabSheet ( const at_TabSheets : TAHTMLULTabSheet ;
                              const as_KeyPage : String = '' ;
                              const ab_Select : Boolean = True );
 
-var gs_html_source_file : String = 'Files' + DirectorySeparator;
-    gstl_HeadKeyWords             : TStringlist = nil ;
+var  gs_html_source_file : String = 'Files' + DirectorySeparator;
+     gs_Root : String ;
+     gstl_HeadKeyWords             : TStringlist = nil ;
 
 
 
@@ -465,15 +466,15 @@ function  fs_Create_Text            ( const as_Text        : String      ;
   End ;
 
 
-procedure p_LoadStringList ( const astl_ToLoad : TStrings ; const as_SourceDir, as_File : String );
+procedure p_LoadStringList ( const astl_ToLoad : TStrings ; const as_File : String );
 begin
 // Charge le fichier de base
   try
-    if FileExists(as_SourceDir + gs_html_source_file + as_File)
-     Then astl_ToLoad.LoadFromFile ( as_SourceDir + gs_html_source_file + as_File)
+    if FileExists(gs_Root + gs_html_source_file + as_File)
+     Then astl_ToLoad.LoadFromFile ( gs_Root + gs_html_source_file + as_File)
      Else astl_ToLoad.Clear;
   Except
-    ShowMessage ( StringReplace ( gs_StringsHTML_cantOpenFile, '@ARG', as_SourceDir + gs_html_source_file + as_File, [rfReplaceAll] ));
+    ShowMessage ( StringReplace ( gs_StringsHTML_cantOpenFile, '@ARG', gs_Root + gs_html_source_file + as_File, [rfReplaceAll] ));
     Abort ;
   End ;
 End;
@@ -565,12 +566,12 @@ Begin
   Else Result := '' ;
 end;
 
-function fs_createHead (const as_PathFiles,as_Describe, as_Keywords, as_title, as_language : String ): String;
+function fs_createHead (const as_Describe, as_Keywords, as_title, as_language : String ): String;
 var  lstl_Head : TStringList;
 Begin
   lstl_Head := TStringList.Create;
   try
-    p_LoadStringList ( lstl_Head, as_PathFiles, CST_HTML_FILE_HEAD );
+    p_LoadStringList ( lstl_Head, CST_HTML_FILE_HEAD );
     p_ReplaceLanguagesStrings ( lstl_Head, CST_HTML_HEAD_IN_LANG_FILE );
     p_ReplaceLanguagesStrings ( lstl_Head, CST_HTML_HEAD_IN_LANG_FILE );
     p_ReplaceLanguageString(lstl_Head,CST_HTML_HEAD_DESCRIBE,StringReplace (as_Describe, CST_ENDOFLINE, '', [rfReplaceAll]));
@@ -587,7 +588,7 @@ end;
 
 procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
                              const astl_Destination : TStrings ;
-                             const as_EndPage, as_PathFiles,
+                             const as_EndPage,
                                    as_Describe, as_Keywords,
                                    as_title, as_LongTitle : String ;
                              const as_FileBeforeHead, as_FileAfterHead,
@@ -609,13 +610,13 @@ Begin
   try
     if as_FileBeforeHead > '' Then
       Begin
-        p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileBeforeHead );
+        p_LoadStringList ( lstl_HTML, as_FileBeforeHead );
         ls_Text1 := lstl_HTML.Text;
       end
      Else ls_Text1 := '' ;
     if as_FileAfterHead > '' Then
       Begin
-        p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileAfterHead );
+        p_LoadStringList ( lstl_HTML, as_FileAfterHead );
         ls_Text2 := lstl_HTML.Text;
       end
      Else ls_Text2 := '' ;
@@ -626,17 +627,17 @@ Begin
      Else
       if as_FileAfterMenu > '' Then
         Begin
-          p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileAfterMenu );
+          p_LoadStringList ( lstl_HTML, as_FileAfterMenu );
           p_LoadText3 ( lstl_HTML );
         end
        Else ls_Text3 := '' ;
     if as_FileAfterBody > '' Then
       Begin
-        p_LoadStringList ( lstl_HTML, as_PathFiles, as_FileAfterBody );
+        p_LoadStringList ( lstl_HTML, as_FileAfterBody );
         ls_Text4 := lstl_HTML.Text;
       end
      Else ls_Text4 := '';
-    ls_Text5              := as_BeforeHTML + CST_ENDOFLINE + ls_Text1 + CST_ENDOFLINE + fs_createHead(as_PathFiles,as_Describe, as_Keywords, as_title, as_language) + CST_ENDOFLINE + ls_Text2 ;
+    ls_Text5              := as_BeforeHTML + CST_ENDOFLINE + ls_Text1 + CST_ENDOFLINE + fs_createHead(as_Describe, as_Keywords, as_title, as_language) + CST_ENDOFLINE + ls_Text2 ;
     if ab_HtmlTitle Then
       AppendStr(ls_Text5, fs_CreateElementWithId(CST_HTML_DIV, 'title', CST_HTML_CLASS_EQUAL ) + CST_HTML_H1_BEGIN + as_title + CST_HTML_H1_END + CST_HTML_DIV_End);
     if assigned ( at_TabSheets ) Then
