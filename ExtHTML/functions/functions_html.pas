@@ -10,9 +10,12 @@ interface
 
 uses
   Classes,
-  {$IFNDEF FPC}
+  {$IFDEF FPC}
+  FileUtil,
+  {$ELSE}
   fonctions_system,
   {$ENDIF}
+  fonctions_file,
   {$IFDEF VERSIONS}
   fonctions_version,
   {$ENDIF}
@@ -470,11 +473,10 @@ procedure p_LoadStringList ( const astl_ToLoad : TStrings ; const as_File : Stri
 begin
 // Charge le fichier de base
   try
-    if FileExists(gs_Root + gs_html_source_file + as_File)
-     Then astl_ToLoad.LoadFromFile ( gs_Root + gs_html_source_file + as_File)
+    if FileExistsUTF8(gs_Root + gs_html_source_file + as_File)
+     Then p_LoadStrings( astl_ToLoad, gs_Root + gs_html_source_file + as_File, StringReplace ( gs_StringsHTML_cantOpenFile, '@ARG', gs_Root + gs_html_source_file + as_File, [rfReplaceAll] ))
      Else astl_ToLoad.Clear;
   Except
-    ShowMessage ( StringReplace ( gs_StringsHTML_cantOpenFile, '@ARG', gs_Root + gs_html_source_file + as_File, [rfReplaceAll] ));
     Abort ;
   End ;
 End;
