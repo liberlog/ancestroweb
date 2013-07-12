@@ -178,7 +178,7 @@ procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
                                    as_FileAfterMenu  , as_FileAfterBody,
                                    as_Subdir ,
                                    as_BeforeHTML, as_language : String ;
-                             const astl_Body : TStringList = nil;
+                             const astl_Body : TStrings = nil;
                              const ab_HtmlTitle : boolean = True );
 function fs_GetSheetLink ( const at_TabSheets : TAHTMLULTabSheet ;
                            const as_Title : String ;
@@ -597,11 +597,11 @@ procedure p_CreateHTMLFile ( const at_TabSheets : TAHTMLULTabSheet ;
                                    as_FileAfterMenu  , as_FileAfterBody,
                                    as_Subdir ,
                                    as_BeforeHTML, as_language : String ;
-                             const astl_Body : TStringList = nil;
+                             const astl_Body : TStrings = nil;
                              const ab_HtmlTitle : boolean = True );
 var  lstl_HTML : TStringList;
      ls_Text1, ls_Text2, ls_Text3, ls_Text4, ls_Text5  : String ;
-  procedure p_LoadText3 ( const astl_Strings : TStringList );
+  procedure p_LoadText3 ( const astl_Strings : TStrings );
   begin
     p_ReplaceLanguageString(astl_Strings,CST_HTML_CAPTION,as_LongTitle);
     ls_Text3:=astl_Strings.Text
