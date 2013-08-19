@@ -15,9 +15,9 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MajorVersionNr Value="1"/>
-      <MinorVersionNr Value="2"/>
-      <RevisionNr Value="2"/>
-      <BuildNr Value="6"/>
+      <MinorVersionNr Value="3"/>
+      <RevisionNr Value="3"/>
+      <BuildNr Value="1"/>
       <Language Value=""/>
       <CharSet Value=""/>
       <StringTable ProductVersion=""/>
@@ -37,7 +37,7 @@
         <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="12">
+    <RequiredPackages Count="11">
       <Item1>
         <PackageName Value="lazextbuttons"/>
       </Item1>
@@ -58,25 +58,22 @@
         <PackageName Value="ExtCopy"/>
       </Item6>
       <Item7>
-        <PackageName Value="lazfonctions"/>
+        <PackageName Value="ExtHTML"/>
       </Item7>
       <Item8>
-        <PackageName Value="ExtHTML"/>
-      </Item8>
-      <Item9>
         <PackageName Value="lazextcomponents"/>
         <MinVersion Minor="9" Build="4" Valid="True"/>
+      </Item8>
+      <Item9>
+        <PackageName Value="ibexpress"/>
       </Item9>
       <Item10>
-        <PackageName Value="ibexpress"/>
-      </Item10>
-      <Item11>
         <PackageName Value="FCL"/>
         <MinVersion Major="1" Valid="True"/>
-      </Item11>
-      <Item12>
+      </Item10>
+      <Item11>
         <PackageName Value="LCL"/>
-      </Item12>
+      </Item11>
     </RequiredPackages>
     <Units Count="96">
       <Unit0>
@@ -113,7 +110,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="U_DMWeb"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="266"/>
         <CursorPos X="114" Y="271"/>
@@ -135,7 +132,7 @@
       <Unit4>
         <Filename Value="../ibx/runtime/IB.pas"/>
         <UnitName Value="IB"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
         <TopLine Value="397"/>
         <CursorPos X="44" Y="402"/>
@@ -340,7 +337,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="50"/>
         <CursorPos X="1" Y="71"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit26>
       <Unit27>
@@ -348,7 +345,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="91"/>
         <CursorPos X="11" Y="112"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit27>
       <Unit28>
@@ -356,7 +353,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="123"/>
         <CursorPos X="3" Y="123"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit28>
       <Unit29>
@@ -483,7 +480,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="6"/>
         <CursorPos X="15" Y="27"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit43>
       <Unit44>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatTabControlUnit.pas"/>
@@ -491,7 +488,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="488"/>
         <CursorPos X="3" Y="529"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit44>
       <Unit45>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatSpinEditUnit.pas"/>
@@ -499,7 +496,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="37"/>
         <CursorPos X="39" Y="16"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit45>
       <Unit46>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatSpinButtonUnit.pas"/>
@@ -507,7 +504,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="95"/>
         <CursorPos X="16" Y="97"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit46>
       <Unit47>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatEditUnit.pas"/>
@@ -515,7 +512,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="13"/>
         <CursorPos X="3" Y="17"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit47>
       <Unit48>
         <Filename Value="/usr/lib/lazarus/0.9.30.4/lcl/controls.pp"/>
@@ -523,7 +520,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1909"/>
         <CursorPos X="17" Y="1930"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit48>
       <Unit49>
@@ -641,7 +638,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="978"/>
         <CursorPos X="65" Y="999"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit62>
       <Unit63>
@@ -650,7 +647,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="49"/>
         <CursorPos X="33" Y="80"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit63>
       <Unit64>
         <Filename Value="../../Lazarus/composants/jvXP/JvXPButtons.pas"/>
@@ -658,7 +655,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="691"/>
         <CursorPos X="1" Y="727"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit64>
       <Unit65>
         <Filename Value="../Freelogy/Components/FlatStyle/Source/TFlatCheckBoxUnit.pas"/>
@@ -666,7 +663,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="123"/>
         <CursorPos X="1" Y="154"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit65>
       <Unit66>
         <Filename Value="../Ancestromania/Sources/Web/u_ancestroweb.pas"/>
@@ -674,7 +671,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="U_AncestroWeb"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="449"/>
         <CursorPos X="137" Y="472"/>
@@ -689,7 +686,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="161"/>
         <CursorPos X="65" Y="170"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit67>
       <Unit68>
         <Filename Value="../virtualdbtreeex/virtualdbtreeex.pas"/>
@@ -697,7 +694,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="466"/>
         <CursorPos X="15" Y="486"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit68>
       <Unit69>
         <Filename Value="../Extended/fonctions/fonctions_reports.pas"/>
@@ -705,7 +702,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="34"/>
         <CursorPos X="6" Y="57"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit69>
       <Unit70>
         <Filename Value="../../Lazarus/composants/fortesforlaz/rlreport.pas"/>
@@ -713,7 +710,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="772"/>
         <CursorPos X="43" Y="791"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit70>
       <Unit71>
         <Filename Value="../../Lazarus/composants/fortesforlaz/rltypes.pas"/>
@@ -721,7 +718,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="53"/>
         <CursorPos X="6" Y="72"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit71>
       <Unit72>
         <Filename Value="../Extended/composants/u_extcomponent.pas"/>
@@ -729,7 +726,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit72>
       <Unit73>
         <Filename Value="../Extended/composants/u_framework_components.pas"/>
@@ -737,7 +734,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit73>
       <Unit74>
         <Filename Value="../Extended/composants/u_formmainini.pas"/>
@@ -745,7 +742,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit74>
       <Unit75>
         <Filename Value="../../../../lazarus/lcl/include/control.inc"/>
@@ -763,7 +760,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="52"/>
         <CursorPos X="53" Y="70"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit76>
       <Unit77>
@@ -830,7 +827,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="U_DMWeb"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="87"/>
         <CursorPos X="108" Y="126"/>
@@ -850,12 +847,10 @@
       <Unit87>
         <Filename Value="../Extended/composants/u_regframeworkcomponents.pas"/>
         <UnitName Value="u_regframeworkcomponents"/>
-        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
         <UsageCount Value="53"/>
-        <Loaded Value="True"/>
       </Unit87>
       <Unit88>
         <Filename Value="../Extended/fonctions/fonctions_system.pas"/>
@@ -868,12 +863,10 @@
       <Unit89>
         <Filename Value="../Extended/fonctions/fonctions_dbcomponents.pas"/>
         <UnitName Value="fonctions_dbcomponents"/>
-        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="197"/>
         <CursorPos X="78" Y="212"/>
         <UsageCount Value="50"/>
-        <Loaded Value="True"/>
       </Unit89>
       <Unit90>
         <Filename Value="ancestroweb_strings_delphi.pas"/>
@@ -1096,4 +1089,4 @@
       </Item1>
     </BreakPoints>
   </Debugging>
-</CONFIG>
+</CONFIG>
