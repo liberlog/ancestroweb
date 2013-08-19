@@ -13,7 +13,7 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Version Major="1" Minor="3"/>
+    <Version Major="1" Minor="3" Release="1"/>
     <Files Count="3">
       <Item1>
         <Filename Value="functions/functions_html.pas"/>
