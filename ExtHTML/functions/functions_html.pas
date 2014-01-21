@@ -322,7 +322,7 @@ begin
 end;
 
 procedure p_addKeyWord ( as_KeyWord : String; const ach_Separator : Char = ' ' );
-var lstl_Keywords : TStringList;
+var lstl_Keywords : TStrings;
     ls_KeyWord    : String;
     li_i          : Integer;
 Begin
